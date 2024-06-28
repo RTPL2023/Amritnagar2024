@@ -34,6 +34,7 @@ namespace Amritnagar.Models.ViewModel
         public string relgn { get; set; }
         public bool ltl_app { get; set; }
         public bool married { get; set; }
+        public string tableelement { get; set; }
         public string mailAdd_house { get; set; }
         public string mailAdd_add1 { get; set; }
         public string mailAdd_add2 { get; set; }

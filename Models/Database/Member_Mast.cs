@@ -841,6 +841,26 @@ namespace Amritnagar.Models.Database
 
 
         }
+        public List<Member_Mast> getallmemberdetails()
+        {
+            string sql = "select * from MEMBER_MAST order by MEMBER_NAME";
+            config.singleResult(sql);
+            List<Member_Mast> mml = new List<Member_Mast>();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.mem_date = Convert.ToDateTime(dr["MEMBER_DATE"].ToString());
+                    mm.member_type = dr["MEMBER_TYPE"].ToString();
+                    mm.member_category = dr["MEM_CATEGORY"].ToString();
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();
+                    mml.Add(mm);
+                }
+            }
+            return mml;
+        }
 
 
 
