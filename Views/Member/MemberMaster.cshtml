@@ -15,10 +15,11 @@
         width: 100px;
         height: 25px;
     }
+
     .sizeM_exp_dt {
         width: 100px;
         height: 25px;
-        background-color:white
+        background-color: white
     }
 
     .sizeSmall {
@@ -52,16 +53,16 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        width: 1000px;
+        width: 800px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab tbody {
             display: block;
-            width: 1000px;
+            width: 800px;
             overflow: auto;
-            height: 200px;
+            height: 350px;
             text-align: center;
         }
 
@@ -69,7 +70,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-            width: 1000px;
+            width: 800px;
         }
 
         .tab tr:nth-child(even) {
@@ -120,6 +121,186 @@
         color: firebrick;
         text-align: center
     }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    .section {
+        position: relative;
+    }
+
+    [type="checkbox"]:checked,
+    [type="checkbox"]:not(:checked) {
+        position: absolute;
+        left: -9999px;
+    }
+
+    .modal-btn:checked + label,
+    .modal-btn:not(:checked) + label {
+        position: relative;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 2;
+        height: 30px;
+        transition: all 200ms linear;
+        border-radius: 4px;
+        width: 140px;
+        letter-spacing: 1px;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -ms-flex-pack: center;
+        text-align: center;
+        -ms-flex-item-align: center;
+        align-self: center;
+        border: none;
+        cursor: pointer;
+        background-color: lightcoral;
+        color: #ffeba7;
+        box-shadow: 0 12px 35px 0 rgba(224,167,167,.25);
+    }
+
+        .modal-btn:not(:checked) + label:hover {
+            background-color: #ffeba7;
+            color: #102770;
+        }
+
+        .modal-btn:checked + label .uil,
+        .modal-btn:not(:checked) + label .uil {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        .modal-btn:checked + label:after,
+        .modal-btn:not(:checked) + label:after {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            z-index: 110;
+            width: 40px;
+            border-radius: 3px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 15px;
+            background-color: #ffeba7;
+            color: #102770;
+            /*font-family: 'unicons';*/
+            content: ' \2573';
+            box-shadow: 0 12px 25px 0 rgba(16,39,112,.25);
+            transition: all 200ms linear;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        .modal-btn:checked + label:hover:after,
+        .modal-btn:not(:checked) + label:hover:after {
+            background-color: #102770;
+            color: #ffeba7;
+        }
+
+        .modal-btn:checked + label:after {
+            transition: opacity 300ms 300ms ease, transform 300ms 300ms ease, background-color 250ms linear, color 250ms linear;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+    .modal {
+        position: fixed;
+        display: block;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin: 0 auto;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        overflow-x: hidden;
+        background-color: rgba(31,32,41,.75);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 250ms 700ms ease;
+    }
+
+    .modal-btn:checked ~ .modal {
+        pointer-events: auto;
+        opacity: 1;
+        transition: all 300ms ease-in-out;
+    }
+
+    .modal-wrap {
+        position: relative;
+        display: block;
+        width: 100%;
+        max-width: 800px;
+        /*margin: 0 auto;*/
+        margin-left: 200px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        overflow: hidden;
+        padding-bottom: 20px;
+        background-color: #fff;
+        -ms-flex-item-align: center;
+        align-self: center;
+        box-shadow: 0 12px 25px 0 rgba(199,175,189,.25);
+        opacity: 0;
+        transform: scale(0.6);
+        transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
+    }
+
+        .modal-wrap img {
+            display: block;
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+        }
+
+        .modal-wrap table {
+            padding-left: 10px;
+            padding-bottom: 5px;
+            padding-right: 10px;
+            text-align: justify
+        }
+
+    .modal-btn:checked ~ .modal .modal-wrap {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+    }
+
+
+
+    .modal-btn:checked ~ .logo img {
+        filter: brightness(100%);
+        transition: all 250ms linear;
+    }
+
+
+    @@media screen and (max-width: 500px) {
+        .modal-wrap {
+            width: calc(100% - 40px);
+            padding-bottom: 15px;
+        }
+
+            .modal-wrap table {
+                padding: 15px 20px 0 20px;
+            }
+    }
 </style>
 
 <form asp-controller="Member" asp-action="MemberMaster" method="post" enctype="multipart/form-data">
@@ -140,477 +321,488 @@
                     <div class="col-md-1 col-sm-12 col-12 ">
                         <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="UpdateMemberMaster()" />
                     </div>
-                    <div class="col-md-1 col-sm-12 col-12 ">
+                    <div class="col-md-2 col-sm-12 col-12 ">
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ReloadPage()" />
                     </div>
-                </div>
-                <div class="row mt-1 justify-content-md-center">
-                    <div class="col-lg-11 col-11 divBorder">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
-                                Employee Name:<br />
-                                @Html.DropDownListFor(p => p.emp_cd, new SelectList(Model.EmpDesc, "Value", "Text"), "Select Name", new { @class = "size" })
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
-                                Unit:<br />
-                                @Html.DropDownListFor(p => p.emp_branch, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select Unit", new { @class = "size" })
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
-                                Employee Id:<br />
-                                @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtemp_id(event);" })
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
-                                Book No:<br />
-                                @Html.TextBoxFor(model => model.book_no, new { @class = "size", @type = "text" })
-                            </div>
-                        </div>
+                    @*<div class="col-md-2 col-sm-12 col-12 ">
+                            <input id="BtnMemberRec" type="button" name="BtnMemberRec" Height="40" Width="100" class="btn btn-primary btn-sm" value="Member Records" />
+                        </div>*@
 
-                    </div>
-                </div>
-                <div class="row mt-1 justify-content-md-center">
-                    <div class="col-lg-11 col-11 divBorder">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                Branch:<br />
-                                @Html.DropDownListFor(p => p.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                Member No:<br />
-                                @Html.TextBoxFor(model => model.mem_id, new { @class = "size", @type = "text;", @onkeypress = "javascript: return evtmem_id(event);" })
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
-                                Membership Date:<br />
-                                @Html.TextBoxFor(model => model.mem_date, new { @class = "size", @type = "text" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                Member Type:<br />
-                                @Html.DropDownListFor(p => p.member_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select Type", new { @class = "size" })
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                Member Category:<br />
-                                @Html.DropDownListFor(p => p.member_category, new SelectList(Model.CategoryDesc, "Value", "Text"), "Select Category", new { @class = "size" })
-                            </div>
-
+                    <input class="modal-btn" type="checkbox" id="bankCorp-modal-btn" name="modal-btn" />
+                    <label for="bankCorp-modal-btn" onclick="ShowTable()"> Member Records </label>
+                    <div class="modal" id="bankCorp-modal">
+                        <div class="modal-wrap">
+                            <table id="MemberRecords" class="tab">
+                            </table>
                         </div>
                     </div>
-                </div>
-
-                <div class="row mt-1">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        First Name:<br />
-                        @Html.TextBoxFor(model => model.f_name, new { @class = "sizeL", @type = "text" })
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Last Name:<br />
-                        @Html.TextBoxFor(model => model.l_name, new { @class = "sizeL", @type = "text;" })
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
-                        Birth Date:<br />
-                        @Html.TextBoxFor(model => model.birth_date, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtbirth_date(event);" })
-                    </div>
-                </div>
-                <div class="row mt-1">
-                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                        Sex:<br />
-                        @Html.DropDownListFor(model => model.sex, new SelectList(new string[] { "MALE", "FEMALE" }), "Select Sex", new { @class = "size" })
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Guardian's Name:<br />
-                        @Html.TextBoxFor(model => model.guardian_name, new { @class = "sizeL", @type = "text", @onkeypress = "javascript: return evtguardian_name(event);" })
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                        Relationship with Member:<br />
-                        @Html.DropDownListFor(p => p.member_rel, new SelectList(Model.RelationDesc, "Value", "Text"), "Select Relationship", new { @class = "size", })
-                    </div>
-                </div>
-                <div class="row mt-1">
-                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                        Caste:<br />
-                        @Html.DropDownListFor(p => p.caste, new SelectList(Model.CastDesc, "Value", "Text"), "Select Caste", new { @class = "size", })
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Religion:<br />
-                        @Html.DropDownListFor(p => p.relgn, new SelectList(Model.ReligionDesc, "Value", "Text"), "Select Religion", new { @class = "size", })
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                        Occupation:<br />
-                        @Html.DropDownListFor(p => p.occupation, new SelectList(Model.OccupationDesc, "Value", "Text"), "Select Religion", new { @class = "size", })
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="row">
-                            &nbsp;
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
-                                <div class="row mt-1">
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12  divText">
-                                        Mailing Address
-                                    </div>
+                    <div class="row mt-1 justify-content-md-center">
+                        <div class="col-lg-11 col-11 divBorder">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                    Employee Name:<br />
+                                    @Html.DropDownListFor(p => p.emp_cd, new SelectList(Model.EmpDesc, "Value", "Text"), "Select Name", new { @class = "size" })
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        House No.:
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-
-                                        @Html.TextBoxFor(model => model.mailAdd_house, new { @class = "size", @type = "text" })
-                                    </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                    Unit:<br />
+                                    @Html.DropDownListFor(p => p.emp_branch, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select Unit", new { @class = "size" })
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.mailAdd_add1, new { @class = "sizeL", @type = "text" })
-                                    </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                    Employee Id:<br />
+                                    @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtemp_id(event);" })
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.mailAdd_add2, new { @class = "sizeL", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        City:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.mailAdd_city, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Dist.:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.mailAdd_dist, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        State:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.mailAdd_state, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Pin:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.mailAdd_pin, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-5 text-center">
-                                <div class="btn"><i class="btn fa fa-angle-double-right" style="color:firebrick;font-size:20px" onclick="copyAddressToPermanent()"></i></div>
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
-                                <div class="row mt-1">
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12  divText">
-                                        Permanent Address
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        House No.:
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_house, new { @class = "size", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_add1, new { @class = "sizeL", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_add2, new { @class = "sizeL", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        City:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_city, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Dist.:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_dist, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        State:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_state, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Pin:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.prmntAdd_pin, new { @class = "sizeM", @type = "text" })
-                                    </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                    Book No:<br />
+                                    @Html.TextBoxFor(model => model.book_no, new { @class = "size", @type = "text" })
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-lg-11 col-md-11 col-sm-12 col-12 divBorder">
-                        <div class="row mt-1">
-                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+                    <div class="row mt-1 justify-content-md-center">
+                        <div class="col-lg-11 col-11 divBorder">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    Branch:<br />
+                                    @Html.DropDownListFor(p => p.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    Member No:<br />
+                                    @Html.TextBoxFor(model => model.mem_id, new { @class = "size", @type = "text;", @onkeypress = "javascript: return evtmem_id(event);" })
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                    Membership Date:<br />
+                                    @Html.TextBoxFor(model => model.mem_date, new { @class = "size", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    Member Type:<br />
+                                    @Html.DropDownListFor(p => p.member_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select Type", new { @class = "size" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    Member Category:<br />
+                                    @Html.DropDownListFor(p => p.member_category, new SelectList(Model.CategoryDesc, "Value", "Text"), "Select Category", new { @class = "size" })
+                                </div>
 
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                @Html.CheckBoxFor(model => model.ltl_app)
-                                LTI Applicable
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                @Html.CheckBoxFor(model => model.married)
-                                Married
-                            </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
-                                Identification Mark:<br />
-                                @Html.TextBoxFor(model => model.ident_mark, new { @class = "size", @type = "text" })
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
-                                Thift Fund Amt:<br />
-                                @Html.TextBoxFor(model => model.th_f_amt, new { @class = "size", @type = "text" })
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
-                                Share:<br />
-                                @Html.TextBoxFor(model => model.share, new { @class = "size", @type = "text" })
-                            </div>
-                        </div>
-                        <div class="row mt-1 mb-1">
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-primary">
-                                Phone:<br />
-                                @Html.TextBoxFor(model => model.phn, new { @class = "size", @type = "text" })
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-primary">
-                                PAN:<br />
-                                @Html.TextBoxFor(model => model.pan, new { @class = "size", @type = "text" })
-                            </div>
-
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                            Department:<br />
-                            @Html.DropDownListFor(p => p.dept, new SelectList(Model.DepartmentDesc, "Value", "Text"), "Select Department", new { @class = "size", })
+
+                    <div class="row mt-1">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            First Name:<br />
+                            @Html.TextBoxFor(model => model.f_name, new { @class = "sizeL", @type = "text" })
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                            Designation:<br />
-                            @Html.DropDownListFor(p => p.desig, new SelectList(Model.DesignationDesc, "Value", "Text"), "Select Designation", new { @class = "size", })
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Last Name:<br />
+                            @Html.TextBoxFor(model => model.l_name, new { @class = "sizeL", @type = "text;" })
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
-                            Service Status:<br />
-                            @Html.DropDownListFor(p => p.serv_sts, new SelectList(Model.ServiceDesc, "Value", "Text"), "Select service Status", new { @class = "size", })
+                        <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                            Birth Date:<br />
+                            @Html.TextBoxFor(model => model.birth_date, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtbirth_date(event);" })
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            Joining Date:<br />
-                            @Html.TextBoxFor(model => model.join_dt, new { @class = "sizeL", @type = "text" })
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Sex:<br />
+                            @Html.DropDownListFor(model => model.sex, new SelectList(new string[] { "MALE", "FEMALE" }), "Select Sex", new { @class = "size" })
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            Retirement Date:<br />
-                            @Html.TextBoxFor(model => model.retmnt_dt, new { @class = "sizeL", @type = "text", @readonly = true })
+                            Guardian's Name:<br />
+                            @Html.TextBoxFor(model => model.guardian_name, new { @class = "sizeL", @type = "text", @onkeypress = "javascript: return evtguardian_name(event);" })
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Relationship with Member:<br />
+                            @Html.DropDownListFor(p => p.member_rel, new SelectList(Model.RelationDesc, "Value", "Text"), "Select Relationship", new { @class = "size", })
                         </div>
                     </div>
+                    <div class="row mt-1">
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Caste:<br />
+                            @Html.DropDownListFor(p => p.caste, new SelectList(Model.CastDesc, "Value", "Text"), "Select Caste", new { @class = "size", })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Religion:<br />
+                            @Html.DropDownListFor(p => p.relgn, new SelectList(Model.ReligionDesc, "Value", "Text"), "Select Religion", new { @class = "size", })
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Occupation:<br />
+                            @Html.DropDownListFor(p => p.occupation, new SelectList(Model.OccupationDesc, "Value", "Text"), "Select Religion", new { @class = "size", })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                &nbsp;
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            Mailing Address
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            House No.:
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
 
-                </div>
-                <div class="row mt-2">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_house, new { @class = "size", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_add1, new { @class = "sizeL", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_add2, new { @class = "sizeL", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            City:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_city, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Dist.:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_dist, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            State:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_state, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Pin:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.mailAdd_pin, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-5 text-center">
+                                    <div class="btn"><i class="btn fa fa-angle-double-right" style="color:firebrick;font-size:20px" onclick="copyAddressToPermanent()"></i></div>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            Permanent Address
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            House No.:
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_house, new { @class = "size", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_add1, new { @class = "sizeL", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_add2, new { @class = "sizeL", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            City:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_city, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Dist.:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_dist, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            State:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_state, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Pin:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.prmntAdd_pin, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-11 col-md-11 col-sm-12 col-12 divBorder">
+                            <div class="row mt-1">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    @Html.CheckBoxFor(model => model.ltl_app)
+                                    LTI Applicable
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    @Html.CheckBoxFor(model => model.married)
+                                    Married
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
+                                    Identification Mark:<br />
+                                    @Html.TextBoxFor(model => model.ident_mark, new { @class = "size", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
+                                    Thift Fund Amt:<br />
+                                    @Html.TextBoxFor(model => model.th_f_amt, new { @class = "size", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
+                                    Share:<br />
+                                    @Html.TextBoxFor(model => model.share, new { @class = "size", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-primary">
+                                    Phone:<br />
+                                    @Html.TextBoxFor(model => model.phn, new { @class = "size", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-primary">
+                                    PAN:<br />
+                                    @Html.TextBoxFor(model => model.pan, new { @class = "size", @type = "text" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center bg-danger text-light">
-                                        Nominee
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        Name of Nominee:
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.nominee_name, new { @class = "size", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                        Address:<br />
+                            <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                                Department:<br />
+                                @Html.DropDownListFor(p => p.dept, new SelectList(Model.DepartmentDesc, "Value", "Text"), "Select Department", new { @class = "size", })
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                                Designation:<br />
+                                @Html.DropDownListFor(p => p.desig, new SelectList(Model.DesignationDesc, "Value", "Text"), "Select Designation", new { @class = "size", })
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                                Service Status:<br />
+                                @Html.DropDownListFor(p => p.serv_sts, new SelectList(Model.ServiceDesc, "Value", "Text"), "Select service Status", new { @class = "size", })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Joining Date:<br />
+                                @Html.TextBoxFor(model => model.join_dt, new { @class = "sizeL", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Retirement Date:<br />
+                                @Html.TextBoxFor(model => model.retmnt_dt, new { @class = "sizeL", @type = "text", @readonly = true })
+                            </div>
+                        </div>
 
-                                        @Html.TextBoxFor(model => model.nominee_add1, new { @class = "sizeL", @type = "text" })
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center bg-danger text-light">
+                                            Nominee
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            Name of Nominee:
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.nominee_name, new { @class = "size", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            Address:<br />
+
+                                            @Html.TextBoxFor(model => model.nominee_add1, new { @class = "sizeL", @type = "text" })
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.nominee_add2, new { @class = "sizeL", @type = "text" })
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            City:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.nominee_city, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Dist.:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.nominee_dist, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            State:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.nominee_state, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Pin:
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.nominee_pin, new { @class = "sizeM", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1 mb-1">
+
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            Date of Birth:<br />
+                                            @Html.TextBoxFor(model => model.nominee_birth_date, new { @class = "size", @type = "text" })
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            Relationship:<br />
+                                            @Html.DropDownListFor(p => p.nominee_rel, new SelectList(Model.RelationDesc, "Value", "Text"), "Select Relationship", new { @class = "size", })
+                                        </div>
                                     </div>
 
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.nominee_add2, new { @class = "sizeL", @type = "text" })
+                                &nbsp;
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12 divBorder">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center bg-danger text-light">
+                                            Introducer
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                            Srl<br />
+                                            @Html.TextBoxFor(model => model.srl, new { @class = "sizeSmall", @type = "text", @readonly = true })
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                            Member No<br />
+                                            @Html.TextBoxFor(model => model.intr_mem_no, new { @class = "sizeM", @type = "text", @onkeypress = "javascript: return evtintr_mem_no(event);" })
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                            Name of Member<br />
+                                            @Html.TextBoxFor(model => model.intr_mem_name, new { @class = "sizeM", @type = "text", @readonly = true })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightcoral">
+                                            <div class="row mt-1">
+                                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                    @Html.CheckBoxFor(model => model.trans)
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    Transfered
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                    @Html.CheckBoxFor(model => model.ret)
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    Retired
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
+                                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                    @Html.CheckBoxFor(model => model.exp)
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    Expired
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                    Exp Date:
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    @Html.TextBoxFor(model => model.exp_dt, new { @class = "sizeM_exp_dt", @type = "text" })
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
+
+                                            </div>
+                                            <div class="row mt-1">
+                                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                    @Html.CheckBoxFor(model => model.tf_double)
+                                                </div>
+                                                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                                    TF-Double
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightgray">
+                                            <div class="row mt-1">
+                                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                    @Html.CheckBoxFor(model => model.mem_closed)
+                                                </div>
+                                                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                                    Membership Closed
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-1">
+
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    Close Date:
+                                                </div>
+                                                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                                    @Html.TextBoxFor(model => model.close_dt, new { @class = "sizeM_exp_dt", @type = "text" })
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
 
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        City:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.nominee_city, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Dist.:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.nominee_dist, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        State:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.nominee_state, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Pin:
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                        @Html.TextBoxFor(model => model.nominee_pin, new { @class = "sizeM", @type = "text" })
-                                    </div>
-                                </div>
-                                <div class="row mt-1 mb-1">
-
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                        Date of Birth:<br />
-                                        @Html.TextBoxFor(model => model.nominee_birth_date, new { @class = "size", @type = "text" })
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                        Relationship:<br />
-                                        @Html.DropDownListFor(p => p.nominee_rel, new SelectList(Model.RelationDesc, "Value", "Text"), "Select Relationship", new { @class = "size", })
-                                    </div>
                                 </div>
 
                             </div>
-                            &nbsp;
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 divBorder">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center bg-danger text-light">
-                                        Introducer
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                        Srl<br />
-                                        @Html.TextBoxFor(model => model.srl, new { @class = "sizeSmall", @type = "text", @readonly = true })
-                                    </div>
-                                    <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                                        Member No<br />
-                                        @Html.TextBoxFor(model => model.intr_mem_no, new { @class = "sizeM", @type = "text", @onkeypress = "javascript: return evtintr_mem_no(event);" })
-                                    </div>
-                                    <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                                        Name of Member<br />
-                                        @Html.TextBoxFor(model => model.intr_mem_name, new { @class = "sizeM", @type = "text", @readonly = true })
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightcoral">
-                                        <div class="row mt-1">
-                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                                @Html.CheckBoxFor(model => model.trans)
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                                Transfered
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                                @Html.CheckBoxFor(model => model.ret)
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                                Retired
-                                            </div>
-                                        </div>
-                                        <div class="row mt-1">
-                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                                @Html.CheckBoxFor(model => model.exp)
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                                Expired
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                                Exp Date:
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                                @Html.TextBoxFor(model => model.exp_dt, new { @class = "sizeM_exp_dt", @type = "text" })
-                                            </div>
-                                        </div>
-                                        <div class="row mt-1">
-
-                                        </div>
-                                        <div class="row mt-1">
-                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                                @Html.CheckBoxFor(model => model.tf_double)
-                                            </div>
-                                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                                TF-Double
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightgray">
-                                        <div class="row mt-1">
-                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
-                                                @Html.CheckBoxFor(model => model.mem_closed)
-                                            </div>
-                                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                                Membership Closed
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-1">
-
-                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                                Close Date:
-                                            </div>
-                                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                                @Html.TextBoxFor(model => model.close_dt, new { @class = "sizeM_exp_dt", @type = "text" })
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
                         </div>
                     </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Remarks:<br />
+                            @Html.TextBoxFor(model => model.remarks, new { @class = "size", @type = "text" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Bank Code:<br />
+                            @Html.TextBoxFor(model => model.bank_code, new { @class = "size", @type = "text" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Account No.:<br />
+                            @Html.TextBoxFor(model => model.accc_no, new { @class = "size", @type = "text" })
+                        </div>
+                    </div>
+
                 </div>
-                <div class="row mt-2 mb-2">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Remarks:<br />
-                        @Html.TextBoxFor(model => model.remarks, new { @class = "size", @type = "text" })
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Bank Code:<br />
-                        @Html.TextBoxFor(model => model.bank_code, new { @class = "size", @type = "text" })
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Account No.:<br />
-                        @Html.TextBoxFor(model => model.accc_no, new { @class = "size", @type = "text" })
-                    </div>
-                </div>
-                
             </div>
         </div>
-    </div>
 </form>
 
 @section scripts
@@ -940,7 +1132,7 @@
                         $('#remarks').val(data.remarks);
                         $('#bank_code').val(data.bank_code);
                         $('#accc_no').val(data.accc_no);
-                    }                    
+                    }
                 },
                 error: function (err) {
                     alert("Error Occured");
@@ -1080,7 +1272,7 @@
                         $('#remarks').val(data.remarks);
                         $('#bank_code').val(data.bank_code);
                         $('#accc_no').val(data.accc_no);
-                    }                   
+                    }
                 },
 
                 error: function (err) {
@@ -1200,6 +1392,22 @@
                 $("#mailAdd_state").val("WB");
             }
        }
+
+        function ShowTable() {
+           let ModelObject = { };
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("getallmemberdetails", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            document.getElementById("MemberRecords").innerHTML = data.tableelement;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
 
         function ReloadPage() {
             window.location.href = "@Url.Action("MemberMaster", "Member")"
