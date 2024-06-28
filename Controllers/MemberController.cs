@@ -2251,7 +2251,35 @@ namespace Amritnagar.Controllers
         }
 
         /********************************************Share Capital Details List End*******************************************/
+        public JsonResult getallmemberdetails()
+        {
+            MemberMasterViewModel model = new MemberMasterViewModel();
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getallmemberdetails();
+            int i = 1;
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>Membership No</th><th>Membership Date</th><th>Member Type</th><th>Category</th><th>Name Of Nominee</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
 
-       
     }
 }
