@@ -1,0 +1,590 @@
+﻿@model Amritnagar.Models.ViewModel.MemberStatusViewModel
+
+@{
+    ViewBag.Title = "MemberStatus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+    .size1 {
+        width: 165px;
+        height: 25px;
+        font-size: 12px
+    }
+    .size2 {
+        width: 155px;
+        height: 25px;
+        font-size: 12px
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+    .sizeM1 {
+        width: 82px;
+        height: 25px;
+        font-size: 12px
+    }
+    .sizeM2 {
+        width: 70px;
+        height: 25px;
+        font-size: 12px
+    }
+
+    .sizeL {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 230px;
+        height: 25px;
+    }
+    .sizebig1 {
+        width: 320px;
+        height: 25px;
+        font-size:12px
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    table.bordered {
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+        table.bordered td, table.bordered th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+       /* width: 1000px;*/
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+           /* width: 1000px;*/
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+           /* width: 1000px;*/
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .tab_mh {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 620px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+            .tab_mh tbody {
+                display: block;
+                 width: 620px;
+                overflow: auto;
+                height: 120px;
+                text-align: center;
+            }
+
+            .tab_mh td, .tab_mh th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                border-collapse: collapse;
+                 width: 620px;
+            }
+
+            .tab_mh tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .tab_mh tr:hover {
+                background-color: rgba(255, 182, 193, 0.2);
+            }
+
+            .tab_mh th {
+                padding: 8px;
+                text-align: center;
+                /*background-color: #04AA6D;*/
+                background-color: firebrick;
+                font-size: 12px;
+                color: white;
+                position: sticky;
+                top: 0;
+            }
+    .tab_sharecapital {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 276px;
+        /*margin-left: auto;
+        margin-right: auto;*/
+    }
+
+        .tab_sharecapital tbody {
+            display: block;
+            width: 276px;
+            overflow: auto;
+            height: 150px;
+            text-align: center;
+        }
+
+        .tab_sharecapital td, .tab_sharecapital th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 276px;
+        }
+
+        .tab_sharecapital tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab_sharecapital tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab_sharecapital th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+
+    select:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+
+    .border-right {
+        border-right: 1px solid black;
+    }
+
+    .border-top {
+        border-top: 1px solid black;
+    }
+
+    .textHead {
+        background-color: maroon;
+        color: gold;
+        font-family: 'Times New Roman';
+        font-size: 13px;
+        padding-top: 5px;
+        padding-bottom: 5px
+    }
+
+    .divBorder {
+        border: 1px solid gray;
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+</style>
+
+<form  asp-controller="Member" asp-action="MemberStatus" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+    </div>
+    <div class="heading mt-4">
+        Member Status
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+                <div class="row mt-2">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.BranchID, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Member NO.<br />
+                        @Html.TextBoxFor(p => p.member_no, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtmember_no(event);" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Member Date <br />
+                        @Html.TextBoxFor(p => p.member_date, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Member Type <br />
+                        @Html.DropDownListFor(p => p.mem_type, new SelectList(Model.TypeDesc, "Value", "Text"), new { @class = "size" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Member Category <br />
+                        @Html.DropDownListFor(p => p.mem_category, new SelectList(Model.CategoryDesc, "Value", "Text"), new { @class = "size" })
+                    </div>
+                </div>
+                <div class="row border border-1 border-danger mt-1">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12 border-right">
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                Name: @Html.TextBoxFor(p => p.name, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        Mailing Address:
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextBoxFor(p => p.mail_hno, new { @class = "sizebig1", @type = "text"})
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        @Html.TextBoxFor(p => p.mail_add1, new { @class = "size1", @type = "text" })
+                                    </div> 
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        @Html.TextBoxFor(p => p.mail_add2, new { @class = "size2", @type = "text"})
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12 text-center">
+                                        @Html.TextBoxFor(p => p.mail_city, new { @class = "sizeM1", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                        @Html.TextBoxFor(p => p.mail_dist, new { @class = "sizeM1", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                        @Html.TextBoxFor(p => p.mail_state, new { @class = "sizeM1", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                        @Html.TextBoxFor(p => p.mail_pin, new { @class = "sizeM2", @type = "text" })
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <table class="bordered">
+                                <tr>
+                                    <th colspan="2" style="background-color: #f2dfb7; color: #7f2917">
+                                        NOMINEE PARTICULARS
+                                    </th>
+                                </tr>
+                            </table>
+                            <table  id="MemberNominee" class="bordered table-responsive">                               
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                        <div class="row mt-1">
+                            <table class="bordered table-responsive">
+                                <tr>
+                                    <th colspan="9" align="center" style="background-color: #f2dfb7; color: #7f2917">
+                                        MEMBERSHIP HOLDER'S PARTICULARS
+                                    </th>
+                                </tr>
+                            </table>
+                            <table id="MembershipHolders" class="bordered table-responsive tab_mh">                             
+                            </table>
+
+                        </div>
+                        <div class="row mt-1">
+                            <table class="bordered table-responsive">
+                                <tr>
+                                    <th colspan="6" align="center" style="background-color: #f2dfb7; color: #7f2917">STANDING SURITY STATUS OF MEMBER</th>
+                                </tr>
+                            </table>
+                            <table  id="SurityStatus" class="bordered table-responsive tab">                           
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table class="bordered" width="100%">
+                        <tr>
+                            <td>
+                                <input id="btnCaA" type="button" name="btnCaA" class="btn btn-primary pull-right" value="CAPITAL AND ASSETS" onclick="show2()" />
+                            </td>
+                            <td>
+                                <input id="btnliabl" type="button" name="btnliabl" class="btn btn-primary pull-right" value="LIABILITIES" onclick="show()" />
+                        </tr>
+                    </table>
+                </div>
+                <div class="row" id="capital" style="font-weight:bold">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div>
+                                <table class="bordered table-responsive">
+                                    <tr>
+                                        <th colspan="2" align="center" style="background-color: #f2dfb7; color: #7f2917 ">1.1.Share Capital</th>
+                                        <th colspan="2" align="right">@Html.TextBoxFor(p => p.share_cap_tot, new { @type = "text", style="border:0" })</th>
+                                    </tr>
+                                </table>
+                                <table id="sharecapital" class="bordered table-responsive tab_sharecapital" align="left">
+                                    
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                            <div>
+                                <table class="bordered table-responsive" width="100%">
+                                    <tr>
+                                        <th colspan="4" align="center" style="background-color: #f2dfb7; color: #7f2917">1.2.Funded Deposits</th>
+                                        <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_fund, new { @type = "text",style = "border:0" })</th>
+                                    </tr>
+                                </table>
+                                <table class="bordered table-responsive tab">
+                                    
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <table class="bordered table-responsive" width="100%">
+                                <tr>
+                                    <th colspan="7" align="center" style="background-color: #f2dfb7; color: #7f2917">1.3.Demand Deposits</th>
+                                    <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_Demand_deposit, new { @type = "text", style = "border:0" })</th>
+                                </tr>
+                            </table>
+                            <table class="bordered table-responsive tab">
+                               
+                            </table>
+                            <br />
+
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <table class="bordered table-responsive" width="100%">
+                                <tr>
+                                    <th colspan="9" align="center" style="background-color: #f2dfb7; color: #7f2917">1.4.Time & Term Deposits</th>
+                                    <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_time_deposit, new { @type = "text", style = "border:0" })</th>
+                                </tr>
+                            </table>
+                            <table class="bordered table-responsive tab">
+                                
+
+                            </table>
+                            <br />
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="rounded-corners" id="LIABILITIES" style="font-weight:bold">
+
+                    <div>
+
+                        <table class="bordered " width="100%">
+                            <tr>
+                                <th colspan="9" align="center" style="background-color: #f2dfb7; color: #7f2917"><b>2.1. Existing Membership Loans</b></th>
+                                <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_Loan, new { @type = "text", style = "border:0" })</th>
+                            </tr>
+                        </table>
+                        <table class="bordered table-responsive tab">
+                            
+
+                        </table>
+
+                    </div>
+
+                    <div>
+
+                        <table class="bordered" width="100%">
+                            <tr>
+                                <th colspan="9" align="center" style="background-color: #f2dfb7; color: #7f2917"><b>2.1.Other Existing Loans</b></th>
+                                <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_Oth_Loan, new { @type = "text", style = "border:0" })</th>
+                            </tr>
+                        </table>
+                        <table class="bordered table-responsive tab">
+                            
+                        </table>
+
+
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-12 col-12" style="font-weight: bold; background-color: #f7d9d3">
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-6 col-12"> <input id="btnsummary" type="button" name="btnsummary" class="btn btn-primary btn-sm" value="SUMMARY" /></div>
+                            
+                            <div class="col-lg-3 col-12">Capital & Assets:<br /> @Html.TextBoxFor(p => p.tot_assets, new { @class = "size", @type = "text", @readonly = "true" })</div>
+                            
+                            <div class="col-lg-3 col-12">Liabilities: <br /> @Html.TextBoxFor(p => p.tot_liabilities, new { @class = "size", @type = "text", @readonly = "true" })</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section scripts
+{
+    <script src="~/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $("#LIABILITIES").hide();
+            $("#capital").show();
+        });
+
+        function show() {
+            $("#LIABILITIES").show();
+            $("#capital").hide();
+        }
+
+        function show2() {
+            $("#LIABILITIES").hide();
+            $("#capital").show();
+        }
+
+         function ShowTableForMembershipHolders() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetMemberRecbymemberId", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("MembershipHolders").innerHTML = data.tableelement;
+                        $('#member_date').val(data.member_date);
+                        $('#mem_type').val(data.mem_type);
+                        $('#mem_category').val(data.mem_category);
+                        $('#name').val(data.name);
+                        $('#mail_hno').val(data.mail_hno);
+                        $('#mail_add1').val(data.mail_add1);
+                        $('#mail_add2').val(data.mail_add2);
+                        $('#mail_city').val(data.mail_city);
+                        $('#mail_dist').val(data.mail_dist);
+                        $('#mail_state').val(data.mail_state);
+                        $('#mail_pin').val(data.mail_pin);
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+         function ShowTableForMemberNominee() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetNomineedetailsBymemberId", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("MemberNominee").innerHTML = data.tableelement;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+         function ShowTableForLoanSurity() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetLoanSurityInfoBymemberId", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("SurityStatus").innerHTML = data.tableelement;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+         function ShowTableForShareCapital() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetShareCapital", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("sharecapital").innerHTML = data.tableelement;
+                        $('#share_cap_tot').val(data.share_cap_tot);
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+         }
+
+
+        function evtmember_no(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                ShowTableForMembershipHolders();
+                ShowTableForMemberNominee();
+                ShowTableForLoanSurity();
+                ShowTableForShareCapital();
+            }
+        }
+
+    </script>
+}
+

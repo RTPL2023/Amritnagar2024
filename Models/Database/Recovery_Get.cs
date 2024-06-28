@@ -1,0 +1,392 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using Amritnagar.Includes;
+using Amritnagar.Models.ViewModel;
+
+namespace Amritnagar.Models.Database
+{
+    public class Recovery_Get
+    {
+        SQLConfig config = new SQLConfig();     
+        public string branch_id { get; set; }
+        public string eMPLOYER_cD { get; set; }
+        public string eMPLOYER_bRANCH { get; set; }
+        public string bOOK_nO { get; set; }
+        public string eMPLOYEE_iD { get; set; }
+        public string aC_hD { get; set; }
+        public string vCH_pACNO { get; set; }
+        public string rECOVERY_mN { get; set; }
+        public string rECOVERY_yR { get; set; }
+        public decimal pRIN_aMT { get; set; }
+        public decimal iNT_aMT { get; set; }
+        public decimal prin_bal { get; set; }
+        public decimal TOTTF { get; set; }
+        public decimal TOTSH { get; set; }
+        public decimal TOTLICP { get; set; }
+        public decimal TOTRTB { get; set; }
+        public decimal TOTSFL { get; set; }
+        public decimal TOTISFL { get; set; }
+        public decimal TOTSJL { get; set; }
+        public decimal TOTISJL { get; set; }
+        public decimal TOTPSL { get; set; }
+        public decimal TOTIPSL { get; set; }
+        public decimal TOTDLL { get; set; }
+        public decimal TOTIDLL { get; set; }
+        public decimal TOTSL3 { get; set; }
+        public decimal TOTSL3I { get; set; }
+        public decimal TOTM12 { get; set; }
+        public decimal TOTIM12 { get; set; }
+        public decimal TOTM14 { get; set; }
+        public decimal TOTIM14 { get; set; }
+        public decimal TOTPSL1 { get; set; }
+        public decimal TOTIPSL1 { get; set; }
+        public decimal TOTSFL1 { get; set; }
+        public decimal TOTISFL1 { get; set; }
+        public decimal TOTSL4 { get; set; }
+        public decimal TOTISL4 { get; set; }
+        public decimal TOTSL6 { get; set; }
+        public decimal TOTISL6 { get; set; }
+        public decimal TOTSL7 { get; set; }
+        public decimal TOTISL7 { get; set; }
+        public decimal TOTSJL1 { get; set; }
+        public decimal TOTISJL1 { get; set; }
+        public string mEMBER_iD { get; set; }
+        public string mem_name { get; set; }
+        public DateTime sCH_dATE { get; set; }
+        public DateTime rECOVERY_dATE { get; set; }
+
+        public List<Recovery_Get> getdetails(string emp_branch, string book_no, string rec_dt)
+        {
+            decimal TOTTF = 0;
+            decimal TOTSH = 0;
+            decimal TOTLICP = 0;
+            decimal TOTRTB = 0;
+            decimal TOTSFL = 0;
+            decimal TOTISFL = 0;
+            decimal TOTISJL = 0;
+            decimal TOTSJL = 0;
+            decimal TOTPSL = 0;
+            decimal TOTIPSL = 0;
+            decimal TOTDLL = 0;
+            decimal TOTIDLL = 0;
+            decimal TOTSL3 = 0;
+            decimal TOTSL3I = 0;
+            decimal TOTM12 = 0;
+            decimal TOTIM12 = 0;
+            decimal TOTM14 = 0;
+            decimal TOTIM14 = 0;
+            decimal TOTPSL1 = 0;
+            decimal TOTIPSL1 = 0;
+            decimal TOTSFL1 = 0;
+            decimal TOTISFL1 = 0;
+            decimal TOTSL4 = 0;
+            decimal TOTISL4 = 0;
+            decimal TOTSL6 = 0;
+            decimal TOTISL6 = 0;
+            decimal TOTSL7 = 0;
+            decimal TOTISL7 = 0;
+            decimal TOTSJL1 = 0;
+            decimal TOTISJL1 = 0;
+            List<Recovery_Get> rgl = new List<Recovery_Get>();           
+            string sql = string.Empty;
+            sql = "select * from recovery_get where convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + rec_dt + "', 103) order by employee_id";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Recovery_Get rg = new Recovery_Get();
+                    rg.eMPLOYEE_iD = Convert.ToString(dr["EMPLOYEE_ID"]);
+                    sql = "select * from member_mast where employee_id='" + rg.eMPLOYEE_iD + "' AND MEMBER_CLOSED IS NULL  order by employee_id";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr1 in config.dt.Rows)
+                        {                            
+                            rg.mEMBER_iD = Convert.ToString(dr1["MEMBER_ID"]);
+                            try
+                            {
+                                config.Update("member_mast", new Dictionary<String, object>()
+                                {
+                                { "MEMBER_ID",        rg.mEMBER_iD},                              
+                                }, new Dictionary<string, object>()
+                                {                               
+                                { "EMPLOYEE_ID",     rg.eMPLOYEE_iD },                               
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                    }                 
+                }
+            }
+            sql = "SELECT * FROM RECOVERY_GET WHERE  EMPLOYER_BRANCH='" + emp_branch + "' AND  BOOK_NO='" + book_no + "' AND convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + rec_dt + "', 103) ORDER BY MEMBER_ID";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr2 in config.dt.Rows)
+                {
+                    Recovery_Get rg = new Recovery_Get();
+                    rg.eMPLOYEE_iD = Convert.ToString(dr2["EMPLOYEE_ID"]);
+                    rg.aC_hD = Convert.ToString(dr2["AC_HD"]);
+                    rg.pRIN_aMT = !Convert.IsDBNull(dr2["PRIN_AMT"]) ? Convert.ToDecimal(dr2["PRIN_AMT"]) : Convert.ToDecimal(00);
+                    rg.iNT_aMT = !Convert.IsDBNull(dr2["INT_AMT"]) ? Convert.ToDecimal(dr2["INT_AMT"]) : Convert.ToDecimal(00);
+                    sql = "select * from member_mast where employee_id='" + rg.eMPLOYEE_iD + "' AND MEMBER_CLOSED IS NULL  order by MEMBER_ID";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr3 in config.dt.Rows)
+                        {
+                            rg.mem_name = Convert.ToString(dr3["MEMBER_NAME"]);
+                            rg.mEMBER_iD = Convert.ToString(dr3["MEMBER_ID"]);
+                        }
+                    }
+                    if (rg.aC_hD == "TF")
+                    {
+                        TOTTF = (TOTTF + rg.pRIN_aMT + rg.iNT_aMT);
+                        sql = "select * from TF_LEDGER where BRANCH_ID='MN' AND MEMBER_ID='" + rg.mEMBER_iD + "' order by MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
+                        config.singleResult(sql); 
+                        if(config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr4 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr4["PRIN_BAL"]) ? Convert.ToDecimal(dr4["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                                              
+                    }
+                    if (rg.aC_hD == "SH")
+                    {
+                        TOTSH = (TOTSH + rg.pRIN_aMT + rg.iNT_aMT);                        
+                    }
+                    if (rg.aC_hD == "LICP")
+                    {
+                        TOTLICP = (TOTLICP + rg.pRIN_aMT + rg.iNT_aMT);
+                    }
+                    if (rg.aC_hD == "RTB")
+                    {
+                        TOTRTB = (TOTRTB + rg.pRIN_aMT + rg.iNT_aMT);
+                    }
+                    if (rg.aC_hD == "SFL")
+                    {
+                        TOTSFL = (TOTSFL + rg.pRIN_aMT);
+                        TOTISFL = (TOTISFL + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SFL'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if(config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr5 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr5["PRIN_BAL"]) ? Convert.ToDecimal(dr5["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                                                           
+                    }
+                    if (rg.aC_hD == "SJL")
+                    {
+                        TOTSJL = (TOTSJL + rg.pRIN_aMT);
+                        TOTISJL = (TOTISJL + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SFL'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr6 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr6["PRIN_BAL"]) ? Convert.ToDecimal(dr6["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                                                    
+                    }
+                    if (rg.aC_hD == "PSL")
+                    {
+                        TOTPSL = (TOTPSL + rg.pRIN_aMT);
+                        TOTIPSL = (TOTIPSL + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='PSL'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr7 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr7["PRIN_BAL"]) ? Convert.ToDecimal(dr7["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                           
+                    }
+                    if (rg.aC_hD == "DLL")
+                    {
+                        TOTDLL = (TOTDLL + rg.pRIN_aMT);
+                        TOTIDLL = (TOTIDLL + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='DLL'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr8 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr8["PRIN_BAL"]) ? Convert.ToDecimal(dr8["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                            
+                    }
+                    if (rg.aC_hD == "SL3")
+                    {
+                        TOTSL3 = (TOTSL3 + rg.pRIN_aMT);
+                        TOTSL3I = (TOTSL3I + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SL3'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr9 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr9["PRIN_BAL"]) ? Convert.ToDecimal(dr9["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                           
+                    }
+                    if (rg.aC_hD == "M12")
+                    {
+                        TOTM12 = (TOTM12 + rg.pRIN_aMT);
+                        TOTIM12 = (TOTIM12 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='M12'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr10 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr10["PRIN_BAL"]) ? Convert.ToDecimal(dr10["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                          
+                    }
+                    if (rg.aC_hD == "M14")
+                    {
+                        TOTM14 = (TOTM14 + rg.pRIN_aMT);
+                        TOTIM14 = (TOTIM14 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='M14'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if(config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr11 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr11["PRIN_BAL"]) ? Convert.ToDecimal(dr11["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                       
+                    }
+                    if (rg.aC_hD == "PSL1")
+                    {
+                        TOTPSL1 = (TOTPSL1 + rg.pRIN_aMT);
+                        TOTIPSL1 = (TOTIPSL1 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='PSL1'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr12 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr12["PRIN_BAL"]) ? Convert.ToDecimal(dr12["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                           
+                    }
+                    if (rg.aC_hD == "SFL1")
+                    {
+                        TOTSFL1 = (TOTSFL1 + rg.pRIN_aMT);
+                        TOTISFL1 = (TOTISFL1 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SFL1'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr13 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr13["PRIN_BAL"]) ? Convert.ToDecimal(dr13["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                          
+                    }
+                    if (rg.aC_hD == "SL4")
+                    {
+                        TOTSL4 = (TOTSL4 + rg.pRIN_aMT);
+                        TOTISL4 = (TOTISL4 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SL4'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr14 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr14["PRIN_BAL"]) ? Convert.ToDecimal(dr14["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                           
+                    }
+                    if (rg.aC_hD == "SL6")
+                    {
+                        TOTSL6 = (TOTSL6 + rg.pRIN_aMT);
+                        TOTISL6 = (TOTISL6 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SL6'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr15 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr15["PRIN_BAL"]) ? Convert.ToDecimal(dr15["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                            
+                    }
+                    if (rg.aC_hD == "SL7")
+                    {
+                        TOTSL7 = (TOTSL7 + rg.pRIN_aMT);
+                        TOTISL7 = (TOTISL7 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SL7'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr16 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr16["PRIN_BAL"]) ? Convert.ToDecimal(dr16["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                           
+                    }
+                    if (rg.aC_hD == "SJL1")
+                    {
+                        TOTSJL1 = (TOTSJL1 + rg.pRIN_aMT);
+                        TOTISJL1 = (TOTISJL1 + rg.iNT_aMT);
+                        sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SJL1'order by employee_id,vch_date,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr17 in config.dt.Rows)
+                            {
+                                rg.prin_bal = !Convert.IsDBNull(dr17["PRIN_BAL"]) ? Convert.ToDecimal(dr17["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            }
+                        }                            
+                    }
+                    rg.TOTDLL = TOTDLL;
+                    rg.TOTIDLL = TOTIDLL;
+                    rg.TOTTF = TOTTF;
+                    rg.TOTRTB = TOTRTB;
+                    rg.TOTSH = TOTSH;
+                    rg.TOTLICP = TOTLICP;
+                    rg.TOTSFL = TOTSFL;
+                    rg.TOTISFL = TOTISFL;
+                    rg.TOTISJL = TOTISJL;
+                    rg.TOTSJL = TOTSJL;
+                    rg.TOTPSL = TOTPSL;
+                    rg.TOTIPSL = TOTIPSL;
+                    rg.TOTSL3 = TOTSL3;
+                    rg.TOTSL3I = TOTSL3I;
+                    rg.TOTM12 = TOTM12;
+                    rg.TOTIM12 = TOTIM12;
+                    rg.TOTM14 = TOTM14;
+                    rg.TOTIM14 = TOTIM14;
+                    rg.TOTIPSL1 = TOTIPSL1;
+                    rg.TOTPSL1 = TOTPSL1;
+                    rg.TOTSFL1 = TOTSFL1;
+                    rg.TOTISFL1 = TOTISFL1;
+                    rg.TOTSL4 = TOTSL4;
+                    rg.TOTISL4 = TOTISL4;
+                    rg.TOTSL6 = TOTSL6;
+                    rg.TOTISL6 = TOTISL6;
+                    rg.TOTSL7 = TOTSL7;
+                    rg.TOTISL7 = TOTISL7;
+                    rg.TOTSJL1 = TOTSJL1;
+                    rg.TOTISJL1 = TOTISJL1;
+                    rgl.Add(rg);
+                }
+            }
+            return rgl;
+        }
+    }
+}

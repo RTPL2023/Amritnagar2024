@@ -1,0 +1,476 @@
+﻿@model Amritnagar.Models.ViewModel.EmployerUnitMasterViewModel
+
+@{
+    ViewBag.Title = "EmployerUnitMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 120px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 280px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 280px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1000px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1000px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+    .tab1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+            .tab1 tbody {
+                display: block;
+                width: 400px;
+                overflow: auto;
+                height: 200px;
+                text-align: center;
+            }
+
+            .tab1 td, .tab1 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                border-collapse: collapse;
+                width: 400px;
+            }
+
+        .tab1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    .divBorder {
+        border: 1px solid lightgray;
+    }
+
+    .divText {
+        font-size: 12px;
+        text-decoration: underline;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+
+    input:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+
+    select:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+    body {
+        position: relative;
+        margin: 0;
+        padding-bottom: 1rem;
+        min-height: 100%;
+    }
+    
+</style>
+<form asp-controller="Admin" asp-action="EmployerUnitMaster" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:50px">
+
+    </div>
+    <div class="heading mt-4">
+        Employer Unit Master
+    </div>
+
+    <div class="container mt-2">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger">
+                <div class="row mt-2 justify-content-center">
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12" id="SpecializationId">
+                        Employer Name:<br />
+                        @Html.DropDownListFor(m => m.emp_cd, new SelectList(Model.EmpDesc, "Value", "Text"), "Select Employer Name", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Unit Code:<br />
+                        @Html.TextBoxFor(model => model.emp_branch, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Unit Name:<br />
+                        @Html.TextBoxFor(model => model.emp_branch_name, new { @class = "sizeL", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 divBorder mb-2">
+                        <div class="row mt-2">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Address:
+                                @Html.TextBoxFor(model => model.address, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.address_2, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="row mt-1">
+                                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                        City
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.city, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                        State
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.state, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-10 col-md-10 col-sm-12 col-12">
+                                        Phone No.
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-10 col-md-10 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.phn_no, new { @class = "size", @type = "text" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="row mt-1">
+                                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                        District
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.dist, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                        Pin
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.pin, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-10 col-md-10 col-sm-12 col-12">
+                                        Telex No.
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-10 col-md-10 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.telex_no, new { @class = "size", @type = "text" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    &nbsp;
+
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder mb-2 justify-content-center">
+                        <div class="row mt-1">
+                            <div class="col-lg-11 col-md-11 col-sm-12 col-12 text-center divText">
+                                Select Salary Deduction Account Heads for this Unit
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                @Html.RadioButtonFor(model => model.sal_ded, "All") &nbsp; All
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                @Html.RadioButtonFor(model => model.sal_ded, "Selective") &nbsp; Selective
+                            </div>
+                        </div>
+                       
+                        <div class="row mt-1 justify-content-center">
+                            <div class="col-lg-11 col-md-11 col-sm-12 col-12 text-center border border-1 border-dark mb-1">
+                                <div class="table-responsive mt-1">
+                                    <table id="SalaryDeductionAccountHeadsDetailsTable" class="tab1">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-2">
+                        <div class="col-md-1 col-sm-12 col-12 ">
+                            <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="Save()" />
+                        </div>
+                        <div class="col-md-2 col-sm-12 col-12 ">
+                            <input id="Btndelete" type="button" name="Btndelete" Height="40" Width="100" class="btn btn-primary btn-sm" value="Delete" onclick="Delete()" />
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="container mb-1" align="center">
+            <div class="row mt-4 justify-content-center">
+                <div class="col-lg-10 col-md-12 col-sm-12 col-12" style="background-color:antiquewhite;color:firebrick;padding-top:5px;padding-bottom:5px;font-size:16px;font-weight:bold">
+                    Employer's Branch List
+                </div>
+            </div>
+
+            <div class="table-responsive mt-1">
+                <table id="EmployerUnitMasterDetailsTable" class="tab">
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //$('#ln_purpose').focus();
+            $('#Btndelete').hide();
+            ShowTable();
+        });
+
+        function Save() {
+                    let ModelObject = {
+                        emp_cd: $('#emp_cd').val(),
+                        emp_branch: $('#emp_branch').val(),
+                        emp_branch_name: $('#emp_branch_name').val(),
+                        address: $('#address').val(),
+                        address_2: $('#address_2').val(),
+                        city: $('#city').val(),
+                        state: $('#state').val(),
+                        phn_no: $('#phn_no').val(),
+                        pin: $('#pin').val(),
+                        telex_no: $('#telex_no').val()
+                    };
+                    /*alert(JSON.stringify(ModelObject));*/
+                    $.ajax({
+                        url: '@Url.Action("SaveEmployerUnitMaster", "Admin")',
+                        type: "POST",
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            $('#emp_cd').val("");
+                            $('#emp_branch').val("");
+                            $('#emp_branch_name').val("");
+                            $('#address').val("");
+                            $('#address_2').val("");
+                            $('#city').val("");
+                            $('#state').val("");
+                            $('#phn_no').val("");
+                            $('#pin').val("");
+                            $('#telex_no').val("");
+                            ShowTable();
+                            //$('#ln_purpose').focus();
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+        }
+
+        function ShowTable() {
+            let ModelObject = { emp_cd: $('#emp_cd').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetEmployerUnitMasterDetailsTable", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("EmployerUnitMasterDetailsTable").innerHTML = data;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+
+        }
+
+        function ShowTableForSalaryDeductionAcc_Hd() {
+            let ModelObject = { emp_cd: $('#emp_cd').val(), emp_branch: $('#emp_branch').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetSalaryDeductionACC_HeadDetailsTable", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("SalaryDeductionAccountHeadsDetailsTable").innerHTML = data;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+
+        }
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('EmployerUnitMasterDetailsTable');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    var f1 = document.getElementById('emp_cd');
+                    var f2 = document.getElementById('emp_branch');
+                    var f3 = document.getElementById('emp_branch_name');
+                    var f4 = document.getElementById('phn_no');
+                    var f5 = document.getElementById('telex_no');
+
+
+                    f1.value = cells[1].innerHTML;
+                    f2.value = cells[2].innerHTML;
+                    f3.value = cells[3].innerHTML;
+                    f4.value = cells[4].innerHTML;
+                    f5.value = cells[5].innerHTML;
+                    ShowTableForSalaryDeductionAcc_Hd();
+                    $('#emp_branch').focus();
+                    $('#Btndelete').show();
+                };
+            }
+        })();
+
+        function Delete() {
+            alert("Record will be deleted permanently. Confirm..........");
+            let ModelObject = {
+                emp_branch: $('#emp_branch').val(),
+            };
+                $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("DeleteEmployerUnitMaster", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            $('#emp_branch').val("");
+                            $('#emp_branch_name').val("");
+                            $('#emp_branch').focus();
+                            ShowTable();
+                        },
+                         error: function (err) {
+                         }
+                });
+        }
+
+        function evtln_purpose(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#purpose_desc').focus();
+            }
+        }
+
+        function evtpurpose_desc(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#BtnSave').focus();
+            }
+        }
+    </script>
+}
+

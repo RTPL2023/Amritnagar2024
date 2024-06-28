@@ -1,0 +1,148 @@
+﻿@model Amritnagar.Models.ViewModel.EditUserViewModel
+
+@{
+    ViewBag.Title = "EditUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 350px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1100px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1100px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(224, 255, 255, 0.3);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: royalblue;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+
+    select:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+</style>
+
+<form asp-controller="Users" asp-action="EditUsers" method="post">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        EDIT USER
+    </div>
+    <div class="container mt-1">
+        <div class="row mt-2 justify-content-md-center">
+            <div class="col-md-12 col-lg-12 col-12 p-3 border border-3 rounded border-danger">
+                <div class="row mt-3">
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        Branch:<br /> @Html.DropDownListFor(p => p.BranchId, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = " size" })
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        User Name:<br /> @Html.TextBoxFor(p => p.UserName, new { @class = "size" })
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        User Id:<br />@Html.TextBoxFor(p => p.UserID, new { @class = "size", @readonly = "true" })
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        Password:<br /> @Html.TextBoxFor(p => p.Password, new { @class = "size" })
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        Role:<br /> @Html.DropDownListFor(p => p.Role, new SelectList(new string[] { "ADMIN", "User" }), new { @class = "size" })
+                    </div>
+                    @*<div class="col-md-4 col-sm-12 col-12 ">
+                        Max Discount Allowed(%):<br />@Html.TextBoxFor(p => p.Disc, new { @class = "size" })
+                    </div>*@
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        Mobile No. :<br />@Html.TextBoxFor(p => p.MobileNo, new { @class = "size", @type = "numeric" })
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        Email-Id:<br />@Html.TextBoxFor(p => p.EmailId, new { @class = "size" })
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-12 ">
+                        Blocked :<br />@Html.CheckBoxFor(P => P.Blocked)
+                    </div>
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col mt-4 text-center">
+                        <input id="btnSave" type="submit" name="btnSave" Height="40" Width="100" class="btn btn-primary" value="Save" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div align="center">
+        <table align="center">
+            <tr>
+                @*<td>
+                        <h5 style="color: darkred; background-color: bisque">@Html.DisplayFor(model => model.msg, new { @class = "size", @type = "text" })</h5>
+                    </td>*@
+            </tr>
+        </table>
+    </div>
+
+
+</form>
+
+

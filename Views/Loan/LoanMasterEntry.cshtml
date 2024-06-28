@@ -1,0 +1,728 @@
+﻿@model Amritnagar.Models.ViewModel.LoanMasterEntryViewModel
+
+@{
+    ViewBag.Title = "LoanMasterEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizesm {
+        width: 80px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 230px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 400px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 400px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .border-right {
+        border-right: 1px solid black;
+    }
+
+    .border-top {
+        border-top: 1px solid black;
+    }
+
+    .textHead {
+        background-color: maroon;
+        color: gold;
+        font-family: 'Times New Roman';
+        font-size: 13px;
+        padding-top: 5px;
+        padding-bottom: 5px
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+    }
+</style>
+<form asp-controller="Loan" asp-action="LoanMasterEntry" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+
+    </div>
+    <div class="heading mt-4">
+        Loan Master Entry
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:900px">
+                <div class="row mt-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Branch:<br />
+                        @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Account Head:<br />
+                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Account Head", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                        Employee-Id:<br />
+                        @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtemp_id(event);" })
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Loan Date:<br />
+                        @Html.TextBoxFor(model => model.loan_dt, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtloan_dt(event);" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Loan Status:<br />
+                        @Html.DropDownListFor(model => model.status_cd, new SelectList(Model.lnstatusdesc, "Value", "Text"), "Select Loan Status", new { @class = "sizebig", @onchange= "changefocus()" })
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 border-right border-top">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 divText">
+                                Loanee Details
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Member No:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.mem_id, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Member Date:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mem_dt, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Member Type:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.mem_type, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Member Category:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.mem_cat, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Book No:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.book_no, new { @class = "sizesm", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Name of Loanee:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.loanee_name, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Name of Gurdian:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.gurdian_name, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center textHead">
+                                Date Wise Detail List Of Loan
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                <div class="table-responsive mt-1">
+                                    <table id="LoanDetailList" class="tab">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 border-top">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 divText">
+                                Loan Details
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Loan Amount:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.loan_amt, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtloan_amt(event);" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Instalment Amount:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.inst_amt, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtinst_amt(event);" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                No Of Instalment:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.inst_no, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Rate Of Instalment:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.inst_rate, new { @class = "sizesm", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Purpose of Loan:<br />
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                @Html.DropDownListFor(model => model.ln_purpose, new SelectList(Model.lnpurposedesc, "Value", "Text"), "Select Loan Purpose", new { @class = "sizebig" })
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-md-center" .>
+                            <div class="col-lg-8 col-md-8 col-sm-12 col-12 border border-1 border-danger">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 divText">
+                                        LIC Premium Selling
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                        Premium(Y):
+                                        @Html.TextBoxFor(model => model.lic_premium, new { @class = "sizesm", @type = "text" })
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+                                        <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="UpdateLICPrimium()" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center textHead">
+                                Loan Ledger Posting Section
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                Voucher Date: @Html.TextBoxFor(model => model.vch_date, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                Voucher No: @Html.TextBoxFor(model => model.vch_no, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtvch_no(event);" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                Loan Amount: @Html.TextBoxFor(model => model.prin_amt, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2 justify-content-center">
+                            <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                <input id="BtnCloseFlag" type="button" name="BtnCloseFlag" Height="40" Width="100" class="btn btn-primary btn-sm" value="Close Flag" onclick="Close()" />
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="Save()" />
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn-primary btn-sm" value="Exit" onclick="ReloadPage()" />
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center mb-2 mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                <input id="BtnSaveInstChg" type="button" name="BtnSaveInstChg" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save - In Case of Inst. Chg." onclick="SaveInst()" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+        });
+
+        function Save() {
+            if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {
+                alert("Input Proper Loan Date");
+            }
+            else if ($('#emp_id').val() == null || $('#emp_id').val() == "") {
+                alert("Employee Id Cannot Be Blank");
+            }
+            else if ($('#branch_id').val() == null || $('#branch_id').val() == "") {
+                alert("Branch Cannot Be Blank");
+            }
+            else if ($('#ac_hd').val() == null || $('#ac_hd').val() == "") {
+                alert("Account Head Cannot Be Blank");
+            }
+            else if ($('#ln_purpose').val() == null || $('#ln_purpose').val() == "") {
+                alert("Loan Purpose Cannot Be Blank");
+            }
+            else {
+                    let ModelObject = {
+                    branch_id: $('#branch_id').val(),
+                    ac_hd: $('#ac_hd').val(),
+                    emp_id: $('#emp_id').val(),
+                    loan_dt: $('#loan_dt').val(),
+                    status_cd: $('#status_cd').val(),
+                    mem_id: $('#mem_id').val(),
+                    mem_dt: $('#mem_dt').val(),
+                    mem_type: $('#mem_type').val(),
+                    mem_cat: $('#mem_cat').val(),
+                    book_no: $('#book_no').val(),
+                    loanee_name: $('#loanee_name').val(),
+                    gurdian_name: $('#gurdian_name').val(),
+                    loan_amt: $('#loan_amt').val(),
+                    inst_amt: $('#inst_amt').val(),
+                    inst_no: $('#inst_no').val(),
+                    inst_rate: $('#inst_rate').val(),
+                    ln_purpose: $('#ln_purpose').val(),
+                    lic_premium: $('#lic_premium').val(),
+                    vch_date: $('#vch_date').val(),
+                    vch_no: $('#vch_no').val(),
+                    prin_amt: $('#prin_amt').val(),
+                   };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveLoanMaster", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            if (data == "Saved Successfully") {
+                                $('#vch_date').val("");
+                                $('#vch_no').val("");
+                                $('#prin_amt').val("");
+                            }
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+                 }
+        }
+
+        function UpdateLICPrimium() {
+            if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {
+                alert("Input Proper Loan Date");
+            }
+            else if ($('#emp_id').val() == null || $('#emp_id').val() == "")
+            {
+                alert("Employee Id Cannot Be Blank");
+            }
+            else if ($('#branch_id').val() == null || $('#branch_id').val() == "") {
+                alert("Branch Cannot Be Blank");
+            }
+            else if ($('#ac_hd').val() == null || $('#ac_hd').val() == "") {
+                alert("Account Head Cannot Be Blank");
+            }
+            else {
+                 let ModelObject = {
+                    branch_id: $('#branch_id').val(),
+                    ac_hd: $('#ac_hd').val(),
+                    emp_id: $('#emp_id').val(),
+                    loan_dt: $('#loan_dt').val(),
+                    lic_premium: $('#lic_premium').val(),
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Update", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+            }
+
+        }
+
+       function SaveInst() {
+            if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {
+                alert("Input Proper Loan Date");
+            }
+            else if ($('#emp_id').val() == null || $('#emp_id').val() == "") {
+                alert("Employee Id Cannot Be Blank");
+            }
+            else if ($('#branch_id').val() == null || $('#branch_id').val() == "") {
+                alert("Branch Cannot Be Blank");
+            }
+            else if ($('#ac_hd').val() == null || $('#ac_hd').val() == "") {
+                alert("Account Head Cannot Be Blank");
+            }
+            else if ($('#ln_purpose').val() == null || $('#ln_purpose').val() == "") {
+                alert("Loan Purpose Cannot Be Blank");
+            }
+            else {
+                    let ModelObject = {
+                    branch_id: $('#branch_id').val(),
+                    ac_hd: $('#ac_hd').val(),
+                    emp_id: $('#emp_id').val(),
+                    loan_dt: $('#loan_dt').val(),
+                    status_cd: $('#status_cd').val(),
+                    mem_id: $('#mem_id').val(),
+                    book_no: $('#book_no').val(),
+                    loanee_name: $('#loanee_name').val(),
+                    loan_amt: $('#loan_amt').val(),
+                    inst_amt: $('#inst_amt').val(),
+                    inst_no: $('#inst_no').val(),
+                    inst_rate: $('#inst_rate').val(),
+                    ln_purpose: $('#ln_purpose').val(),
+                    lic_premium: $('#lic_premium').val()
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveInstChng", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+                 }
+        }
+
+       function Close() {
+            if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {
+                alert("Input Proper Loan_Date");
+            }
+            else {
+                let ModelObject = {
+                    branch_id: $('#branch_id').val(),
+                    ac_hd: $('#ac_hd').val(),
+                    emp_id: $('#emp_id').val(),
+                    loan_dt: $('#loan_dt').val(),
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ClosedLoan", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            ShowTable();
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+            }
+        }
+
+       function GetDetailsByMemberId() {
+           let ModelObject = { mem_id: $('#mem_id').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getdetailsbyMemberId", "Loan")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $('#mem_dt').val(data.mem_dt);
+                    $('#book_no').val(data.book_no);
+                    $('#mem_type').val(data.mem_type);
+                    $('#mem_cat').val(data.mem_cat);
+                    $('#gurdian_name').val(data.gurdian_name);
+                    $('#loanee_name').val(data.loanee_name);
+                    $('#mem_dt').prop('disabled', true);
+                    $('#book_no').prop('disabled', true);
+                    $('#mem_type').prop('disabled', true);
+                    $('#mem_cat').prop('disabled', true);
+                    $('#gurdian_name').prop('disabled', true);
+                    $('#loanee_name').prop('disabled', true);
+                    $('#mem_id').prop('disabled', true);
+                    $('#loan_dt').focus();
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+       }
+
+       function ShowTable() {
+              let ModelObject = { branch_id: $('#branch_id').val(), ac_hd: $('#ac_hd').val(), emp_id: $('#emp_id').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("getdetailsbyEmpId", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("LoanDetailList").innerHTML = data.tableelement;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+       function GetDetailsByEmpId() {
+            let ModelObject = { branch_id: $('#branch_id').val(), ac_hd: $('#ac_hd').val(), emp_id: $('#emp_id').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getdetailsbyEmpId", "Loan")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "First create membership master ... next input Man number") {
+                        alert("First create membership master ... next input Man number")
+                    }
+                    else {
+                        $('#mem_id').val(data.mem_id);
+                        GetDetailsByMemberId();
+                    }
+                    ShowTable();
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+       }
+
+       function evtemp_id(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetDetailsByEmpId();
+            }
+        }
+
+       function ReloadPage() {
+            window.location.href = "@Url.Action("LoanMasterEntry", "Loan")"
+        }
+
+        function GetDetailsByloandate() {
+            if ($('#loan_dt').val() == "") {
+                alert("Input Proper Loan_Date");
+            }
+            else {
+                  let ModelObject = { branch_id: $('#branch_id').val(), ac_hd: $('#ac_hd').val(), emp_id: $('#emp_id').val(), loan_dt: $('#loan_dt').val()};
+                //alert(JSON.stringify(ModelObject));
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getloandetailsbyLoanDate", "Loan")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        //alert(JSON.stringify(ModelObject));
+                        $('#loan_amt').val(data.loan_amt);
+                        $('#inst_amt').val(data.inst_amt);
+                        $('#inst_no').val(data.inst_no);
+                        $('#inst_rate').val(data.inst_rate);
+                        $('#ln_purpose').val(data.ln_purpose);
+                        $('#lic_premium').val(data.lic_premium);
+                        $('#status_cd').val(data.status_cd);
+                        //$('#vch_date').val(data.vch_date);
+                        //$('#vch_no').val(data.vch_no);
+                        //$('#vch_no').focus();                        
+                    },
+                    error: function (err) {
+                        alert("Error Occured");
+                    }
+                });
+            }
+        }
+
+        function changefocus() {
+            $('#loan_amt').focus();
+        }
+
+        function evtloan_amt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#inst_amt').focus();
+            }
+        }
+
+        function evtloan_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetDetailsByloandate();
+                $('#status_cd').focus();
+            }
+        }
+
+        function GetprinamtByvch_no() {
+            let ModelObject = { branch_id: $('#branch_id').val(), ac_hd: $('#ac_hd').val(), emp_id: $('#emp_id').val(), vch_date: $('#vch_date').val(), vch_no: $('#vch_no').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getloanledgerdetailsbyVchNo", "Loan")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    //alert(JSON.stringify(ModelObject));
+                    $('#prin_amt').val(data.prin_amt);
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+        }
+
+        function Getinstallmentno() {
+            let ModelObject = { loan_amt: $('#loan_amt').val(), inst_amt: $('#inst_amt').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getinstallmentno", "Loan")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    //alert(JSON.stringify(ModelObject));
+                    $('#inst_no').val(data.inst_no);
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+        }
+
+        function evtinst_amt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                Getinstallmentno();
+                $('#ln_purpose').focus();
+            }
+        }
+
+        function evtvch_no(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetprinamtByvch_no();
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,260 @@
+﻿@model Amritnagar.Models.ViewModel.BankMasterViewModel
+
+@{
+    ViewBag.Title = "BankMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 350px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1000px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1000px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+
+    select:focus {
+        background-color: rgba( 255, 182, 193, 0.3);
+    }
+</style>
+
+<form asp-controller="Admin" asp-action="BankMaster" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        Bank Master
+    </div>
+
+    <div class="container mt-2">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-10 col-md-8 col-sm-12 col-12 border border-1 rounded border-danger">
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        Bank Code:<br />
+                        @Html.TextBoxFor(model => model.bank_cd, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtbank_cd(event);" })
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        Bank Name:<br />
+                        @Html.TextBoxFor(model => model.bank_name, new { @class = "sizebig", @type = "text", @onkeypress = "javascript: return evtbank_name(event);" })
+                    </div>
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-md-1 col-sm-12 col-12 ">
+                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="Save()" />
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-12 ">
+                        <input id="Btndelete" type="button" name="Btndelete" Height="40" Width="100" class="btn btn-primary btn-sm" value="Delete" onclick="Delete()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mb-1 mt-1" align="center">
+            <div class="row mt-4 justify-content-md-center">
+                <div class="col-lg-10 col-md-12 col-sm-12 col-12" style="background-color:antiquewhite;color:firebrick;padding-top:5px;padding-bottom:5px;font-size:16px;font-weight:bold">
+                    Bank Details
+                </div>
+            </div>
+
+            <div class="table-responsive mt-1">
+                <table id="BankMasterDetailsTable" class="tab">
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#bank_cd').focus();
+            $('#Btndelete').hide();
+            ShowTable();
+        });
+
+        function Save() {
+                    let ModelObject = {
+                        bank_cd: $('#bank_cd').val(),
+                        bank_name: $('#bank_name').val(),
+                    };
+                    /*alert(JSON.stringify(ModelObject));*/
+                    $.ajax({
+                        url: '@Url.Action("SaveBankMaster", "Admin")',
+                        type: "POST",
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            $('#bank_cd').val("");
+                            $('#bank_name').val("");
+                            ShowTable();
+                            $('#bank_cd').focus();
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+        }
+
+        function ShowTable() {
+            let ModelObject = { bank_cd: $('#bank_cd').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetBankmasterDetailsTable", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("BankMasterDetailsTable").innerHTML = data;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+
+        }
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('BankMasterDetailsTable');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    var f1 = document.getElementById('bank_cd');
+                    var f2 = document.getElementById('bank_name');
+
+
+                    f1.value = cells[1].innerHTML;
+                    f2.value = cells[2].innerHTML;
+                    $('#bank_name').focus();
+                    $('#Btndelete').show();
+                };
+            }
+        })();
+
+        function Delete() {
+            alert("Record will be deleted permanently. Confirm..........");
+            let ModelObject = {
+                bank_cd: $('#bank_cd').val(),
+            };
+                $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("DeleteBankMaster", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            $('#bank_cd').val("");
+                            $('#bank_name').val("");
+                            $('#bank_cd').focus();
+                            ShowTable();
+                        },
+                         error: function (err) {
+                         }
+                });
+        }
+
+        function evtbank_cd(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#bank_name').focus();
+            }
+        }
+
+        function evtbank_name(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#BtnSave').focus();
+            }
+        }
+    </script>
+}
+
+
+
+

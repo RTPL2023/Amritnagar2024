@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "AllUserList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .rounded-corners {
+        border-spacing: 10px;
+        border-collapse: separate;
+        border-radius: 8px;
+        border: 2px solid dodgerblue;
+        position: relative;
+        top: 10px;
+        width: 1400px;
+        height: 400px;
+        margin: auto;
+    }
+
+    #tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        border-collapse: collapse;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        #tab tbody {
+            display: block;
+            width: 1250px;
+            height: 250px;
+            overflow: auto;
+            text-align: center;
+        }
+
+        #tab td, #tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1250px;
+        }
+
+        #tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #tab tr:hover {
+            background-color: rgba( 255, 182, 193, 0.2);
+        }
+
+        #tab th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: #5D2E25;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    h5 {
+        font-family: Georgia, sans-serif;
+        font-size: 30px;
+        letter-spacing: -1px;
+    }
+
+    .box {
+        width: 500px;
+    }
+
+    .size-small {
+        width: 120px;
+    }
+
+    .size-big {
+        width: 180px;
+    }
+
+    .heading {
+        color: #5D2E25;
+        text-align: center
+    }
+</style>
+
+<form asp-controller="Users" asp-action="AllUserList" method="post">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        <h5>ALL USER LIST</h5>
+    </div>
+    <div class="container mt-2">
+        <div class="container" style="margin-top:10px;">
+
+            <div align="right">
+                <button class="btn btn-primary"><i class='fa fa-user' style="font-size:20px;color:white"></i>&nbsp; @Html.ActionLink("ADD", "add", "Users", null, new { Area = "", id = "OT", style = "color: white; text-decoration:none" })</button>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <td>
+                            <table id="tab" style="margin-top:5px; margin-bottom:10px">
+
+                                <tr>
+                                    <th>BRANCH NAME</th>
+                                    <th>USER NAME</th>
+                                    <th>USER ID</th>
+                                    <th>USER ROLE</th>
+                                    <th>MOBILE NO</th>
+                                    <th>EMAIL-ID</th>
+                                    <th>BLOCKED</th>
+                                    <th>EDIT USER</th>
+                                    <th>BLOCK USER</th>
+                                </tr>
+
+
+                                @if (ViewBag.Users != null)
+                                {
+                                    foreach (var users in ViewBag.Users)
+
+                                    {
+
+                                        <tr>
+                                            <td>@users.branchName</td>
+                                            <td>@users.User_Name</td>
+                                            <td>@users.User_ID</td>
+                                            <td>@users.User_Role</td>
+                                            <td>@users.Mobile_number</td>
+                                            <td>@users.Email_ID</td>
+
+                                            @if (users.Blocked == 0)
+                                            {
+                                                <td>NO</td>
+                                            }
+                                            else
+                                            {
+                                                <td>YES</td>
+                                            }
+
+                                            <td>@Html.ActionLink(" ", "EditUsers", "Users", new { Area = "", @id = users.User_ID }, new { @class = "btn btn-primary btn-sm btn-def fa fa-edit", @style = "font-size:20px" })</td>
+
+                                            <td>@Html.ActionLink(" ", "BlockUser", "Users", new { Area = "", @id = users.User_ID }, new { @class = "btn btn-danger btn-sm btn-def fa fa-ban", @style = "font-size:20px" })</td>
+
+
+
+
+                                        </tr>
+                                    }
+                                }
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+</form>
+

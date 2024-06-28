@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 40px;
+        text-align: center;
+    }
+
+ 
+</style>
+
+<form asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:200px">
+
+    </div>
+    <div class="heading mt-4">
+        Welcome To Amritnagar CCS.
+    </div>
+
+</form>

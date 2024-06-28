@@ -1,0 +1,412 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AMRITNAGAR CCS</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <style>
+        html {
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+
+
+        body {
+            position: relative;
+            margin: 0;
+            padding-bottom: 1rem;
+            min-height: 100%;
+        }
+
+        .footer {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            text-align: center;
+            color: black;
+        }
+
+        .navbar {
+            padding-right: 0px;
+            background-color: #E2725B;
+            width: 100%;
+            margin-top: -5px;
+        }
+
+        .nav-link {
+            color: #5D2E25;
+            margin-left: 10px;
+            font-weight:bold
+        }
+
+        .nav-li {
+            color: white;
+        }
+
+        .nav-link:hover {
+            /*    background-color: lightcyan;*/
+            opacity: 0.8;
+            color: #B55B49;
+            /*padding-left: 3px;*/
+        }
+
+        .nav-link:visited {
+            color: white;
+            !important
+        }
+
+        .nav-link:active {
+            color: white;
+        }
+
+        .nav-item li a {
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.8s;
+        }
+            .nav-item li a:hover {
+                color: #5D2E25;
+                font-family: inherit;
+                font-size: 14px;
+                transition: all 0.8s;
+            }
+
+        /*.nav-item li :hover {
+            color: teal;
+            background-color:teal;
+            width: 100%;
+            height: 100%;
+            display: inline-block;*/
+        /* border-bottom: 2px solid teal;*/
+        /* border-radius:20px;*/
+        /*transition: all 0.1s ease;*/
+        /*     content: '\00bb';*/
+        /*padding-left: 10px;*/
+        /*}*/
+        .nav-item li span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.3s;
+        }
+
+            .nav-item li span:after {
+                content: '\2192';
+                color: #5D2E25;
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -10px;
+                transition: 0.3s;
+            }
+
+        .nav-item li:hover span {
+            padding-right: 20px;
+        }
+
+            .nav-item li:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+
+        .dropdown-menu {
+            background-color: #5D2E25;
+            margin-top: 17px;
+            display: none;
+        }
+
+        .dropdown-item a {
+            text-decoration: none;
+        }
+
+        /*input:focus {
+            background-color: rgba(224, 255, 255);
+
+        }*/
+
+
+        @@media all and (min-width: 992px) {
+            .dropdown-menu li {
+                position: relative;
+            }
+
+
+            .dropdown-menu > li:hover {
+                background-color: #FAE7E4;
+                border-radius: 20px;
+                color: #5D2E25;
+            }
+
+            .dropdown-menu > li:hover {
+                display: block;
+            }
+        }
+        /* __________________ desktop view end_____________ */
+
+        @@media only screen and (max-width: 790px) {
+            /* .navbar {
+                width: 100%;
+                padding: 70px 0px 0px;
+            }*/
+            .float-right {
+                float: right;
+                margin-left: 180px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+       
+        <div class="navbar">
+            @*<div class="logo">
+                    <img src="~/Content/Images/ornate.png"style="width: 70px;">
+                </div>*@
+            <ul class="nav nav-pills">
+
+                <li class="nav-link"><i class="fa fa-home"></i>&nbsp;@Html.ActionLink("Home", "Index", "Home", null, new { id = "OT", style = "color: #5D2E25; text-decoration:none" })</li>
+
+
+
+                @if ((this.Session["UserRole"]).ToString() == "ADMIN")
+                 {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color: #5D2E25">Admin</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">
+                            <li class="dropdown-item"><span>@Html.ActionLink("User Management", "AllUserList", "Users")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Department Mast", "DepartmentMaster", "Admin")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Designation Mast", "DesignationMaster", "Admin")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Relationship Mast", "RelationshipMaster", "Admin")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Occupation Master", "OccupationMaster", "Admin")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Caste Master", "CasteMaster", "Admin")</span></li>
+                            
+                            <li class="dropdown-item"><span>@Html.ActionLink("Religion Master", "ReligionMaster", "Admin")</span></li>
+
+                            @*<li class="dropdown-item">@Html.ActionLink("Stock Transfer", "StockTransfer", "Admin")</li>*@
+
+                        </ul>
+
+                    </li>
+                   
+
+                    <!--<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color:white">Master</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">
+                            <li class="dropdown-item"><span>@Html.ActionLink("Country Master", "CountryMaster", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("State Master", "StateMaster", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("District Master", "DistrictMast", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("City Master", "CityMaster", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Branch Master", "BranchMaster", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Customer Master", "CustomerMaster", "Master")</span></li>-->
+
+                            @*<li class="dropdown-item">@Html.ActionLink("Make Master", "MakeMaster", "Master")</li>*@
+
+                            <!--<li class="dropdown-item"><span>@Html.ActionLink("Unit Master", "UnitMaster", "Master")</span></li>-->
+
+                            @*<li class="dropdown-item">@Html.ActionLink("Item Master", "ItemMaster", "Master")</li>
+
+                                <li class="dropdown-item">@Html.ActionLink("Modify Item Master", "ModifyItemMaster", "Master")</li>*@
+
+
+                            <!--<li class="dropdown-item"><span>@Html.ActionLink("Company Master", "CompanyMaster", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Group Master", "GroupMaster", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Item Entry Details", "MasterItemEntry", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Stock Entry", "StockEntry", "Master")</span></li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color:white">Excel Upload</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">
+                            <li class="dropdown-item"><span>@Html.ActionLink("Upload Company From Excel", "UploadCompanyFromExcel", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Upload Group From Excel", "UploadGroupFromExcel", "Master")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Upload Master Item & Stock From Excel", "UploadItem", "Master")</span></li>
+
+                            <li class="dropdown-item">@Html.ActionLink("StockIn From Excel", "StockinFromExcel", "Master")</li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color:white">Accounts</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">
+                            <li class="dropdown-item"><span>@Html.ActionLink("Agent Master", "AgentMaster", "Accounts")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Group Master", "GroupMaster", "Accounts")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("SubGroup Master", "SubGroupMaster", "Accounts")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("General Ledger Master", "GeneralLedgerMaster", "Accounts")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Ledger Type Master", "LedgerTypeMaster", "Accounts")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Other Master", "OtherMaster", "Accounts")</span></li>
+
+                            <li class="dropdown-item"><span>@Html.ActionLink("Chart Account", "ChartAccount", "Accounts")</span></li>
+
+                        </ul>
+
+                    </li>-->
+                 }
+
+                
+
+                <!--<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color:white">Sale</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">-->
+                        @*<li class="dropdown-item">@Html.ActionLink("Sale Bill Entry", "SaleBillEntry", "Sale")</li>*@
+                        <!--<li class="dropdown-item">@Html.ActionLink("Challan Entry", "ChallanEntry", "Sale")</li>
+                        <li class="dropdown-item">@Html.ActionLink("Sale Bill Entry", "SaleBill", "Sale")</li>
+
+                        <li class="dropdown-item">@Html.ActionLink("Modify Challan Entry", "ModifyChallan", "Sale")</li>-->
+
+                        @*<li class="dropdown-item">@Html.ActionLink("Cancel/Reprint Bill", "ModifyReprintBill", "Sale")</li>*@
+                    <!--</ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color:white">Report</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">-->
+                        @*<li class="dropdown-item">@Html.ActionLink("Item Entry Report By Date Range", "ItemEntryDetailsByDateRange", "Report")</li>*@
+                        @*@if ((this.Session["UserRole"]).ToString() == "ADMIN")
+                             {
+                                <li class="dropdown-item">@Html.ActionLink("Collection Report", "CollectionReport", "Report")</li>
+                             }
+                                    <li class="dropdown-item">@Html.ActionLink("Customer Report", "Customer", "Report")</li>
+
+                            <li class="dropdown-item">@Html.ActionLink("Stock Report", "CheckStock", "Report")</li>
+
+                            <li class="dropdown-item">@Html.ActionLink("Stock Valuation Report", "StockValuation", "Report")</li>
+
+                            <li class="dropdown-item">@Html.ActionLink("Required Item Report", "RequiredItemDashboard", "Report")</li>
+
+                            <li class="dropdown-item">@Html.ActionLink("Cancel Bill Report", "CancelBillReport", "Report")</li>*@
+
+                        <!--<li class="dropdown-item">@Html.ActionLink("Stock Item Report", "ItemStockReport", "Report")</li>
+
+                        <li class="dropdown-item">@Html.ActionLink("Challan Report By Date Range", "ChallanReportDetailsByDateRange", "Report")</li>
+
+                        <li class="dropdown-item">@Html.ActionLink("Gift Register Report", "GiftRegisterReport", "Report")</li>
+
+                        <li class="dropdown-item">@Html.ActionLink("Gift Stock Report", "GiftStockReport", "Report")</li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" style="color:white">Help</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">-->
+                        @*<li class="dropdown-item">@Html.ActionLink("Sale Bill Entry", "SaleBillEntry", "Sale")</li>*@
+                        <!--<li class="dropdown-item">@Html.ActionLink("Download Document", "DownloadDocFile", "Help")</li>
+                    </ul>
+                </li>-->
+
+                @*<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Utility</a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 6px;">
+                            <li class="dropdown-item">@Html.ActionLink("Print Barcode", "PrintBarcode", "Utility")</li>
+
+
+                        </ul>
+                    </li>*@
+
+                @*<li class="nav-link dropdown-toggle">@Html.ActionLink("Logout", "Logout", "Auth")</li>*@
+            </ul>
+            <div class="float-right">
+                <ul class="nav nav-pills">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-bs-toggle="dropdown" href="#"><i class='fa fa-user-circle' style="font-size:35px;color:white"></i></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="margin-top: 1px; text-align: center; width: 250px; margin-left: -180px; background-color: rgba(226,114,91,0.8)">
+                            <li class="dropdown-item disabled" style="text-align:center">@*<i class='fa fa-user-circle' style="font-size:50px;color:teal"></i>*@</li>
+                            <li class="dropdown-item disabled" style="text-align: center; color: #5D2E25; font-family: Georgia">WELCOME !</li>
+                            <li class="dropdown-item disabled" style="text-align: center; color: #5D2E25">@this.Session["Uid"]</li>
+
+                            <li class="dropdown-item disabled mb-2" style="text-align: center; color: #5D2E25">@this.Session["BName"]&nbsp;&nbsp; BRANCH&nbsp;<i class="fa fa-map-marker"></i></li>
+                            <div style="background-color: #5D2E25; height: 40px; margin-bottom: -8px">
+                                <button class="btn text-center"><i class="fa fa-sign-out" style="color: #E2725B"></i> &nbsp; @Html.ActionLink("Logout", "Logout", "Auth", null, new { id = "OT", style = "color: #E2725B; text-decoration:none" })</button>
+                            </div>
+
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Amritnagar CCS. -Rishi Technovision Pvt. Ltd. <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/Content/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="~/Content/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
+
+    <div id="MyPopup" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick='javascript: $("#MyPopup").modal("hide")'>
+                        &times;
+                    </button>
+                    <h4 class="modal-title">Error Details</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="lblError"></span>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnClosePopup" value="Close" class="btn btn-danger" data-dismiss="modal" onclick='javascript: $("#MyPopup").modal("hide")' />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section scripts
+{
+
+}

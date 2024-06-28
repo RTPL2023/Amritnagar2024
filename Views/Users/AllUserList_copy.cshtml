@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "AllUserList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .rounded-corners {
+        border-spacing: 10px;
+        border-collapse: separate;
+        border-radius: 10px;
+        border: 1px solid green;
+    }
+
+    .fixed_header {
+        width: 1050px;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+
+
+        .fixed_header tbody {
+            display: block;
+            width: 100%;
+            overflow: auto;
+            height: 400px;
+        }
+
+
+        .fixed_header thead tr {
+            display: block;
+        }
+
+
+
+        .fixed_header thead {
+            background: #00008B;
+            color: #fff;
+        }
+
+        .fixed_header th,
+        .fixed_header td {
+            padding: 5px;
+            text-align: left;
+            width: 200px;
+        }
+
+
+
+    .box {
+        width: 500px;
+    }
+
+    .size-small {
+        width: 120px;
+    }
+
+    .size-big {
+        width: 180px;
+    }
+</style>
+<form asp-controller="Users" asp-action="AllUserList" method="post">
+    <div class="container">
+
+        <table class="rounded-corners">
+            <tr align="right">
+                <td>@Html.ActionLink("ADD NEW USER", "add", "Users", new { Area = "" }, new { @class = "btn btn-sm btn-info" })</td>
+            </tr>
+            <tr>
+                <td>
+                    <h6 class="text-center bg-danger p-2">ALL USER LIST</h6>
+                    <table class="fixed_header table table-bordered" cellpadding="0" cellspacing="0" border="1">
+                        <thead>
+                            <tr>
+                                <th>BRANCH NAME</th>
+                                <th>USER NAME</th>
+                                <th>USER ID</th>
+                                <th>USER ROLE</th>
+                                <th>MOBILE NO</th>
+                                <th>EMAIL-ID</th>
+                                <th>BLOCKED</th>
+                                <th>EDIT User</th>
+                                <th>BLOCK USER</th>
+                            </tr>
+                        </thead>
+
+                        @if (ViewBag.Users != null)
+                        {
+                            foreach (var users in ViewBag.Users)
+
+                            {
+
+                    <tr>
+                        <td>@users.branchName</td>
+                        <td>@users.User_Name</td>
+                        <td>@users.User_ID</td>
+                        <td>@users.User_Role</td>
+                        <td>@users.Mobile_number</td>
+                        <td>@users.Email_ID</td>
+
+                        @if (users.Blocked == 0)
+                        {
+                            <td>NO</td>
+                        }
+                        else
+                        {
+                            <td>YES</td>
+                        }
+
+                        <td>@Html.ActionLink("EDIT", "EditUsers", "Users", new { Area = "", @id = users.User_ID }, new { @class = "btn btn-sm btn-info" })</td>
+
+                        <td>@Html.ActionLink("BLOCK", "BlockUser", "Users", new { Area = "", @id = users.User_ID }, new { @class = "btn btn-sm btn-info" })</td>
+
+
+
+
+                    </tr>
+                            }
+                        }
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+
+</form>
+

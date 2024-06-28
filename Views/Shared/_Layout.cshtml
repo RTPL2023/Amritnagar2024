@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AMRITNAGAR CCS</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* font-family: "Poppins", sans-serif;*/
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #11101d;
+            padding: 15px;
+            z-index: 99;
+        }
+
+        .logo {
+            font-size: 25px;
+            padding: 0 15px;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+            .menu-content::-webkit-scrollbar {
+                display: none;
+            }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .submenu-active .menu-items {
+            transform: translateX(-56%);
+        }
+
+        .menu-title {
+            color: #fff;
+            font-size: 14px;
+            padding: 15px 20px;
+        }
+
+        .item a,
+        .submenu-item {
+            padding: 8px;
+            display: inline-block;
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .item i {
+            font-size: 12px;
+        }
+
+        .item a:hover,
+        .submenu .menu-title:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .submenu {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            right: calc(-100% - 26px);
+            height: calc(100% + 100vh);
+            background: #11101d;
+            display: none;
+        }
+
+        .show-submenu ~ .submenu {
+            display: block;
+        }
+
+        .submenu .menu-title {
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+            .submenu .menu-title i {
+                margin-right: 10px;
+            }
+
+        .navbar,
+        .main {
+            left: 260px;
+            width: calc(100% - 260px);
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        .navbar {
+            position: fixed;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 25px;
+            background: #E2725B;
+            cursor: pointer;
+        }
+
+            .navbar #sidebar-close {
+                cursor: pointer;
+            }
+
+        .main {
+            position: relative;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            height: 100vh;
+            z-index: 100;
+            background: #fff;
+        }
+
+            .main h1 {
+                color: #11101d;
+                font-size: 40px;
+                text-align: center;
+            }
+       /* .content {
+            flex: 1;
+        }
+
+        .footer {
+            margin-top: 5px;
+            text-align: center;
+            padding: 1rem 0;
+        }*/
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="sidebar">
+        @*<a href="#" class="logo">CodingLab</a>*@
+
+        <div class="menu-content">
+            <ul class="menu-items">
+                <li class="item">
+                    <div class="submenu-item" style="margin-left:50px;color:white">
+                        <span>Profile</span>
+                        @*<i class="fa-solid fa-chevron-right"></i>*@
+                    </div>
+
+                    <ul class="menu-items submenu">
+                        <li style="margin-left:60px;margin-bottom:20px;margin-top:2px">
+                            <i class='fa fa-user-circle' style="font-size:35px;color:white"></i>
+                        </li>
+                        <li class="item disabled">
+                            <a style="color:white">&nbsp; Welcome @this.Session["Uid"]</a>
+                        </li>
+                        <li class="item disabled">
+                            <a style="color:white"><i class="fa fa-map-marker"></i>&nbsp; @this.Session["BName"]</a>
+                        </li>
+
+                        <li class="menu-title mt-5">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            Back
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item mt-5">
+                    <a href="/Home/Index">Home</a>
+                </li>
+                @if ((this.Session["UserRole"]).ToString() == "ADMIN")
+                {
+                    <li class="item">
+                        <div class="submenu-item">
+                            <span>Admin</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+
+                        <ul class="menu-items submenu">
+                            <li class="menu-title">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                Back
+                            </li>
+                            <li class="item">
+                                <a href="/Users/AllUserList" style="font-size:12px">User Management</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/BankMaster" style="font-size:12px">Bank Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/DepartmentMaster" style="font-size:12px">Department Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/DesignationMaster" style="font-size:12px">Designation Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/EmployerUnitMaster" style="font-size:12px">Employer Unit Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/RelationshipMaster" style="font-size:12px">Relationship Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/OccupationMaster" style="font-size:12px">Occupation Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/CasteMaster" style="font-size:12px">Caste Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/ReligionMaster" style="font-size:12px">Religion Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/MemberCategoryMaster" style="font-size:12px">Member Category Master</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/MemberTypeList" style="font-size:12px">Member Type List</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Admin/LoanPurposeMaster" style="font-size:12px">Loan Purpose Master</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <div class="submenu-item">
+                            <span>Member</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+
+                        <ul class="menu-items submenu">
+                            <li class="menu-title">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                Back
+                            </li>
+                            <li class="item">
+                                <a href="/Member/MemberMaster" style="font-size:12px">Member Master</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/Member/MemberOpeningandClosingReg" style="font-size:12px">Member Opening and Closing Register</a>
+                            </li>
+
+                            @*<li class="item">
+                                <a href="/Member/MemberStatus" style="font-size:12px">Member Asset And Liabilities Position</a>
+                            </li>*@
+
+                            <li class="item">
+                                <a href="/Member/ShareLedgerStatement" style="font-size:12px">Share Ledger Statement</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/Member/ShareCapitalDetailList" style="font-size:12px">Share Capital Detail List</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/Member/MemDepositeFundIntPaySch" style="font-size:12px">Member's Deposit Fund Interest Payable Schedule</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Member/MembershipRecords" style="font-size:12px">Membership Records</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item">
+                        <div class="submenu-item">
+                            <span>Loan</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+
+                        <ul class="menu-items submenu">
+                            <li class="menu-title">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                Back
+                            </li>
+                            <li class="item">
+                                <a href="/Loan/LoanMasterEntry" style="font-size:12px">Loan Master Entry</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/Loan/DisplayloanLedger" style="font-size:12px">Loan Ledger Statement</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/Loan/NewLoanAndLoanClosingReg" style="font-size:12px">Loan Opening Closing List</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/Loan/LoanLedgerCorrection" style="font-size:12px">Loan Ledger Correction</a>
+                            </li>
+
+                            @*<li class="item">
+                                <a href="/Loan/LoanDetailList" style="font-size:12px">Loan Detail List</a>
+                             </li>*@
+
+                            @*<li class="item">
+                                <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
+                            </li>*@
+
+                            <li class="item">
+                                <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="item">
+                        <div class="submenu-item">
+                            <span>Salary Deduction</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+
+                        <ul class="menu-items submenu">
+                            <li class="menu-title">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                Back
+                            </li>
+                            <li class="item">
+                                <a href="/SalaryDeduction/FreshList" style="font-size:12px">Fresh List</a>
+                            </li>
+
+                            <li class="item">
+                                <a href="/SalaryDeduction/SendingScheduleReport" style="font-size:12px">Sending Schedule Report</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                 }
+                @*<li class="item">
+            <div class="submenu-item">
+                <span>Second submenu</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <ul class="menu-items submenu">
+                <div class="menu-title">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    Back
+                </div>
+                <li class="item">
+                    <a href="#">Second sublink</a>
+                </li>
+                <li class="item">
+                    <a href="#">Second sublink</a>
+                </li>
+                <li class="item">
+                    <a href="#">Second sublink</a>
+                </li>
+
+            </ul>
+        </li>*@
+
+                @*<li class="item">
+            <a href="#">Your second link</a>
+        </li>
+
+        <li class="item">
+            <a href="#">Your third link</a>
+        </li>*@
+
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <div class="float-left">
+            <i class="fa-solid fa-bars" id="sidebar-close"></i>
+        </div>
+        <div class="float-right">
+            <button class="btn"> @Html.ActionLink(" ", "Logout", "Auth", null, new { @class = "btn-def fa fa-sign-out", id = "OT", style = "color: white; text-decoration:none;background-color: #E2725B;font-size:26px", onmouseover = "this.style.color='firebrick'", onmouseout = "this.style.color='white'" })</button>
+        </div>
+    </nav>
+
+
+    <main role="main" class="main pb-3" style="margin-bottom:400px">
+        @RenderBody()
+
+    </main>
+    <script src="~/Content/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="~/Content/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
+
+    <div id="MyPopup" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick='javascript: $("#MyPopup").modal("hide")'>
+                        &times;
+                    </button>
+                    <h4 class="modal-title">Error Details</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="lblError"></span>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnClosePopup" value="Close" class="btn btn-danger" data-dismiss="modal" onclick='javascript: $("#MyPopup").modal("hide")' />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            &copy; 2024 - Amritnagar CCS. -Rishi Technovision Pvt. Ltd. <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script>
+
+        document.querySelectorAll('.dropdown-toggle').forEach(item => {
+            item.addEventListener('click', event => {
+
+                if (event.target.classList.contains('dropdown-toggle')) {
+                    event.target.classList.toggle('toggle-change');
+                }
+                else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
+                    event.target.parentElement.classList.toggle('toggle-change');
+                }
+            })
+        });
+
+        const sidebar = document.querySelector(".sidebar");
+        const sidebarClose = document.querySelector("#sidebar-close");
+        const menu = document.querySelector(".menu-content");
+        const menuItems = document.querySelectorAll(".submenu-item");
+        const subMenuTitles = document.querySelectorAll(".submenu .menu-title");
+
+        sidebarClose.addEventListener("click", () => sidebar.classList.toggle("close"));
+
+        menuItems.forEach((item, index) => {
+            item.addEventListener("click", () => {
+                menu.classList.add("submenu-active");
+                item.classList.add("show-submenu");
+                menuItems.forEach((item2, index2) => {
+                    if (index !== index2) {
+                        item2.classList.remove("show-submenu");
+                    }
+                });
+            });
+        });
+
+        subMenuTitles.forEach((title) => {
+            title.addEventListener("click", () => {
+                menu.classList.remove("submenu-active");
+            });
+        });
+
+        console.log(menuItems, subMenuTitles);
+
+    </script>
+</body>
+</html>

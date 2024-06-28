@@ -1,0 +1,185 @@
+﻿@model HomeoStore.Models.ViewModel.LoginViewModel
+
+
+@{
+    Layout = null;
+}
+<form asp-controller="Auth" asp-action="Login" method="post" enctype="multipart/form-data">
+    <div class="login-page">
+        <div class="form">
+            <div class="form-group" style="color: #fff; font-weight: 700; font-family: Roboto slab; font-size:30px;">
+                <h2>LOGIN</h2>
+            </div>
+            <div class="card-body" style="margin-top:-10px; margin-left:10px; margin-right:10px;">
+                @if (ViewBag.Error != null)
+                 {
+                    <div class="alert-danger p-2">
+                        @ViewBag.Error
+                    </div>
+                 }
+                <div>
+
+                </div>
+                <img src="~/Content/Images/user.png">
+                <div class="form-group">
+                    @Html.LabelFor(p => p.userid)<span class="text-danger">*</span>
+                    @Html.TextBoxFor(p => p.userid, new { @class = "form-control" })
+                    <div class="text-danger">@Html.ValidationMessageFor(p => p.userid)</div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Password)<span class="text-danger">*</span>
+                    @Html.PasswordFor(p => p.Password, new { @class = "form-control" })
+                    <div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>
+                </div>
+                <div></div>
+                <!--<div class="form-group">
+                    @Html.LabelFor(p => p.Branch)<span class="text-danger">*</span><br />-->
+                    @*@Html.DropDownListFor(p => p.BranchId, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "form-control" })*@
+                    @*@Html.PasswordFor(p => p.Password, new { @class = "form-control" })*@
+                    @*<div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>*@
+                <!--</div>-->
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <button type="submit" class="btn btn-sm btn-primary">Login</button>
+            </div>
+            <div align="center">
+                <table align="center">
+                    <tr>
+                        <td>
+                            <h5 style="color: darkred; background-color: bisque">@Html.DisplayFor(model => model.msg, new { @class = "size", @type = "text" })</h5>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            @*<input type="text" placeholder="username" />
+                <input type="password" placeholder="password" />
+                <button type="submit">login</button>*@
+        </div>
+    </div>
+
+</form>
+<style>
+    .login-page {
+        width: 360px;
+        padding: 8% 0 0;
+        margin: auto;
+        margin-left: 56px;
+    }
+
+    .form {
+        position: relative;
+        z-index: 1;
+        background: #1fc5c5;
+        max-width: 360px;
+        margin-top: 40px;
+        padding: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 20px 20px 0 rgba(0, 0, 0, 0.24);
+        border-radius: 15px;
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .form input {
+        font-family: "Roboto", sans-serif;
+        outline: 0;
+        background: #f2f2f2;
+        width: 100%;
+        border: 0;
+        margin: 0 0 15px;
+        padding: 15px;
+        box-sizing: border-box;
+        font-size: 14px;
+        border-radius: 20px;
+    }
+
+    .form button {
+        font-family: "Roboto slab", sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        color: #005c5c;
+        background: #f2f2f2;
+        width: 91%;
+        margin-right: 13px;
+        border: 0;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        font-size: 17px;
+        -webkit-transition: all 0.3 ease;
+        transition: all 0.3 ease;
+        cursor: pointer;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+        .form button:hover, .form button:active, .form button:focus {
+            background-color: #005c5c;
+            color: #fff;
+            text-decoration: underline;
+        }
+
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 12px;
+    }
+
+        .form .message a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+    .form .register-form {
+        display: none;
+    }
+
+    .form-group {
+        color: #f2f2f2;
+    }
+
+
+    body {
+        /* background-color:aqua;*/
+        background-image: url(/Content/Images/abstract.jpg);
+        font-family: "Roboto", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-size: cover;
+    }
+</style>
+
+
+@*@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+
+    <script type="text/javascript">
+
+        (document).ready(function () {
+            //---> auto logout on 20mins -- codeview.in
+            var initialTime = new Date();
+            var intervalId = setInterval(function Redirect() {
+                var minutes = Math.abs((initialTime - new Date()) / 1000 / 60);
+                //console.log(minutes);
+                if (minutes > 20) {
+                    clearInterval(intervalId);
+                    alert('Your session is expired, please login again.');
+                    window.location.href = '<%= ResolveUrl("Logout.aspx") %>';
+                }
+            }, 60000); //1 min
+
+            $(document).delegate("#form", "click change", function () {
+                initialTime = new Date();
+            });
+
+    </script>
+}*@
+

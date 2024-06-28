@@ -1,0 +1,260 @@
+﻿@model Amritnagar.Models.ViewModel.LoginViewModel
+
+
+@{
+    Layout = null;
+}
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<style>
+    .login-page {
+        width: 360px;
+        padding: 8% 0 0;
+        margin: auto;
+        margin-left: 56px;
+    }
+
+    .form {
+        position: relative;
+        z-index: 1;
+        background: rgb(152,69,53);
+        background: linear-gradient(210deg, rgba(152,69,53,1) 0%, rgba(198,114,96,1) 100%);
+        width: 380px;
+        height: 360px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 160px;
+        padding: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+        box-shadow: 0 2.1rem 2.1rem rgba(0, 0, 0, 0.15);
+        /* border: rgba(11,156,49, 0.8) solid 3px;*/
+        border-radius: 15px;
+    }
+
+    img {
+        width: 65px;
+        height: 65px;
+        margin-top: 10px;
+    }
+
+    .form input {
+        font-family: "Roboto", sans-serif;
+        outline: 0;
+        background: #f2f2f2;
+        width: 100%;
+        border: 0;
+        /*margin: 0 0 15px;*/
+        padding: 10px;
+        box-sizing: border-box;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+
+        .form input:hover {
+            background-color: lavender;
+            box-shadow: 0 0 0 2px rgba( 255, 182, 193, 0.8);
+        }
+
+        .form input:focus {
+            /*background-color: rgba( 255, 182, 193, 0.2);*/
+            /*box-shadow: 0 0 0 2px rgba(11,156,49, 0.5);*/
+        }
+
+    .button {
+        font-family: "Roboto slab", sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        color: papayawhip;
+        background-color: #984535;
+        width: 60%;
+        height: 9%;
+        margin-top: 60px;
+        margin-right: 13px;
+        border: 0;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        font-size: 17px;
+        transition: all 0.8s;
+        cursor: pointer;
+        border-radius: 10px;
+        /*border-radius: 20px;*/
+        font-weight: bold;
+    }
+
+        .button:hover {
+            background-color: #e99988;
+
+        }
+
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .button span:after {
+                content: '\00bb';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.8s;
+            }
+
+        .button:hover span {
+            padding-right: 25px;
+        }
+
+            .button:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+
+
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 12px;
+    }
+
+        .form .message a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+    .form .register-form {
+        display: none;
+    }
+
+    .form-group {
+        color: darkgreen;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+
+    body {
+        /* background-color:aqua;*/
+
+        font-family: "Roboto", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-size: cover;
+        background-image: url(/Content/Images/Medical.jpg);
+    }
+
+    h2 {
+        font-family: Georgia, serif;
+        font-weight: 600;
+        color: whitesmoke;
+        margin-top: 8px;
+        font-size: 30px;
+    }
+    .font-style {
+        font-family: "Roboto", sans-serif;
+        font-weight:bold;
+        font-size: 16px;
+        color: whitesmoke;
+        text-align: left;
+        
+    }
+</style>
+
+
+<form asp-controller="Auth" asp-action="Login" method="post" enctype="multipart/form-data">
+    <div>
+        <div class="form">
+            <img src="~/Content/Images/icon.png">
+            <div>
+                <h2>LOGIN</h2>
+            </div>
+            <div class="card-body" style="margin-top:-10px; margin-left:10px; margin-right:10px;">
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert-danger p-2">
+                        @ViewBag.Error
+                    </div>
+                }
+                <div>
+
+                </div>
+
+                <div class="font-style">
+                    <br />
+                    @*@Html.LabelFor(p => p.userid)*@
+                    <i class='fa fa-user'></i>&nbsp; User-Id:@*<span style="color:red">*</span>*@
+                    @Html.TextBoxFor(p => p.userid, new { @placeholder = "Enter User-Id", @class = "form-control", style = "margin-top:5px" })
+                    <div class="text-danger">@Html.ValidationMessageFor(p => p.userid)</div>
+                </div>
+                <br />
+            
+                <div class="font-style" style="margin-top:5px">
+                    <i class="fa fa-lock"></i>&nbsp; Password:@*<span style="color:red">*</span>*@
+                    @Html.PasswordFor(p => p.Password, new { @placeholder = "Enter Password", @class = "form-control", style = "margin-top:5px" })
+                    <div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>
+                </div>
+                <div></div>
+
+
+
+                <!--<div class="form-group">
+                @Html.LabelFor(p => p.Branch)<span class="text-danger">*</span><br />-->
+                @*@Html.DropDownListFor(p => p.BranchId, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "form-control" })*@
+                @*@Html.PasswordFor(p => p.Password, new { @class = "form-control" })*@
+                @*<div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>*@
+                <!--</div>-->
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <button class="button"><span>Login</span></button>
+            </div>
+            <div align="center">
+                <table align="center">
+                    <tr>
+                        <td>
+                            <h6 style="color: darkred; background-color: bisque">@Html.DisplayFor(model => model.msg, new { @class = "size", @type = "text" })</h6>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            @*<input type="text" placeholder="username" />
+                <input type="password" placeholder="password" />
+                <button type="submit">login</button>*@
+        </div>
+    </div>
+
+</form>
+
+
+@*@section scripts
+    {
+        <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+
+        <script type="text/javascript">
+
+            (document).ready(function () {
+                //---> auto logout on 20mins -- codeview.in
+                var initialTime = new Date();
+                var intervalId = setInterval(function Redirect() {
+                    var minutes = Math.abs((initialTime - new Date()) / 1000 / 60);
+                    //console.log(minutes);
+                    if (minutes > 20) {
+                        clearInterval(intervalId);
+                        alert('Your session is expired, please login again.');
+                        window.location.href = '<%= ResolveUrl("Logout.aspx") %>';
+                    }
+                }, 60000); //1 min
+
+                $(document).delegate("#form", "click change", function () {
+                    initialTime = new Date();
+                });
+
+        </script>
+    }*@
+

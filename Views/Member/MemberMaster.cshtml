@@ -1,0 +1,1212 @@
+﻿@model Amritnagar.Models.ViewModel.MemberMasterViewModel
+
+@{
+    ViewBag.Title = "MemberMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+    .sizeM_exp_dt {
+        width: 100px;
+        height: 25px;
+        background-color:white
+    }
+
+    .sizeSmall {
+        width: 50px;
+        height: 25px;
+    }
+
+    .sizeXS {
+        width: 40px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 250px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 350px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1000px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1000px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .divBorder {
+        border: 1px solid gray;
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+</style>
+
+<form asp-controller="Member" asp-action="MemberMaster" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+
+    </div>
+    <div class="heading mt-4">
+        Member Master
+    </div>
+
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:900px">
+                <div class="row mt-2">
+                    <div class="col-md-1 col-sm-12 col-12 ">
+                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="SaveMemberMaster()" />
+                    </div>
+                    <div class="col-md-1 col-sm-12 col-12 ">
+                        <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="UpdateMemberMaster()" />
+                    </div>
+                    <div class="col-md-1 col-sm-12 col-12 ">
+                        <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ReloadPage()" />
+                    </div>
+                </div>
+                <div class="row mt-1 justify-content-md-center">
+                    <div class="col-lg-11 col-11 divBorder">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                Employee Name:<br />
+                                @Html.DropDownListFor(p => p.emp_cd, new SelectList(Model.EmpDesc, "Value", "Text"), "Select Name", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                Unit:<br />
+                                @Html.DropDownListFor(p => p.emp_branch, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select Unit", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                Employee Id:<br />
+                                @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtemp_id(event);" })
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                Book No:<br />
+                                @Html.TextBoxFor(model => model.book_no, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-1 justify-content-md-center">
+                    <div class="col-lg-11 col-11 divBorder">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Branch:<br />
+                                @Html.DropDownListFor(p => p.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Member No:<br />
+                                @Html.TextBoxFor(model => model.mem_id, new { @class = "size", @type = "text;", @onkeypress = "javascript: return evtmem_id(event);" })
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                                Membership Date:<br />
+                                @Html.TextBoxFor(model => model.mem_date, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Member Type:<br />
+                                @Html.DropDownListFor(p => p.member_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select Type", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Member Category:<br />
+                                @Html.DropDownListFor(p => p.member_category, new SelectList(Model.CategoryDesc, "Value", "Text"), "Select Category", new { @class = "size" })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-1">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        First Name:<br />
+                        @Html.TextBoxFor(model => model.f_name, new { @class = "sizeL", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Last Name:<br />
+                        @Html.TextBoxFor(model => model.l_name, new { @class = "sizeL", @type = "text;" })
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                        Birth Date:<br />
+                        @Html.TextBoxFor(model => model.birth_date, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtbirth_date(event);" })
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                        Sex:<br />
+                        @Html.DropDownListFor(model => model.sex, new SelectList(new string[] { "MALE", "FEMALE" }), "Select Sex", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Guardian's Name:<br />
+                        @Html.TextBoxFor(model => model.guardian_name, new { @class = "sizeL", @type = "text", @onkeypress = "javascript: return evtguardian_name(event);" })
+                    </div>
+                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                        Relationship with Member:<br />
+                        @Html.DropDownListFor(p => p.member_rel, new SelectList(Model.RelationDesc, "Value", "Text"), "Select Relationship", new { @class = "size", })
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                        Caste:<br />
+                        @Html.DropDownListFor(p => p.caste, new SelectList(Model.CastDesc, "Value", "Text"), "Select Caste", new { @class = "size", })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Religion:<br />
+                        @Html.DropDownListFor(p => p.relgn, new SelectList(Model.ReligionDesc, "Value", "Text"), "Select Religion", new { @class = "size", })
+                    </div>
+                    <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                        Occupation:<br />
+                        @Html.DropDownListFor(p => p.occupation, new SelectList(Model.OccupationDesc, "Value", "Text"), "Select Religion", new { @class = "size", })
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            &nbsp;
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                <div class="row mt-1">
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12  divText">
+                                        Mailing Address
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        House No.:
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+
+                                        @Html.TextBoxFor(model => model.mailAdd_house, new { @class = "size", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.mailAdd_add1, new { @class = "sizeL", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.mailAdd_add2, new { @class = "sizeL", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        City:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.mailAdd_city, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Dist.:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.mailAdd_dist, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        State:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.mailAdd_state, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Pin:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.mailAdd_pin, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-5 text-center">
+                                <div class="btn"><i class="btn fa fa-angle-double-right" style="color:firebrick;font-size:20px" onclick="copyAddressToPermanent()"></i></div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                <div class="row mt-1">
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12  divText">
+                                        Permanent Address
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        House No.:
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_house, new { @class = "size", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_add1, new { @class = "sizeL", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_add2, new { @class = "sizeL", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        City:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_city, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Dist.:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_dist, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        State:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_state, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Pin:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.prmntAdd_pin, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-11 col-md-11 col-sm-12 col-12 divBorder">
+                        <div class="row mt-1">
+                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                @Html.CheckBoxFor(model => model.ltl_app)
+                                LTI Applicable
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                @Html.CheckBoxFor(model => model.married)
+                                Married
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
+                                Identification Mark:<br />
+                                @Html.TextBoxFor(model => model.ident_mark, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
+                                Thift Fund Amt:<br />
+                                @Html.TextBoxFor(model => model.th_f_amt, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-danger">
+                                Share:<br />
+                                @Html.TextBoxFor(model => model.share, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-primary">
+                                Phone:<br />
+                                @Html.TextBoxFor(model => model.phn, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-primary">
+                                PAN:<br />
+                                @Html.TextBoxFor(model => model.pan, new { @class = "size", @type = "text" })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Department:<br />
+                            @Html.DropDownListFor(p => p.dept, new SelectList(Model.DepartmentDesc, "Value", "Text"), "Select Department", new { @class = "size", })
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Designation:<br />
+                            @Html.DropDownListFor(p => p.desig, new SelectList(Model.DesignationDesc, "Value", "Text"), "Select Designation", new { @class = "size", })
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                            Service Status:<br />
+                            @Html.DropDownListFor(p => p.serv_sts, new SelectList(Model.ServiceDesc, "Value", "Text"), "Select service Status", new { @class = "size", })
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Joining Date:<br />
+                            @Html.TextBoxFor(model => model.join_dt, new { @class = "sizeL", @type = "text" })
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            Retirement Date:<br />
+                            @Html.TextBoxFor(model => model.retmnt_dt, new { @class = "sizeL", @type = "text", @readonly = true })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center bg-danger text-light">
+                                        Nominee
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        Name of Nominee:
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.nominee_name, new { @class = "size", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                        Address:<br />
+
+                                        @Html.TextBoxFor(model => model.nominee_add1, new { @class = "sizeL", @type = "text" })
+                                    </div>
+
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.nominee_add2, new { @class = "sizeL", @type = "text" })
+                                    </div>
+
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        City:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.nominee_city, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Dist.:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.nominee_dist, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        State:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.nominee_state, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Pin:
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        @Html.TextBoxFor(model => model.nominee_pin, new { @class = "sizeM", @type = "text" })
+                                    </div>
+                                </div>
+                                <div class="row mt-1 mb-1">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        Date of Birth:<br />
+                                        @Html.TextBoxFor(model => model.nominee_birth_date, new { @class = "size", @type = "text" })
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        Relationship:<br />
+                                        @Html.DropDownListFor(p => p.nominee_rel, new SelectList(Model.RelationDesc, "Value", "Text"), "Select Relationship", new { @class = "size", })
+                                    </div>
+                                </div>
+
+                            </div>
+                            &nbsp;
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 divBorder">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center bg-danger text-light">
+                                        Introducer
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                        Srl<br />
+                                        @Html.TextBoxFor(model => model.srl, new { @class = "sizeSmall", @type = "text", @readonly = true })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                        Member No<br />
+                                        @Html.TextBoxFor(model => model.intr_mem_no, new { @class = "sizeM", @type = "text", @onkeypress = "javascript: return evtintr_mem_no(event);" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                        Name of Member<br />
+                                        @Html.TextBoxFor(model => model.intr_mem_name, new { @class = "sizeM", @type = "text", @readonly = true })
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightcoral">
+                                        <div class="row mt-1">
+                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                @Html.CheckBoxFor(model => model.trans)
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                Transfered
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                @Html.CheckBoxFor(model => model.ret)
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                Retired
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                @Html.CheckBoxFor(model => model.exp)
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                Expired
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                Exp Date:
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                @Html.TextBoxFor(model => model.exp_dt, new { @class = "sizeM_exp_dt", @type = "text" })
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                @Html.CheckBoxFor(model => model.tf_double)
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                                TF-Double
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightgray">
+                                        <div class="row mt-1">
+                                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                                @Html.CheckBoxFor(model => model.mem_closed)
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                                Membership Closed
+                                            </div>
+
+                                        </div>
+                                        <div class="row mt-1">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                Close Date:
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                                @Html.TextBoxFor(model => model.close_dt, new { @class = "sizeM_exp_dt", @type = "text" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Remarks:<br />
+                        @Html.TextBoxFor(model => model.remarks, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Bank Code:<br />
+                        @Html.TextBoxFor(model => model.bank_code, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Account No.:<br />
+                        @Html.TextBoxFor(model => model.accc_no, new { @class = "size", @type = "text" })
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //$('#caste_id').focus();
+            //$('#btndelete').hide();
+            //ShowTable();
+        });
+
+       function SaveMemberMaster() {
+           if ($('#branch_id').val() == null || $('#branch_id').val() =="") {
+                alert("Branch Name Required");
+           }
+           else if ($('#mem_id').val() == null || $('#mem_id').val()=="") {
+                alert("Member Id Cannot be Blank");
+           }
+           else if ($('#emp_id').val() == null || $('#EmployeeId').val() == "") {
+               alert("Employee Cannot be Blank");
+           }
+           else if ($('#book_no').val() == null || $('#book_no').val() == "") {
+               alert("Book Number Cannot be Blank");
+           }
+           else if ($('#birth_date').val() == null || $('#birth_date').val() == "") {
+               alert("Birth Date Cannot be Blank");
+           }
+           else if ($('#guardian_name').val() == null || $('#guardian_name').val() == "") {
+               alert("Gurdian Name Cannot be Blank");
+           }
+           else if ($('#f_name').val() == null || $('#f_name').val() == "") {
+               alert("First Name Cannot be Blank");
+           }
+           else if ($('#l_name').val() == null || $('#l_name').val() == "") {
+               alert("Last Name Cannot be Blank");
+           }
+            else{
+                    let ModelObject = {
+                    emp_cd: $('#emp_cd').val(),
+                    emp_branch: $('#emp_branch').val(),
+                    emp_id: $('#emp_id').val(),
+                    book_no: $('#book_no').val(),
+                    branch_id: $('#branch_id').val(),
+                    mem_id: $('#mem_id').val(),
+                    mem_date: $('#mem_date').val(),
+                    member_type: $('#member_type').val(),
+                    member_category: $('#member_category').val(),
+                    f_name: $('#f_name').val(),
+                    l_name: $('#l_name').val(),
+                    birth_date: $('#birth_date').val(),
+                    sex: $('#sex').val(),
+                    guardian_name: $('#guardian_name').val(),
+                    member_rel: $('#member_rel').val(),
+                    caste: $('#caste').val(),
+                    relgn: $('#relgn').val(),
+                    occupation: $('#occupation').val(),
+                    mailAdd_house: $('#mailAdd_house').val(),
+                    mailAdd_add1: $('#mailAdd_add1').val(),
+                    mailAdd_add2: $('#mailAdd_add2').val(),
+                    mailAdd_city: $('#mailAdd_city').val(),
+                    mailAdd_dist: $('#mailAdd_dist').val(),
+                    mailAdd_state: $('#mailAdd_state').val(),
+                    mailAdd_pin: $('#mailAdd_pin').val(),
+                    prmntAdd_house: $('#prmntAdd_house').val(),
+                    prmntAdd_add1: $('#prmntAdd_add1').val(),
+                    prmntAdd_add2: $('#prmntAdd_add2').val(),
+                    prmntAdd_city: $('#prmntAdd_city').val(),
+                    prmntAdd_dist: $('#prmntAdd_dist').val(),
+                    prmntAdd_state: $('#prmntAdd_state').val(),
+                    prmntAdd_pin: $('#prmntAdd_pin').val(),
+                    ident_mark: $('#ident_mark').val(),
+                    th_f_amt: $('#th_f_amt').val(),
+                    share: $('#share').val(),
+                    //Married: $('#Married').val(),
+                    ltl_app: document.getElementById('ltl_app').checked,
+                    phn: $('#phn').val(),
+                    pan: $('#pan').val(),
+                    dept: $('#dept').val(),
+                    desig: $('#desig').val(),
+                    serv_sts: $('#serv_sts').val(),
+                    join_dt: $('#join_dt').val(),
+                    retmnt_dt: $('#retmnt_dt').val(),
+                    nominee_name: $('#nominee_name').val(),
+                    nominee_add2: $('#nominee_add2').val(),
+                    nominee_city: $('#nominee_city').val(),
+                    nominee_dist: $('#nominee_dist').val(),
+                    nominee_add1: $('#nominee_add1').val(),
+                    nominee_state: $('#nominee_state').val(),
+                    nominee_pin: $('#nominee_pin').val(),
+                    nominee_rel: $('#nominee_rel').val(),
+                    nominee_birth_date: $('#nominee_birth_date').val(),
+                    married: document.getElementById('married').checked,
+                   //IsDead: $('#IsDead').val(),
+                    srl: $('#srl').val(),
+                    intr_mem_no: $('#intr_mem_no').val(),
+                    intr_mem_name: $('#intr_mem_name').val(),
+                   // MemberClosed: $('#MemberClosed').val(),
+                    trans: document.getElementById('trans').checked,
+                    exp: document.getElementById('exp').checked,
+                    exp_dt: $('#exp_dt').val(),
+                  //  MemberRetired: $('#MemberRetired').val(),
+                    ret: document.getElementById('ret').checked,
+                  //  MemberTransfered: $('#MemberTransfered').val(),
+                    mem_closed: document.getElementById('mem_closed').checked,
+                    tf_double: $('#tf_double').val(),
+                    close_dt: $('#close_dt').val(),
+                    remarks: $('#remarks').val(),
+                    bank_code: $('#bank_code').val(),
+                    accc_no: $('#accc_no').val(),
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveRec", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                        }
+                    });
+                }
+       }
+
+       function getRetirementDate() {
+             if ($("#birth_date").val() !=null) {
+                /*alert("ok");*/
+                 let ModelObject = { BrthDt: $('#birth_date').val()};
+                /*alert(JSON.stringify(ModelObject));*/
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetRetirementDate", "Member")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        $('#retmnt_dt').val(data);
+                    },
+                    error: function (err) {
+                        alert("Unable To Calculate");
+                    }
+                });
+            }
+        };
+
+       function evtbirth_date(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                getRetirementDate();
+                $('#sex').focus();
+            }
+        }
+
+       function copyAddressToPermanent() {
+
+            $('#prmntAdd_house').val($('#mailAdd_house').val());
+            $('#prmntAdd_add1').val($('#mailAdd_add1').val());
+            $('#prmntAdd_add2').val($('#mailAdd_add2').val());
+            $('#prmntAdd_city').val($('#mailAdd_city').val());
+            $('#prmntAdd_dist').val($('#mailAdd_dist').val());
+            $('#prmntAdd_state').val($('#mailAdd_state').val());
+            $('#prmntAdd_pin').val($('#mailAdd_pin').val());
+
+        }
+
+       function getIntroducerName() {
+
+            if ($("#intr_mem_no").val() !=null) {
+                /*alert("ok");*/
+                let ModelObject = { intr_mem_no: $('#intr_mem_no').val()};
+                /*alert(JSON.stringify(ModelObject));*/
+                $.ajax({
+
+                    type: "POST",
+                    url: '@Url.Action("GetIntroducerName", "Member")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        $('#intr_mem_name').val(data);
+                        $('#srl').val("1");
+                    },
+                    error: function (err) {
+                        alert("Unable To Retrieve");
+                    }
+
+                });
+            }
+        };
+
+       function evtintr_mem_no(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+
+                getIntroducerName();
+            }
+       }
+
+       function GetDetailsByMemberId() {
+            let ModelObject = { branch_id: $('#branch_id').val(), mem_id: $('#mem_id').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getMemberdetailsbyMemberId", "Member")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "New Member") {
+                        alert("New Member, Please Enter New Member Details");
+                    }
+                    else {
+                        $('#mem_date').val(data.mem_date);
+                        $('#emp_id').val(data.emp_id);
+                        $('#emp_branch').val(data.emp_branch);
+                        $('#emp_cd').val(data.emp_cd);
+                        $('#book_no').val(data.book_no);
+                        $('#member_type').val(data.member_type);
+                        $('#member_category').val(data.member_category);
+                        $('#f_name').val(data.f_name);
+                        $('#l_name').val(data.l_name);
+                        $('#birth_date').val(data.birth_date);
+                        $('#sex').val(data.sex);
+                        $('#guardian_name').val(data.guardian_name);
+                        $('#member_rel').val(data.member_rel);
+                        $('#caste').val(data.caste);
+                        $('#relgn').val(data.relgn);
+                        $('#occupation').val(data.occupation);
+                        $('#mailAdd_house').val(data.mailAdd_house);
+                        $('#mailAdd_add1').val(data.mailAdd_add1);
+                        $('#mailAdd_add2').val(data.mailAdd_add2);
+                        $('#mailAdd_city').val(data.mailAdd_city);
+                        $('#mailAdd_dist').val(data.mailAdd_dist);
+                        $('#mailAdd_state').val(data.mailAdd_state);
+                        $('#mailAdd_pin').val(data.mailAdd_pin);
+                        $('#mailAdd_pin').val(data.mailAdd_pin);
+                        $('#prmntAdd_house').val(data.prmntAdd_house);
+                        $('#prmntAdd_add1').val(data.prmntAdd_add1);
+                        $('#prmntAdd_add2').val(data.prmntAdd_add2);
+                        $('#prmntAdd_city').val(data.prmntAdd_city);
+                        $('#prmntAdd_dist').val(data.prmntAdd_dist);
+                        $('#prmntAdd_state').val(data.prmntAdd_state);
+                        $('#prmntAdd_pin').val(data.prmntAdd_pin);
+                        $('#prmntAdd_pin').val(data.prmntAdd_pin);
+                        $('#ident_mark').val(data.ident_mark);
+                        if (data.ltl_app == true) {
+                            $("#ltl_app").prop('checked', true);
+                        }
+                        else {
+                            $("#ltl_app").prop('checked', false);
+                        }
+                        $('#th_f_amt').val(data.th_f_amt);
+                        $('#share').val(data.share);
+                        $('#phn').val(data.phn);
+                        $('#pan').val(data.pan);
+                        $('#dept').val(data.dept);
+                        $('#desig').val(data.desig);
+                        $('#serv_sts').val(data.serv_sts);
+                        if (data.married == true) {
+                            $("#married").prop('checked', true);
+                        } else {
+                            $("#Married").prop('checked', false);
+                        }
+                        $('#join_dt').val(data.join_dt);
+                        if (data.memberClosed == true) {
+                            $("#MemberClosed").prop('checked', true);
+                        }
+                        else {
+                            $("#MemberClosed").prop('checked', false);
+                        }
+                        if (data.mem_closed == "C") {
+                            $("#mem_closed").prop('checked', true);
+                        }
+                        else {
+                            $("#mem_closed").prop('checked', false);
+                        }
+                        $('#retmnt_dt').val(data.retmnt_dt);
+                        $('#nominee_name').val(data.nominee_name);
+                        $('#nominee_add1').val(data.nominee_add1);
+                        $('#nominee_add2').val(data.nominee_add2);
+                        $('#nominee_city').val(data.nominee_city);
+                        $('#nominee_dist').val(data.nominee_dist);
+                        $('#nominee_state').val(data.nominee_state);
+                        $('#nominee_pin').val(data.nominee_pin);
+                        $('#nominee_birth_date').val(data.nominee_birth_date);
+                        $('#nominee_rel').val(data.nominee_rel);
+                        $('#srl').val(data.srl);
+                        $('#intr_mem_name').val(data.intr_mem_name);
+                        $('#intr_mem_no').val(data.intr_mem_no);
+                        // $('#MemberRetired').val(data.memberRetired);
+                        if (data.trans == "Y") {
+                            $("#trans").prop('checked', true);
+                        } else {
+                            $("#trans").prop('checked', false);
+                        }
+                        // $('#MemberTransfered').val(data.memberTransfered);
+                        if (data.ret == "Y") {
+                            $("#ret").prop('checked', true);
+                        }
+                        else {
+                            $("#ret").prop('checked', false);
+                        }
+                        if (data.exp == "D") {
+                            $("#exp").prop('checked', true);
+                        }
+                        else {
+                            $("#exp").prop('checked', false);
+                        }
+                        if (data.tf_double == "D") {
+                            $("#tf_double").prop('checked', true);
+                        }
+                        else {
+                            $("#tf_double").prop('checked', false);
+                        }
+                        $('#exp_dt').val(data.exp_dt);
+                        $('#close_dt').val(data.close_dt);
+                        $('#remarks').val(data.remarks);
+                        $('#bank_code').val(data.bank_code);
+                        $('#accc_no').val(data.accc_no);
+                    }                    
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+
+            });
+        }
+
+       function evtmem_id(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+
+                GetDetailsByMemberId();
+            }
+        }
+
+       function GetDetailsByEmployeeId() {
+            let ModelObject = { branch_id: $('#branch_id').val(), emp_id: $('#emp_id').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getMemberdetailsbyEmployeeId", "Member")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "New Member") {
+                        alert("New Member, Please Enter New Member Details");
+                    }
+                    else {
+                        $('#mem_date').val(data.mem_date);
+                        $('#mem_id').val(data.mem_id);
+                        $('#emp_branch').val(data.emp_branch);
+                        $('#emp_cd').val(data.emp_cd);
+                        $('#book_no').val(data.book_no);
+                        $('#member_type').val(data.member_type);
+                        $('#member_category').val(data.member_category);
+                        $('#f_name').val(data.f_name);
+                        $('#l_name').val(data.l_name);
+                        $('#birth_date').val(data.birth_date);
+                        $('#sex').val(data.sex);
+                        $('#guardian_name').val(data.guardian_name);
+                        $('#member_rel').val(data.member_rel);
+                        $('#caste').val(data.caste);
+                        $('#relgn').val(data.relgn);
+                        $('#occupation').val(data.occupation);
+                        $('#mailAdd_house').val(data.mailAdd_house);
+                        $('#mailAdd_add1').val(data.mailAdd_add1);
+                        $('#mailAdd_add2').val(data.mailAdd_add2);
+                        $('#mailAdd_city').val(data.mailAdd_city);
+                        $('#mailAdd_dist').val(data.mailAdd_dist);
+                        $('#mailAdd_state').val(data.mailAdd_state);
+                        $('#mailAdd_pin').val(data.mailAdd_pin);
+                        $('#mailAdd_pin').val(data.mailAdd_pin);
+                        $('#prmntAdd_house').val(data.prmntAdd_house);
+                        $('#prmntAdd_add1').val(data.prmntAdd_add1);
+                        $('#prmntAdd_add2').val(data.prmntAdd_add2);
+                        $('#prmntAdd_city').val(data.prmntAdd_city);
+                        $('#prmntAdd_dist').val(data.prmntAdd_dist);
+                        $('#prmntAdd_state').val(data.prmntAdd_state);
+                        $('#prmntAdd_pin').val(data.prmntAdd_pin);
+                        $('#prmntAdd_pin').val(data.prmntAdd_pin);
+                        $('#ident_mark').val(data.ident_mark);
+                        if (data.ltl_app == true) {
+                            $("#ltl_app").prop('checked', true);
+                        }
+                        else {
+                            $("#ltl_app").prop('checked', false);
+                        }
+                        $('#th_f_amt').val(data.th_f_amt);
+                        $('#share').val(data.share);
+                        $('#phn').val(data.phn);
+                        $('#pan').val(data.pan);
+                        $('#dept').val(data.dept);
+                        $('#desig').val(data.desig);
+                        $('#serv_sts').val(data.serv_sts);
+                        if (data.married == true) {
+                            $("#married").prop('checked', true);
+                        } else {
+                            $("#Married").prop('checked', false);
+                        }
+                        $('#join_dt').val(data.join_dt);
+                        // $('#MemberClosed').val(data.memberClosed);
+                        if (data.memberClosed == true) {
+                            $("#MemberClosed").prop('checked', true);
+                        }
+                        else {
+                            $("#MemberClosed").prop('checked', false);
+                        }
+                        if (data.mem_closed == "C") {
+                            $("#mem_closed").prop('checked', true);
+                        }
+                        else {
+                            $("#mem_closed").prop('checked', false);
+                        }
+                        $('#retmnt_dt').val(data.retmnt_dt);
+                        $('#nominee_name').val(data.nominee_name);
+                        $('#nominee_add1').val(data.nominee_add1);
+                        $('#nominee_add2').val(data.nominee_add2);
+                        $('#nominee_city').val(data.nominee_city);
+                        $('#nominee_dist').val(data.nominee_dist);
+                        $('#nominee_state').val(data.nominee_state);
+                        $('#nominee_pin').val(data.nominee_pin);
+                        $('#nominee_birth_date').val(data.nominee_birth_date);
+                        $('#nominee_rel').val(data.nominee_rel);
+                        $('#srl').val(data.srl);
+                        $('#intr_mem_name').val(data.intr_mem_name);
+                        $('#intr_mem_no').val(data.intr_mem_no);
+                        // $('#MemberRetired').val(data.memberRetired);
+                        if (data.trans == "Y") {
+                            $("#trans").prop('checked', true);
+                        } else {
+                            $("#trans").prop('checked', false);
+                        }
+                        // $('#MemberTransfered').val(data.memberTransfered);
+                        if (data.ret == "Y") {
+                            $("#ret").prop('checked', true);
+                        }
+                        else {
+                            $("#ret").prop('checked', false);
+                        }
+                        if (data.exp == "D") {
+                            $("#exp").prop('checked', true);
+                        }
+                        else {
+                            $("#exp").prop('checked', false);
+                        }
+                        if (data.tf_double == "D") {
+                            $("#tf_double").prop('checked', true);
+                        }
+                        else {
+                            $("#tf_double").prop('checked', false);
+                        }
+                        $('#exp_dt').val(data.exp_dt);
+                        $('#close_dt').val(data.close_dt);
+                        $('#remarks').val(data.remarks);
+                        $('#bank_code').val(data.bank_code);
+                        $('#accc_no').val(data.accc_no);
+                    }                   
+                },
+
+                error: function (err) {
+                    alert("Error Occured");
+                }
+
+            });
+        }
+
+       function evtemp_id(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+
+                GetDetailsByEmployeeId();
+            }
+        }
+
+       function UpdateMemberMaster() {
+            let ModelObject = {
+                emp_cd: $('#emp_cd').val(),
+                emp_branch: $('#emp_branch').val(),
+                emp_id: $('#emp_id').val(),
+                book_no: $('#book_no').val(),
+                branch_id: $('#branch_id').val(),
+                mem_id: $('#mem_id').val(),
+                mem_date: $('#mem_date').val(),
+                member_type: $('#member_type').val(),
+                member_category: $('#member_category').val(),
+                f_name: $('#f_name').val(),
+                l_name: $('#l_name').val(),
+                birth_date: $('#birth_date').val(),
+                sex: $('#sex').val(),
+                guardian_name: $('#guardian_name').val(),
+                member_rel: $('#member_rel').val(),
+                caste: $('#caste').val(),
+                relgn: $('#relgn').val(),
+                occupation: $('#occupation').val(),
+                mailAdd_house: $('#mailAdd_house').val(),
+                mailAdd_add1: $('#mailAdd_add1').val(),
+                mailAdd_add2: $('#mailAdd_add2').val(),
+                mailAdd_city: $('#mailAdd_city').val(),
+                mailAdd_dist: $('#mailAdd_dist').val(),
+                mailAdd_state: $('#mailAdd_state').val(),
+                mailAdd_pin: $('#mailAdd_pin').val(),
+                prmntAdd_house: $('#prmntAdd_house').val(),
+                prmntAdd_add1: $('#prmntAdd_add1').val(),
+                prmntAdd_add2: $('#prmntAdd_add2').val(),
+                prmntAdd_city: $('#prmntAdd_city').val(),
+                prmntAdd_dist: $('#prmntAdd_dist').val(),
+                prmntAdd_state: $('#prmntAdd_state').val(),
+                prmntAdd_pin: $('#prmntAdd_pin').val(),
+                ident_mark: $('#ident_mark').val(),
+                th_f_amt: $('#th_f_amt').val(),
+                share: $('#share').val(),
+                //Married: $('#Married').val(),
+                ltl_app: document.getElementById('ltl_app').checked,
+                phn: $('#phn').val(),
+                pan: $('#pan').val(),
+                dept: $('#dept').val(),
+                desig: $('#desig').val(),
+                serv_sts: $('#serv_sts').val(),
+                join_dt: $('#join_dt').val(),
+                retmnt_dt: $('#retmnt_dt').val(),
+                nominee_name: $('#nominee_name').val(),
+                nominee_add2: $('#nominee_add2').val(),
+                nominee_city: $('#nominee_city').val(),
+                nominee_dist: $('#nominee_dist').val(),
+                nominee_add1: $('#nominee_add1').val(),
+                nominee_state: $('#nominee_state').val(),
+                nominee_pin: $('#nominee_pin').val(),
+                nominee_rel: $('#nominee_rel').val(),
+                nominee_birth_date: $('#nominee_birth_date').val(),
+                married: document.getElementById('married').checked,
+                //IsDead: $('#IsDead').val(),
+                srl: $('#srl').val(),
+                intr_mem_no: $('#intr_mem_no').val(),
+                intr_mem_name: $('#intr_mem_name').val(),
+                // MemberClosed: $('#MemberClosed').val(),
+                trans: document.getElementById('trans').checked,
+                exp: document.getElementById('exp').checked,
+                exp_dt: $('#exp_dt').val(),
+                //  MemberRetired: $('#MemberRetired').val(),
+                ret: document.getElementById('ret').checked,
+                //  MemberTransfered: $('#MemberTransfered').val(),
+                mem_closed: document.getElementById('mem_closed').checked,
+                tf_double: $('#tf_double').val(),
+                close_dt: $('#close_dt').val(),
+                remarks: $('#remarks').val(),
+                bank_code: $('#bank_code').val(),
+                accc_no: $('#accc_no').val(),
+            };
+                $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("UpdateRec", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                        },
+                         error: function (err) {
+
+                         }
+                });
+        }
+
+       function evtguardian_name(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+
+                $("#mailAdd_add1").val("AMRITNAGAR - COLLIERY");
+                $("#mailAdd_city").val("RANIGANJ");
+                $("#mailAdd_dist").val("BURDWAN");
+                $("#mailAdd_state").val("WB");
+            }
+       }
+
+        function ReloadPage() {
+            window.location.href = "@Url.Action("MemberMaster", "Member")"
+        }
+
+    </script>
+}
+
+
+

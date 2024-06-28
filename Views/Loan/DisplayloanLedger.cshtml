@@ -1,0 +1,582 @@
+﻿@model Amritnagar.Models.ViewModel.DisplayloanLedgerViewModel
+@{
+    ViewBag.Title = "DisplayloanLedger";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+    .size1 {
+        width: 150px;
+        height: 25px;
+        background-color:white
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+    .sizeM1 {
+        width: 100px;
+        height: 25px;
+        background-color:white
+    }
+
+    .sizeL {
+        width: 320px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 200px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 400px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 400px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .tab1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+            .tab1 tbody {
+                display: block;
+                width: 800px;
+                overflow: auto;
+                height: 130px;
+                text-align: center;
+            }
+
+            .tab1 td, .tab1 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                border-collapse: collapse;
+                width: 800px;
+            }
+
+        .tab1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .tab2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+            .tab2 tbody {
+                display: block;
+                width: 800px;
+                overflow: auto;
+                height: 200px;
+                text-align: center;
+            }
+
+            .tab2 td, .tab2 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                border-collapse: collapse;
+                width: 800px;
+            }
+
+        .tab2 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab2 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab2 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .border-right {
+        border-right: 1px solid black;
+    }
+
+    .border-top {
+        border-top: 1px solid black;
+    }
+
+    .textHead {
+        background-color: maroon;
+        color: gold;
+        font-family: 'Times New Roman';
+        font-size: 13px;
+        padding-top: 5px;
+        padding-bottom: 5px
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+    }
+</style>
+<form asp-controller="Loan" asp-action="DisplayloanLedger" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+    </div>
+    <div class="heading mt-4">
+        Display Loan Ledger
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:900px">
+                
+                <div class="row mt-2">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Branch:<br />
+                                @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Loan Type:<br />
+                                @Html.DropDownListFor(model => model.loan_type, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig" })
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Employee-Id:<br />
+                                @Html.TextBoxFor(model => model.emp_id, new { @class = "sizeM", @type = "text", @onkeypress = "javascript: return evtemp_id(event);" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12" style="background-color:aliceblue;border:1px solid darkblue; border-radius:5px">
+                        <div class="row mt-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                From Date:
+                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "sizeM1", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                To Date: &nbsp;&nbsp;&nbsp;
+                                @Html.TextBoxFor(model => model.to_dt, new { @class = "sizeM1", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print" onclick="DownloadTextFiles()" />
+                            </div>
+                            @*<div class="col-lg-2 col-md-2 col-sm-12 col-12 mt-2">
+                                <input id="BtnCancel" type="button" name="BtnCancel" Height="40" Width="100" class="btn btn-primary btn-sm" value="Cancel" />
+                            </div>*@
+                        </div>               
+                    </div>                  
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="table-responsive mt-1">
+                            <table id="MemberDetails" class="tab1">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Organization(Employer):<br />
+                        @Html.DropDownListFor(model => model.org_emp, new SelectList(Model.EmpDesc, "Value", "Text"), "Select Branch", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Unit:<br />
+                        @Html.DropDownListFor(model => model.unit, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                        Book No.:<br />
+                        @Html.TextBoxFor(model => model.book_no, new { @class = "size", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Department:<br />
+                        @Html.DropDownListFor(model => model.dept, new SelectList(Model.DepartmentDesc, "Value", "Text"), "Select Department", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Designation:<br />
+                        @Html.DropDownListFor(model => model.deg, new SelectList(Model.DesignationDesc, "Value", "Text"), "Select Designation", new { @class = "sizebig" })
+                    </div>
+                    <div class="col-lg-4 col-md-2 col-sm-12 col-12">
+                        Service Status:<br />
+                        @Html.DropDownListFor(model => model.service_sts, new SelectList(Model.ServiceDesc, "Value", "Text"), "Select Service Status", new { @class = "sizebig" })
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Joining Date:<br />
+                        @Html.TextBoxFor(model => model.join_dt, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Retirement Date:<br />
+                        @Html.TextBoxFor(model => model.ret_dt, new { @class = "size", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12 border-right">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12" style="color:firebrick;text-decoration:underline;font-weight:bold">
+                                Mailing Address
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                House No.:
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_h_no, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_add1, new { @class = "sizeL", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_add2, new { @class = "sizeL", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                City:
+                            </div>
+                            <div class="col-lg-4 col-md-2 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_city, new { @class = "sizeM", @type = "text" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                District:
+                            </div>
+                            <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_dist, new { @class = "sizeM", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                State:
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_state, new { @class = "sizeM", @type = "text" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                Pin:
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mail_pin, new { @class = "sizeM", @type = "text" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" style="background-color:lightcoral;color:white;font-weight:bold">
+                                SURITY PARTICULARS
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                <div class="table-responsive mt-1">
+                                    <table id=" " class="tab">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mb-1" style="background-color:lightgray">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Cheque No.:<br />
+                                @Html.TextBoxFor(model => model.chq_no, new { @class = "sizeM1", @type = "text" })
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Cheque Dt.:<br />
+                                @Html.TextBoxFor(model => model.chq_dt, new { @class = "sizeM1", @type = "text" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-2">
+                                Cheque Bank/Branch Reference:<br />
+                                @Html.TextBoxFor(model => model.chq_bank_branch_ref, new { @class = "size1", @type = "text" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-1" style="background-color:lightgray;color:firebrick">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Sanction Dt:<br />
+                        @Html.TextBoxFor(model => model.sanc_dt, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Loan Amount:<br />
+                        @Html.TextBoxFor(model => model.loan_amt, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Instalments:<br />
+                        @Html.TextBoxFor(model => model.inst, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Int Rate(%):<br />
+                        @Html.TextBoxFor(model => model.int_rate, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Instalment Amt.:<br />
+                        @Html.TextBoxFor(model => model.inst_amt, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12 mb-2">
+                        Purpose of Loan:<br />
+                        @Html.DropDownListFor(model => model.loan_purpose, new SelectList(Model.lnpurposedesc, "Value", "Text"), "Select Loan", new { @class = "sizeM1" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        @Html.TextBoxFor(model => model.mem_id, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" style="background-color:lightcoral;color:white;font-weight:bold">
+                        PARTICULARS OF TRANSACTIONS
+                    </div>
+
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="table-responsive mt-1">
+                            <table id="LoanLedger" class="tab2">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row mt-1">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="table-responsive mt-1">
+                            <table id=" " class="tab">
+                            </table>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#mem_id").hide();          
+        });
+
+       function GetloanData() {
+           let ModelObject = { emp_id: $('#emp_id').val(), branch_id: $('#branch_id').val(), loan_type: $('#loan_type').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getloandatabybranchac_hdandempid", "Loan")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $('#chq_no').val(data.chq_no);
+                    $('#chq_dt').val(data.chq_dt);
+                    $('#chq_bank_branch_ref').val(data.chq_bank_branch_ref);
+                    $('#sanc_dt').val(data.sanc_dt);
+                    $('#loan_amt').val(data.loan_amt);
+                    $('#inst').val(data.inst);
+                    $('#int_rate').val(data.int_rate);
+                    $('#inst_amt').val(data.inst_amt);
+                    $('#loan_purpose').val(data.loan_purpose);
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+       }
+
+       function ShowTable() {
+           let ModelObject = { branch_id: $('#branch_id').val(), mem_id: $('#mem_id').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("getmemberdetailsbymemberid", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("MemberDetails").innerHTML = data.tableelement;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+       function GetDetailsByEmpId() {
+           let ModelObject = { emp_id: $('#emp_id').val(), branch_id: $('#branch_id').val(), loan_type: $('#loan_type').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getEmployeedetailsbyEmployeeId", "Loan")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "No Record Found") {
+                        alert("Invalid Loan Id Specified.")
+                    }
+                    else {
+                        $('#org_emp').val(data.org_emp);
+                        $('#mem_id').val(data.mem_id);
+                        $('#unit').val(data.unit);
+                        $('#book_no').val(data.book_no);
+                        $('#dept').val(data.dept);
+                        $('#deg').val(data.deg);
+                        $('#service_sts').val(data.service_sts);
+                        $('#join_dt').val(data.join_dt);
+                        $('#ret_dt').val(data.ret_dt);
+                        $('#mail_h_no').val(data.mail_h_no);
+                        $('#mail_add1').val(data.mail_add1);
+                        $('#mail_add2').val(data.mail_add2);
+                        $('#mail_city').val(data.mail_city);
+                        $('#mail_dist').val(data.mail_dist);
+                        $('#mail_state').val(data.mail_state);
+                        $('#mail_pin').val(data.mail_pin);
+                        ShowTable();
+                        GetloanData();
+                        Get_Ledger();
+                    }
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+        }
+
+       function Get_Ledger() {
+             let ModelObject = { emp_id: $('#emp_id').val(), branch_id: $('#branch_id').val(), loan_type: $('#loan_type').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("getloanledgerdetailsbybranchac_hdandempid", "Loan")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("LoanLedger").innerHTML = data.tableelement;
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+         }
+
+       function evtemp_id(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetDetailsByEmpId();
+            }
+        }
+
+       function ReloadPage() {
+            window.location.href = "@Url.Action("LoanMasterEntry", "Loan")"
+        }
+
+       function DownloadTextFiles() {
+           window.location.href = "@Url.Action("LoanLedgerDeatilsPrintFile", "Loan")" + "?fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val() + "&branch_id=" + $('#branch_id').val() + "&loan_type=" + $('#loan_type').val() + "&emp_id=" + $('#emp_id').val() + "&mail_add1=" + $('#mail_add1').val() + "&mail_add2=" + $('#mail_add2').val()
+               + "&mail_city=" + $('#mail_city').val() + "&mail_dist=" + $('#mail_dist').val() + "&mail_state=" + $('#mail_state').val() + "&mail_pin=" + $('#mail_pin').val() + "&sanc_dt=" + $('#sanc_dt').val() + "&loan_amt=" + $('#loan_amt').val() + "&inst=" + $('#inst').val() + "&inst_amt=" + $('#inst_amt').val() + "&mem_id=" + $('#mem_id').val();
+       }
+
+    </script>
+}
