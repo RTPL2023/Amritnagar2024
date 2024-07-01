@@ -852,7 +852,8 @@ namespace Amritnagar.Models.Database
                 {
                     Member_Mast mm = new Member_Mast();
                     mm.mem_id = dr["MEMBER_ID"].ToString();
-                    mm.mem_date = Convert.ToDateTime(dr["MEMBER_DATE"].ToString());
+                    mm.mem_date = !Convert.IsDBNull(dr["MEMBER_DATE"]) ? Convert.ToDateTime(dr["MEMBER_DATE"]) : Convert.ToDateTime(null);
+                    //mm.mem_date = Convert.ToDateTime(dr["MEMBER_DATE"].ToString());
                     mm.member_type = dr["MEMBER_TYPE"].ToString();
                     mm.member_category = dr["MEM_CATEGORY"].ToString();
                     mm.mem_name = dr["MEMBER_NAME"].ToString();

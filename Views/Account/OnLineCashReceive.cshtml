@@ -1,0 +1,360 @@
+﻿@model Amritnagar.Models.ViewModel.OnLineCashReceiveViewModel
+
+@{
+    ViewBag.Title = "OnLineCashReceive";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 120px;
+        height: 25px;
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+    .sizeM1 {
+        width: 100px;
+        height: 25px;
+    }
+    .sizeM_smry {
+        width: 100px;
+        height: 25px;
+        background-color:white
+    }
+
+    .sizeS_smry {
+        width: 50px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeL {
+        width: 250px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 180px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1000px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1000px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+    .tab1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab1 tbody {
+            display: block;
+            width: 600px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab1 td, .tab1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        .tab1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+    
+    .divBorder {
+        border: 1px solid gray;
+        background-color:papayawhip
+    }
+
+    .border-right {
+        border-right: 2px solid white;
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+</style>
+<form asp-controller="Account" asp-action="OnLineCashReceive" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+
+    </div>
+    <div class="heading mt-4">
+        Miscellaneous Cash Receipts
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+
+                <div class="row mt-2">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12" style="color:brown;font-weight:bold">
+                        CASH - CREDIT TRANSACTIONS
+                    </div>
+
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Date:<br />
+                        @Html.TextBoxFor(model => model.date, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Shift:<br />
+                        @Html.DropDownListFor(p => p.shift, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Counter:<br />
+                        @Html.DropDownListFor(p => p.counter, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Account Head:
+                    </div> 
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        @Html.DropDownListFor(p => p.achd, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        Voucher No.:
+                        @Html.TextBoxFor(model => model.vch_no, new { @class = "size", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Account No.<br />
+                        @Html.TextBoxFor(model => model.acc_no, new { @class = "sizeM1", @type = "text" })
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                        Received From/Particulars:<br />
+                        @Html.TextBoxFor(model => model.rcv_prtclr, new { @class = "sizeL", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Amount:<br />
+                        @Html.DropDownListFor(p => p.amt, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "sizebig" })
+                    </div>
+
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-12 border-right">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style=" background-color: rgba(231,205,167); color: brown;font-size:15px;font-weight:bold;text-align:center;text-transform:uppercase">
+                                    P E R S O N A L &nbsp;&nbsp;  A C C O U N T &nbsp;&nbsp;  I N F O R M A T I O N S
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                                    Name
+                                    @Html.TextBoxFor(model => model.name, new { @class = "sizeL", @type = "text" })
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                    Opening Dt
+                                    @Html.TextBoxFor(model => model.op_dt, new { @class = "sizeM", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                    <div class="table-responsive mt-1">
+                                        <table id=" " class="tab1">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 divBorder">
+
+                            <div class="row mt-1">
+                                <div class="col-lg-8 col-md-8 col-sm-12 col-12 divText text-center">
+                                    Due Payments (If Applicable)
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                    Cleared Upto:
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                                    @Html.TextBoxFor(model => model.clrd_upto, new { @class = "sizeM", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                    Amount Due:
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.amt_due, new { @class = "sizeM", @type = "text" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
+                            P E R S O N A L &nbsp;&nbsp; L E D G E R  &nbsp;&nbsp;  I N F O R M A T I O N &nbsp;( L A T E S T )
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <div class="table-responsive mt-1">
+                                <table id=" " class="tab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-12 border-right">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:indianred;color:white;font-size:15px;font-weight:bold;text-align:center;text-transform:uppercase">
+                                    R E C E I P T &nbsp;&nbsp;  D E T A I L S
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                    <div class="table-responsive mt-1">
+                                        <table id=" " class="tab1">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12 divBorder">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:indianred;color:white;font-size:15px;font-weight:bold;text-align:center;text-transform:uppercase">
+                                    R E C E I P T &nbsp;&nbsp; S U M M A R Y
+                                </div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                    <div class="table-responsive mt-1">
+                                        <table id=" " class="tab1">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1 p-1" style="background-color: rgba(231,205,167)">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12" style="color: brown; font-size: 13px; font-weight: bold;">
+                                    Summary
+                                </div>
+                                <div class="col-lg-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.gt_head, new { @class = "sizeS_smry", @type = "text" })
+                                </div>
+                                <div class="col-lg-5 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.gt_amt, new { @class = "sizeM_smry", @type = "text" })
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

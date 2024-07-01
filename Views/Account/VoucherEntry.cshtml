@@ -1,0 +1,295 @@
+﻿@model Amritnagar.Models.ViewModel.VoucherEntryViewModel
+
+@{
+    ViewBag.Title = "VoucherEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 120px;
+        height: 25px;
+    }
+
+    .sizeM_whitebg {
+        width: 140px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+
+    .sizeM1 {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeM_smry {
+        width: 100px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeS_smry {
+        width: 65px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeL {
+        width: 250px;
+        height: 25px;
+    }
+
+    .sizeXL {
+        width: 300px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 180px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1000px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1000px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    .tab1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab1 tbody {
+            display: block;
+            width: 600px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab1 td, .tab1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        .tab1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .divBorder {
+        border: 1px solid gray;
+        background-color: papayawhip
+    }
+
+    .border-right {
+        border-right: 2px solid white;
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+
+    .btn {
+        width: 100px;
+        height: 30px
+    }
+</style>
+<form asp-controller="Account" asp-action="VoucherEntry" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+
+    </div>
+    <div class="heading mt-4">
+        Voucher Entry
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+
+                <div class="row mt-1">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Voucher Date:<br />
+                        @Html.TextBoxFor(model => model.vch_date, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Voucher No:<br />
+                        @Html.TextBoxFor(model => model.vch_no, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Voucher Type:<br />
+                        @Html.DropDownListFor(p => p.vch_type, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
+                            p a r t i c u l a r s &nbsp;&nbsp; o f  &nbsp;&nbsp;  t r a n s a c t i o n s
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <div class="table-responsive mt-1">
+                                <table id=" " class="tab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-1 p-1" style="border: 1px solid; border-color: darkslateblue; background-color: rgb(216, 191, 216,0.5); color: #722F37;font-weight:bold;font-size:14px">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+
+                        </div>
+                        <div class="col-lg-3 col-sm-12 col-12">
+                            Debit Amount @Html.TextBoxFor(model => model.debt_amt, new { @class = "sizeM", @type = "text" })
+                        </div>
+                        <div class="col-lg-3 col-sm-12 col-12">
+                            Credit Amount @Html.TextBoxFor(model => model.crdt_amt, new { @class = "sizeM", @type = "text" })
+                        </div>
+                        <div class="col-lg-3 col-sm-12 col-12">
+                            Net Amount @Html.TextBoxFor(model => model.net_amt, new { @class = "sizeM", @type = "text" })
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
+                            c h e q u e &nbsp;&nbsp; p a r t i c u l a r s
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <div class="table-responsive mt-1">
+                                <table id=" " class="tab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-1 p-2" style="background-color: #fafad2;color:saddlebrown;font-weight:bold;font-size:14px;border:1px solid; border-color:saddlebrown">
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-12 col-12">
+
+                        </div>
+                        <div class="col-lg-4 col-sm-12 col-12">
+                            Total Cheque Amount @Html.TextBoxFor(model => model.tot_chq_amt, new { @class = "sizeM_whitebg", @type = "text" })
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
+                            n a r r a t i o n
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

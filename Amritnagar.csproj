@@ -123,6 +123,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -176,6 +177,8 @@
     <Compile Include="Models\ViewModel\DepartmentMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\DesignationMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\DisplayloanLedgerViewModel.cs" />
+    <Compile Include="Models\ViewModel\DividendCalcAndPostViewModel.cs" />
+    <Compile Include="Models\ViewModel\DividendWritOfSchViewModel.cs" />
     <Compile Include="Models\ViewModel\EditUserViewModel.cs" />
     <Compile Include="Models\ViewModel\EmployerUnitMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\FreshListViewModel.cs" />
@@ -183,21 +186,31 @@
     <Compile Include="Models\ViewModel\LoanLedgerCorrectionViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanMasterEntryViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanPurposeMasterViewModel.cs" />
+    <Compile Include="Models\ViewModel\LoanTransfCreditEntryViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberCategoryMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberOpeningandClosingRegViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberStatusViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberTypeListViewModel.cs" />
+    <Compile Include="Models\ViewModel\MemDepositeFundDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\MemDepositeFundIntPaySchViewModel.cs" />
+    <Compile Include="Models\ViewModel\MemDepositeFundLedgerStmntViewModel.cs" />
     <Compile Include="Models\ViewModel\MonthlyInterestScheduleForLoanViewModel.cs" />
     <Compile Include="Models\ViewModel\OccupationMasterViewModel.cs" />
+    <Compile Include="Models\ViewModel\OnLineCashPaymentViewModel.cs" />
+    <Compile Include="Models\ViewModel\OnLineCashReceiveViewModel.cs" />
+    <Compile Include="Models\ViewModel\OnLineCashRecLoanViewModel.cs" />
+    <Compile Include="Models\ViewModel\PrepOfDeductionScheduleViewModel.cs" />
+    <Compile Include="Models\ViewModel\RecoveryFrmSalaryDeductionViewModel.cs" />
     <Compile Include="Models\ViewModel\RelationshipMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\ReligionMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\SendingScheduleReportViewModel.cs" />
     <Compile Include="Models\ViewModel\ShareCapitalDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\ShareLedgerStatementViewModel.cs" />
+    <Compile Include="Models\ViewModel\UnpaidDividendDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\UsersViewModel.cs" />
+    <Compile Include="Models\ViewModel\VoucherEntryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
   </ItemGroup>
@@ -267,7 +280,18 @@
     <Content Include="Views\Member\ShareLedgerStatement.cshtml" />
     <Content Include="Views\Member\MemDepositeFundIntPaySch.cshtml" />
     <Content Include="Views\Member\ShareCapitalDetailList.cshtml" />
-    <Content Include="Views\Member\MembershipRecords.cshtml" />
+    <Content Include="Views\Member\DividendCalcAndPosting.cshtml" />
+    <Content Include="Views\Member\DividendWritOfSch.cshtml" />
+    <Content Include="Views\Member\UnpaidDividendDetailList.cshtml" />
+    <Content Include="Views\Member\MemDepositeFundDetailList.cshtml" />
+    <Content Include="Views\Member\MemDepositeFundLedgerStmnt.cshtml" />
+    <Content Include="Views\SalaryDeduction\PrepOfDeductionSchedule.cshtml" />
+    <Content Include="Views\SalaryDeduction\RecoveryFrmSalaryDeduction.cshtml" />
+    <Content Include="Views\Account\LoanTransfCreditEntry.cshtml" />
+    <Content Include="Views\Account\OnLineCashPayment.cshtml" />
+    <Content Include="Views\Account\OnLineCashReceive.cshtml" />
+    <Content Include="Views\Account\OnLineCashRecLoan.cshtml" />
+    <Content Include="Views\Account\VoucherEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

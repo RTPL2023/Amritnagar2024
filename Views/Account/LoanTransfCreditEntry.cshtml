@@ -1,0 +1,549 @@
+﻿@model Amritnagar.Models.ViewModel.LoanTransfCreditEntryViewModel
+
+@{
+    ViewBag.Title = "LoanTransfCreditEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .size {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 120px;
+        height: 25px;
+    }
+
+    .size1 {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizeM_whitebg {
+        width: 110px;
+        height: 25px;
+        background-color: white
+    }
+    .size_whitebg {
+        width: 150px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+
+    .sizeM1 {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeM1_whitebg {
+        width: 95px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeM2_whitebg {
+        width: 90px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeS_whitebg {
+        width: 50px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeL {
+        width: 250px;
+        height: 25px;
+    }
+
+    .sizeL_whitebg {
+        width: 240px;
+        height: 25px;
+        background-color: white
+    }
+    .sizeL1_whitebg {
+        width: 220px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeXL {
+        width: 300px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 180px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1000px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 1000px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+
+    .border-right {
+        border-right: 2px solid white;
+    }
+
+    .btn1 {
+        width: 110px;
+        height: 30px
+    }
+
+    .divBorder {
+        border: 1px solid gray;
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: rgb(255, 255, 143,0.4);
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+</style>
+<form asp-controller="Account" asp-action="LoanTransfCreditEntry" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+
+    </div>
+    <div class="heading mt-4">
+        Loan Transfer Credit Entry
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+
+                <div class="row mt-2">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12" style="color:brown;font-weight:bold">
+                        TRANSFER - CREDIT TRANSACTIONS
+                    </div>
+                </div>
+
+                <div class="row mt-1">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Date:<br />
+                        @Html.TextBoxFor(model => model.date, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Shift:<br />
+                        @Html.DropDownListFor(p => p.shift, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Counter:<br />
+                        @Html.DropDownListFor(p => p.counter, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+
+                </div>
+                <div class="container mt-1">
+                    <div class="row mt-1" style="background-color: rgb(255, 255, 143,0.3); font-size: 14px; font-weight: bold; color:rgb(20,52,164)">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12"style="border:1px solid;border-color:brown">
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                            Emp Id.
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.emp_id, new { @class = "size_whitebg", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                            Name
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.name, new { @class = "sizeL_whitebg", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                            Amount
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.amt, new { @class = "size_whitebg", @type = "text" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-124 col-sm-12 col-12 text-center" style="background-color: rgb(248,222,126,0.6); font-size: 12px; color: firebrick ">
+                                            Debit Reference
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            Account Head
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            @Html.DropDownListFor(p => p.achd, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "sizeL_whitebg" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            A/C No.
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.ref_acno, new { @class = "size_whitebg", @type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1 mb-1">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            Name/Refer
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                            @Html.TextBoxFor(model => model.name_ref, new { @class = "sizeL_whitebg", @type = "text" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    <div class="row mt-1">
+                                        <div class="col-md-12 col-sm-12 col-12 text-center">
+                                            <input id="BtnPrnVch" type="button" name="BtnPrnVch" Height="40" Width="100" class="btn btn-primary btn-sm btn1" value="Print Voucher" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-12 col-sm-12 col-12 text-center">
+                                            <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm btn1" value="Save" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-12 col-sm-12 col-12 text-center">
+                                            <input id="BtnNext" type="button" name="BtnNext" Height="40" Width="100" class="btn btn-primary btn-sm btn1" value="Next >>" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgb(170, 152, 169); color: white; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
+                            D i s t r i b u t i o n &nbsp;&nbsp; o f &nbsp;&nbsp; a m o u n t &nbsp;&nbsp; t o-b e &nbsp;&nbsp; r e c o v e r e d
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 border-right" style="border: 1px solid darkslateblue">
+                            <div class="row" style="background-color: #ffd5b9; color: darkslateblue;font-weight:bold;text-align:center;font-size:14px ">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    Account Head
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Amount
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Balance
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    @Html.DropDownListFor(p => p.achd_paid, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "size1" })
+
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_amt, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_bal, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    @Html.DropDownListFor(p => p.achd_paid1, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "size1" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_amt1, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_bal1, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 border-right" style="border: 1px solid darkslateblue">
+                            <div class="row" style="background-color: #ffd5b9; color: darkslateblue;font-weight:bold;text-align:center;font-size:14px">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    Account Head
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Amount
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Balance
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    @Html.DropDownListFor(p => p.achd_paid, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "size1" })
+
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_amt, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_bal, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    @Html.DropDownListFor(p => p.achd_paid1, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "size1" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_amt1, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.achd_bal1, new { @class = "sizeM1", @type = "text" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="container mt-1">
+                    <div class="row" style="background-color: rgb(216, 191, 216,0.6); color: rgb(119, 7, 55); font-weight: bold; font-size: 14px">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12 border-right">
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Name<br />
+                                    @Html.TextBoxFor(model => model.loanee_name, new { @class = "sizeL1_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Rate of Interest per annum<br />
+                                    @Html.TextBoxFor(model => model.int_rate, new { @class = "sizeL1_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 border-right">
+                            <div class="row mt-1">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Loan Date<br />
+                                    @Html.TextBoxFor(model => model.loan_dt, new { @class = "sizeM1_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+                                    Loan Amount<br />
+                                    @Html.TextBoxFor(model => model.loan_amt, new { @class = "sizeM1_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    Instl.<br />
+                                    @Html.TextBoxFor(model => model.instl, new { @class = "sizeS_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Inst.Principal<br />
+                                    @Html.TextBoxFor(model => model.inst_prn, new { @class = "sizeM1_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                    Last Tr/Dt.<br />
+                                    @Html.TextBoxFor(model => model.last_trdt, new { @class = "sizeM1_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                                    Category of Loanee<br />
+                                    @Html.DropDownListFor(p => p.loanee_cat, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "sizeL_whitebg" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Overdue Principal @Html.TextBoxFor(model => model.od_prin, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Overdue Interest &nbsp; @Html.TextBoxFor(model => model.od_inst, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Overdue Add/Int. @Html.TextBoxFor(model => model.od_ad_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-1 mb-1">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:indianred;color:white;font-size:15px;font-weight:bold;text-align:center;text-transform:uppercase">
+                            p a r t i c u l a r s &nbsp;&nbsp; o f &nbsp;&nbsp; a m o u n t &nbsp;&nbsp; r e c e i v a b l e
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: papayawhip;color:brown;font-size:14px;font-weight:bold">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div class="row p-1" style="background-color: rgba(229,215,191);color: rgba(229,215,191); border-bottom: 1px solid; border-color: black ">
+                                .
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Receivable on Last Payment
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Receivable as on Date To Regularise
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-1">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    Total Receivable Amount for Clouser
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                            <div class="row p-1" style="background-color: rgba(229,215,191);border-bottom:1px solid;border-color:black">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12 text-center">
+                                    Principal
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12 text-center">
+                                    Interest
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12 text-center">
+                                    Addl.Interest
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12 text-center">
+                                    Inc/Charges
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+                                    G r a n d &nbsp;&nbsp; T o t a l
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_lastpay_prin, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_lastpay_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_lastpay_ad_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_lastpay_inchrg, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+                                    @Html.TextBoxFor(model => model.rec_lastpay_grtot, new { @class = "sizeM_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_regdt_prin, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_regdt_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_regdt_ad_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_regdt_inchrg, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+                                    @Html.TextBoxFor(model => model.rec_regdt_grtot, new { @class = "sizeM_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_amtcl_prin, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_amtcl_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_amtcl_ad_int, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                    @Html.TextBoxFor(model => model.rec_amtcl_inchrg, new { @class = "sizeM2_whitebg", @type = "text" })
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-center">
+                                    @Html.TextBoxFor(model => model.rec_amtcl_grtot, new { @class = "sizeM_whitebg", @type = "text" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

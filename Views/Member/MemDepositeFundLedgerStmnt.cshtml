@@ -1,0 +1,306 @@
+﻿@model Amritnagar.Models.ViewModel.MemDepositeFundLedgerStmntViewModel
+
+@{
+    ViewBag.Title = "MemDepositeFundLedgerStmnt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+    .size1_whiteBg {
+        width: 150px;
+        height: 25px;
+        background-color:white
+    }
+
+    .size1 {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 180px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 300px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        /* width: 1000px;*/
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            /* width: 1000px;*/
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            /* width: 1000px;*/
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .textHead {
+        background-color: maroon;
+        color: gold;
+        font-family: 'Times New Roman';
+        font-size: 13px;
+        padding-top: 5px;
+        padding-bottom: 5px
+    }
+
+    .divBorder {
+        border: 1px solid gray;
+
+    }
+
+    .divText {
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        z-index: 100;
+        margin-top: -10px;
+        color: firebrick;
+        text-align: center
+    }
+</style>
+<form asp-controller="Member" asp-action="MemDepositeFundLedgerStmnt" method="post">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        Member's Deposite Fund Ledger Statement
+    </div>
+    <div class="container mt-3">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+                <div class="row mt-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        G/L Account Head <br />
+                        @Html.DropDownListFor(p => p.gl_achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Membership No.<br />
+                        @Html.TextBoxFor(p => p.mem_no, new { @class = "size", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        Name of Member<br />
+                        @Html.TextBoxFor(p => p.mem_name, new { @class = "sizebig", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Membership Dt.<br />
+                        @Html.TextBoxFor(p => p.mem_dt, new { @class = "size1", @type = "text" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Type of Membership <br />
+                        @Html.DropDownListFor(p => p.mem_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                        Category of Membership<br />
+                        @Html.DropDownListFor(p => p.mem_cat, new SelectList(Model.CategoryDesc, "Value", "Text"), "Select", new { @class = "size" })
+                    </div>
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
+                        <div class="row mt-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 divText">
+                                Mailing Address
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                Holding Number:
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.mailAdd_hno, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mailAdd_add1, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mailAdd_add2, new { @class = "sizebig", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                City:
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mailAdd_city, new { @class = "sizeM", @type = "text" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                Dist.:
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mailAdd_dist, new { @class = "sizeM", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                State:
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mailAdd_state, new { @class = "sizeM", @type = "text" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                Pin:
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.mailAdd_pin, new { @class = "sizeM", @type = "text" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+                        <div class="row mt-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                Organization <br />
+                                @Html.DropDownListFor(p => p.orgn, new SelectList(Model.EmpDesc, "Value", "Text"), "Select", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                Unit <br />
+                                @Html.DropDownListFor(p => p.unit, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                <div class="table-responsive mt-1">
+                                    <table id=" " class="tab">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Caste <br />
+                                @Html.DropDownListFor(p => p.caste, new SelectList(Model.CastDesc, "Value", "Text"), "Select Caste", new { @class = "size1" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Sex <br />
+                                @Html.DropDownListFor(model => model.sex, new SelectList(new string[] { "MALE", "FEMALE" }), "Select Sex", new { @class = "size1" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Religion <br />
+                                @Html.DropDownListFor(model => model.relgn, new SelectList(Model.ReligionDesc, "Value", "Text"), "Select Religion", new { @class = "size1" })
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Department <br />
+                                @Html.DropDownListFor(p => p.dept, new SelectList(Model.DepartmentDesc, "Value", "Text"), "Select", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Service Status <br />
+                                @Html.DropDownListFor(p => p.serv_sts, new SelectList(Model.ServiceDesc, "Value", "Text"), "Select", new { @class = "size" })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="table-responsive mt-1">
+                            <table id=" " class="tab">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-1 mb-1 p-1" style="background-color:lightcoral;color:white;font-size:14px;font-weight:bold;text-align:center">
+                   
+                    <div class="col-lg-2 col-sm-12 col-12">
+                    </div>
+                    <div class="col-lg-5 col-sm-12 col-12">
+                        Payment Cleared Upto
+                    
+                        @Html.TextBoxFor(p => p.pay_clrd_upto, new { @class = "size1_whiteBg", @type = "text" })
+                    </div>
+                    <div class="col-lg-4 col-sm-12 col-12">
+                        Due Amount(Rs.)
+                   
+                        @Html.TextBoxFor(p => p.due_amt, new { @class = "size1_whiteBg", @type = "text" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>

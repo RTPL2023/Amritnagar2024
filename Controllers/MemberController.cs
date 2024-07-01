@@ -1017,17 +1017,46 @@ namespace Amritnagar.Controllers
             }
             return Json(model.msg);
         }
-        /********************************************Member Master End*******************************************/
-
-        /********************************************Member Details List Start*******************************************/
-        public ActionResult MembershipRecords()
+        public JsonResult getallmemberdetails()
         {
-            return View();
+            MemberMasterViewModel model = new MemberMasterViewModel();
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getallmemberdetails();
+            int i = 1;
+            string mem_date = "";
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (Convert.ToDateTime(a.mem_date).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
+                    {
+                        mem_date = "";
+                    }
+                    else
+                    {
+                        mem_date = Convert.ToDateTime(a.mem_date).ToString("dd-MM-yyyy").Replace("-", "/");
+                    }
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>Membership No</th><th>Membership Date</th><th>Member Type</th><th>Category</th><th>Name Of Member</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + mem_date + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + mem_date + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
         }
-
-
-        /********************************************Member Details List End*******************************************/
-
+        /********************************************Member Master End*******************************************/
+     
         /********************************************Member OpeningClosing List Start*******************************************/
         [HttpGet]
         public ActionResult MemberOpeningandClosingReg(MemberOpeningandClosingRegViewModel model)
@@ -2251,35 +2280,61 @@ namespace Amritnagar.Controllers
         }
 
         /********************************************Share Capital Details List End*******************************************/
-        public JsonResult getallmemberdetails()
+
+        [HttpGet]
+        public ActionResult DividendCalcAndPosting(DividendCalcAndPostViewModel model)
         {
-            MemberMasterViewModel model = new MemberMasterViewModel();
-            Member_Mast mm = new Member_Mast();
-            List<Member_Mast> mml = new List<Member_Mast>();
-            mml = mm.getallmemberdetails();
-            int i = 1;
-            if (mml.Count > 0)
-            {
-                foreach (var a in mml)
-                {
-                    if (i == 1)
-                    {
-                        model.tableelement = "<tr><th>Srl</th><th>Membership No</th><th>Membership Date</th><th>Member Type</th><th>Category</th><th>Name Of Nominee</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td></tr>";
-                    }
-                    else
-                    {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td></tr>";
-                    }
-                    i = i + 1;
-                }
-            }
-            else
-            {
-                model.tableelement = null;
-            }
-            return Json(model);
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+
+            return View(model);
         }
+        [HttpGet]
+        public ActionResult UnpaidDividendDetailList(UnpaidDividendDetailListViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult DividendWritOfSch(DividendWritOfSchViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult MemDepositeFundLedgerStmnt(MemDepositeFundLedgerStmntViewModel model)
+        {
+            UtilityController u = new UtilityController();
+
+            model.BranchDesc = u.getBranchMastDetails();
+            model.TypeDesc = u.getTypeMastDetails();
+            model.achddesc = u.getGlAcchd();
+            model.CastDesc = u.getCastMastDetails();
+            model.ReligionDesc = u.getReligionMastDetails();
+            model.DepartmentDesc = u.getDepartmentMastDetails();
+            model.ServiceDesc = u.getServiceStatusMastDetails();
+            model.EmpDesc = u.getEmployerMastDetails();
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            model.CategoryDesc = u.getCategoryMastDetails();
+
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult MemDepositeFundDetailList(MemDepositeFundDetailListViewModel model)
+        {
+            UtilityController u = new UtilityController();
+
+            model.BranchDesc = u.getBranchMastDetails();
+            model.achddesc = u.getGlAcchd();
+
+            return View(model);
+        }
+
 
     }
 }

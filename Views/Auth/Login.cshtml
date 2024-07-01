@@ -85,7 +85,6 @@
 
         .button:hover {
             background-color: #e99988;
-
         }
 
         .button span {
@@ -139,12 +138,11 @@
 
     body {
         /* background-color:aqua;*/
-
         font-family: "Roboto", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background-size: cover;
-        background-image: url(/Content/Images/Medical.jpg);
+        background-image: url('../../Content/Images/login_bg.jpg');
     }
 
     h2 {
@@ -154,13 +152,13 @@
         margin-top: 8px;
         font-size: 30px;
     }
+
     .font-style {
         font-family: "Roboto", sans-serif;
-        font-weight:bold;
+        font-weight: bold;
         font-size: 16px;
         color: whitesmoke;
         text-align: left;
-        
     }
 </style>
 
@@ -191,7 +189,7 @@
                     <div class="text-danger">@Html.ValidationMessageFor(p => p.userid)</div>
                 </div>
                 <br />
-            
+
                 <div class="font-style" style="margin-top:5px">
                     <i class="fa fa-lock"></i>&nbsp; Password:@*<span style="color:red">*</span>*@
                     @Html.PasswordFor(p => p.Password, new { @placeholder = "Enter Password", @class = "form-control", style = "margin-top:5px" })
@@ -228,7 +226,9 @@
                 <button type="submit">login</button>*@
         </div>
     </div>
-
+    <div class="container text-center" style="text-align:center;margin-top:35px; color:gray;font-size:14px">
+        <p>&copy; @DateTime.Now.Year - Amritnagar CCS -Rishi Technovision Pvt. Ltd.</p>
+    </div>
 </form>
 
 

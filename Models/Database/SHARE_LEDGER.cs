@@ -186,7 +186,6 @@ namespace Amritnagar.Models.Database
             }
             return sll;
         }
-
         public List<SHARE_LEDGER> getdetails(string BranchID, string on_dt, string gl_hd)
         {
             List<SHARE_LEDGER> sll = new List<SHARE_LEDGER>();
@@ -232,7 +231,6 @@ namespace Amritnagar.Models.Database
                         }
                     }
                 }
-              
             }
             else
             {
@@ -275,8 +273,7 @@ namespace Amritnagar.Models.Database
                         }
                     }
                 }
-               
-            }            
+            }
             return sll;
         }
     }

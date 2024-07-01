@@ -783,6 +783,28 @@ namespace Amritnagar.Controllers
         }
 
         /********************************************Sending Schedule Report End*******************************************/
+
+        [HttpGet]
+        public ActionResult PrepOfDeductionSchedule(PrepOfDeductionScheduleViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+            model.TypeDesc = u.getTypeMastDetails();
+            model.EmpDesc = u.getEmployerMastDetails();
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            model.CategoryDesc = u.getCategoryMastDetails();
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult RecoveryFrmSalaryDeduction(RecoveryFrmSalaryDeductionViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+            model.EmpDesc = u.getEmployerMastDetails();
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            return View(model);
+        }
+
     }
 }
              

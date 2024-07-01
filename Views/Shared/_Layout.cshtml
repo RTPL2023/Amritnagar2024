@@ -151,7 +151,7 @@
             display: flex;
             align-items: start;
             justify-content: center;
-            height: 100vh;
+            height: 200vh;
             z-index: 100;
             background: #fff;
         }
@@ -161,15 +161,43 @@
                 font-size: 40px;
                 text-align: center;
             }
-       /* .content {
-            flex: 1;
+        /*.footer {
+            position: fixed;
+            bottom: 0;
+            left: 260px;
+            width: calc(100% - 260px);
+            height: 120px;*/ /* Adjust height as needed */
+        /*background: #E2725B;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            z-index: 1000;
         }
 
-        .footer {
-            margin-top: 5px;
-            text-align: center;
-            padding: 1rem 0;
+        .sidebar.close ~ .footer {
+            left: 0;
+            width: 100%;
         }*/
+
+        .dividend-head {
+            text-align: center;
+            font-weight: bold;
+            color: brown;
+            background-color: burlywood;
+            text-transform: uppercase
+        }
+
+        .memDF-head {
+            text-align: center;
+            font-weight: bold;
+            color: brown;
+            background-color: burlywood;
+            text-transform: uppercase;
+            font-size: 14px;
+            padding: 5px
+        }
     </style>
 
 </head>
@@ -279,8 +307,8 @@
                             </li>
 
                             @*<li class="item">
-                                <a href="/Member/MemberStatus" style="font-size:12px">Member Asset And Liabilities Position</a>
-                            </li>*@
+                        <a href="/Member/MemberStatus" style="font-size:12px">Member Asset And Liabilities Position</a>
+                    </li>*@
 
                             <li class="item">
                                 <a href="/Member/ShareLedgerStatement" style="font-size:12px">Share Ledger Statement</a>
@@ -290,12 +318,32 @@
                                 <a href="/Member/ShareCapitalDetailList" style="font-size:12px">Share Capital Detail List</a>
                             </li>
 
+
+                            <li class="dividend-head mt-2">
+                                <span>Dividend</span>
+                            </li>
+                            <li class="item">
+                                <a href="/Member/DividendCalcAndPosting" style="font-size:12px">Dividend Calculation & Posting</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Member/DividendWritOfSch" style="font-size:12px">Dividend Write-Off Schedule</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Member/UnpaidDividendDetailList" style="font-size:12px">Unpaid Dividend Detail List</a>
+                            </li>
+                            <li class="memDF-head mt-2">
+                                <span>Member's Deposit Fund</span>
+                            </li>
                             <li class="item">
                                 <a href="/Member/MemDepositeFundIntPaySch" style="font-size:12px">Member's Deposit Fund Interest Payable Schedule</a>
                             </li>
                             <li class="item">
-                                <a href="/Member/MembershipRecords" style="font-size:12px">Membership Records</a>
+                                <a href="/Member/MemDepositeFundLedgerStmnt" style="font-size:12px">Member's Deposite Fund Ledger Statement</a>
                             </li>
+                            <li class="item">
+                                <a href="/Member/MemDepositeFundDetailList" style="font-size:12px">Member's Deposite Fund Detail List</a>
+                            </li>
+
                         </ul>
                     </li>
                     <li class="item">
@@ -326,12 +374,12 @@
                             </li>
 
                             @*<li class="item">
-                                <a href="/Loan/LoanDetailList" style="font-size:12px">Loan Detail List</a>
-                             </li>*@
+                       <a href="/Loan/LoanDetailList" style="font-size:12px">Loan Detail List</a>
+                    </li>*@
 
                             @*<li class="item">
-                                <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
-                            </li>*@
+                        <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
+                    </li>*@
 
                             <li class="item">
                                 <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
@@ -357,11 +405,45 @@
                             <li class="item">
                                 <a href="/SalaryDeduction/SendingScheduleReport" style="font-size:12px">Sending Schedule Report</a>
                             </li>
-
+                            <li class="item">
+                                <a href="/SalaryDeduction/PrepOfDeductionSchedule" style="font-size:12px">Preparation Of Deduction Schedule</a>
+                            </li>
+                            <li class="item">
+                                <a href="/SalaryDeduction/RecoveryFrmSalaryDeduction" style="font-size:12px">Recovery From Salary Deduction</a>
+                            </li>
                         </ul>
                     </li>
 
-                 }
+                    <li class="item">
+                        <div class="submenu-item">
+                            <span>Accounts</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+
+                        <ul class="menu-items submenu">
+                            <li class="menu-title">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                Back
+                            </li>
+                            <li class="item">
+                                <a href="/Account/VoucherEntry" style="font-size:12px">Voucher Entry</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/OnLineCashReceive" style="font-size:12px">On-Line Cash Receive</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/OnLineCashPayment" style="font-size:12px">On-Line Cash Payment</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/OnLineCashRecLoan" style="font-size:12px">On-Line Cash Receive (Loan)</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/LoanTransfCreditEntry" style="font-size:12px">Loan Transfer Credit Enrty</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                }
                 @*<li class="item">
             <div class="submenu-item">
                 <span>Second submenu</span>
@@ -408,7 +490,7 @@
     </nav>
 
 
-    <main role="main" class="main pb-3" style="margin-bottom:400px">
+    <main role="main" class="main pb-3">
         @RenderBody()
 
     </main>

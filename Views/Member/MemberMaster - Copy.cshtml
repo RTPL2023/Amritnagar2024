@@ -7,7 +7,7 @@
 
 <style>
     .size {
-        width: 180px;
+        width: 150px;
         height: 25px;
     }
 
@@ -132,8 +132,8 @@
         position: relative;
     }
 
-    [type="radio"]:checked,
-    [type="radio"]:not(:checked) {
+    [type="checkbox"]:checked,
+    [type="checkbox"]:not(:checked) {
         position: absolute;
         left: -9999px;
     }
@@ -142,7 +142,7 @@
     .modal-btn:not(:checked) + label {
         position: relative;
         font-family: 'Poppins', sans-serif;
-        font-weight: bold;
+        font-weight: 400;
         font-size: 12px;
         line-height: 2;
         height: 30px;
@@ -163,7 +163,7 @@
         border: none;
         cursor: pointer;
         background-color: lightcoral;
-        color: darkblue;
+        color: #ffeba7;
         box-shadow: 0 12px 35px 0 rgba(224,167,167,.25);
     }
 
@@ -178,27 +178,28 @@
             font-size: 18px;
         }
 
-        /* .modal-btn:checked + label:after,
-    .modal-btn:not(:checked) + label:after {
-        position: fixed;
-        top: 90px;
-        right: 30px;
-        z-index: 110;
-        width: 40px;
-        border-radius: 3px;
-        height: 30px;
-        text-align: center;
-        line-height: 30px;
-        font-size: 15px;
-        background-color: #ffeba7;
-        color: #102770;
-        content: ' \2573';
-        box-shadow: 0 12px 25px 0 rgba(16,39,112,.25);
-        transition: all 200ms linear;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(20px);
-    }*/
+        .modal-btn:checked + label:after,
+        .modal-btn:not(:checked) + label:after {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            z-index: 110;
+            width: 40px;
+            border-radius: 3px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 15px;
+            background-color: #ffeba7;
+            color: #102770;
+            /*font-family: 'unicons';*/
+            content: ' \2573';
+            box-shadow: 0 12px 25px 0 rgba(16,39,112,.25);
+            transition: all 200ms linear;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
 
         .modal-btn:checked + label:hover:after,
         .modal-btn:not(:checked) + label:hover:after {
@@ -246,8 +247,9 @@
         display: block;
         width: 100%;
         max-width: 800px;
-        margin-left: 400px;
-        margin-top: 200px;
+        /*margin: 0 auto;*/
+        margin-left: 200px;
+        margin-top: 20px;
         margin-bottom: 20px;
         border-radius: 4px;
         overflow: hidden;
@@ -272,7 +274,7 @@
             padding-left: 10px;
             padding-bottom: 5px;
             padding-right: 10px;
-            text-align: justify;
+            text-align: justify
         }
 
     .modal-btn:checked ~ .modal .modal-wrap {
@@ -281,10 +283,13 @@
         transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
     }
 
+
+
     .modal-btn:checked ~ .logo img {
         filter: brightness(100%);
         transition: all 250ms linear;
     }
+
 
     @@media screen and (max-width: 500px) {
         .modal-wrap {
@@ -308,7 +313,7 @@
 
     <div class="container mt-2" style="margin-bottom:15px">
         <div class="row justify-content-md-center">
-            <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+            <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:900px">
                 <div class="row mt-2">
                     <div class="col-md-1 col-sm-12 col-12 ">
                         <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="SaveMemberMaster()" />
@@ -323,9 +328,8 @@
                             <input id="BtnMemberRec" type="button" name="BtnMemberRec" Height="40" Width="100" class="btn btn-primary btn-sm" value="Member Records" />
                         </div>*@
 
-                    <input class="modal-btn" type="radio" id="bankCorp-modal-btn" name="modal-btn" />
-                    <label for="bankCorp-modal-btn" onclick="ShowTable()">Member Records</label>
-
+                    <input class="modal-btn" type="checkbox" id="bankCorp-modal-btn" name="modal-btn" />
+                    <label for="bankCorp-modal-btn" onclick="ShowTable()"> Member Records </label>
                     <div class="modal" id="bankCorp-modal">
                         <div class="modal-wrap">
                             <table id="MemberRecords" class="tab">
@@ -432,8 +436,8 @@
                             <div class="row">
                                 &nbsp;
                                 <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgb(203, 195, 227); color: rgb(119, 7, 55);font-weight:bold;font-size:14px">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
                                             Mailing Address
                                         </div>
                                     </div>
@@ -489,8 +493,8 @@
                                     <div class="btn"><i class="btn fa fa-angle-double-right" style="color:firebrick;font-size:20px" onclick="copyAddressToPermanent()"></i></div>
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-12 col-12 divBorder">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgb(203, 195, 227); color: rgb(119, 7, 55);font-weight:bold;font-size:14px">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
                                             Permanent Address
                                         </div>
                                     </div>
@@ -799,7 +803,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </form>
 
 @section scripts
@@ -818,14 +821,6 @@
             //$('#btndelete').hide();
             //ShowTable();
         });
-        var modal = document.getElementById('bankCorp-modal');
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
 
        function SaveMemberMaster() {
            if ($('#branch_id').val() == null || $('#branch_id').val() =="") {
@@ -1398,29 +1393,7 @@
             }
        }
 
-    function ShowTable() {
-        let ModelObject = {};
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("getallmemberdetails", "Member")',
-            data: ModelObject,
-            dataType: "json",
-            success: function(data) {
-                document.getElementById("MemberRecords").innerHTML = data.tableelement;
-            },
-            error: function(err) {
-
-            }
-        });
-        modal.style.display = "block";
-    }
-
-
-    document.querySelector('.close-modal').addEventListener('click', function() {
-        document.getElementById('close-modal-btn').checked = true;
-    });
-
-        @*function ShowTable() {
+        function ShowTable() {
            let ModelObject = { };
                     $.ajax({
                     type: "POST",
@@ -1434,7 +1407,7 @@
                     //alert("Error Occured");
                      }
                     });
-        }*@
+        }
 
         function ReloadPage() {
             window.location.href = "@Url.Action("MemberMaster", "Member")"
