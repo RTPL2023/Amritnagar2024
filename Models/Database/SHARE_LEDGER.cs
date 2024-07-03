@@ -276,5 +276,33 @@ namespace Amritnagar.Models.Database
             }
             return sll;
         }
+        public List<SHARE_LEDGER> getShareLedherDetail(string branch, string mem_id)
+        {
+
+            string sql;
+            List<SHARE_LEDGER> sllst = new List<SHARE_LEDGER>();
+            sql = "SELECT * FROM SHare_LEDGER WHERE BRANCH_ID='" + branch + "' and ";
+            sql = sql + "member_id='" + mem_id + "' order by vch_date,vch_no,vch_srl";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    SHARE_LEDGER sl = new SHARE_LEDGER();
+                    sl.bal_amount = !Convert.IsDBNull(dr["bal_amount"]) ? Convert.ToDecimal(dr["bal_amount"]) : Convert.ToDecimal("00");
+                    sl.vch_date = Convert.ToDateTime(dr["vch_date"]);
+                  
+
+                    sllst.Add(sl);
+                }
+
+            }
+
+            return sllst;
+
+
+
+
+        }
     }
 }

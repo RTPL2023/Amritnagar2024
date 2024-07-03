@@ -37,8 +37,8 @@ namespace Amritnagar.Controllers
             model.mem_date = DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/");
             int mem_id = Convert.ToInt32(mm.getmemid()) + 1;
             int j = (7 - mem_id.ToString().Length);
-            string mem_no = "";           
-            for(int i = 1; i<= j; i++)
+            string mem_no = "";
+            for (int i = 1; i <= j; i++)
             {
                 mem_no = mem_no + "0";
             }
@@ -336,14 +336,14 @@ namespace Amritnagar.Controllers
                             mn.nom_state = model.nominee_state.Substring(0, 2).ToUpper();
                         }
                         mn.nom_pin = model.nominee_pin;
-                        if(model.nominee_birth_date == null)
+                        if (model.nominee_birth_date == null)
                         {
                             mn.nom_birthdt = "";
                         }
                         else
                         {
                             mn.nom_birthdt = Convert.ToDateTime(model.nominee_birth_date).ToString("dd-MM-yyyy").Replace("-", "/");
-                        }                        
+                        }
                         mn.nom_srl = "1";
                         if (model.nominee_rel == null)
                         {
@@ -352,7 +352,7 @@ namespace Amritnagar.Controllers
                         else
                         {
                             mn.nom_rltn_id = model.nominee_rel.ToUpper();
-                        }                        
+                        }
                         mn.SaveMemberNominee(mn);
                         Member_Introducer mi = new Member_Introducer();
                         if (model.intr_mem_no != null && model.intr_mem_no.Length > 0)
@@ -599,23 +599,23 @@ namespace Amritnagar.Controllers
             model.birth_date = Convert.ToDateTime(mm.birth_date).ToString("dd-MM-yyyy").Replace("-", "/");
             model.join_dt = Convert.ToDateTime(mm.join_dt).ToString("dd-MM-yyyy").Replace("-", "/");
             model.retmnt_dt = Convert.ToDateTime(mm.retmnt_dt).ToString("dd-MM-yyyy").Replace("-", "/");
-            if(Convert.ToDateTime(mm.exp_dt).ToString("dd-MM-yyyy").Replace("-","/")=="01/01/0001")
+            if (Convert.ToDateTime(mm.exp_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
             {
                 model.exp_dt = "";
             }
-            
+
             else
             {
                 model.exp_dt = Convert.ToDateTime(mm.exp_dt).ToString("dd-MM-yyyy").Replace("-", "/");
             }
-            if(Convert.ToDateTime(mm.close_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
+            if (Convert.ToDateTime(mm.close_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
             {
                 model.close_dt = "";
             }
             else
             {
                 model.close_dt = Convert.ToDateTime(mm.close_dt).ToString("dd-MM-yyyy").Replace("-", "/");
-            }           
+            }
             model.tf_buffer = Convert.ToString(mm.tf_buffer);
             model.sex = mm.sex;
             model.relgn = mm.relgn;
@@ -626,7 +626,7 @@ namespace Amritnagar.Controllers
             model.occupation = mm.occupation;
             model.serv_sts = mm.serv_sts;
             model.dept = mm.dept;
-            model.desig = mm.desig;            
+            model.desig = mm.desig;
             model.pan = mm.pan;
             model.nominee_add1 = mm.nominee_add1;
             model.nominee_add2 = mm.nominee_add2;
@@ -641,7 +641,7 @@ namespace Amritnagar.Controllers
             model.srl = Convert.ToString(mm.intr_srl);
             model.intr_mem_no = mm.intr_member_id;
             model.ident_mark = mm.ident_mark;
-            if(mm.trans=="Y")
+            if (mm.trans == "Y")
             {
                 model.trans = true;
             }
@@ -649,7 +649,7 @@ namespace Amritnagar.Controllers
             {
                 model.trans = false;
             }
-            if(mm.ret == "Y")
+            if (mm.ret == "Y")
             {
                 model.ret = true;
             }
@@ -657,7 +657,7 @@ namespace Amritnagar.Controllers
             {
                 model.ret = false;
             }
-            if(mm.married == 1)
+            if (mm.married == 1)
             {
                 model.married = true;
             }
@@ -865,7 +865,7 @@ namespace Amritnagar.Controllers
             mm.dept = model.dept;
             mm.join_dt = Convert.ToDateTime(Convert.ToDateTime((model.join_dt)).ToString("dd-MM-yyyy").Replace("-", "/"));
             mm.retmnt_dt = Convert.ToDateTime(Convert.ToDateTime(model.retmnt_dt).ToString("dd-MM-yyyy").Replace("-", "/"));
-            if(model.share == null)
+            if (model.share == null)
             {
                 mm.share = 0;
             }
@@ -873,7 +873,7 @@ namespace Amritnagar.Controllers
             {
                 mm.share = Convert.ToDecimal(model.share);
             }
-            if(model.remarks == null)
+            if (model.remarks == null)
             {
                 mm.remarks = "";
             }
@@ -896,7 +896,7 @@ namespace Amritnagar.Controllers
             else
             {
                 mm.accc_no = model.accc_no;
-            }          
+            }
             //mm.blood_group = model.BloodGroup;
             if (model.exp == true)
             {
@@ -1056,7 +1056,7 @@ namespace Amritnagar.Controllers
             return Json(model);
         }
         /********************************************Member Master End*******************************************/
-     
+
         /********************************************Member OpeningClosing List Start*******************************************/
         [HttpGet]
         public ActionResult MemberOpeningandClosingReg(MemberOpeningandClosingRegViewModel model)
@@ -1081,7 +1081,7 @@ namespace Amritnagar.Controllers
             decimal xtclsh = 0;
             decimal xtcltf = 0;
 
-            if(searchtype == "Opening")
+            if (searchtype == "Opening")
             {
                 if (mml.Count > 0)
                 {
@@ -1116,7 +1116,7 @@ namespace Amritnagar.Controllers
                                 model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td><td>" + "" + "</td><td>" + a.tramt.ToString("0.00") + "</td></tr>";
                                 xtoptf = (xtoptf + a.tramt);
                             }
-                        }                                             
+                        }
                         i = i + 1;
                     }
                     model.tot_xtopsh = xtopsh.ToString("0.00");
@@ -1163,7 +1163,7 @@ namespace Amritnagar.Controllers
                                 model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + Convert.ToDateTime(a.close_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.member_type + "</td><td>" + a.member_category + "</td><td>" + a.mem_name + "</td><td>" + "" + "</td><td>" + a.tramt.ToString("0.00") + "</td></tr>";
                                 xtcltf = (xtcltf + a.tramt);
                             }
-                        }                       
+                        }
                         i = i + 1;
                     }
                     model.tot_xtcltf = xtcltf.ToString("0.00");
@@ -1174,7 +1174,7 @@ namespace Amritnagar.Controllers
                     //fd = "";
                     model.tableelement = null;
                 }
-            }           
+            }
             return Json(model);
         }
         public ActionResult MembersOpeningClosingList(string searchtype, string branch_id, string mem_type, string fr_dt, string to_dt)
@@ -1185,7 +1185,7 @@ namespace Amritnagar.Controllers
             List<Member_Mast> mml = new List<Member_Mast>();
             mml = mm.getdetails(searchtype, branch_id, mem_type, fr_dt, to_dt);
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
-            if(searchtype == "Opening")
+            if (searchtype == "Opening")
             {
                 using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Member_Opening_Closing_List.txt")))
                 {
@@ -1200,7 +1200,7 @@ namespace Amritnagar.Controllers
                     sw.WriteLine("                        MEMBER OPENING LIST FROM " + fr_dt + " TO " + to_dt);
                     sw.WriteLine("======================================================================================");
                     sw.WriteLine("Employee ID |Member No. |Member Name                        |Opening Date|Share Amount");
-                    sw.WriteLine("======================================================================================");                    
+                    sw.WriteLine("======================================================================================");
                     foreach (var am in mml)
                     {
                         if (am.tramt.ToString().Length > 11)
@@ -1230,9 +1230,9 @@ namespace Amritnagar.Controllers
                             sw.WriteLine("                        MEMBER OPENING LIST FROM " + fr_dt + " TO " + to_dt);
                             sw.WriteLine("======================================================================================");
                             sw.WriteLine("Employee ID |Member No. |Member Name                        |Opening Date|Share Amount");
-                            sw.WriteLine("======================================================================================");                            
+                            sw.WriteLine("======================================================================================");
                         }
-                        if(am.member_type == "GEN")
+                        if (am.member_type == "GEN")
                         {
                             sw.WriteLine("".ToString().PadLeft(12 - (am.emp_id).Length) + am.emp_id + "|"
                             + "".ToString().PadLeft(11 - (am.mem_id).ToString().Length) + am.mem_id + "|"
@@ -1251,7 +1251,7 @@ namespace Amritnagar.Controllers
                             + "".ToString().PadLeft(11 - ("").ToString().Length) + "" + "|");
 
                             //sw.WriteLine(am.emp_id.ToString().PadLeft(6) + am.mem_id.ToString().PadLeft(14) + am.mem_name.ToString().PadLeft(34) + am.mem_date.ToString("dd-MM-yyyy").Replace("-", "/").PadLeft(18) + "");
-                        }                       
+                        }
                         Ln = Ln + 1;
                         i = i + 1;
                     }
@@ -1272,7 +1272,7 @@ namespace Amritnagar.Controllers
                     sw.WriteLine("                        MEMBER CLOSING LIST FROM " + fr_dt + " TO " + to_dt);
                     sw.WriteLine("======================================================================================");
                     sw.WriteLine("Employee ID |Member No. |Member Name                        |Closing Date|Share Amount");
-                    sw.WriteLine("======================================================================================");                    
+                    sw.WriteLine("======================================================================================");
                     foreach (var am in mml)
                     {
                         if (am.tramt.ToString().Length > 11)
@@ -1302,16 +1302,16 @@ namespace Amritnagar.Controllers
                             sw.WriteLine("                        MEMBER CLOSING LIST FROM " + fr_dt + " TO " + to_dt);
                             sw.WriteLine("======================================================================================");
                             sw.WriteLine("Employee ID |Member No. |Member Name                        |Closing Date|Share Amount");
-                            sw.WriteLine("======================================================================================");                           
+                            sw.WriteLine("======================================================================================");
                         }
-                        if(am.member_type == "GEN")
+                        if (am.member_type == "GEN")
                         {
                             sw.WriteLine("".ToString().PadLeft(12 - (am.emp_id).Length) + am.emp_id + "|"
                             + "".ToString().PadLeft(11 - (am.mem_id).ToString().Length) + am.mem_id + "|"
                             + "".ToString().PadLeft(35 - (mem_name).ToString().Length) + mem_name + "|"
                             + "".ToString().PadLeft(12 - Convert.ToDateTime(am.close_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + Convert.ToDateTime(am.close_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "|"
                             + "".ToString().PadLeft(11 - (tramt).ToString().Length) + tramt.ToString("0.00") + "|");
-                            
+
                             //sw.WriteLine(am.emp_id.ToString().PadLeft(6) + am.mem_id.ToString().PadLeft(14) + am.mem_name.ToString().PadLeft(34) + Convert.ToDateTime(am.close_dt).ToString("dd-MM-yyyy").Replace("-", "/").PadLeft(18) + am.tramt.ToString("0.00"));
                         }
                         else
@@ -1323,19 +1323,19 @@ namespace Amritnagar.Controllers
                             + "".ToString().PadLeft(11 - ("").ToString().Length) + "" + "|");
 
                             //sw.WriteLine(am.emp_id.ToString().PadLeft(6) + am.mem_id.ToString().PadLeft(14) + am.mem_name.ToString().PadLeft(34) + Convert.ToDateTime(am.close_dt).ToString("dd-MM-yyyy").Replace("-", "/").PadLeft(18) + "");
-                        }                       
+                        }
                         Ln = Ln + 1;
                         i = i + 1;
                     }
                 }
-            }         
+            }
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Member_Opening_Closing_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
             if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Member_Opening_Closing_List.txt")))
             {
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Opening_Closing_List.txt"));
             }
-            return File(memory.ToArray(), "text/plain", "Member_"+ searchtype + "_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");          
+            return File(memory.ToArray(), "text/plain", "Member_" + searchtype + "_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
         }
 
         /********************************************Member OpeningClosing List End*******************************************/
@@ -1354,10 +1354,10 @@ namespace Amritnagar.Controllers
         {
             Member_Mast mm = new Member_Mast();
             List<Member_Mast> mml = new List<Member_Mast>();
-            mml = mm.getmemberdetailsbymemid(model.BranchID, model.member_no);           
-            int i = 1;           
-            string sig = "";           
-            string lti = "";           
+            mml = mm.getmemberdetailsbymemid(model.BranchID, model.member_no);
+            int i = 1;
+            string sig = "";
+            string lti = "";
             if (mml.Count > 0)
             {
                 foreach (var a in mml)
@@ -1375,7 +1375,7 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Srl</th><th>Mem Id</th><th>Member Name</th><th>Caste</th><th>Sex</th><th>Occup</th><th>Sig</th><th>LTI</th><th>PAN No</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + model.member_no + "</td><td>" + a.mem_name + "</td><td>" + a.caste + "</td><td>" + a.sex + "</td><td>" + a.occupation + "</td><td>" + sig + "</td><td>" + lti + "</td><td>" + a.pan + "</td></tr>";                        
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + model.member_no + "</td><td>" + a.mem_name + "</td><td>" + a.caste + "</td><td>" + a.sex + "</td><td>" + a.occupation + "</td><td>" + sig + "</td><td>" + lti + "</td><td>" + a.pan + "</td></tr>";
                     }
                     else
                     {
@@ -1393,7 +1393,7 @@ namespace Amritnagar.Controllers
                     model.mem_category = a.member_category;
                     model.mem_type = a.member_type;
                     model.name = a.mem_name;
-                }                 
+                }
             }
             else
             {
@@ -1404,13 +1404,13 @@ namespace Amritnagar.Controllers
         public JsonResult GetNomineedetailsBymemberId(MemberStatusViewModel model)
         {
             Member_Nominee mn = new Member_Nominee();
-            List <Member_Nominee> mnl = new List<Member_Nominee>();
-            mnl = mn.getnomineedetails(model.BranchID , model.member_no);
+            List<Member_Nominee> mnl = new List<Member_Nominee>();
+            mnl = mn.getnomineedetails(model.BranchID, model.member_no);
             int i = 1;
             if (mnl.Count > 0)
             {
                 foreach (var a in mnl)
-                {                   
+                {
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Name Of Nominee</th><th>Relation</th></tr>";
@@ -1420,7 +1420,7 @@ namespace Amritnagar.Controllers
                     {
                         model.tableelement = model.tableelement + "<tr><td>" + a.nom_name + "</td><td>" + a.nom_rltn_id + "</td></tr>";
                     }
-                    i = i + 1;                  
+                    i = i + 1;
                 }
             }
             else
@@ -1462,7 +1462,7 @@ namespace Amritnagar.Controllers
             decimal shcap_tot = 0;
             SHARE_LEDGER sl = new SHARE_LEDGER();
             List<SHARE_LEDGER> sll = new List<SHARE_LEDGER>();
-            sll = sl.getShareLedgerDetail(model.BranchID,model.member_no);
+            sll = sl.getShareLedgerDetail(model.BranchID, model.member_no);
             int i = 1;
             if (sll.Count > 0)
             {
@@ -1487,7 +1487,7 @@ namespace Amritnagar.Controllers
                 model.tableelement = null;
             }
             return Json(model);
-        }        
+        }
         public JsonResult GetMemberFund(MemberStatusViewModel model)
         {
             //decimal int_payble = 0;
@@ -1500,7 +1500,7 @@ namespace Amritnagar.Controllers
                 foreach (var a in fdml)
                 {
                     get_fdep_int_payble(a.ac_hd);
-                    if(a.ledger_tab == "DIVIDEND_LEDGER")
+                    if (a.ledger_tab == "DIVIDEND_LEDGER")
                     {
                         if (i == 1)
                         {
@@ -1522,16 +1522,16 @@ namespace Amritnagar.Controllers
                     //    model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
                     //}
                     i = i + 1;
-                    
+
                 }
-                
+
             }
             else
             {
                 model.tableelement = null;
             }
             return Json(model);
-        }      
+        }
         public JsonResult get_fdep_int_payble(string ac_hd)
         {
             decimal xtot_int = 0;
@@ -1676,7 +1676,7 @@ namespace Amritnagar.Controllers
                         if (i == 1)
                         {
                             model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>F/Value</th><th>Units</th><th>Debit Amount</th><th>Credit Amount</th><th>Balance Capital</th><th>Certificate No</th><th>Certificate Dt</th><th>Distinct No(From-To)</th></tr>";
-                            model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.tr_amount.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range +"</td></tr>";
+                            model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.tr_amount.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range + "</td></tr>";
                         }
                         else
                         {
@@ -1694,8 +1694,8 @@ namespace Amritnagar.Controllers
                         {
                             model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + a.tr_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range + "</td></tr>";
                         }
-                    }                   
-                    i = i + 1;                   
+                    }
+                    i = i + 1;
                 }
             }
             else
@@ -1714,7 +1714,7 @@ namespace Amritnagar.Controllers
             if (shl.Count > 0)
             {
                 foreach (var a in shl)
-                {                              
+                {
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Share Acount Head</th><th>F/value</th><th>Units(Debit)</th><th>Debit Amount</th><th>Units(Credit)</th><th>Credit Amount</th><th>Balance Unit</th><th>Share Capital</th></tr>";
@@ -1726,7 +1726,7 @@ namespace Amritnagar.Controllers
                         model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.MISCDEP_BASEAMT.ToString("0.00") + "</td><td>" + a.TOT_UNITDR.ToString("0.00") + "</td><td>" + a.TOT_AMTDR.ToString("0.00") + "</td><td>" + a.TOT_UNITCR.ToString("0.00") + "</td><td>" + a.TOT_AMTCR.ToString("0.00") + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.share_capital.ToString("0.00") + "</td></tr>";
                         xtot = xtot + a.TOT_AMTCR - a.TOT_AMTDR;
                     }
-                    i = i + 1;                   
+                    i = i + 1;
                 }
                 model.ex_total_sh_cap = xtot.ToString("0.00");
             }
@@ -2207,7 +2207,7 @@ namespace Amritnagar.Controllers
             return CAL_GFTF_INT;
         }
         /********************************************Member's deposit Fund Interest Payable Schedule End********************/
-       
+
         /********************************************Share Capital Details List Start*******************************************/
         [HttpGet]
         public ActionResult ShareCapitalDetailList(ShareCapitalDetailListViewModel model)
@@ -2216,7 +2216,7 @@ namespace Amritnagar.Controllers
             model.BranchDesc = u.getBranchMastDetails();
             model.achddesc = u.getGlAcc_hd();
             return View(model);
-        }       
+        }
         public JsonResult getsharecapitaldetaillist(ShareCapitalDetailListViewModel model)
         {
             SHARE_LEDGER sl = new SHARE_LEDGER();
@@ -2231,14 +2231,14 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>srl</th><th>Membership No</th><th>Member Date</th><th>Member's Name</th><th>Units</th><th>Share Capital</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.member_id + "</td><td>" + a.mem_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.mem_name + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";                       
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.member_id + "</td><td>" + a.mem_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.mem_name + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.member_id + "</td><td>" + a.mem_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.mem_name + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";                      
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.member_id + "</td><td>" + a.mem_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.mem_name + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
                     }
                     i = i + 1;
-                }               
+                }
             }
             else
             {
@@ -2281,30 +2281,7 @@ namespace Amritnagar.Controllers
 
         /********************************************Share Capital Details List End*******************************************/
 
-        [HttpGet]
-        public ActionResult DividendCalcAndPosting(DividendCalcAndPostViewModel model)
-        {
-            UtilityController u = new UtilityController();
-            model.BranchDesc = u.getBranchMastDetails();
-
-            return View(model);
-        }
-        [HttpGet]
-        public ActionResult UnpaidDividendDetailList(UnpaidDividendDetailListViewModel model)
-        {
-            UtilityController u = new UtilityController();
-            model.BranchDesc = u.getBranchMastDetails();
-
-            return View(model);
-        }
-        [HttpGet]
-        public ActionResult DividendWritOfSch(DividendWritOfSchViewModel model)
-        {
-            UtilityController u = new UtilityController();
-            model.BranchDesc = u.getBranchMastDetails();
-
-            return View(model);
-        }
+       
 
         [HttpGet]
         public ActionResult MemDepositeFundLedgerStmnt(MemDepositeFundLedgerStmntViewModel model)
@@ -2324,6 +2301,294 @@ namespace Amritnagar.Controllers
 
             return View(model);
         }
+
+
+
+
+
+
+        public JsonResult getdatabyMemberIdForfundLedgerStatement(MemDepositeFundLedgerStmntViewModel model)
+        {
+            DateTime XPAIDUPTO;
+            DateTime XFPAIDUPTO;
+            DateTime XPAIDUPTO1;
+            DateTime xfrmm;
+            DateTime xtomm;
+            decimal XBUFF = 0;
+            decimal XRESTADV = 0;
+            Member_Mast mm = new Member_Mast();
+            mm = mm.getdetailsbymemberid(model.branch, model.mem_no);
+            model.mem_dt = Convert.ToDateTime(mm.mem_date).ToString("dd/MM/yyyy").Replace("-", "/");
+            model.mem_type = mm.member_type;
+            model.mem_cat = mm.member_category;
+            model.mem_name = mm.mem_name;
+            model.orgn = mm.emp_cd;
+            model.unit = mm.emp_branch;
+            model.dept = mm.dept;
+            model.serv_sts = mm.serv_sts;
+            model.caste = mm.caste;
+            if (mm.sex == "M")
+            {
+                model.sex = "MALE";
+            }
+            else
+            {
+                model.sex = "FEMALE";
+            }
+            model.relgn = mm.relgn;
+            model.mailAdd_hno = mm.mailAdd_house;
+            model.mailAdd_add1 = mm.mailAdd_add1;
+            model.mailAdd_add2 = mm.mailAdd_add2;
+            model.mailAdd_city = mm.mailAdd_city;
+            model.mailAdd_dist = mm.mailAdd_dist;
+            model.mailAdd_state = mm.mailAdd_state;
+            model.mailAdd_pin = mm.mailAdd_pin;
+
+
+            if (model.gl_achd == "TF")
+            {
+                XBUFF = mm.tf_buffer;
+                if (mm.tf_buffer > 0)
+                {
+                    model.buff_txt = "Transferred Rs. " + mm.tf_buffer.ToString("0.00");
+                }
+
+            }
+            XPAIDUPTO = mm.mem_date;
+            XPAIDUPTO = Convert.ToDateTime("01/" + XPAIDUPTO.Month +"/"+ XPAIDUPTO.Year);
+            XPAIDUPTO = XPAIDUPTO.AddDays(-1);
+            XFPAIDUPTO = XPAIDUPTO;
+            if (mm.mem_closed != null && mm.mem_closed != "")
+            {
+                if (mm.close_dt != null & Convert.ToString(mm.close_dt) != "01/01/0001")
+                {
+                    model.statbar = "Membership Closed on " + mm.close_dt + ".";
+                }
+                else
+                {
+                    model.statbar = "Membership is Closed.";
+
+                }
+
+            }
+            if (model.gl_achd == "TF")
+            {
+
+                if (XBUFF > 0)
+                {
+                    XPAIDUPTO = GET_INST_FOR(XBUFF + XRESTADV, XPAIDUPTO.AddDays(1));
+                }
+            }
+
+            TF_Ledger tfl = new TF_Ledger();
+            List<TF_Ledger> tfllst = new List<TF_Ledger>();
+            tfllst = tfl.getdataByledgerTab(model);
+            int i = 1;
+            decimal xtot = 0;
+            string XTR_TYPE = "";
+            string xref = "";
+            model.tableelement = "<tr><th>Date</th><th>Particulars of Transaction</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Bal.</th><th>Interest Bal.</th></tr>";
+
+            if (tfllst.Count > 0)
+            {
+                foreach (var a in tfllst)
+                {
+                    XTR_TYPE = a.dr_cr == "D" ? "To " : "By ";
+                    switch (a.vch_type)
+                    {
+                        case "C":
+                            XTR_TYPE = XTR_TYPE + "Cash";
+                            break;
+                        case "B":
+                            XTR_TYPE = XTR_TYPE + "Bank";
+                            break;
+                        case "T":
+                            XTR_TYPE = XTR_TYPE + "Transfer";
+                            break;
+                        case "J":
+                            XTR_TYPE = XTR_TYPE + "Journal";
+                            break;
+                    }
+                    string stt = a.prin_amount > 0 ? " @Principal" : " @Interest";
+                    XTR_TYPE = XTR_TYPE + stt;
+                    if (a.vch_type == "T")
+                    {
+                        xref = a.ref_ac_hd;
+                        if (xref != null && xref != "")
+                        {
+                            xref = xref + "/" + a.ref_pacno;
+                            XTR_TYPE = XTR_TYPE + " (" + xref + ")";
+                        }
+                    }
+                    switch (a.insert_mode)
+                    {
+                        case "SD":
+                            XTR_TYPE = XTR_TYPE + " (" + a.insert_mode + ")";
+                            break;
+                        case "BF":
+                            XTR_TYPE = XTR_TYPE + " (Balance From Ledger)";
+                            break;
+
+                    }
+                    if (model.gl_achd == "TF")
+                    {
+                        if (a.dr_cr == "C" && a.prin_amount > 0)
+                        {
+                            XPAIDUPTO1 = GET_INST_FOR(a.prin_amount + XRESTADV, XPAIDUPTO.AddDays(1));
+                            if (XPAIDUPTO1 > XPAIDUPTO)
+                            {
+                                xfrmm = XPAIDUPTO.AddDays(1);
+                                xtomm = XPAIDUPTO1;
+                            }
+                            else
+                            {
+                                xfrmm = XPAIDUPTO.AddDays(1);
+                                xtomm = xfrmm;
+                            }
+                            if (i == 1 && XBUFF > 0)
+                            {
+                                XTR_TYPE = XTR_TYPE + "[B/F Cleared Upto " + xtomm.ToString("dd/MM/yyyy") + "] ";
+                            }
+                            else
+                            {
+                                if (xfrmm != xtomm)
+                                {
+                                    XTR_TYPE = XTR_TYPE + " [" + xfrmm.ToString("dd/MM/yyyy") + " - " + xtomm.ToString("dd/MM/yyyy") + "] ";
+                                }
+                                else
+                                {
+                                    XTR_TYPE = XTR_TYPE + " [" + xfrmm.ToString("dd/MM/yyyy") + "] ";
+                                }
+                            }
+                            if (XRESTADV > 0)
+                            {
+                                XTR_TYPE = XTR_TYPE + " + Adv.-Rs." + XRESTADV;
+                            }
+                        }
+                    }
+                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date + "</td><td>" + XTR_TYPE + "</td>";
+                    if (a.dr_cr == "D")
+                    {
+                        if (a.prin_amount > 0)
+                        {
+                            model.tableelement = model.tableelement + "<td>" + a.prin_amount.ToString("0.00") + "</td>";
+                        }
+                        else
+                        {
+                            model.tableelement = model.tableelement + "<td>" + a.int_amount.ToString("0.00") + "</td>";
+                        }
+                    }
+                    else
+                    {
+                        if (a.prin_amount > 0)
+                        {
+                            model.tableelement = model.tableelement + "<td>" + a.prin_amount.ToString("0.00") + "</td>";
+                        }
+                        else
+                        {
+                            model.tableelement = model.tableelement + "<td>" + a.int_amount.ToString("0.00") + "</td>";
+                        }
+                    }
+                    model.tableelement = model.tableelement + "<td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+
+
+
+        public DateTime GET_INST_FOR(decimal XAMT, DateTime xfrdt)
+        {
+            DateTime GETINSTFOR = DateTime.Now;
+            DateTime XTODT;
+            DateTime XPDUPTO = xfrdt;
+            decimal XPBAMT = 0;
+            decimal XREST = XAMT;
+            decimal XRATE = 0;
+            decimal XRESTADV = 0;
+            int XPRD = 0;
+            int xinstl = 0;
+            DateTime XFRDT1 = xfrdt;
+            TF_Ledger tl = new TF_Ledger();
+            List<TF_Ledger> tflst = new List<TF_Ledger>();
+            tflst = tl.getTfRate();
+           
+            var result = tflst.FindLast(delegate (TF_Ledger sbl)
+            {
+                return sbl.eff_date <= XFRDT1;
+            });
+            result = tflst.FindLast(s => s.eff_date <= XFRDT1);
+            if (result != null)
+            {
+                result = tflst.Find(delegate (TF_Ledger sbl)
+                {
+                    return sbl.eff_date > XFRDT1;
+                });
+                XFRDT1 = result.eff_date;
+            }
+            if (result == null)
+            {
+                
+            }
+            else
+            {
+                XRATE = result.tf_rate;
+            }
+            
+            result = tflst.Find(delegate (TF_Ledger sbl)
+            {
+                return sbl.eff_date > XFRDT1;
+            });
+            if (result == null)
+            {
+                XTODT = Convert.ToDateTime("31/12/2099");
+            }
+            else
+            {
+                XTODT = result.eff_date.AddDays(-1);
+            }
+            XPRD = Convert.ToInt32(Convert.ToDateTime(XTODT).Subtract(Convert.ToDateTime(XFRDT1)).Days / (365.25 / 12));
+            if (XAMT <= XPRD * XRATE)
+            {
+                xinstl = Convert.ToInt32(XAMT / XRATE);
+                if (xinstl > 0)
+                {
+                    XPDUPTO = XFRDT1.AddMonths(xinstl - 1);
+                    XPDUPTO = Convert.ToDateTime("01/" + Convert.ToString(XPDUPTO.Month == 12 ? 1 : XPDUPTO.Month + 1) + "/" + Convert.ToString(XPDUPTO.Month == 12 ? XPDUPTO.Year + 1 : XPDUPTO.Year));
+                    XPDUPTO = XPDUPTO.AddDays(-1);
+                    GETINSTFOR = XPDUPTO;
+                    XREST = XREST - (xinstl * XRATE);
+                    XRESTADV = XREST;
+                }
+                else
+                {
+                    GETINSTFOR = XPDUPTO;
+                    XREST = XAMT;
+                    XRESTADV = XREST;
+                }
+            }
+            else
+            {
+                XAMT = XAMT - (XPRD * XRATE);
+                XREST = XREST - (XPRD * XRATE);
+                XPDUPTO = XTODT;
+                XFRDT1 = XPDUPTO.AddDays(1);
+            }
+            return GETINSTFOR;
+        }
+
+
+
+
+
+
+
         [HttpGet]
         public ActionResult MemDepositeFundDetailList(MemDepositeFundDetailListViewModel model)
         {

@@ -30,7 +30,10 @@ namespace Amritnagar.Models.ViewModel
         public string mailAdd_state { get; set; }
         public string mailAdd_pin { get; set; }
         public string pay_clrd_upto { get; set; }
+        public string buff_txt { get; set; }
         public string due_amt { get; set; }
+        public string statbar { get; set; }
+        public string tableelement { get; set; }
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
         public IEnumerable<SelectListItem> achddesc { get; set; }
         public IEnumerable<SelectListItem> CategoryDesc { get; set; }

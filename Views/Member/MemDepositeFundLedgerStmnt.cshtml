@@ -9,10 +9,11 @@
         width: 180px;
         height: 25px;
     }
+
     .size1_whiteBg {
         width: 150px;
         height: 25px;
-        background-color:white
+        background-color: white
     }
 
     .size1 {
@@ -89,6 +90,7 @@
             position: sticky;
             top: 0;
         }
+
     input {
         background-color: rgb(226,148,91,0.2)
     }
@@ -116,7 +118,6 @@
 
     .divBorder {
         border: 1px solid gray;
-
     }
 
     .divText {
@@ -150,7 +151,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Membership No.<br />
-                        @Html.TextBoxFor(p => p.mem_no, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(p => p.mem_no, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtMEM_NO(event);" })
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -277,26 +278,34 @@
                 <div class="row mt-2">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                         <div class="table-responsive mt-1">
-                            <table id=" " class="tab">
+                            <table id="list" class="tab">
                             </table>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row mt-1 mb-1 p-1" style="background-color:lightcoral;color:white;font-size:14px;font-weight:bold;text-align:center">
-                   
+
                     <div class="col-lg-2 col-sm-12 col-12">
+                        @Html.TextBoxFor(p => p.buff_txt, new { @class = "size1_whiteBg", @type = "text" })
                     </div>
                     <div class="col-lg-5 col-sm-12 col-12">
                         Payment Cleared Upto
-                    
+
                         @Html.TextBoxFor(p => p.pay_clrd_upto, new { @class = "size1_whiteBg", @type = "text" })
                     </div>
                     <div class="col-lg-4 col-sm-12 col-12">
                         Due Amount(Rs.)
-                   
+
                         @Html.TextBoxFor(p => p.due_amt, new { @class = "size1_whiteBg", @type = "text" })
                     </div>
+                </div>
+                <div class="row mt-1 mb-1 p-1" style="background-color:lightcoral;color:white;font-size:14px;font-weight:bold;text-align:center">
+
+                    <div class="col-lg-2 col-sm-12 col-12">
+                        @Html.TextBoxFor(p => p.statbar, new { @class = "size1_whiteBg", @type = "text" })
+                    </div>
+
                 </div>
 
             </div>
@@ -304,3 +313,70 @@
     </div>
 
 </form>
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading").hide();
+            //$("#frm_dt").hide();
+            //$("#to_dt").hide();
+        });
+        function evtMEM_NO(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+
+                GetDetailsByMemberId();
+            }
+        }
+        function GetDetailsByMemberId() {
+            let ModelObject = { branch: $('#branch').val(), mem_no: $('#mem_no').val(), gl_achd: $('#gl_achd').val() };
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getdatabyMemberIdForfundLedgerStatement", "Member")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $('#mem_dt').val(data.mem_dt);
+                    $('#mem_type').val(data.mem_type);
+                    $('#mem_cat').val(data.mem_cat);
+                    $('#mem_name').val(data.mem_name);
+                    $('#orgn').val(data.orgn);
+                    $('#unit').val(data.unit);
+                    $('#dept').val(data.dept);
+                    $('#serv_sts').val(data.serv_sts);
+                    $('#caste').val(data.caste);
+                    $('#sex').val(data.sex);
+                    $('#relgn').val(data.relgn);
+                    $('#mailAdd_hno').val(data.mailAdd_hno);
+                    $('#mailAdd_house').val(data.mailAdd_house);
+                    $('#mailAdd_add1').val(data.mailAdd_add1);
+                    $('#mailAdd_add2').val(data.mailAdd_add2);
+                    $('#mailAdd_city').val(data.mailAdd_city);
+                    $('#mailAdd_dist').val(data.mailAdd_dist);
+                    $('#mailAdd_state').val(data.mailAdd_state);
+                    $('#mailAdd_pin').val(data.mailAdd_pin);
+                    $('#buff_txt').val(data.buff_txt);
+                    $('#statbar').val(data.statbar);
+                    document.getElementById("list").innerHTML = data.tableelement;
+
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+
+            });
+        }
+
+      
+    </script>
+}

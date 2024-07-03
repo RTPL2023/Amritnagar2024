@@ -1,7 +1,7 @@
-﻿@model Amritnagar.Models.ViewModel.DividendWritOfSchViewModel
+﻿@model Amritnagar.Models.ViewModel.UnpaidDividendDetailListViewModel
 
 @{
-    ViewBag.Title = "DividendWritOfSch";
+    ViewBag.Title = "UnpaidDividendDetailList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
@@ -111,28 +111,24 @@
     }
 </style>
 
-<form asp-controller="Member" asp-action="DividendWritOfSch" method="post">
+<form asp-controller="Dividend" asp-action="UnpaidDividendDetailList" method="post">
     <div class="container" style="height:70px">
 
     </div>
     <div class="heading mt-4">
-        Dividend Write Off Schedule
+        Unpaid Dividend Details List
     </div>
     <div class="container mt-3">
         <div class="row justify-content-md-center">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
                 <div class="row mt-2">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                         Branch
                         @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Write Off Upto Date
-                        @Html.TextBoxFor(p => p.upto_dt, new { @class = "size1", @type = "text" })
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        Voucher Date
-                        @Html.TextBoxFor(p => p.vch_dt, new { @class = "size1", @type = "text" })
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        As On Date
+                        @Html.TextBoxFor(p => p.on_dt, new { @class = "sizeL", @type = "text" })
                     </div>
                 </div>
                 <div class="container mt-2">
@@ -154,7 +150,7 @@
                     <div class="col-lg-10 col-md-10 col-sm-12 col-12" style="background-color:burlywood;color:brown">
                         <div class="row mt-1 mb-1">
                             <div class="col-lg-9 col-sm-12 col-12">
-
+                               
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
                                 @Html.TextBoxFor(model => model.prnt_bal, new { @class = "size2", @type = "text" })
@@ -164,7 +160,7 @@
                     </div>
 
                 </div>
-
+                
             </div>
         </div>
     </div>

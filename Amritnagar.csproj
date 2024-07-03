@@ -126,6 +126,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\DividendController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoanController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Models\Database\Deduct_ACHD_Mast.cs" />
     <Compile Include="Models\Database\Department_Mast.cs" />
     <Compile Include="Models\Database\Designation_Mast.cs" />
+    <Compile Include="Models\Database\DIVIDEND_LEDGER.cs" />
     <Compile Include="Models\Database\Employer_Branch_Mast.cs" />
     <Compile Include="Models\Database\Employer_Mast.cs" />
     <Compile Include="Models\Database\FUNDDEP_MAST.cs" />
@@ -280,9 +282,6 @@
     <Content Include="Views\Member\ShareLedgerStatement.cshtml" />
     <Content Include="Views\Member\MemDepositeFundIntPaySch.cshtml" />
     <Content Include="Views\Member\ShareCapitalDetailList.cshtml" />
-    <Content Include="Views\Member\DividendCalcAndPosting.cshtml" />
-    <Content Include="Views\Member\DividendWritOfSch.cshtml" />
-    <Content Include="Views\Member\UnpaidDividendDetailList.cshtml" />
     <Content Include="Views\Member\MemDepositeFundDetailList.cshtml" />
     <Content Include="Views\Member\MemDepositeFundLedgerStmnt.cshtml" />
     <Content Include="Views\SalaryDeduction\PrepOfDeductionSchedule.cshtml" />
@@ -292,6 +291,9 @@
     <Content Include="Views\Account\OnLineCashReceive.cshtml" />
     <Content Include="Views\Account\OnLineCashRecLoan.cshtml" />
     <Content Include="Views\Account\VoucherEntry.cshtml" />
+    <Content Include="Views\Dividend\DividendCalcAndPosting.cshtml" />
+    <Content Include="Views\Dividend\DividendWritOfSch.cshtml" />
+    <Content Include="Views\Dividend\UnpaidDividendDetailList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

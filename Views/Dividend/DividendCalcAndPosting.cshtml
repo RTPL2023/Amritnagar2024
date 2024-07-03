@@ -1,0 +1,374 @@
+﻿@model Amritnagar.Models.ViewModel.DividendCalcAndPostViewModel
+
+@{
+    ViewBag.Title = "DividendCalcAndPosting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .disnon {
+        width: 160px;
+        height: 25px;
+        display: none
+    }
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+
+    .size1 {
+        width: 120px;
+        height: 25px;
+    }
+
+    .size2 {
+        width: 115px;
+        height: 25px;
+        background-color: white
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 300px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 1210px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 1210px;
+            overflow: auto;
+            height: 350px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            /*width: 1000px;*/
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+</style>
+<form asp-controller="Dividend" asp-action="DividendCalcAndPosting" method="post">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        Dividend Calculation And Posting
+    </div>
+    <div class="container mt-3">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1300px">
+                <div class="row mt-2">
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                        Colliery Code
+                        @Html.DropDownListFor(model => model.colliery_code, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select Account Head", new { @class = "sizebig" })
+
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Category
+                        @Html.TextBoxFor(p => p.ex_gen, new { @class = "sizeL", @type = "text" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="Btnrefreshonclick()" />
+
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12 mt-3">
+                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save Dividend" onclick="btnsaveonclick()" />
+
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Book No<br />
+                        @Html.TextBoxFor(p => p.book_no, new { @class = "size1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        From Date<br />
+                        @Html.TextBoxFor(p => p.fr_dt, new { @class = "size1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        To Date<br />
+                        @Html.TextBoxFor(p => p.to_dt, new { @class = "size1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Posting Date<br />
+                        @Html.TextBoxFor(p => p.post_dt, new { @class = "size1", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Int.(%)<br />
+                        @Html.TextBoxFor(p => p.inst, new { @class = "size1", @type = "text" })
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:indianred;color:white;font-size:15px;font-weight:bold;text-align:center;text-transform:uppercase">
+                            Particulars of Dividend Payable
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
+                            <div class="table-responsive mt-1">
+                                <table id="list" class="tab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-2 mb-1">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12" id="close" style="background-color: saddlebrown; color: floralwhite; font-size: 14px; font-weight: bold; text-align: center">
+                        << Summary >>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-12" style="font-size:14px;font-weight:bold;background-color:burlywood;color:brown">
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Op/Share Capital
+                                @Html.TextBoxFor(model => model.opsh_cap, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Cl/Share Capital
+                                @Html.TextBoxFor(model => model.clsh_cap, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Dividend Payable
+                                @Html.TextBoxFor(model => model.div_pay, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 ">
+
+                                @Html.TextBoxFor(p => p.member_id, new { @class = "", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12 ">
+
+                                @Html.TextBoxFor(p => p.forsave, new { @class = "disnon", @type = "text" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="bankCorp-modal">
+            <div class="modal-wrap">
+                <table id="list2" class="tab">
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</form>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading").hide();
+            //$("#frm_dt").hide();
+            //$("#to_dt").hide();
+        });
+
+  function Btnrefreshonclick() {
+            $("#loading").show();
+                /*alert("ok");*/
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                fr_dt: $('#fr_dt').val(),
+                colliery_code: $('#colliery_code').val(),
+                branch: $('#branch').val(),
+                ex_gen: $('#ex_gen').val(),
+                to_dt: $('#to_dt').val(),
+                book_no: $('#book_no').val(),
+                inst: $('#inst').val(),
+            };
+                /*alert(JSON.stringify(ModelObject));*/
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getLIstForDividendpost", "Dividend")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        $("#loading").hide();
+                        document.getElementById("list").innerHTML = data.tableelement;
+                        $('#opsh_cap').val(data.opsh_cap);
+                        $('#clsh_cap').val(data.clsh_cap);
+                        $('#div_pay').val(data.div_pay);
+
+
+                    },
+                    error: function (err) {
+                        alert("Unable To Calculate");
+                    }
+                });
+
+        };
+        function btnsaveonclick() {
+            $("#loading").show();
+            $('#forsave').val("Savedata");
+            /*alert("ok");*/
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                fr_dt: $('#fr_dt').val(),
+                colliery_code: $('#colliery_code').val(),
+                branch: $('#branch').val(),
+                ex_gen: $('#ex_gen').val(),
+                to_dt: $('#to_dt').val(),
+                book_no: $('#book_no').val(),
+                inst: $('#inst').val(),
+                post_dt: $('#post_dt').val(),
+                forsave: $('#forsave').val(),
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getLIstForDividendpost", "Dividend")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    //alert(data);
+                    $("#loading").hide();
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                    $("#loading").hide();
+
+                }
+            });
+
+        };
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('list');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    var f1 = document.getElementById('member_id');
+
+                    f1.value = cells[1].innerHTML;
+                    getdividentledger();
+                };
+            }
+        })();
+        function getdividentledger() {
+           
+                /*alert("ok");*/
+            let ModelObject = {
+                member_id: $('#member_id').val(),
+                branch: $('#branch').val(),
+            };
+                /*alert(JSON.stringify(ModelObject));*/
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getDividendLedgerBymember_id", "Dividend")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                       
+                        document.getElementById("list2").innerHTML = data.tableelement1;
+                  
+
+
+                    },
+                    error: function (err) {
+                        alert("Unable To Calculate");
+                    }
+                });
+
+        };
+    </script>
+}

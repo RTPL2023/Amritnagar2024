@@ -19,8 +19,8 @@ namespace Amritnagar.Models.Database
         public string emp_cd { get; set; }
         public DateTime mem_date { get; set; }
         public string member_type { get; set; }
-        public string f_name { get; set; }        
-        public string mem_name { get; set; }        
+        public string f_name { get; set; }
+        public string mem_name { get; set; }
         public string member_category { get; set; }
         public string l_name { get; set; }
         public Nullable<DateTime> birth_date { get; set; }
@@ -98,7 +98,7 @@ namespace Amritnagar.Models.Database
         {
             string sql;
             Boolean i;
-            sql = "select * from member_mast where branch_id='"+ branch_id + "' AND MEMBER_ID='" + mem_id + "'";
+            sql = "select * from member_mast where branch_id='" + branch_id + "' AND MEMBER_ID='" + mem_id + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -167,14 +167,14 @@ namespace Amritnagar.Models.Database
                         { "MEMBER_ID",  mm.mem_id },
                         { "EMPLOYEE_ID",mm.emp_id },
                         { "EMPLOYER_CD", mm.emp_cd},
-                        { "EMPLOYER_BRANCH",mm.emp_branch },                    
-                        { "MEMBER_DATE",    mm.mem_date },                                      
+                        { "EMPLOYER_BRANCH",mm.emp_branch },
+                        { "MEMBER_DATE",    mm.mem_date },
                         { "BOOK_NO",    mm.book_no},
                         { "MEMBER_TYPE",    mm.member_type },
                         { "MEM_CATEGORY",   mm.member_category },
                         { "MEMBER_FIRST_NM",mm.f_name },
                         { "MEMBER_LAST_NM",mm.l_name},
-                        { "MEMBER_NAME",    mm.mem_name },                 
+                        { "MEMBER_NAME",    mm.mem_name },
                         { "GRDN_NAME",  mm.guardian_name },
                         { "RELN_ID",    mm.member_rel},
                         { "mail_hno",   mm.mailAdd_house},
@@ -216,9 +216,9 @@ namespace Amritnagar.Models.Database
                         { "TF_FLAG", mm.tf_double },
                         { "member_retired",mm.ret },
                         { "member_transfered",mm.trans },
-                        { "share",mm.share },                                      
-                        { "bank_code",mm.bank_code },                                      
-                        { "ACCOUNT_NO",mm.accc_no },                                      
+                        { "share",mm.share },
+                        { "bank_code",mm.bank_code },
+                        { "ACCOUNT_NO",mm.accc_no },
                 });
             }
             catch (Exception x)
@@ -242,7 +242,7 @@ namespace Amritnagar.Models.Database
                     mm.emp_id = dr["EMPLOYEE_ID"].ToString();
                     qry = "select * from RECOVERY_SCHEDULE where employee_id='" + mm.emp_id + "' ORDER BY EMPLOYEE_ID";
                     config.singleResult(qry);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         config.Update("RECOVERY_SCHEDULE", new Dictionary<String, object>()
                             {
@@ -271,7 +271,7 @@ namespace Amritnagar.Models.Database
         public Member_Mast getdetails(string branch_id, string memid)
         {
             Member_Mast mm = new Member_Mast();
-            string sql = "select * from MEMBER_MAST where branch_id= '"+ branch_id + "' AND MEMBER_ID='" + memid + "'";
+            string sql = "select * from MEMBER_MAST where branch_id= '" + branch_id + "' AND MEMBER_ID='" + memid + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -308,14 +308,14 @@ namespace Amritnagar.Models.Database
                     mm.phn = dr["PHONE_NO"].ToString();
                     mm.th_f_amt = Convert.ToDecimal(dr["BLOOD_GROUP"]);
                     mm.birth_date = Convert.ToDateTime(dr["BIRTH_DATE"].ToString());
-                    mm.caste = dr["CASTE_ID"].ToString();                
+                    mm.caste = dr["CASTE_ID"].ToString();
                     mm.sex = dr["SEX"].ToString();
                     mm.relgn = dr["RELGN_ID"].ToString();
                     mm.occupation = dr["OCCUP_ID"].ToString();
                     mm.married = Convert.ToInt32(dr["MARRIED"]);
                     mm.ltl_app = Convert.ToInt32(dr["IF_LTI"]);
                     mm.serv_sts = dr["SERV_STATUS"].ToString();
-                    mm.dept = dr["DEPT_CD"].ToString();                  
+                    mm.dept = dr["DEPT_CD"].ToString();
                     mm.desig = dr["DESIG_CD"].ToString();
                     mm.ret = dr["MEMBER_RETIRED"].ToString();
                     mm.married = !Convert.IsDBNull(dr["married"]) ? Convert.ToInt32(dr["married"]) : Convert.ToInt32("00"); /*Convert.ToInt32(dr["married"]);*/
@@ -373,7 +373,7 @@ namespace Amritnagar.Models.Database
             {
                 mm.msg = "New Member";
             }
-            
+
             return mm;
         }
         public Member_Mast getdetailsbyempid(string branch_id, string emp_id)
@@ -386,6 +386,7 @@ namespace Amritnagar.Models.Database
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     mm.emp_cd = dr["EMPLOYER_CD"].ToString();
+                    mm.mem_name = dr["member_name"].ToString();
                     mm.book_no = dr["book_no"].ToString();
                     mm.emp_branch = dr["EMPLOYER_BRANCH"].ToString();
                     //mm.birth_date = !Convert.IsDBNull(dr["birth_date"]) ? Convert.ToDateTime(dr["birth_date"]) : Convert.ToDateTime("01/01/0001");
@@ -412,7 +413,7 @@ namespace Amritnagar.Models.Database
                     mm.prmntAdd_city = dr["PERM_CITY"].ToString();
                     mm.prmntAdd_dist = dr["PERM_DIST"].ToString();
                     mm.prmntAdd_state = dr["PERM_STATE"].ToString();
-                    mm.prmntAdd_pin = !Convert.IsDBNull(dr["PERM_PIN"]) ? Convert.ToString(dr["PERM_PIN"]) : Convert.ToString(""); 
+                    mm.prmntAdd_pin = !Convert.IsDBNull(dr["PERM_PIN"]) ? Convert.ToString(dr["PERM_PIN"]) : Convert.ToString("");
                     mm.phn = dr["PHONE_NO"].ToString();
                     mm.th_f_amt = Convert.ToDecimal(dr["BLOOD_GROUP"]);
                     mm.birth_date = Convert.ToDateTime(dr["BIRTH_DATE"].ToString());
@@ -432,7 +433,7 @@ namespace Amritnagar.Models.Database
                     mm.ident_mark = !Convert.IsDBNull(dr["ID_MARK"]) ? Convert.ToString(dr["ID_MARK"]) : Convert.ToString("");
                     mm.join_dt = !Convert.IsDBNull(dr["DATE_OF_JOINING"]) ? Convert.ToDateTime(dr["DATE_OF_JOINING"]) : Convert.ToDateTime("");
                     mm.retmnt_dt = !Convert.IsDBNull(dr["DATE_OF_RETIREMENT"]) ? Convert.ToDateTime(dr["DATE_OF_RETIREMENT"]) : Convert.ToDateTime(null);
-                    mm.exp_dt = !Convert.IsDBNull(dr["EXPIRY_DATE"]) ? Convert.ToDateTime(dr["EXPIRY_DATE"]):Convert.ToDateTime(null);
+                    mm.exp_dt = !Convert.IsDBNull(dr["EXPIRY_DATE"]) ? Convert.ToDateTime(dr["EXPIRY_DATE"]) : Convert.ToDateTime(null);
                     mm.close_dt = !Convert.IsDBNull(dr["MEMBER_CLOSDT"]) ? Convert.ToDateTime(dr["MEMBER_CLOSDT"]) : Convert.ToDateTime(null);
                     mm.bank_code = !Convert.IsDBNull(dr["BANK_CODE"]) ? Convert.ToString(dr["BANK_CODE"]) : Convert.ToString("");
                     mm.accc_no = !Convert.IsDBNull(dr["ACCOUNT_NO"]) ? Convert.ToString(dr["ACCOUNT_NO"]) : Convert.ToString("");
@@ -478,15 +479,121 @@ namespace Amritnagar.Models.Database
             {
                 mm.msg = "New Member";
             }
-            
+
+            return mm;
+        }
+        public Member_Mast getdetailsbymemberid(string branch_id, string mem_id)
+        {
+            Member_Mast mm = new Member_Mast();
+            string sql = "select * from MEMBER_MAST where branch_id= '" + branch_id + "' AND MEMBER_ID='" + mem_id + "'";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    mm.emp_cd = dr["EMPLOYER_CD"].ToString();
+                    mm.mem_name = dr["member_name"].ToString();
+                    mm.book_no = dr["book_no"].ToString();
+                    mm.emp_branch = dr["EMPLOYER_BRANCH"].ToString();
+                    //mm.birth_date = !Convert.IsDBNull(dr["birth_date"]) ? Convert.ToDateTime(dr["birth_date"]) : Convert.ToDateTime("01/01/0001");
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.mem_date = Convert.ToDateTime(dr["MEMBER_DATE"].ToString());
+                    mm.member_type = dr["MEMBER_TYPE"].ToString();
+                    mm.member_category = dr["MEM_CATEGORY"].ToString();
+                    //mm.if_lti = !Convert.IsDBNull(dr["if_lti"]) ? Convert.ToInt32(dr["if_lti"]) : Convert.ToInt32("00"); /*Convert.ToInt32(dr["if_lti"]);*/
+                    mm.f_name = dr["MEMBER_FIRST_NM"].ToString();
+                    mm.l_name = dr["MEMBER_LAST_NM"].ToString();
+                    mm.guardian_name = dr["GRDN_NAME"].ToString();
+                    mm.member_rel = dr["RELN_ID"].ToString();
+                    mm.mailAdd_house = dr["MAIL_HNO"].ToString();
+                    mm.mailAdd_add1 = dr["MAIL_ADD1"].ToString();
+                    mm.mailAdd_add2 = dr["MAIL_ADD2"].ToString();
+                    mm.mailAdd_city = dr["MAIL_CITY"].ToString();
+                    //mm.sbamt = !Convert.IsDBNull(dr["sbamt"]) ? Convert.ToDecimal(dr["sbamt"]) : Convert.ToDecimal("00"); /*Convert.ToDecimal(dr["sbamt"]);*/
+                    mm.mailAdd_dist = dr["MAIL_DIST"].ToString();
+                    mm.mailAdd_state = dr["MAIL_STATE"].ToString();
+                    mm.mailAdd_pin = dr["MAIL_PIN"].ToString();
+                    mm.prmntAdd_house = dr["PERM_HNO"].ToString();
+                    mm.prmntAdd_add1 = dr["PERM_ADD1"].ToString();
+                    mm.prmntAdd_add2 = dr["PERM_ADD2"].ToString();
+                    mm.prmntAdd_city = dr["PERM_CITY"].ToString();
+                    mm.prmntAdd_dist = dr["PERM_DIST"].ToString();
+                    mm.prmntAdd_state = dr["PERM_STATE"].ToString();
+                    mm.prmntAdd_pin = !Convert.IsDBNull(dr["PERM_PIN"]) ? Convert.ToString(dr["PERM_PIN"]) : Convert.ToString("");
+                    mm.phn = dr["PHONE_NO"].ToString();
+                    mm.th_f_amt = Convert.ToDecimal(dr["BLOOD_GROUP"]);
+                    mm.birth_date = Convert.ToDateTime(dr["BIRTH_DATE"].ToString());
+                    mm.caste = dr["CASTE_ID"].ToString();
+                    mm.sex = dr["SEX"].ToString();
+                    mm.relgn = dr["RELGN_ID"].ToString();
+                    mm.occupation = dr["OCCUP_ID"].ToString();
+                    mm.married = Convert.ToInt32(dr["MARRIED"]);
+                    mm.ltl_app = Convert.ToInt32(dr["IF_LTI"]);
+                    mm.serv_sts = dr["SERV_STATUS"].ToString();
+                    mm.dept = dr["DEPT_CD"].ToString();
+                    mm.desig = dr["DESIG_CD"].ToString();
+                    mm.ret = dr["MEMBER_RETIRED"].ToString();
+                    //mm.married = !Convert.IsDBNull(dr["married"]) ? Convert.ToInt32(dr["married"]) : Convert.ToInt32("00"); /*Convert.ToInt32(dr["married"]);*/
+                    mm.trans = dr["MEMBER_TRANSFERED"].ToString();
+                    mm.pan = dr["PAN_NO"].ToString();
+                    mm.ident_mark = !Convert.IsDBNull(dr["ID_MARK"]) ? Convert.ToString(dr["ID_MARK"]) : Convert.ToString("");
+                    mm.join_dt = !Convert.IsDBNull(dr["DATE_OF_JOINING"]) ? Convert.ToDateTime(dr["DATE_OF_JOINING"]) : Convert.ToDateTime("");
+                    mm.retmnt_dt = !Convert.IsDBNull(dr["DATE_OF_RETIREMENT"]) ? Convert.ToDateTime(dr["DATE_OF_RETIREMENT"]) : Convert.ToDateTime(null);
+                    mm.exp_dt = !Convert.IsDBNull(dr["EXPIRY_DATE"]) ? Convert.ToDateTime(dr["EXPIRY_DATE"]) : Convert.ToDateTime(null);
+                    mm.close_dt = !Convert.IsDBNull(dr["MEMBER_CLOSDT"]) ? Convert.ToDateTime(dr["MEMBER_CLOSDT"]) : Convert.ToDateTime(null);
+                    mm.bank_code = !Convert.IsDBNull(dr["BANK_CODE"]) ? Convert.ToString(dr["BANK_CODE"]) : Convert.ToString("");
+                    mm.accc_no = !Convert.IsDBNull(dr["ACCOUNT_NO"]) ? Convert.ToString(dr["ACCOUNT_NO"]) : Convert.ToString("");
+                    mm.share = !Convert.IsDBNull(dr["share"]) ? Convert.ToDecimal(dr["share"]) : Convert.ToDecimal("0.00");
+                    mm.remarks = dr["REMARKS"].ToString();
+                    mm.exp = dr["IS_DEAD"].ToString();
+                    mm.mem_closed = dr["MEMBER_CLOSED"].ToString();
+                    mm.tf_buffer = Convert.ToDecimal(dr["TF_BUFFER"]);
+                    mm.tf_double = dr["TF_FLAG"].ToString();
+                    sql = "Select * from MEMBER_NOMINEE where branch_id= '" + branch_id + "' And MEMBER_ID = '" + mm.mem_id + "'";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr1 in config.dt.Rows)
+                        {
+                            mm.nom_srl = dr1["NOM_SRL"].ToString();
+                            mm.nominee_name = dr1["NOM_NAME"].ToString();
+                            mm.nominee_rel = dr1["NOM_RELN_ID"].ToString();
+                            mm.nom_birthdt = dr1["NOM_BIRTH_DT"].ToString();
+                            mm.nom_hno = dr1["NOM_HNO"].ToString();
+                            mm.nominee_add1 = dr1["NOM_ADD1"].ToString();
+                            mm.nominee_add2 = !Convert.IsDBNull(dr1["NOM_ADD2"]) ? Convert.ToString(dr1["NOM_ADD2"]) : Convert.ToString("");
+                            mm.nominee_city = !Convert.IsDBNull(dr1["NOM_CITY"]) ? Convert.ToString(dr1["NOM_CITY"]) : Convert.ToString("");
+                            mm.nominee_dist = !Convert.IsDBNull(dr1["NOM_DIST"]) ? Convert.ToString(dr1["NOM_DIST"]) : Convert.ToString("");
+                            mm.nom_state = !Convert.IsDBNull(dr1["NOM_STATE"]) ? Convert.ToString(dr1["NOM_STATE"]) : Convert.ToString("");
+                            mm.nominee_pin = !Convert.IsDBNull(dr1["NOM_PIN"]) ? Convert.ToString(dr1["NOM_PIN"]) : Convert.ToString("");
+                        }
+                    }
+                    sql = "Select * from MEMBER_INTRODUCER where branch_id= '" + branch_id + "' And MEMBER_ID = '" + mm.mem_id + "'";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr2 in config.dt.Rows)
+                        {
+                            mm.intr_srl = Convert.ToInt32(dr2["INTR_SRL"]);
+                            mm.intr_member_id = dr2["INTR_MEMBER_ID"].ToString();
+                            mm.intr_name = dr2["INTR_NAME"].ToString();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                mm.msg = "New Member";
+            }
+
             return mm;
         }
         public string UpdateMemberMaster(Member_Mast mm)
         {
-             try
-             {
-                    config.Update("MEMBER_MAST", new Dictionary<String, object>()
-                    {                       
+            try
+            {
+                config.Update("MEMBER_MAST", new Dictionary<String, object>()
+                    {
                         { "EMPLOYER_CD", mm.emp_cd},
                         { "EMPLOYER_BRANCH",mm.emp_branch },
                         { "MEMBER_DATE",    mm.mem_date },
@@ -545,15 +652,15 @@ namespace Amritnagar.Models.Database
                         { "BRANCH_ID",  mm.branch_id },
                         { "MEMBER_ID",  mm.mem_id },
                         { "EMPLOYEE_ID",mm.emp_id },
-                    });               
-             }
-             catch (Exception ex)
-             {
-                
-             }
+                    });
+            }
+            catch (Exception ex)
+            {
+
+            }
             string msg = "Updated Successfuly";
             return msg;
-        }     
+        }
         public List<Member_Mast> getdetails(string searchtype, string branch, string mem_type, string fr_dt, string to_dt)
         {
             List<Member_Mast> mil = new List<Member_Mast>();
@@ -562,7 +669,7 @@ namespace Amritnagar.Models.Database
             {
                 sql = "SELECT EMPLOYEE_ID,MEMBER_ID,MEMBER_DATE,MEMBER_TYPE,MEM_CATEGORY,MEMBER_NAME,MEMBER_CLOSED,MEMBER_CLOSDT " +
                     "FROM MEMBER_MAST WHERE BRANCH_ID='" + branch + "' AND convert(datetime, MEMBER_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + to_dt + "', 103)" +
-                    "AND MEMBER_TYPE='" + mem_type + "' ORDER BY MEMBER_ID,MEMBER_DATE,MEMBER_TYPE ";                
+                    "AND MEMBER_TYPE='" + mem_type + "' ORDER BY MEMBER_ID,MEMBER_DATE,MEMBER_TYPE ";
                 config.singleResult(sql);
                 if (config.dt.Rows.Count > 0)
                 {
@@ -585,8 +692,8 @@ namespace Amritnagar.Models.Database
                             if (config.dt.Rows.Count > 0)
                             {
                                 foreach (DataRow dr1 in config.dt.Rows)
-                                {                                  
-                                    mm.tramt = !Convert.IsDBNull(dr1["BAL_AMOUNT"]) ? Convert.ToDecimal(dr1["BAL_AMOUNT"]) : Convert.ToDecimal("00");                                   
+                                {
+                                    mm.tramt = !Convert.IsDBNull(dr1["BAL_AMOUNT"]) ? Convert.ToDecimal(dr1["BAL_AMOUNT"]) : Convert.ToDecimal("00");
                                 }
                             }
                         }
@@ -597,8 +704,8 @@ namespace Amritnagar.Models.Database
                             if (config.dt.Rows.Count > 0)
                             {
                                 foreach (DataRow dr1 in config.dt.Rows)
-                                {                                   
-                                    mm.tramt = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("00");                                  
+                                {
+                                    mm.tramt = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("00");
                                 }
                             }
                         }
@@ -625,7 +732,7 @@ namespace Amritnagar.Models.Database
                         mm.member_type = dr["MEMBER_TYPE"].ToString();
                         mm.member_category = dr["MEM_CATEGORY"].ToString();
                         mm.mem_name = dr["MEMBER_NAME"].ToString();
-                       // mil.Add(mm);
+                        // mil.Add(mm);
                         if (mm.member_type == "GEN")
                         {
                             sql = "select * from share_ledger where BRANCH_ID='" + branch + "' AND member_id='" + mm.mem_id + "' AND convert(datetime, vch_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, vch_date, 103) <= convert(datetime, '" + to_dt + "', 103) AND DR_CR='D' order by vch_date,vch_srl";
@@ -633,8 +740,8 @@ namespace Amritnagar.Models.Database
                             if (config.dt.Rows.Count > 0)
                             {
                                 foreach (DataRow dr1 in config.dt.Rows)
-                                {                                
-                                    mm.tramt = !Convert.IsDBNull(dr1["TR_AMOUNT"]) ? Convert.ToDecimal(dr1["TR_AMOUNT"]) : Convert.ToDecimal("00");                                 
+                                {
+                                    mm.tramt = !Convert.IsDBNull(dr1["TR_AMOUNT"]) ? Convert.ToDecimal(dr1["TR_AMOUNT"]) : Convert.ToDecimal("00");
                                 }
                             }
                         }
@@ -645,15 +752,15 @@ namespace Amritnagar.Models.Database
                             if (config.dt.Rows.Count > 0)
                             {
                                 foreach (DataRow dr1 in config.dt.Rows)
-                                {                                  
-                                    mm.tramt = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("00");                                 
+                                {
+                                    mm.tramt = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("00");
                                 }
                             }
                         }
                         mil.Add(mm);
                     }
                 }
-            }                                       
+            }
             return mil;
         }
         public Member_Mast getdetailsbymemberid(string memid)
@@ -664,13 +771,13 @@ namespace Amritnagar.Models.Database
             if (config.dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in config.dt.Rows)
-                {                   
-                    mm.book_no = dr["book_no"].ToString();                  
+                {
+                    mm.book_no = dr["book_no"].ToString();
                     mm.mem_date = Convert.ToDateTime(dr["MEMBER_DATE"].ToString());
                     mm.member_type = dr["MEMBER_TYPE"].ToString();
-                    mm.member_category = dr["MEM_CATEGORY"].ToString();                                      
+                    mm.member_category = dr["MEM_CATEGORY"].ToString();
                     mm.guardian_name = dr["GRDN_NAME"].ToString();
-                    mm.mem_name = dr["MEMBER_NAME"].ToString();                  
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();
                 }
             }
             return mm;
@@ -684,7 +791,7 @@ namespace Amritnagar.Models.Database
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
-                    mm.mem_id = dr["MEMBER_ID"].ToString();                   
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
                 }
             }
             else
@@ -814,12 +921,12 @@ namespace Amritnagar.Models.Database
         }
         public List<Member_Mast> GetmemMastForDemandInterestCalculation(MemDepositeFundIntPaySchViewModel model)
         {
-            // DepositMast dm = new DepositMast();
+        
             List<Member_Mast> mmlst = new List<Member_Mast>();
             string sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + model.branch + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' AND ";
             sql = sql + "BOOK_NO= '" + model.book_no + "' AND MEM_CATEGORY='" + model.ex_gen + "' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + model.to_dt + "', 103) AND ";
             sql = sql + "IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + model.to_dt + "', 103) ORDER BY MEMBER_ID";
-            //sql = sql + "AND convert(datetime, MEMBER_CLOSDT, 103) >= convert(datetime, '" + model.to_dt + "', 103) ORDER BY MEMBER_ID";
+          
             config.singleResult(sql);
 
             if (config.dt.Rows.Count > 0)
@@ -864,6 +971,34 @@ namespace Amritnagar.Models.Database
         }
 
 
+        public List<Member_Mast> GetmemMastForDvidendCalculation(DividendCalcAndPostViewModel model)
+        {
 
+            List<Member_Mast> mmlst = new List<Member_Mast>();
+            string sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + model.branch + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' AND ";
+            sql = sql + "BOOK_NO= '" + model.book_no + "' AND MEM_CATEGORY='" + model.ex_gen + "' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + model.to_dt + "', 103) AND ";
+            sql = sql + "IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + model.to_dt + "', 103) ORDER BY MEMBER_ID";
+
+            config.singleResult(sql);
+
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    mm.mem_date = Convert.ToDateTime(dr["MEMBER_DATE"]);
+                    mm.mem_name = Convert.ToString(dr["member_name"]);
+                    mm.mem_id = Convert.ToString(dr["MEMBER_ID"]);
+                    mmlst.Add(mm);
+                }
+            }
+            else
+            {
+                mmlst = null;
+            }
+            return mmlst;
+
+
+        }
     }
 }
