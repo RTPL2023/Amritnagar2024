@@ -33,7 +33,7 @@ namespace Amritnagar.Models.Database
 
         public List<ACC_HEAD> getglac_hd()
         {
-            string sql = "  Select * from  ACC_HEAD where ac_hd='GF' or ac_hd='LICP' or ac_hd='RTB'or AC_HD='TF'";
+            string sql = "  Select * from  ACC_HEAD where ac_hd='GF' or ac_hd='LICP' or ac_hd='RTB'or AC_HD='TF'or AC_HD='SH'";
             config.singleResult(sql);
             List<ACC_HEAD> aclst = new List<ACC_HEAD>();
             if (config.dt.Rows.Count > 0)

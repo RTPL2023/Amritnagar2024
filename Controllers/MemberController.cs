@@ -2375,7 +2375,7 @@ namespace Amritnagar.Controllers
 
             TF_Ledger tfl = new TF_Ledger();
             List<TF_Ledger> tfllst = new List<TF_Ledger>();
-            tfllst = tfl.getdataByledgerTab(model);
+            tfllst = tfl.getdataByledgerTab(model.gl_achd,model.branch,model.mem_no);
             int i = 1;
             decimal xtot = 0;
             string XTR_TYPE = "";

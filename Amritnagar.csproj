@@ -211,6 +211,7 @@
     <Compile Include="Models\ViewModel\SendingScheduleReportViewModel.cs" />
     <Compile Include="Models\ViewModel\ShareCapitalDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\ShareLedgerStatementViewModel.cs" />
+    <Compile Include="Models\ViewModel\Tf_Gf_LedgerViewModel.cs" />
     <Compile Include="Models\ViewModel\UnpaidDividendDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\UsersViewModel.cs" />
     <Compile Include="Models\ViewModel\VoucherEntryViewModel.cs" />
@@ -295,7 +296,6 @@
     <Content Include="Views\Dividend\DividendCalcAndPosting.cshtml" />
     <Content Include="Views\Dividend\DividendWritOfSch.cshtml" />
     <Content Include="Views\Dividend\UnpaidDividendDetailList.cshtml" />
-    <Content Include="Views\Member\MemberDetailList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
