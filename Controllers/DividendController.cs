@@ -23,8 +23,6 @@ namespace Amritnagar.Controllers
             model.post_dt = model.to_dt;
             return View(model);
         }
-
-
         public JsonResult getLIstForDividendpost(DividendCalcAndPostViewModel model)
         {
             Member_Mast mm = new Member_Mast();
@@ -53,8 +51,6 @@ namespace Amritnagar.Controllers
             model.tableelement = model.tableelement + " <th>Cl/Share Capital</th><th>Cl/Dividend Payb.</th></tr>";
             model.xmonths = xmonths;
         }
-
-
         public void PopulateGrid(DividendCalcAndPostViewModel model)
         {
             // utility utl = new utility();
@@ -145,9 +141,6 @@ namespace Amritnagar.Controllers
                 }
             }
         }
-
-
-
         public double CAL_DIVIDEND(DateTime xfrdt, DateTime XTODT, List<SHARE_LEDGER> sllst, int xformonths, decimal XINT_RATE, decimal XMAX_MINBAL, DividendCalcAndPostViewModel model)
         {
             double open_bal = 0; double clos_bal = 0; double xtot = 0;
@@ -253,8 +246,6 @@ namespace Amritnagar.Controllers
             CAL_DIVIDEND = Math.Round(CAL_DIVIDEND, 0);
             return CAL_DIVIDEND;
         }
-
-
         public JsonResult getDividendLedgerBymember_id(DividendCalcAndPostViewModel model)
         {
             DIVIDEND_LEDGER dl = new DIVIDEND_LEDGER();

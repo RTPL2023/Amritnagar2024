@@ -88,10 +88,43 @@ namespace Amritnagar.Models.Database
         public string nom_state { get; set; }
         public string msg { get; set; }
         public string nom_pin { get; set; }
+        public string insert_mode { get; set; }
         public int intr_srl { get; set; }
         public string intr_member_id { get; set; }
         public string intr_name { get; set; }
         public decimal tramt { get; set; }
+        public decimal XSHARE { get; set; }
+        public decimal XTF { get; set; }
+        public decimal xint_tf { get; set; }
+        public decimal xgf { get; set; }
+        public decimal Xint_Gf { get; set; }
+        public decimal xsfl { get; set; }
+        public decimal XISFL { get; set; }
+        public decimal xsjl { get; set; }
+        public decimal XIsjl { get; set; }
+        public decimal XSL3 { get; set; }
+        public decimal XISL3 { get; set; }
+        public decimal xpsl { get; set; }
+        public decimal XIPSL { get; set; }
+        public decimal xdll { get; set; }
+        public decimal XIDLL { get; set; }
+        public decimal xsjl1 { get; set; }
+        public decimal XIsjl1 { get; set; }
+        public decimal xM14 { get; set; }
+        public decimal XIM14 { get; set; }
+        public decimal xM12 { get; set; }
+        public decimal XIM12 { get; set; }
+        public decimal xSFL1 { get; set; }
+        public decimal XISFL1 { get; set; }
+        public decimal xPSL1 { get; set; }
+        public decimal XIPSL1 { get; set; }
+        public decimal xSL4 { get; set; }
+        public decimal XISL4 { get; set; }
+        public decimal xSL6 { get; set; }
+        public decimal XISL6 { get; set; }
+        public decimal xSL7 { get; set; }
+        public decimal XISL7 { get; set; }
+        public DateTime vch_date { get; set; }
 
 
         public Boolean CheckDetailsByMemberId(string branch_id, string mem_id)
@@ -969,8 +1002,6 @@ namespace Amritnagar.Models.Database
             }
             return mml;
         }
-
-
         public List<Member_Mast> GetmemMastForDvidendCalculation(DividendCalcAndPostViewModel model)
         {
 
@@ -999,6 +1030,269 @@ namespace Amritnagar.Models.Database
             return mmlst;
 
 
+        }
+
+        public List<Member_Mast> getdetailsbybookno(string unit, string book_no, string on_date)
+        {
+            List<Member_Mast> mml = new List<Member_Mast>();
+            string sql = string.Empty;
+            if(book_no != "")
+            {
+                sql = "Select * from member_mast where   EMPLOYER_BRANCH='" + unit + "' AND  BOOK_NO='" + book_no + "'";
+                sql = sql + "AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_date + "', 103) and IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + on_date + "', 103) ORDER BY MEMBER_ID";
+            }
+            else
+            {
+                sql = "Select * from member_mast where   EMPLOYER_BRANCH='" + unit + "'";
+                sql = sql + "AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_date + "', 103) and IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + on_date + "', 103) ORDER BY MEMBER_ID";
+            }
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    mm.mem_id = dr["MEMBER_ID"].ToString();                
+                    mm.emp_id = dr["EMPLOYEE_ID"].ToString();                   
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();
+                    //Share calculation portion
+                    sql = "select * from share_ledger where member_id='" + mm.mem_id + "'and  convert(datetime, vch_date, 103) <= convert(datetime, '" + on_date + "', 103)  order by VCH_DATE,vch_no,vch_srl";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        foreach(DataRow dr1 in config.dt.Rows)
+                        {
+                            mm.XSHARE = !Convert.IsDBNull(dr1["BAL_AMOUNT"]) ? Convert.ToDecimal(dr1["BAL_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        }
+                    }
+                    //Thrift fund calculation
+                    sql = "select * from tf_ledger where member_id='" + mm.mem_id + "'and convert(datetime, vch_date, 103) <= convert(datetime, '" + on_date + "', 103) order by VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr2 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.XTF = !Convert.IsDBNull(dr2["prin_bal"]) ? Convert.ToDecimal(dr2["prin_bal"]) : Convert.ToDecimal("0.00");
+                        //Interest on Tf calculation
+                        dr2 = (DataRow)config.dt.Rows[0];
+                        mm.vch_date = !Convert.IsDBNull(dr2["vch_datE"]) ? Convert.ToDateTime(dr2["vch_datE"]) : Convert.ToDateTime(null);
+                        mm.insert_mode = !Convert.IsDBNull(dr2["insert_mode"]) ? Convert.ToString(dr2["insert_mode"]) : Convert.ToString("");
+                        if(mm.vch_date == Convert.ToDateTime(on_date) && mm.insert_mode == "SI")
+                        {
+                            mm.xint_tf = !Convert.IsDBNull(dr2["INT_AMOUNT"]) ? Convert.ToDecimal(dr2["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        }
+                    }
+                    else
+                    {
+                        mm.XTF = 0;
+                        mm.xint_tf = 0;
+                    }
+                    //Gurantee Fund calculation
+                    sql = "select * from GF_LEDGER where member_id='" + mm.mem_id + "'and convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) order by VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr3 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xgf = !Convert.IsDBNull(dr3["prin_bal"]) ? Convert.ToDecimal(dr3["prin_bal"]) : Convert.ToDecimal("0.00");
+                        //Calculation Int gf
+                        dr3 = (DataRow)config.dt.Rows[0];
+                        mm.vch_date = !Convert.IsDBNull(dr3["vch_date"]) ? Convert.ToDateTime(dr3["vch_date"]) : Convert.ToDateTime(null);
+                        mm.insert_mode = !Convert.IsDBNull(dr3["insert_mode"]) ? Convert.ToString(dr3["insert_mode"]) : Convert.ToString("");
+                        if (mm.vch_date == Convert.ToDateTime(on_date) && mm.insert_mode == "SI")
+                        {
+                            mm.Xint_Gf = !Convert.IsDBNull(dr3["INT_AMOUNT"]) ? Convert.ToDecimal(dr3["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        }
+                    }
+                    else
+                    {
+                        mm.xgf = 0;
+                        mm.Xint_Gf = 0;
+                    }
+                    //LOAN 16.5 CALCULATION 
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SFL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr4 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xsfl = !Convert.IsDBNull(dr4["prin_bal"]) ? Convert.ToDecimal(dr4["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XISFL = !Convert.IsDBNull(dr4["INT_DUE"]) ? Convert.ToDecimal(dr4["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xsfl = 0;
+                        mm.XISFL = 0;
+                    }
+                    //LOAN 14.5 CALCULATION 
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SJL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr5 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xsjl = !Convert.IsDBNull(dr5["prin_bal"]) ? Convert.ToDecimal(dr5["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIsjl = !Convert.IsDBNull(dr5["INT_DUE"]) ? Convert.ToDecimal(dr5["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xsjl = 0;
+                        mm.XIsjl = 0;
+                    }
+                    //SL3 13
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL3' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr6 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.XSL3 = !Convert.IsDBNull(dr6["prin_bal"]) ? Convert.ToDecimal(dr6["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XISL3 = !Convert.IsDBNull(dr6["INT_DUE"]) ? Convert.ToDecimal(dr6["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.XSL3 = 0;
+                        mm.XISL3 = 0;
+                    }
+                    //PSL 10
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='PSL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr7 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xpsl = !Convert.IsDBNull(dr7["prin_bal"]) ? Convert.ToDecimal(dr7["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIPSL = !Convert.IsDBNull(dr7["INT_DUE"]) ? Convert.ToDecimal(dr7["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xpsl = 0;
+                        mm.XIPSL = 0;
+                    }
+                    //DLL 1
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='DLL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr8 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xdll = !Convert.IsDBNull(dr8["prin_bal"]) ? Convert.ToDecimal(dr8["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIDLL = !Convert.IsDBNull(dr8["INT_DUE"]) ? Convert.ToDecimal(dr8["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xdll = 0;
+                        mm.XIDLL = 0;
+                    }
+                    //SJL1
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SJL1' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr9 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xsjl1 = !Convert.IsDBNull(dr9["prin_bal"]) ? Convert.ToDecimal(dr9["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIsjl1 = !Convert.IsDBNull(dr9["INT_DUE"]) ? Convert.ToDecimal(dr9["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xsjl1 = 0;
+                        mm.XIsjl1 = 0;
+                    }
+                    //M14
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='M14' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr10 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xM14 = !Convert.IsDBNull(dr10["prin_bal"]) ? Convert.ToDecimal(dr10["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIM14 = !Convert.IsDBNull(dr10["INT_DUE"]) ? Convert.ToDecimal(dr10["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xM14 = 0;
+                        mm.XIM14 = 0;
+                    }
+                    //M12
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='M12' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr11 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xM12 = !Convert.IsDBNull(dr11["prin_bal"]) ? Convert.ToDecimal(dr11["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIM12 = !Convert.IsDBNull(dr11["INT_DUE"]) ? Convert.ToDecimal(dr11["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xM12 = 0;
+                        mm.XIM12 = 0;
+                    }
+                    //SFL1
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SFL1' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr12 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xSFL1 = !Convert.IsDBNull(dr12["prin_bal"]) ? Convert.ToDecimal(dr12["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XISFL1 = !Convert.IsDBNull(dr12["INT_DUE"]) ? Convert.ToDecimal(dr12["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xSFL1 = 0;
+                        mm.XISFL1 = 0;
+                    }
+                    //PSL1
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='PSL1' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr13 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xPSL1 = !Convert.IsDBNull(dr13["prin_bal"]) ? Convert.ToDecimal(dr13["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XIPSL1 = !Convert.IsDBNull(dr13["INT_DUE"]) ? Convert.ToDecimal(dr13["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xPSL1 = 0;
+                        mm.XIPSL1 = 0;
+                    }
+                    //SL4
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL4' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr14 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xSL4 = !Convert.IsDBNull(dr14["prin_bal"]) ? Convert.ToDecimal(dr14["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XISL4 = !Convert.IsDBNull(dr14["INT_DUE"]) ? Convert.ToDecimal(dr14["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xSL4 = 0;
+                        mm.XISL4 = 0;
+                    }
+                    //SL6
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL6' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr15 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xSL6 = !Convert.IsDBNull(dr15["prin_bal"]) ? Convert.ToDecimal(dr15["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XISL6 = !Convert.IsDBNull(dr15["INT_DUE"]) ? Convert.ToDecimal(dr15["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xSL6 = 0;
+                        mm.XISL6 = 0;
+                    }
+                    //SL7
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL7' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr16 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.xSL7 = !Convert.IsDBNull(dr16["prin_bal"]) ? Convert.ToDecimal(dr16["prin_bal"]) : Convert.ToDecimal("0.00");
+                        mm.XISL7 = !Convert.IsDBNull(dr16["INT_DUE"]) ? Convert.ToDecimal(dr16["INT_DUE"]) : Convert.ToDecimal("0.00");
+                    }
+                    else
+                    {
+                        mm.xSL7 = 0;
+                        mm.XISL7 = 0;
+                    }
+                    mml.Add(mm);
+                }
+            }
+            return mml;
         }
     }
 }

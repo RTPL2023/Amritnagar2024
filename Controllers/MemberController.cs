@@ -2281,8 +2281,7 @@ namespace Amritnagar.Controllers
 
         /********************************************Share Capital Details List End*******************************************/
 
-       
-
+        /********************************************Member Deposit Fund Ledger Statement Start *******************************************/
         [HttpGet]
         public ActionResult MemDepositeFundLedgerStmnt(MemDepositeFundLedgerStmntViewModel model)
         {
@@ -2301,12 +2300,6 @@ namespace Amritnagar.Controllers
 
             return View(model);
         }
-
-
-
-
-
-
         public JsonResult getdatabyMemberIdForfundLedgerStatement(MemDepositeFundLedgerStmntViewModel model)
         {
             DateTime XPAIDUPTO;
@@ -2500,9 +2493,6 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-
-
-
         public DateTime GET_INST_FOR(decimal XAMT, DateTime xfrdt)
         {
             DateTime GETINSTFOR = DateTime.Now;
@@ -2582,13 +2572,7 @@ namespace Amritnagar.Controllers
             }
             return GETINSTFOR;
         }
-
-
-
-
-
-
-
+        /********************************************Member Deposit Fund Ledger Statement End*******************************************/
         [HttpGet]
         public ActionResult MemDepositeFundDetailList(MemDepositeFundDetailListViewModel model)
         {
@@ -2600,6 +2584,373 @@ namespace Amritnagar.Controllers
             return View(model);
         }
 
+        /********************************************Member Details List Start*******************************************/
+        [HttpGet]
+        public ActionResult MemberDetailList(MemberDetailListViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            model.on_date = DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/");
+            return View(model);
+        }
+        public JsonResult getmemberdetailslistbybookno(MemberDetailListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetailsbybookno(model.unit, model.book_no, model.on_date);
+            int i = 1;
+            decimal TOT_SHARE = 0;
+            decimal tot_tf = 0;
+            decimal XTOT_ITF = 0;
+            decimal tot_gf = 0;
+            decimal XTOT_IGF = 0;
+            decimal XTOTSFL = 0;
+            decimal XTOTISFL = 0;
+            decimal XTOTSJL = 0;
+            decimal XTOTISJL = 0;
+            decimal XTOTSL3 = 0;
+            decimal XTOTISL3 = 0;
+            decimal XTOTPSL = 0;
+            decimal XTOTIPSL = 0;
+            decimal XTOTDLL = 0;
+            decimal XTOTIDLL = 0;
+            decimal XTOTsjl1 = 0;
+            decimal XTOTisjl1 = 0;
+            decimal XTOTM14 = 0;
+            decimal XTOTIM14 = 0;
+            decimal XTOTM12 = 0;
+            decimal XTOTIM12 = 0;
+            decimal XTOTSFL1 = 0;
+            decimal XTOTISFL1 = 0;
+            decimal XTOTPSL1 = 0;
+            decimal XTOTIPSL1 = 0;
+            decimal XTOTSL4 = 0;
+            decimal XTOTISL4 = 0;
+            decimal XTOTSL6 = 0;
+            decimal XTOTISL6 = 0;
+            decimal XTOTSL7 = 0;
+            decimal XTOTISL7 = 0;
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>srl</th><th>Member_Id</th><th>Name Of The Member</th><th>Share Capital</th><th>Thrift Fund</th><th>Gurantee Fund</th><th>Int.TF</th><th>Int.GF</th><th>Loan(16.5%)</th><th>Int(16.5%)</th><th>Loan(14.5%)</th><th>Int(14.5%)</th><th>Loan(13%)</th><th>Int(13%)</th><th>Loan(10%)</th><th>Int(10%)</th><th>DN Loan</th><th>Int. DLL</th><th>Loan 14</th><th>INT 14</th><th>Loan 12.5</th><th>INT 12.5</th><th>Loan 12.75</th><th>INT 12.75</th><th>Loan 11.5</th><th>INT 11.5</th><th>Loan 9</th><th>INT 9</th><th>SL 4</th><th>ISL 4</th><th>SL 6</th><th>ISL 6</th><th>SL 7</th><th>ISL 7</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name+ "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xint_tf.ToString("0.00") + "</td><td>" + a.Xint_Gf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.XISFL.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XIsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.XISL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.XIPSL.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.XIDLL.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.XIsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.XIM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.XIM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.XISFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td><td>" + a.XIPSL1.ToString("0.00") + "</td><td>" + a.xSL4.ToString("0.00") + "</td><td>" + a.XISL4.ToString("0.00") + "</td><td>" + a.xSL6.ToString("0.00") + "</td><td>" + a.XISL6.ToString("0.00") + "</td><td>" + a.xSL7.ToString("0.00") + "</td><td>" + a.XISL7.ToString("0.00") + "</td></tr>";
+                        TOT_SHARE = TOT_SHARE + a.XSHARE;
+                        tot_tf = tot_tf + a.XTF;
+                        XTOT_ITF = XTOT_ITF + a.xint_tf;
+                        tot_gf = tot_gf + a.xgf;
+                        XTOT_IGF = XTOT_IGF + a.Xint_Gf;
+                        XTOTSFL = XTOTSFL + a.xsfl;
+                        XTOTISFL = XTOTISFL + a.XISFL;
+                        XTOTSJL = XTOTSJL + a.xsjl;
+                        XTOTISJL = XTOTISJL + a.XIsjl;
+                        XTOTSL3 = XTOTSL3 + a.XSL3;
+                        XTOTISL3 = XTOTISL3 + a.XISL3;
+                        XTOTPSL = XTOTPSL + a.xpsl;
+                        XTOTIPSL = XTOTIPSL + a.XIPSL;
+                        XTOTDLL = XTOTDLL + a.xdll;
+                        XTOTIDLL = XTOTIDLL + a.XIDLL;
+                        XTOTsjl1 = XTOTsjl1 + a.xsjl1;
+                        XTOTisjl1 = XTOTisjl1 + a.XIsjl1;
+                        XTOTM14 = XTOTM14 + a.xM14;
+                        XTOTIM14 = XTOTIM14 + a.XIM14;
+                        XTOTM12 = XTOTM12 + a.xM12;
+                        XTOTIM12 = XTOTIM12 + a.XIM12;
+                        XTOTSFL1 = XTOTSFL1 + a.xSFL1;
+                        XTOTISFL1 = XTOTISFL1 + a.XISFL1;
+                        XTOTPSL1 = XTOTPSL1 + a.xPSL1;
+                        XTOTIPSL1 = XTOTIPSL1 + a.XIPSL1;
+                        XTOTSL4 = XTOTSL4 + a.xSL4;
+                        XTOTISL4 = XTOTISL4 + a.XISL4;
+                        XTOTSL6 = XTOTSL6 + a.xSL6;
+                        XTOTISL6 = XTOTISL6 + a.XISL6;
+                        XTOTSL7 = XTOTSL7 + a.xSL7;
+                        XTOTISL7 = XTOTISL7 + a.XISL7;
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xint_tf.ToString("0.00") + "</td><td>" + a.Xint_Gf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.XISFL.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XIsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.XISL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.XIPSL.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.XIDLL.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.XIsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.XIM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.XIM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.XISFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td><td>" + a.XIPSL1.ToString("0.00") + "</td><td>" + a.xSL4.ToString("0.00") + "</td><td>" + a.XISL4.ToString("0.00") + "</td><td>" + a.xSL6.ToString("0.00") + "</td><td>" + a.XISL6.ToString("0.00") + "</td><td>" + a.xSL7.ToString("0.00") + "</td><td>" + a.XISL7.ToString("0.00") + "</td></tr>";
+                        TOT_SHARE = TOT_SHARE + mm.XSHARE;
+                        TOT_SHARE = TOT_SHARE + a.XSHARE;
+                        tot_tf = tot_tf + a.XTF;
+                        XTOT_ITF = XTOT_ITF + a.xint_tf;
+                        tot_gf = tot_gf + a.xgf;
+                        XTOT_IGF = XTOT_IGF + a.Xint_Gf;
+                        XTOTSFL = XTOTSFL + a.xsfl;
+                        XTOTISFL = XTOTISFL + a.XISFL;
+                        XTOTSJL = XTOTSJL + a.xsjl;
+                        XTOTISJL = XTOTISJL + a.XIsjl;
+                        XTOTSL3 = XTOTSL3 + a.XSL3;
+                        XTOTISL3 = XTOTISL3 + a.XISL3;
+                        XTOTPSL = XTOTPSL + a.xpsl;
+                        XTOTIPSL = XTOTIPSL + a.XIPSL;
+                        XTOTDLL = XTOTDLL + a.xdll;
+                        XTOTIDLL = XTOTIDLL + a.XIDLL;
+                        XTOTsjl1 = XTOTsjl1 + a.xsjl1;
+                        XTOTisjl1 = XTOTisjl1 + a.XIsjl1;
+                        XTOTM14 = XTOTM14 + a.xM14;
+                        XTOTIM14 = XTOTIM14 + a.XIM14;
+                        XTOTM12 = XTOTM12 + a.xM12;
+                        XTOTIM12 = XTOTIM12 + a.XIM12;
+                        XTOTSFL1 = XTOTSFL1 + a.xSFL1;
+                        XTOTISFL1 = XTOTISFL1 + a.XISFL1;
+                        XTOTPSL1 = XTOTPSL1 + a.xPSL1;
+                        XTOTIPSL1 = XTOTIPSL1 + a.XIPSL1;
+                        XTOTSL4 = XTOTSL4 + a.xSL4;
+                        XTOTISL4 = XTOTISL4 + a.XISL4;
+                        XTOTSL6 = XTOTSL6 + a.xSL6;
+                        XTOTISL6 = XTOTISL6 + a.XISL6;
+                        XTOTSL7 = XTOTSL7 + a.xSL7;
+                        XTOTISL7 = XTOTISL7 + a.XISL7;
+                    }
+                    i = i + 1;
+                }
+                model.shtot = TOT_SHARE.ToString("0.00");
+                model.to_gf = tot_gf.ToString("0.00");
+                model.tf = tot_tf.ToString("0.00");
+                model.to_itf = XTOT_ITF.ToString("0.00");
+                model.to_igf = XTOT_IGF.ToString("0.00");
+                model.ln_prncl_16_5 = XTOTSFL.ToString("0.00");
+                model.ln_int_16_5 = XTOTISFL.ToString("0.00");
+                model.ln_prncl_14_5 = XTOTSJL.ToString("0.00");
+                model.ln_int_14_5 = XTOTISJL.ToString("0.00");
+                model.ln_prncl_13 = XTOTSL3.ToString("0.00");
+                model.ln_int_13 = XTOTISL3.ToString("0.00");
+                model.ln_prncl_10 = XTOTPSL.ToString("0.00");
+                model.ln_int_10 = XTOTIPSL.ToString("0.00");
+                model.ln_prncl_dll = XTOTDLL.ToString("0.00");
+                model.ln_int_dll = XTOTIDLL.ToString("0.00");
+                model.ln_prncl_14 = XTOTsjl1.ToString("0.00");
+                model.ln_int_14 = XTOTisjl1.ToString("0.00");
+                model.ln_prncl_12_5 = XTOTM14.ToString("0.00");
+                model.ln_int_12_5 = XTOTIM14.ToString("0.00");
+                model.ln_prncl_12_75 = XTOTM12.ToString("0.00");
+                model.ln_int_12_75 = XTOTIM12.ToString("0.00");
+                model.ln_prncl_11_5 = XTOTSFL1.ToString("0.00");
+                model.int_11_5 = XTOTISFL1.ToString("0.00");
+                model.ln_prncl_9 = XTOTPSL1.ToString("0.00");
+                model.int_9 = XTOTIPSL1.ToString("0.00");
+                model.ln_prncl_13_75 = XTOTSL4.ToString("0.00");
+                model.int_13_75 = XTOTISL4.ToString("0.00");
+                model.ln_prncl_13_5 = XTOTSL6.ToString("0.00");
+                model.int_13_5 = XTOTISL6.ToString("0.00");
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult getmemberledgerdetailswithoutinterestbybookno(MemberDetailListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetailsbybookno(model.unit, model.book_no, model.on_date);
+            int i = 1;
+            decimal TOT_SHARE = 0;
+            decimal tot_tf = 0;         
+            decimal tot_gf = 0;        
+            decimal XTOTSFL = 0;          
+            decimal XTOTSJL = 0;          
+            decimal XTOTSL3 = 0;         
+            decimal XTOTPSL = 0;           
+            decimal XTOTDLL = 0;          
+            decimal XTOTsjl1 = 0;           
+            decimal XTOTM14 = 0;           
+            decimal XTOTM12 = 0;            
+            decimal XTOTSFL1 = 0;
+            decimal XTOTISFL1 = 0;
+            decimal XTOTPSL1 = 0;
+            
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>srl</th><th>Member_Id</th><th>Name Of The Member</th><th>Share Capital</th><th>Thrift Fund</th><th>Gurantee Fund</th><th>Loan(16.5%)</th><th>Loan(14.5%)</th><th>Loan(13%)</th><th>Loan(10%)</th><th>DN Loan</th><th>Loan 14</th><th>Loan 12.5</th><th>Loan 12.75</th><th>Loan 11.5</th><th>Loan 9</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td></tr>";
+                        TOT_SHARE = TOT_SHARE + a.XSHARE;
+                        tot_tf = tot_tf + a.XTF;                      
+                        tot_gf = tot_gf + a.xgf;                       
+                        XTOTSFL = XTOTSFL + a.xsfl;                      
+                        XTOTSJL = XTOTSJL + a.xsjl;                       
+                        XTOTSL3 = XTOTSL3 + a.XSL3;                       
+                        XTOTPSL = XTOTPSL + a.xpsl;                      
+                        XTOTDLL = XTOTDLL + a.xdll;                       
+                        XTOTsjl1 = XTOTsjl1 + a.xsjl1;                      
+                        XTOTM14 = XTOTM14 + a.xM14;                      
+                        XTOTM12 = XTOTM12 + a.xM12;                    
+                        XTOTSFL1 = XTOTSFL1 + a.xSFL1;
+                        XTOTISFL1 = XTOTISFL1 + a.XISFL1;
+                        XTOTPSL1 = XTOTPSL1 + a.xPSL1;                                                
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td></tr>";
+                        TOT_SHARE = TOT_SHARE + a.XSHARE;
+                        tot_tf = tot_tf + a.XTF;
+                        tot_gf = tot_gf + a.xgf;
+                        XTOTSFL = XTOTSFL + a.xsfl;
+                        XTOTSJL = XTOTSJL + a.xsjl;
+                        XTOTSL3 = XTOTSL3 + a.XSL3;
+                        XTOTPSL = XTOTPSL + a.xpsl;
+                        XTOTDLL = XTOTDLL + a.xdll;
+                        XTOTsjl1 = XTOTsjl1 + a.xsjl1;
+                        XTOTM14 = XTOTM14 + a.xM14;
+                        XTOTM12 = XTOTM12 + a.xM12;
+                        XTOTSFL1 = XTOTSFL1 + a.xSFL1;
+                        XTOTISFL1 = XTOTISFL1 + a.XISFL1;
+                        XTOTPSL1 = XTOTPSL1 + a.xPSL1;
+                    }
+                    i = i + 1;
+                }
+                model.shtot = TOT_SHARE.ToString("0.00");
+                model.to_gf = tot_gf.ToString("0.00");
+                model.tf = tot_tf.ToString("0.00");             
+                model.ln_prncl_16_5 = XTOTSFL.ToString("0.00");                
+                model.ln_prncl_14_5 = XTOTSJL.ToString("0.00");            
+                model.ln_prncl_13 = XTOTSL3.ToString("0.00");              
+                model.ln_prncl_10 = XTOTPSL.ToString("0.00");              
+                model.ln_prncl_dll = XTOTDLL.ToString("0.00");              
+                model.ln_prncl_14 = XTOTsjl1.ToString("0.00");               
+                model.ln_prncl_12_5 = XTOTM14.ToString("0.00");               
+                model.ln_prncl_12_75 = XTOTM12.ToString("0.00");              
+                model.ln_prncl_11_5 = XTOTSFL1.ToString("0.00");               
+                model.ln_prncl_9 = XTOTPSL1.ToString("0.00");                                             
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public ActionResult MemberDetailsPrintfile(MemberDetailListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetailsbybookno(model.unit, model.book_no, model.on_date);
+            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
+            using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Member_Details_List.txt")))
+            {
+                int Pg = 1;
+                int Ln = 0;
+                int i = 1;
+                string serial = string.Empty;
+                string mem_id = "";
+                string mem_name = "";
+                sw.WriteLine("BOOK - NO =" + model.book_no);
+                sw.WriteLine("Bansra Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
+                sw.WriteLine("Member Detaillist As On " +"  " + model.on_date);
+                sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");
+                sw.WriteLine("Srl |Member No.| Member Name             |SHARE      |TF         | GF        |INT TF     |INT GF     | Loan Dues | Intt. Dues|Loan14.5   |Int 14.5   |Loan13     |Int13      |Loan10     |Int10      |Dll        |Int Dll    |Loan 14    |Int 14     |Loan 12.5  |Int 12.5   |Loan 12.75 |Int 12.75  |Loan 11.5  |Int 11.5   |Loan 9     |Int 9      |SL4 13.75  |INT SL4    |SL6 13.5   |INT SL6    ");
+                sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");       
+                foreach (var am in mml)
+                {                   
+                    if (Ln > Pg * 65)
+                    {
+                        Pg = Pg + 1;
+                        Ln = Ln + 7;
+                        sw.WriteLine("BOOK - NO =" + model.book_no);
+                        sw.WriteLine("Bansra Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
+                        sw.WriteLine("Member Detaillist As On " + "  " + model.on_date);
+                        sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");
+                        sw.WriteLine("Srl |Member No.| Member Name             |SHARE      |TF         | GF        |INT TF     |INT GF     | Loan Dues | Intt. Dues|Loan14.5   |Int 14.5   |Loan13     |Int13      |Loan10     |Int10      |Dll        |Int Dll    |Loan 14    |Int 14     |Loan 12.5  |Int 12.5   |Loan 12.75 |Int 12.75  |Loan 11.5  |Int 11.5   |Loan 9     |Int 9      |SL4 13.75  |INT SL4    |SL6 13.5   |INT SL6    ");
+                        sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");
+                    }
+                    if (Convert.ToString(i).Length > 4)
+                    {
+                        serial = Convert.ToString(i).Substring(0, 3);
+                    }
+                    else
+                    {
+                        serial = Convert.ToString(i);
+                    }
+                    if (am.mem_id.ToString().Length > 10)
+                    {
+                        mem_id = (am.mem_id).Substring(0, 9);
+                    }
+                    else
+                    {
+                        mem_id = am.mem_id;
+                    }                   
+                    if (am.mem_name.ToString().Length > 25)
+                    {
+                        mem_name = (am.mem_name).Substring(0, 24);
+                    }
+                    else
+                    {
+                        mem_name = am.mem_name;
+                    }
+                    sw.WriteLine("".ToString().PadLeft(4 - (serial).ToString().Length) + serial + "|"
+                          + "".ToString().PadLeft(10 - (mem_id).ToString().Length) + mem_id + "|"
+                          + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + mem_name + "|"
+                           + "".ToString().PadLeft(11 - (am.XSHARE).ToString().Length) + am.XSHARE.ToString("0.00") + "|"
+                            + "".ToString().PadLeft(12 - (am.XTF).ToString().Length) + am.XTF.ToString("0.00") + "|"
+                             + "".ToString().PadLeft(12 - (am.xgf).ToString().Length) + am.xgf.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(12 - (am.xint_tf).ToString().Length) + am.xint_tf.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(11 - (am.Xint_Gf).ToString().Length) + am.Xint_Gf.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xsfl).ToString().Length) + am.xsfl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XISFL).ToString().Length) + am.XISFL.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xsjl).ToString().Length) + am.xsjl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIsjl).ToString().Length) + am.XIsjl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XSL3).ToString().Length) + am.XSL3.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XISL3).ToString().Length) + am.XISL3.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xpsl).ToString().Length) + am.xpsl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIPSL).ToString().Length) + am.XIPSL.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xdll).ToString().Length) + am.xdll.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIDLL).ToString().Length) + am.XIDLL.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xsjl1).ToString().Length) + am.xsjl1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIsjl1).ToString().Length) + am.XIsjl1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xM14).ToString().Length) + am.xM14.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIM14).ToString().Length) + am.XIM14.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xM12).ToString().Length) + am.xM12.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIM12).ToString().Length) + am.XIM12.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xSFL1).ToString().Length) + am.xSFL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XISFL1).ToString().Length) + am.XISFL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xPSL1).ToString().Length) + am.xPSL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XIPSL1).ToString().Length) + am.XIPSL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xSL4).ToString().Length) + am.xSL4.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XISL4).ToString().Length) + am.XISL4.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.xSL6).ToString().Length) + am.xSL6.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(11 - (am.XISL6).ToString().Length) + am.XISL6.ToString("0.00") + "|"
+                               //+ "".ToString().PadLeft(10 - (am.xSL7).ToString().Length) + am.xSL7.ToString("0.00") + "|"
+                               //+ "".ToString().PadLeft(10 - (am.XISL7).ToString().Length) + am.XISL7.ToString("0.00") + "|"
+                               );
 
+                       Ln = Ln + 1;
+                    i = i + 1;
+                }
+                sw.WriteLine("");
+                sw.WriteLine("");
+                sw.WriteLine("Total :--->");
+                sw.WriteLine("Share Capital : " + model.shtot + "  " + "Gurantee Fund:" + model.to_gf + " " + "Thrift Fund :" + model.tf + " " + "Int. Tf : " + model.to_itf +" " + "Int. Gf :" + model.to_igf);
+                sw.WriteLine("Loan 16.5 : " + model.ln_prncl_16_5 + " " + "Int. 16.5 :" + model.ln_int_16_5 + " " + "Loan 14.5 :" + model.ln_prncl_14_5 + " " + "Int. 14.5 :" + model.ln_int_14_5);
+                sw.WriteLine("Loan 13 : " + model.ln_prncl_13 + " " + "Int 13 " + model.ln_int_13);
+                sw.WriteLine("Loan 10 :" + model.ln_prncl_10 + " " + "Int 10 :" + model.ln_int_10);
+                sw.WriteLine("Loan DLL :" + model.ln_prncl_dll + " " + "Int DLL :" + model.ln_int_dll);
+                sw.WriteLine("Loan 14 :" + model.ln_prncl_14 + " " + "Int DLL :" + model.ln_int_14);
+                sw.WriteLine("Loan 12.5 :" + model.ln_prncl_12_5 + " " + "Int 12.5 :" + model.ln_int_12_5);
+                sw.WriteLine("Loan 12.75 :" + model.ln_prncl_12_75 +" "+ "Int 12.75 :" + model.ln_int_12_75);
+                sw.WriteLine("Loan 11.5 :" + model.ln_prncl_11_5 + " " + "Int 11.5 :" + model.int_11_5);
+                sw.WriteLine("Loan 9 :" + model.ln_prncl_9 + " " + "Int 9 :" + model.int_9);
+                sw.WriteLine("Loan 13.75 :" + model.ln_prncl_13_75 + " " + "Int 13.75 :" + model.int_13_75);
+                sw.WriteLine("Loan 13.5 :" + model.ln_prncl_13_5 + " " + "Int 13.5 :" + model.int_13_5);
+            }
+            UtilityController u = new UtilityController();
+            var memory = u.DownloadTextFiles("Member_Details_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+            if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Member_Details_List.txt")))
+            {
+                System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Details_List.txt"));
+            }
+            return File(memory.ToArray(), "text/plain", "Member_Details_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+        }
+
+
+
+        /********************************************Member Details List End*******************************************/
     }
 }

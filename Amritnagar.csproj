@@ -191,6 +191,7 @@
     <Compile Include="Models\ViewModel\LoanTransfCreditEntryViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberCategoryMasterViewModel.cs" />
+    <Compile Include="Models\ViewModel\MemberDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberOpeningandClosingRegViewModel.cs" />
     <Compile Include="Models\ViewModel\MemberStatusViewModel.cs" />
@@ -294,6 +295,7 @@
     <Content Include="Views\Dividend\DividendCalcAndPosting.cshtml" />
     <Content Include="Views\Dividend\DividendWritOfSch.cshtml" />
     <Content Include="Views\Dividend\UnpaidDividendDetailList.cshtml" />
+    <Content Include="Views\Member\MemberDetailList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
