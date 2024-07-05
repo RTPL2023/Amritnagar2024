@@ -520,9 +520,9 @@ namespace Amritnagar.Models.Database
                     mm.prmntAdd_dist = dr["PERM_DIST"].ToString();
                     mm.prmntAdd_state = dr["PERM_STATE"].ToString();
                     mm.prmntAdd_pin = !Convert.IsDBNull(dr["PERM_PIN"]) ? Convert.ToString(dr["PERM_PIN"]) : Convert.ToString("");
-                    mm.phn = dr["PHONE_NO"].ToString();
-                    mm.th_f_amt = Convert.ToDecimal(dr["BLOOD_GROUP"]);
-                    mm.birth_date = Convert.ToDateTime(dr["BIRTH_DATE"].ToString());
+                    mm.phn =!Convert.IsDBNull(dr["PHONE_NO"]) ? Convert.ToString(dr["PHONE_NO"]) : Convert.ToString("");
+                    mm.th_f_amt = !Convert.IsDBNull(dr["BLOOD_GROUP"]) ? Convert.ToDecimal(dr["BLOOD_GROUP"]) : Convert.ToDecimal("0");
+                    mm.birth_date =!Convert.IsDBNull(dr["BIRTH_DATE"]) ? Convert.ToDateTime(dr["BIRTH_DATE"]) : Convert.ToDateTime(null);
                     mm.caste = dr["CASTE_ID"].ToString();
                     mm.sex = dr["SEX"].ToString();
                     mm.relgn = dr["RELGN_ID"].ToString();
@@ -537,7 +537,7 @@ namespace Amritnagar.Models.Database
                     mm.trans = dr["MEMBER_TRANSFERED"].ToString();
                     mm.pan = dr["PAN_NO"].ToString();
                     mm.ident_mark = !Convert.IsDBNull(dr["ID_MARK"]) ? Convert.ToString(dr["ID_MARK"]) : Convert.ToString("");
-                    mm.join_dt = !Convert.IsDBNull(dr["DATE_OF_JOINING"]) ? Convert.ToDateTime(dr["DATE_OF_JOINING"]) : Convert.ToDateTime("");
+                    mm.join_dt = !Convert.IsDBNull(dr["DATE_OF_JOINING"]) ? Convert.ToDateTime(dr["DATE_OF_JOINING"]) : Convert.ToDateTime(null);
                     mm.retmnt_dt = !Convert.IsDBNull(dr["DATE_OF_RETIREMENT"]) ? Convert.ToDateTime(dr["DATE_OF_RETIREMENT"]) : Convert.ToDateTime(null);
                     mm.exp_dt = !Convert.IsDBNull(dr["EXPIRY_DATE"]) ? Convert.ToDateTime(dr["EXPIRY_DATE"]) : Convert.ToDateTime(null);
                     mm.close_dt = !Convert.IsDBNull(dr["MEMBER_CLOSDT"]) ? Convert.ToDateTime(dr["MEMBER_CLOSDT"]) : Convert.ToDateTime(null);

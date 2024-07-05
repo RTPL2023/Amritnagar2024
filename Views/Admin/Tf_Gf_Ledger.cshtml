@@ -1,0 +1,434 @@
+﻿@model Amritnagar.Models.ViewModel.Tf_Gf_LedgerViewModel
+
+@{
+    ViewBag.Title = "Tf_Gf_Ledger";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+
+    .size1 {
+        width: 120px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeS {
+        width: 50px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 220px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 300px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 990px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 990px;
+            overflow: auto;
+            height: 300px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            /* width: 1000px;*/
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 15px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    .tab1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab1 tbody {
+            display: block;
+            width: 600px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
+
+        .tab1 td, .tab1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        .tab1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .size2 {
+        width: 150px;
+        height: 25px;
+        background-color: white
+    }
+
+    .hidebox {
+        width: 150px;
+        height: 25px;
+        background-color: white;
+        display: none;
+    }
+</style>
+
+<form asp-controller="Admin" asp-action="Tf_Gf_Ledger" method="post">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        Modify Tf/Gf Ledger
+    </div>
+    <div class="container mt-2">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1100px">
+                <div class="row mt-2">
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                Branch<br />
+                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size1" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                A/c Head<br />
+                                @Html.DropDownListFor(p => p.achd, new SelectList(Model.achdDesc, "Value", "Text"), "Select", new { @class = "size1" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                Mem. No.<br />
+                                @Html.TextBoxFor(p => p.mem_no, new { @class = "sizeM", @type = "text", @onkeypress = "Javascript: return evtmemNo(event);" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Name of Member<br />
+                                @Html.TextBoxFor(p => p.mem_name, new { @class = "sizeL", @type = "text" })
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                                Mem. Date<br />
+                                @Html.TextBoxFor(p => p.mem_date, new { @class = "sizeM", @type = "text" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="UpdateLedger()"/>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn-primary btn-sm" value="Exit" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Voucher Date<br />
+                        @Html.TextBoxFor(p => p.vch_date, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Vch. Type<br />
+                        @Html.TextBoxFor(p => p.vch_type, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Voucher No.<br />
+                        @Html.TextBoxFor(p => p.vch_no, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Srl<br />
+                        @Html.TextBoxFor(p => p.srl, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Dr/Cr<br />
+                        @Html.TextBoxFor(p => p.drcr, new { @class = "sizeM", @type = "text" })
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Prin Amt.<br />
+                        @Html.TextBoxFor(p => p.prin_amt, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Interest Amt<br />
+                        @Html.TextBoxFor(p => p.int_amt, new { @class = "sizeM", @type = "text" })
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Ins. Md<br />
+                        @Html.TextBoxFor(p => p.ins_md, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        Voucher A/c Head<br />
+                        @Html.TextBoxFor(p => p.vch_achd, new { @class = "sizeM", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+
+
+                        @*con_drcr*@ @Html.TextBoxFor(p => p.con_drcr, new { @class = "hidebox", @type = "text" }) <br />
+                        @*con_srl*@  @Html.TextBoxFor(p => p.con_srl, new { @class = "hidebox", @type = "text" })<br />
+                        @*con_vch_date*@   @Html.TextBoxFor(p => p.con_vch_date, new { @class = "hidebox", @type = "text" })<br />
+                        @*con_vch_no*@  @Html.TextBoxFor(p => p.con_vch_no, new { @class = "hidebox", @type = "text" })<br />
+                        @*con_vch_type*@ @Html.TextBoxFor(p => p.con_vch_type, new { @class = "hidebox", @type = "text" })<br />
+                    </div>
+                </div>
+                <div class="container mt-2">
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center ">
+                            <div class="table-responsive mt-1 mb-3">
+                                <table id="list" class="tab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+          //  $('#mem_type').focus();
+           // $('#Btndelete').hide();
+           // ShowTable();
+        });
+
+        function evtmemNo(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                ShowTable();
+            }
+        }
+
+        function ShowTable() {
+            let ModelObject = { mem_no: $('#mem_no').val(), branch: $('#branch').val(), achd: $('#achd').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("getdataFoeGfAndTFLedgerModify", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("list").innerHTML = data.tableelement;
+                        $('#mem_name').val(data.mem_name);
+                        $('#mem_date').val(data.mem_date);
+
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('list');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    var f1 = document.getElementById('vch_date');
+                    var f2 = document.getElementById('vch_type');
+                    var f3 = document.getElementById('vch_no');
+                    var f4 = document.getElementById('srl');
+                    var f5 = document.getElementById('drcr');
+                    var f6 = document.getElementById('prin_amt');
+                    var f7 = document.getElementById('int_amt');
+                    var f8 = document.getElementById('ins_md');
+                    var f9 = document.getElementById('vch_achd');
+                    var f10 = document.getElementById('con_vch_date');
+                    var f11 = document.getElementById('con_vch_type');
+                    var f12 = document.getElementById('con_vch_no')
+                    var f13 = document.getElementById('con_srl')
+                    var f14 = document.getElementById('con_drcr')
+
+
+                    f1.value = cells[1].innerHTML;
+                    f2.value = cells[2].innerHTML;
+                    f3.value = cells[3].innerHTML;
+                    f4.value = cells[4].innerHTML;
+                    f5.value = cells[5].innerHTML;
+                    f6.value = cells[6].innerHTML;
+                    f7.value = cells[7].innerHTML;
+                    f8.value = cells[10].innerHTML;
+                    f9.value = cells[11].innerHTML;
+                    f10.value = cells[1].innerHTML;
+                    f11.value = cells[2].innerHTML;
+                    f12.value = cells[3].innerHTML;
+                    f13.value = cells[4].innerHTML;
+                    f14.value = cells[5].innerHTML;
+
+                };
+            }
+        })();
+
+        function UpdateLedger() {
+           
+            let ModelObject = {
+                vch_date: $('#vch_date').val(),
+                vch_type: $('#vch_type').val(),
+                vch_no: $('#vch_no').val(),
+                srl: $('#srl').val(),
+                drcr: $('#drcr').val(),
+                prin_amt: $('#prin_amt').val(),
+                int_amt: $('#int_amt').val(),
+                ins_md: $('#ins_md').val(),
+                vch_achd: $('#vch_achd').val(),
+                con_vch_date: $('#con_vch_date').val(),
+                con_vch_type: $('#con_vch_type').val(),
+                con_vch_no: $('#con_vch_no').val(),
+                con_srl: $('#con_srl').val(),
+                con_drcr: $('#con_drcr').val(),
+                mem_no: $('#mem_no').val(),
+                branch: $('#branch').val(),
+                achd: $('#achd').val()
+
+
+               
+            };
+                $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("UpdateTfGfLedger", "Admin")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                           
+                            ShowTable();
+                        },
+                         error: function (err) {
+                         }
+                });
+        }
+
+        function evtmem_type(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#type_desc').focus();
+            }
+        }
+
+        function evttype_desc(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#BtnSave').focus();
+            }
+        }
+
+    </script>
+}

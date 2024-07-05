@@ -10,7 +10,7 @@ using Amritnagar.Models.ViewModel;
 namespace Amritnagar.Controllers
 {
     public class AdminController : Controller
-    {     
+    {
         /********************************************Department Master Start*******************************************/
         [HttpGet]
         public ActionResult DepartmentMaster(DepartmentMasterViewModel model)
@@ -18,7 +18,7 @@ namespace Amritnagar.Controllers
             return View(model);
         }
         public JsonResult SaveDepartmentMaster(DepartmentMasterViewModel model)
-        {           
+        {
             if (model.dept_cd == null)
             {
                 model.msg = "Department Code Cannot Be Blank";
@@ -26,15 +26,15 @@ namespace Amritnagar.Controllers
             else if (model.dept_desc == null)
             {
                 model.msg = "Description Cannot Be Blank";
-            }            
+            }
             else
             {
                 Department_Mast dm = new Department_Mast();
                 dm.employer_cd = "ANC";
                 dm.dept_cd = model.dept_cd.ToUpper();
-                dm.dept_desc = model.dept_desc.ToUpper();                           
+                dm.dept_desc = model.dept_desc.ToUpper();
                 model.msg = dm.CheckAndSaveDepartment(dm);
-            }          
+            }
             return Json(model.msg);
         }
         public JsonResult GetDepartmentDetailsTable(string dept_cd)
@@ -92,10 +92,10 @@ namespace Amritnagar.Controllers
             }
             else
             {
-                Designation_Mast dm = new Designation_Mast();              
+                Designation_Mast dm = new Designation_Mast();
                 dm.desig_cd = Convert.ToInt32(model.desig_cd);
                 dm.desig_desc = model.desig_desc.ToUpper();
-                model.msg = dm.CheckAndSaveDesignation(dm);             
+                model.msg = dm.CheckAndSaveDesignation(dm);
             }
             return Json(model.msg);
         }
@@ -657,7 +657,7 @@ namespace Amritnagar.Controllers
                 ebm.emp_cd = model.emp_cd;
                 ebm.emp_branch = model.emp_branch.ToUpper();
                 ebm.emp_branch_name = model.emp_branch_name.ToUpper();
-                if(model.address == null)
+                if (model.address == null)
                 {
                     ebm.address = "";
                 }
@@ -712,7 +712,7 @@ namespace Amritnagar.Controllers
                 else
                 {
                     ebm.pin = model.pin;
-                }            
+                }
                 model.msg = ebm.CheckAndSaveEmployerUnitMaster(ebm);
             }
             return Json(model.msg);
@@ -781,9 +781,88 @@ namespace Amritnagar.Controllers
             ebm.DeleteEmployerUnit(emp_branch);
             return Json("Confirm Deletion");
         }
-        /********************************************Employer Unit Master End*********************************************/
+        /******************************************** Tf_Gf_Ledger modify ********************************************/
 
-       
+        [HttpGet]
+        public ActionResult Tf_Gf_Ledger(Tf_Gf_LedgerViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+            model.achdDesc = u.getGlAcchd();
+            return View(model);
+        }
+        public JsonResult getdataFoeGfAndTFLedgerModify(Tf_Gf_LedgerViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            mm = mm.getdetailsbymemberid(model.branch, model.mem_no);
+            model.mem_name = mm.mem_name;
+            model.mem_date = mm.mem_date.ToString("dd/MM/yyyy").Replace("-", "/");
+            TF_Ledger tl = new TF_Ledger();
+            List<TF_Ledger> tflst = new List<TF_Ledger>();
+            tflst = tl.getdataByledgerTab(model.achd, model.branch, model.mem_no);
+            model.tableelement = "<tr><th>Srl No.</th>><th>Voucher Date</th><th>Vch.Tp</th><th>Voucher No.</th><th>Srl</th><th>Dr/Cr</th><th>Prin.Amount</th><th>Int.Amount</th><th>Prin.Balance</th><th>Int.Balance</th><th>Ins.Md</th><th>Vch/Achd</th></tr>";
+            int i = 1;
+            foreach (var a in tflst)
+            {
+
+                model.tableelement = model.tableelement + "<tr><td>" + i + "</td><td>" + a.vch_date + "</td><td>" + a.vch_type + "</td><td>" + a.vch_no + "</td>" +
+                    "<td>" + a.vch_srl + "</td><td>" + a.dr_cr + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td>" +
+                    "<td>" + a.int_bal.ToString("0.00") + "</td><td>" + a.insert_mode + "</td><td>" + a.vch_achd + "</td></tr>";
+
+                i++;
+            }
+            return Json(model);
+        }
+        public JsonResult UpdateTfGfLedger(Tf_Gf_LedgerViewModel model)
+        {
+            string msg;
+            TF_Ledger tl = new TF_Ledger();
+            msg = tl.UpdateGFandTFLedger(model);
+            return Json(msg);
+        }
+
+        /******************************************** Tf_Gf_Ledger modify END ********************************************/
+
+        /******************************************** Share Ledger Modify ********************************************/
+
+        [HttpGet]
+        public ActionResult ShareLedgerModify(Tf_Gf_LedgerViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.BranchDesc = u.getBranchMastDetails();
+            model.achdDesc = u.getGlAcchd();
+            return View(model);
+        }
+        public JsonResult getdataFoeShareLedgerModify(Tf_Gf_LedgerViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            mm = mm.getdetailsbymemberid(model.branch, model.mem_no);
+            model.mem_name = mm.mem_name;
+            model.mem_date = mm.mem_date.ToString("dd/MM/yyyy").Replace("-", "/");
+            TF_Ledger tl = new TF_Ledger();
+            List<TF_Ledger> tflst = new List<TF_Ledger>();
+            tflst = tl.getdataByledgerTab(model.achd, model.branch, model.mem_no);
+            model.tableelement = "<tr><th>Srl No.</th>><th>Voucher Date</th><th>Vch.Tp</th><th>Voucher No.</th><th>Srl</th><th>Dr/Cr</th><th>Prin.Amount</th><th>Prin.Balance</th><th>Ins.Md</th><th>Vch/Achd</th></tr>";
+            int i = 1;
+            foreach (var a in tflst)
+            {
+
+                model.tableelement = model.tableelement + "<tr><td>" + i + "</td><td>" + a.vch_date + "</td><td>" + a.vch_type + "</td><td>" + a.vch_no + "</td>" +
+                    "<td>" + a.vch_srl + "</td><td>" + a.dr_cr + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td>" +
+                    "<td>" + a.insert_mode + "</td><td>" + a.vch_achd + "</td></tr>";
+
+                i++;
+            }
+            return Json(model);
+        }
+        public JsonResult UpdateShareLedger(Tf_Gf_LedgerViewModel model)
+        {
+            string msg;
+            TF_Ledger tl = new TF_Ledger();
+            msg = tl.UpdateGFandTFLedger(model);
+            return Json(msg);
+        }
+        /******************************************** Share Ledger Modify End ********************************************/
 
     }
 }
