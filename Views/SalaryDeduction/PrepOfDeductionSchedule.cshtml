@@ -47,14 +47,14 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-         width: 1000px;
+        width: 1000px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab tbody {
             display: block;
-             width: 1000px;
+            width: 1000px;
             overflow: auto;
             height: 250px;
             text-align: center;
@@ -64,7 +64,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-             width: 1000px;
+            width: 1000px;
         }
 
         .tab tr:nth-child(even) {
@@ -85,29 +85,30 @@
             position: sticky;
             top: 0;
         }
-        .tab1 {
+
+    .tab1 {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-         width: 600px;
+        width: 600px;
         margin-left: auto;
         margin-right: auto;
     }
 
-            .tab1 tbody {
-                display: block;
-                width: 600px;
-                overflow: auto;
-                height: 200px;
-                text-align: center;
-            }
+        .tab1 tbody {
+            display: block;
+            width: 600px;
+            overflow: auto;
+            height: 200px;
+            text-align: center;
+        }
 
-            .tab1 td, .tab1 th {
-                border: 1px solid #ddd;
-                padding: 8px;
-                border-collapse: collapse;
-                width: 600px;
-            }
+        .tab1 td, .tab1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 600px;
+        }
 
         .tab1 tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -143,12 +144,12 @@
     select:focus {
         background-color: rgba(226,148,91, 0.6);
     }
+
     .size2 {
         width: 150px;
         height: 25px;
         background-color: white
     }
-   
 </style>
 <form asp-controller="Member" asp-action="PrepOfDeductionSchedule" method="post">
     <div class="container" style="height:70px">
@@ -161,40 +162,87 @@
         <div class="row justify-content-md-center">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
                 <div class="row mt-2">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
                         Branch<br />
                         @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
                         Schedule Date<br />
                         @Html.TextBoxFor(p => p.sch_dt, new { @class = "size", @type = "text" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
                         Employer Name <br />
                         @Html.DropDownListFor(p => p.emp_name, new SelectList(Model.EmpDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
                     </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="Btnrefreshonclick()" />
+
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="Btnupdateonclick()" />
+
+                    </div>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Unit<br />
                         @Html.DropDownListFor(p => p.unit, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select Unit", new { @class = "sizeL" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Mem Type <br />
                         @Html.DropDownListFor(p => p.mem_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select Type", new { @class = "size" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Mem Category <br />
                         @Html.DropDownListFor(p => p.mem_cat, new SelectList(Model.CategoryDesc, "Value", "Text"), "Select Category", new { @class = "size" })
                     </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Book No.
                         @Html.TextBoxFor(p => p.book_no, new { @class = "sizeS", @type = "text" })
+                    </div>
+                </div>
+                <div id="changesTbox">
+                    <div class="row mt-2">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            Name Of Member
+                            @Html.TextBoxFor(p => p.member_name, new { @class = "size", @type = "text" })
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            Man Number
+                            @Html.TextBoxFor(p => p.employee_id, new { @class = "size", @type = "text" })
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            A/C Head
+                            @Html.TextBoxFor(p => p.ac_hd, new { @class = "size", @type = "text" })
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            A/C Number
+                            @Html.TextBoxFor(p => p.vch_pacno, new { @class = "size", @type = "text" })
+
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            Principal Bal.
+                            @Html.TextBoxFor(p => p.prin_bal, new { @class = "size", @type = "text" })
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            O/Dues
+                            @Html.TextBoxFor(p => p.over_due, new { @class = "size", @type = "text" })
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            inst.Amount
+                            @Html.TextBoxFor(p => p.prin_amt, new { @class = "size", @type = "text" })
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                            interest Amt.
+                            @Html.TextBoxFor(p => p.int_amt, new { @class = "size", @type = "text" })
+                        </div>
                     </div>
                 </div>
                 <div class="container mt-2">
@@ -206,7 +254,9 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab">
+                                <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
+
+                                <table id="list" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -222,7 +272,7 @@
                     <div class="row">
                         <div class="col-lg-10 col-md-10 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab1">
+                                <table id="list2" class="tab1">
                                 </table>
                             </div>
                         </div>
@@ -236,27 +286,197 @@
                         << Total >>
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-12 col-12" style="background-color:burlywood;color:brown">
-                      
-                            <div class="row mt-1 mb-1">
-                                <div class="col-lg-3 col-sm-12 col-12">
-                                    
-                                </div>
-                                <div class="col-lg-3 col-sm-12 col-12">
-                                    @Html.TextBoxFor(model => model.prnt_bal, new { @class = "size2", @type = "text" })
-                                </div>
-                                <div class="col-lg-3 col-sm-12 col-12">
-                                   
-                                    @Html.TextBoxFor(model => model.int_bal, new { @class = "size2", @type = "text" })
-                                </div>
-                                <div class="col-lg-3 col-sm-12 col-12">
-                                  
-                                    @Html.TextBoxFor(model => model.tot_bal, new { @class = "size2", @type = "text" })
-                                </div>
-                            </div>
 
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-3 col-sm-12 col-12">
+
+                            </div>
+                            <div class="col-lg-3 col-sm-12 col-12">
+                                @Html.TextBoxFor(model => model.prnt_bal, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-3 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.int_bal, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-3 col-sm-12 col-12">
+
+                                @Html.TextBoxFor(model => model.tot_bal, new { @class = "size2", @type = "text" })
+                            </div>
                         </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading").hide();
+            $("#changesTbox").hide();
+            //$("#frm_dt").hide();
+            //$("#to_dt").hide();
+        });
+
+        function Btnrefreshonclick() {
+            $("#loading").show();
+            /*alert("ok");*/
+            let ModelObject = {
+                emp_name: $('#emp_name').val(),
+                branch: $('#branch').val(),
+                mem_type: $('#mem_type').val(),
+                mem_cat: $('#mem_cat').val(),
+                book_no: $('#book_no').val(),
+                sch_date: $('#sch_dt').val(),
+                unit: $('#unit').val(),
+
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getdetailsForDeductionSchedule", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    document.getElementById("list").innerHTML = data.grid1;
+                    document.getElementById("list2").innerHTML = data.grid2;
+                    $('#prnt_bal').val(data.prnt_bal);
+                    $('#int_bal').val(data.int_bal);
+                    $('#tot_bal').val(data.tot_bal);
+
+
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
+
+        };
+
+
+        function Filldeductachd() {
+            var emplyer_name = $('#emplyer_name').val();
+            var emp_unit = $('#emp_unit').val();
+            $.ajax({
+                url: '@Url.Action("getdeductlist", "SalaryDeduction")',
+                type: "GET",
+                dataType: "JSON",
+                data: { emplyer_name: emplyer_name, emp_unit: emp_unit },
+                success: function (subcategories) {
+                    $("#ded_achd").html(""); // clear before appending new list
+                    $.each(subcategories, function (i, sc) {
+                        $("#ded_achd").append(
+                            $('<option></option>').val(sc.Value).html(sc.Text));
+                    });
+                }
+            });
+
+        };
+
+
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('list');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    $("#changesTbox").show();
+
+                    var f1 = document.getElementById('employee_id');
+                    var f2 = document.getElementById('member_name');
+                    var f3 = document.getElementById('ac_hd');
+                    var f4 = document.getElementById('vch_pacno');
+                    var f5 = document.getElementById('prin_bal');
+                    var f6 = document.getElementById('over_due');
+                    var f7 = document.getElementById('prin_amt');
+                    var f8 = document.getElementById('int_amt');
+
+                    f1.value = cells[1].innerHTML;
+                    f2.value = cells[2].innerHTML;
+                    f3.value = cells[3].innerHTML;
+                    f4.value = cells[4].innerHTML;
+                    f5.value = cells[5].innerHTML;
+                    f6.value = cells[6].innerHTML;
+                    f7.value = cells[7].innerHTML;
+                    f8.value = cells[8].innerHTML;
+
+                };
+            }
+        })();
+
+
+        function Btnupdateonclick() {
+            $("#loading").show();
+            /*alert("ok");*/
+            let ModelObject = {
+                emp_name: $('#emp_name').val(),
+                employee_id: $('#employee_id').val(),
+                branch: $('#branch').val(),
+                mem_type: $('#mem_type').val(),
+                mem_cat: $('#mem_cat').val(),
+                book_no: $('#book_no').val(),
+                sch_dt: $('#sch_dt').val(),
+                ac_hd: $('#ac_hd').val(),
+                vch_pacno: $('#vch_pacno').val(),
+                prin_bal: $('#prin_bal').val(),
+                over_due: $('#over_due').val(),
+                prin_amt: $('#prin_amt').val(),
+                int_amt: $('#int_amt').val(),
+                unit: $('#unit').val(),
+
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("updateBlanceofLoans", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    alert(data);
+                    $('#ac_hd').val("");
+                    $('#vch_pacno').val("");
+                    $('#prin_bal').val("");
+                    $('#over_due').val("");
+                    $('#prin_amt').val("");
+                    $('#int_amt').val("");
+                    $('#employee_id').val("");
+                    $('#member_name').val("");
+                    $("#changesTbox").hide();
+
+
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
+
+        };
+    </script>l
+}
