@@ -421,7 +421,6 @@ namespace Amritnagar.Models.Database
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     Loan_Master lm = new Loan_Master();
-
                     xacno = Convert.ToString(dr["EMPLOYEE_ID"]);
                     sql = "";
                     sql = "select * from loan_ledger where branch_id='" + model.branch_id + "' and ";
@@ -602,5 +601,69 @@ namespace Amritnagar.Models.Database
         //    }
         //    return lml;
         //}
+
+        public List<Loan_Master> getmemberloandetails(string BranchID, string member_id)
+        {
+            string sql = "SELECT A.*,D.AC_DESC,D.LEDGER_TAB FROM LOAN_MASTER A,LNTYPE_MAST B,ACC_HEAD D WHERE ";
+            sql = sql + "(A.AC_HD=B.AC_HD) AND (B.AC_HD=D.AC_HD) AND ";
+            sql = sql + "B.MEMBER_REQD='Y' AND (A.BRANCH_ID='" + BranchID + "' AND A.MEMBER_ID='" + member_id + "') AND A.CLOS_FLAG IS NULL ";
+            sql = sql + "ORDER BY A.LOAN_DATE,A.AC_HD,A.EMPLOYEE_ID";
+            List<Loan_Master> lml = new List<Loan_Master>();
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach(DataRow dr in config.dt.Rows)
+                {
+                    Loan_Master lm = new Loan_Master();
+                    lm.ac_desc = dr["AC_DESC"].ToString();
+                    lm.ac_hd = dr["ac_hd"].ToString();
+                    lm.emp_id = dr["EMPLOYEE_ID"].ToString();
+                    lm.loan_dt = !Convert.IsDBNull(dr["LOAN_DATE"]) ? Convert.ToDateTime(dr["LOAN_DATE"]) : Convert.ToDateTime(null);
+                    lm.loan_amt = !Convert.IsDBNull(dr["LOAN_AMT"]) ? Convert.ToDecimal(dr["LOAN_AMT"]) : Convert.ToDecimal("0.00");
+                    lm.inst_no = Convert.ToInt32(dr["NO_INSTL"]);
+                    lm.ledger_tab = Convert.ToString(dr["LEDGER_TAB"]);
+                    sql = "SELECT * FROM " + lm.ledger_tab + " WHERE BRANCH_ID='" + BranchID + "' AND AC_HD='" + lm.ac_hd + "' AND employee_ID='" + lm.emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        lml.Add(lm);
+                    }
+                }                
+            }
+            return lml;
+        }
+
+        public List<Loan_Master> getmemberotherloandetails(string BranchID, string member_id)
+        {
+            string sql = "SELECT A.*,D.AC_DESC,D.LEDGER_TAB FROM LOAN_MASTER A,LNTYPE_MAST B,ACC_HEAD D,LOAN_CUSTOMER C WHERE ";
+            sql = sql + "(A.AC_HD=B.AC_HD) AND (B.AC_HD=D.AC_HD) AND (A.BRANCH_ID=C.BRANCH_ID AND A.AC_HD=C.AC_HD AND ";
+            sql = sql + "A.employee_ID=C.employee_ID) AND B.MEMBER_REQD<>'Y' AND (C.BRANCH_ID='" + BranchID + "' AND C.CUST_ID IN ('" + member_id + "')) AND A.CLOS_FLAG IS NULL ";
+            sql = sql + "ORDER BY A.LOAN_DATE,A.AC_HD,A.employee_ID";
+            List<Loan_Master> lml = new List<Loan_Master>();
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Loan_Master lm = new Loan_Master();
+                    lm.ac_desc = dr["AC_DESC"].ToString();
+                    lm.ac_hd = dr["ac_hd"].ToString();
+                    lm.emp_id = dr["EMPLOYEE_ID"].ToString();
+                    lm.loan_dt = !Convert.IsDBNull(dr["LOAN_DATE"]) ? Convert.ToDateTime(dr["LOAN_DATE"]) : Convert.ToDateTime(null);
+                    lm.loan_amt = !Convert.IsDBNull(dr["LOAN_AMT"]) ? Convert.ToDecimal(dr["LOAN_AMT"]) : Convert.ToDecimal("0.00");
+                    lm.inst_no = Convert.ToInt32(dr["NO_INSTL"]);
+                    lm.ledger_tab = Convert.ToString(dr["LEDGER_TAB"]);
+                    sql = "SELECT * FROM " + lm.ledger_tab + " WHERE BRANCH_ID='" + BranchID + "' AND AC_HD='" + lm.ac_hd + "' AND employee_ID='" + lm.emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        lml.Add(lm);
+                    }
+                }
+            }
+            return lml;
+        }
     }
 }

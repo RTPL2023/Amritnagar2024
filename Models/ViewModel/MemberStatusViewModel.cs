@@ -72,5 +72,7 @@ namespace Amritnagar.Models.ViewModel
         public string tot_Oth_Loan { get; set; }
         public string tot_liabilities { get; set; }
         public string tot_assets { get; set; }
+
+        public dynamic[,] int_array = new dynamic[3, 13];
     }
 }

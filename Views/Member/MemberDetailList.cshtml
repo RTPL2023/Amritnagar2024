@@ -123,7 +123,7 @@
                                 @Html.TextBoxFor(p => p.book_no, new { @class = "size", @type = "text" })
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12 ">
-                                <input id="BtnRefresh" type="button" name="BtnRefresH" Height="40" Width="100" class="btn btn-primary btn-sm" value="RefresH" onclick="ShowTable()" />
+                                <input id="BtnRefresh" type="button" name="BtnRefresH" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ShowTable()" />
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -132,7 +132,7 @@
                                 @Html.TextBoxFor(p => p.on_date, new { @class = "size", @type = "text" })
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12 ">
-                                <input id="BtnPrint" type="button" name="BtnPrinT" Height="40" Width="100" class="btn btn-primary btn-sm" value="PrinT" onclick="DownloadTextFiles()" />
+                                <input id="BtnPrint" type="button" name="BtnPrinT" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print" onclick="DownloadTextFiles()" />
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -192,7 +192,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                            <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
+                            <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" width="180" height="100" />
                             <div class="table-responsive mt-1">
                                 <table id="MemberDetailsList" class="tab">
                                 </table>
@@ -451,6 +451,7 @@
                         $('#int_13_75').val(data.int_13_75);
                         $('#ln_prncl_13_5').val(data.ln_prncl_13_5);
                         $('#int_13_5').val(data.int_13_5);
+                        $('#total_mem').val(data.total_mem);
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -482,6 +483,7 @@
                         $('#ln_prncl_12_75').val(data.ln_prncl_12_75);
                         $('#ln_prncl_11_5').val(data.ln_prncl_11_5);
                         $('#ln_prncl_9').val(data.ln_prncl_9);
+                        $('#total_mem').val(data.total_mem);
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -489,8 +491,7 @@
                     });
         }
 
-
-         function DownloadTextFiles() {
+        function DownloadTextFiles() {
              window.location.href = "@Url.Action("MemberDetailsPrintfile", "Member")" + "?unit=" + $('#unit').val() + "&book_no=" + $('#book_no').val() + "&on_date=" + $('#on_date').val() + "&shtot=" + $('#shtot').val() + "&to_gf=" + $('#to_gf').val() + "&tf=" + $('#tf').val() + "&to_itf=" + $('#to_itf').val() + "&to_igf=" + $('#to_igf').val() + "&ln_prncl_16_5=" + $('#ln_prncl_16_5').val() + "&ln_int_16_5=" + $('#ln_int_16_5').val() +
                  "&ln_prncl_14_5=" + $('#ln_prncl_14_5').val() + "&ln_int_14_5=" + $('#ln_int_14_5').val() + "&ln_prncl_13=" + $('#ln_prncl_13').val() +
                  "&ln_int_13=" + $('#ln_int_13').val() + "&ln_prncl_10=" + $('#ln_prncl_10').val() + "&ln_int_10=" + $('#ln_int_10').val() + "&ln_prncl_dll=" + $('#ln_prncl_dll').val() +

@@ -55,7 +55,7 @@
     }
 
     .sizebig {
-        width: 180px;
+        width: 220px;
         height: 25px;
     }
 
@@ -109,43 +109,46 @@
             top: 0;
         }
 
-    .tab1 {
+    .tab_txt {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        width: 600px;
+        width: 1020px;
         margin-left: auto;
         margin-right: auto;
     }
 
-        .tab1 tbody {
+        .tab_txt tbody {
             display: block;
-            width: 600px;
+            width: 1020px;
             overflow: auto;
-            height: 200px;
+            height: 120px;
             text-align: center;
         }
 
-        .tab1 td, .tab1 th {
+        .tab_txt td, .tab_txt th {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 5px;
             border-collapse: collapse;
-            width: 600px;
+            width: 1020px;
         }
 
-        .tab1 tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .tab_txt td {
+            background-color: #ece9fb
         }
+        /*.tab_txt tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
 
-        .tab1 tr:hover {
-            background-color: rgba(255, 182, 193, 0.2);
-        }
-
-        .tab1 th {
-            padding: 8px;
+            .tab_txt tr:hover {
+                background-color: rgba(255, 182, 193, 0.2);
+            }
+    */
+        .tab_txt th {
+            padding: 5px;
             text-align: center;
             /*background-color: #04AA6D;*/
-            background-color: firebrick;
+            background-color: rgb(93, 67, 221,0.6);
             font-size: 12px;
             color: white;
             position: sticky;
@@ -167,30 +170,6 @@
     select:focus {
         background-color: rgba(226,148,91, 0.6);
     }
-
-    .divBorder {
-        border: 1px solid gray;
-        background-color: papayawhip
-    }
-
-    .border-right {
-        border-right: 2px solid white;
-    }
-
-    .divText {
-        font-size: 12px;
-        font-weight: bold;
-        background-color: white;
-        z-index: 100;
-        margin-top: -10px;
-        color: firebrick;
-        text-align: center
-    }
-
-    .btn {
-        width: 100px;
-        height: 30px
-    }
 </style>
 <form asp-controller="Account" asp-action="VoucherEntry" method="post" enctype="multipart/form-data">
     <div class="container" style="height:60px">
@@ -199,26 +178,33 @@
     <div class="heading mt-4">
         Voucher Entry
     </div>
-    <div class="container mt-2" style="margin-bottom:15px">
+    <div class="container mt-3">
         <div class="row justify-content-md-center">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1080px">
 
                 <div class="row mt-1">
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
                         @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Voucher Date:<br />
-                        @Html.TextBoxFor(model => model.vch_date, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.vch_date, new { @class = "size", @type = "text", onkeypress = "javascript:return evtDate(event);" })
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Voucher No:<br />
-                        @Html.TextBoxFor(model => model.vch_no, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.txtvch_No, new { @class = "size", @type = "text" })
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        <br />
+                        @Html.DropDownListFor(p => p.vch_no, new SelectList(new string[] { "Select Voucher" }), new { @onchange = "GetVoucherList()", @class = "size" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Voucher Type:<br />
-                        @Html.DropDownListFor(p => p.vch_type, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.vch_type, new SelectList(new string[] { "Cash", "Transfer" }), new { @class = "size" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="ButtonSave" type="button" value="Save" name="ButtonSave" class="btn btn-primary btn-sm" />
                     </div>
 
                 </div>
@@ -230,8 +216,40 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+
+                            <table class="tab_txt">
+
+                                <tr>
+                                    <th>Srl</th>
+                                    <th>Dr/Cr</th>
+                                    <th>Account Head</th>
+                                    <th>Ac No</th>
+                                    <th>Paid To/Recd.From/Perticulars</th>
+                                    <th>Amount</th>
+                                    <th>Ref.A/C Head</th>
+                                    <th>Ref.A/C No</th>
+                                    <th>Ref.A/C Particulars</th>
+                                    <th>&nbsp;&nbsp;&nbsp;</th>
+                                </tr>
+                                <tr>
+                                    <td>@Html.TextBoxFor(model => model.srl, new { @class = "sizeS", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.drcr, new { @class = "sizeS", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.vch_achd, new { @class = "sizeM1", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.vchpacno, new { @class = "sizeM1", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.particular, new { @class = "size", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.amount, new { @class = "sizeM1", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.ref_ac_hd, new { @class = "sizeM1", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.refacno, new { @class = "sizeM1", @type = "text" })</td>
+                                    <td>@Html.TextBoxFor(model => model.refParticular, new { @class = "sizeM1", @type = "text" })</td>
+                                    <td><input id="ButtonAdd" type="button" value="ADD" name="ButtonAdd" class="btn btn-primary btn-sm" onclick="addvoucher()" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab">
+                                <table id="TempVchData" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -262,7 +280,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab">
+                                <table id="" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -279,17 +297,166 @@
 
                     </div>
                 </div>
-                
+                <div class="container mt-1 p-2" style="color:saddlebrown;font-weight:bold;font-size:14px;border:1px solid; border-color:saddlebrown">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-sm-12 col-12">
+                            @Html.TextBoxFor(model => model.del_vch_no, new { @class = "sizebig", @type = "text" })
+                        </div>
+                        <div class="col-lg-4 col-sm-12 col-12">
+                            <input id="ButtonDelVchNo" type="button" value="Delete by VCH No" name="ButtonDelVchNo" class="btn btn-primary btn-sm" />
+                        </div>
+
+                    </div>
+                </div>
                 <div class="container mt-2">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
                             n a r r a t i o n
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+@section scripts
+    {
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#debt_amt").val("0");
+            $("#crdt_amt").val("0");
+            $("#net_amt").val("0");
+            $('#loading').hide();
+        });
+
+        function evtDate(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetVoucherNo();
+            }
+        }
+
+        function GetVoucherNo() {
+            var branch = $('#branch').val();
+            var vch_date = $('#vch_date').val();
+            $.ajax({
+                url: '@Url.Action("FillVoucherNo", "Account")',
+            type: "GET",
+            dataType: "JSON",
+                data: {branch: branch, vch_date: vch_date},
+                success: function (vchnos) {
+                    $("#vch_no").html(""); // clear before appending new list
+                    $.each(vchnos, function (i, c) {
+                        $("#vch_no").append(
+                    $('<option></option>').val(c.value).html(c.text));
+                    });
+                    $("#vch_no").focus();
+                }
+            });
+        }
+
+        function GetVoucherList() {
+            let ModelObject = {
+                vch_date: $('#vch_date').val(),
+                vch_no: $('#vch_no').val(),
+                branch: $('#branch').val(),
+            };
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetVoucherDetailsList", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data)
+                {
+                    document.getElementById("TempVchData").innerHTML = data.tableElement;
+                    $("#debt_amt").val(data.debt_amt);
+                    $("#crdt_amt").val(data.crdt_amt);
+                    $("#net_amt").val(data.net_amt);
+                    /*$("#vch_DrCr").val(data.vch_DrCr);*/
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function addvoucher() {
+            //alert("OK")
+            let ModelObject = {
+                vch_date: $('#vch_date').val(),
+                drcr: $('#drcr').val(),
+                vch_achd: $('#vch_achd').val(),
+                vchpacno: $('#vchpacno').val(),
+                particular: $('#particular').val(),
+                amount: $('#amount').val(),
+                ref_ac_hd: $('#ref_ac_hd').val(),
+                refacno: $('#refacno').val(),
+                refParticular: $('#refParticular').val(),
+                vch_no: $('#txtvch_No').val()
+            };
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Add_Vch_In_Temp_table", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data)
+                {
+                    ShowTable();
+                    //if ($('#drcr').val() == "D") {
+                    //    $("#debit").val(parseFloat($('#debit').val()) + parseFloat($('#amount').val()));
+                    //    $("#net_amt").val(parseFloat($('#net_amt').val()) - parseFloat($('#amount').val()));
+                    //}
+                    //if ($('#drcr').val() == "C") {
+                    //    $("#credit").val(parseFloat($('#credit').val()) + parseFloat($('#amount').val()));
+                    //    $("#net_amt").val(parseFloat($('#net_amt').val()) + parseFloat($('#amount').val()));
+                    //}
+
+                    $('#vchpacno').val("");
+                    $('#drcr').val("");
+                    $('#particular').val("");
+                    $('#amount').val("");
+                    $('#refacno').val("");
+                    $('#refParticular').val("");
+                    $('#drcr').focus();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+
+            });
+
+
+
+        }
+
+        function ShowTable() {
+            let ModelObject = { vch_date: $('#vch_date').val(), vch_no: $('#txtvch_No').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                     url: '@Url.Action("GetTempData", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                success: function (data) {
+                  document.getElementById("TempVchData").innerHTML = data;
+                },
+                error: function (err) {
+                alert("Error Occured");
+                }
+            });
+        }
+
+
+    </script>
+}
+
 

@@ -20,6 +20,7 @@ namespace Amritnagar.Models.Database
         public decimal bal_amount { get; set; }
         public decimal prin_bal { get; set; }
         public decimal int_bal { get; set; }
+        public DateTime vch_date { get; set; }
         public bool xok { get; set; }
 
         public List<FUNDDEP_MAST> getFundDepositInfo(string BranchID, string member_no)
@@ -34,16 +35,16 @@ namespace Amritnagar.Models.Database
                     FUNDDEP_MAST fdm = new FUNDDEP_MAST();
                     fdm.xok = false;
                     fdm.ac_hd = Convert.ToString(dr["ac_hd"]);
-                    fdm.is_deposit = Convert.ToString(dr["is_deposit"]);
+                    fdm.is_deposit = Convert.ToString(dr["IS_DEPOSIT"]);
                     fdm.fund_desc = Convert.ToString(dr["fund_desc"]);
-                    fdm.int_rate = Convert.ToDecimal(dr["INT_RATE"]);
+                    fdm.int_rate = Convert.ToDecimal(dr["INT_RATE"]);                    
                     string sql1 = "SELECT * From acc_head where ac_hd='" + fdm.ac_hd + "'";
                     config.singleResult(sql1);
                     if (config.dt.Rows.Count > 0)
                     {
                         foreach (DataRow dr1 in config.dt.Rows)
                         {
-                            fdm.ledger_tab = Convert.ToString(dr1["LEDGER_TAB"]);
+                            fdm.ledger_tab = Convert.ToString(dr1["LEDGER_TAB"]);                             
                         }
                     }
                     string sql2 = "select * from " + fdm.ledger_tab + " where branch_id='" + BranchID + "' and member_id='" + member_no + "' order by vch_date,vch_no,vch_srl";
@@ -54,6 +55,7 @@ namespace Amritnagar.Models.Database
                         if (fdm.ledger_tab == "DIVIDEND_LEDGER")
                         {
                             fdm.bal_amount = !Convert.IsDBNull(dr2["bal_amount"]) ? Convert.ToDecimal(dr2["bal_amount"]) : Convert.ToDecimal(0);
+                            fdm.vch_date = !Convert.IsDBNull(dr2["vch_date"]) ? Convert.ToDateTime(dr2["vch_date"]) : Convert.ToDateTime(null);
                             if (fdm.bal_amount > 0)
                             {
                                 fdm.xok = true;
@@ -63,6 +65,7 @@ namespace Amritnagar.Models.Database
                         {
                             fdm.prin_bal = !Convert.IsDBNull(dr2["prin_bal"]) ? Convert.ToDecimal(dr2["prin_bal"]) : Convert.ToDecimal(0);
                             fdm.int_bal = !Convert.IsDBNull(dr2["int_bal"]) ? Convert.ToDecimal(dr2["int_bal"]) : Convert.ToDecimal(0);
+                            fdm.vch_date = !Convert.IsDBNull(dr2["vch_date"]) ? Convert.ToDateTime(dr2["vch_date"]) : Convert.ToDateTime(null);
                             if (fdm.prin_bal + fdm.int_bal > 0)
                             {
                                 fdm.xok = true;

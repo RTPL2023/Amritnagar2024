@@ -151,7 +151,7 @@
             display: flex;
             align-items: start;
             justify-content: center;
-            height: 150vh;
+            /*height: 150vh;*/
             z-index: 100;
             background: #fff;
         }
@@ -197,6 +197,13 @@
             text-transform: uppercase;
             font-size: 14px;
             padding: 5px
+        }
+        .font-style {
+            font-family: "Roboto", sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+            color: gray;
+            /*text-align: left;*/
         }
     </style>
 
@@ -311,9 +318,9 @@
                                 <a href="/Member/MemberOpeningandClosingReg" style="font-size:12px">Member Opening and Closing Register</a>
                             </li>
 
-                            @*<li class="item">
-            <a href="/Member/MemberStatus" style="font-size:12px">Member Asset And Liabilities Position</a>
-        </li>*@
+                            <li class="item">
+                                <a href="/Member/MemberStatus" style="font-size:12px">Member Asset And Liabilities Position</a>
+                            </li>
 
                             <li class="item">
                                 <a href="/Member/ShareLedgerStatement" style="font-size:12px">Share Ledger Statement</a>
@@ -382,13 +389,9 @@
                             </li>
 
                             @*<li class="item">
-                       <a href="/Loan/LoanDetailList" style="font-size:12px">Loan Detail List</a>
-                    </li>*@
-
-                            @*<li class="item">
-                        <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
-                    </li>*@
-
+                                <a href="/Loan/LoanDetailList" style="font-size:12px">Loan Detail List</a>
+                            </li>*@
+                          
                             <li class="item">
                                 <a href="/Loan/MonthlyInterestScheduleForLoan" style="font-size:12px">Monthly Interest Schedule For Loan</a>
                             </li>
@@ -448,6 +451,28 @@
                             <li class="item">
                                 <a href="/Account/LoanTransfCreditEntry" style="font-size:12px">Loan Transfer Credit Enrty</a>
                             </li>
+                            <li class="memDF-head mt-2">
+                                <span>Financial Reports</span>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/DayBookReport" style="font-size:12px">Day Book</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/CashBookReport" style="font-size:12px">Cash Book</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/CashAccountReport" style="font-size:12px">Cash Account</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/CashBankPositionReport" style="font-size:12px">Cash Bank Position</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/TrialBalanceReport" style="font-size:12px">Trial Balance</a>
+                            </li>
+                            <li class="item">
+                                <a href="/Account/GeneralLedgerReport" style="font-size:12px">General Ledger </a>
+                            </li>
+
                         </ul>
                     </li>
 
@@ -528,9 +553,18 @@
     </div>
 
 
-    <footer class="border-top footer text-muted">
-        <div class="container text-center">
-            &copy; 2024 - Amritnagar CCS. -Rishi Technovision Pvt. Ltd. <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer" style="margin-top:20px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 font-style">
+                    &copy; 2024 || &nbsp; Amritnagar CCS &nbsp;|| &nbsp; <a href="https://www.rishiindia.net/" style="color: #e21f36; text-decoration:none" onmouseover="this.style.color = '#814141';" onmouseout="this.style.color='#e21f36'">Rishi Technovision Pvt. Ltd.</a> @*<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
+                </div>
+
+            </div>
+
         </div>
     </footer>
 

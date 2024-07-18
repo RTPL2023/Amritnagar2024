@@ -16,6 +16,19 @@ namespace Amritnagar.Models.ViewModel
         public string crdt_amt { get; set; }
         public string net_amt { get; set; }
         public string tot_chq_amt { get; set; }
+        public string srl { get; set; }
+        public string drcr { get; set; }
+        public string vch_achd { get; set; }
+        public string vchpacno { get; set; }
+        public string particular { get; set; }
+        public string amount { get; set; }
+        public string ref_ac_hd { get; set; }
+        public string refacno { get; set; }
+        public string refParticular { get; set; }
+        public string txtvch_No { get; set; }
+        public string del_vch_no { get; set; }
+        public string tableElement { get; set; }
+
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
     }
 }

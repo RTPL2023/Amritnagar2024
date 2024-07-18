@@ -171,11 +171,18 @@
     <Compile Include="Models\Database\Religion_Mast.cs" />
     <Compile Include="Models\Database\Service_Status_Mast.cs" />
     <Compile Include="Models\Database\SHARE_LEDGER.cs" />
+    <Compile Include="Models\Database\Temp_Vch_Entry.cs" />
     <Compile Include="Models\Database\TF_Ledger.cs" />
     <Compile Include="Models\Database\UserDBUtility.cs" />
     <Compile Include="Models\Database\Users.cs" />
+    <Compile Include="Models\Database\Vch_Details.cs" />
+    <Compile Include="Models\Database\Vch_header.cs" />
     <Compile Include="Models\ViewModel\BankMasterViewModel.cs" />
+    <Compile Include="Models\ViewModel\CashAccountReportViewModel.cs" />
+    <Compile Include="Models\ViewModel\CashBankPositionReportViewModel.cs" />
+    <Compile Include="Models\ViewModel\CashBookReportViewModel.cs" />
     <Compile Include="Models\ViewModel\CasteMasterViewModel.cs" />
+    <Compile Include="Models\ViewModel\DayBookReportViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\DesignationMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\DisplayloanLedgerViewModel.cs" />
@@ -184,6 +191,7 @@
     <Compile Include="Models\ViewModel\EditUserViewModel.cs" />
     <Compile Include="Models\ViewModel\EmployerUnitMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\FreshListViewModel.cs" />
+    <Compile Include="Models\ViewModel\GeneralLedgerReportViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanLedgerCorrectionViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanMasterEntryViewModel.cs" />
@@ -212,6 +220,7 @@
     <Compile Include="Models\ViewModel\ShareCapitalDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\ShareLedgerStatementViewModel.cs" />
     <Compile Include="Models\ViewModel\Tf_Gf_LedgerViewModel.cs" />
+    <Compile Include="Models\ViewModel\TrialBalanceReportViewModel.cs" />
     <Compile Include="Models\ViewModel\UnpaidDividendDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\UsersViewModel.cs" />
     <Compile Include="Models\ViewModel\VoucherEntryViewModel.cs" />
@@ -296,6 +305,13 @@
     <Content Include="Views\Dividend\DividendCalcAndPosting.cshtml" />
     <Content Include="Views\Dividend\DividendWritOfSch.cshtml" />
     <Content Include="Views\Dividend\UnpaidDividendDetailList.cshtml" />
+    <Content Include="Views\Member\MemberDetailList.cshtml" />
+    <Content Include="Views\Account\CashAccountReport.cshtml" />
+    <Content Include="Views\Account\CashBankPositionReport.cshtml" />
+    <Content Include="Views\Account\CashBookReport.cshtml" />
+    <Content Include="Views\Account\DayBookReport.cshtml" />
+    <Content Include="Views\Account\GeneralLedgerReport.cshtml" />
+    <Content Include="Views\Account\TrialBalanceReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

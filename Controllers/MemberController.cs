@@ -1491,40 +1491,51 @@ namespace Amritnagar.Controllers
         public JsonResult GetMemberFund(MemberStatusViewModel model)
         {
             //decimal int_payble = 0;
-            FUNDDEP_MAST fdm = new FUNDDEP_MAST();
+            FUNDDEP_MAST fdm = new FUNDDEP_MAST();            
             List<FUNDDEP_MAST> fdml = new List<FUNDDEP_MAST>();
             fdml = fdm.getFundDepositInfo(model.BranchID, model.member_no);
             int i = 1;
+            decimal fnd_dep = 0;
+            decimal dep = 0;
+            decimal tot_int = 0;
             if (fdml.Count > 0)
             {
                 foreach (var a in fdml)
                 {
-                    get_fdep_int_payble(a.ac_hd);
+                    if(a.is_deposit != null)
+                    {
+                        tot_int = get_fdep_int_payble(a.ac_hd, a.int_rate);
+                    }                   
                     if (a.ledger_tab == "DIVIDEND_LEDGER")
                     {
+                        dep = a.bal_amount + tot_int;
                         if (i == 1)
                         {
-                            model.tableelement = "<tr><th>Account Head</th><th>Principal Bal</th><th>Interest Bal</th><th>Int Payable</th><th>Net Payable</th></tr>";
-                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td></tr>";
+                            model.tableelement = "<tr><th>Account Head</th><th>Principal Bal</th><th>Interest Bal</th><th>Int Payable</th><th>Net Payable</th><th>Account Head</th><th>Table</th></tr>";
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";                          
                         }
                         else
                         {
-                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td></tr>";
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                         }
                     }
-                    //if (i == 1)
-                    //{
-                    //    model.tableelement = "<tr><th>Account Head</th><th>Principal Bal</th><th>Interest Bal</th><th>Int Payable</th><th>Net Payable</th></tr>";
-                    //    model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
-                    //}
-                    //else
-                    //{
-                    //    model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
-                    //}
+                    else
+                    {
+                        dep = a.prin_bal + a.int_bal + tot_int;
+                        if (i == 1)
+                        {
+                            model.tableelement = "<tr><th>Account Head</th><th>Principal Bal</th><th>Interest Bal</th><th>Int Payable</th><th>Net Payable</th><th>Account Head</th><th>Table</th></tr>";
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";                            
+                        }
+                        else
+                        {
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";                            
+                        }
+                    }
                     i = i + 1;
-
+                    fnd_dep = fnd_dep + dep;
                 }
-
+                model.tot_fund = fnd_dep.ToString("0.00");
             }
             else
             {
@@ -1532,7 +1543,69 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-        public JsonResult get_fdep_int_payble(string ac_hd)
+        public JsonResult GETMEMLOANINFO(MemberStatusViewModel model)
+        {
+            decimal xtotpayb = 0;
+            Loan_Master lm = new Loan_Master();
+            List<Loan_Master> lml = new List<Loan_Master>();
+            lml = lm.getmemberloandetails(model.BranchID, model.member_no);
+            int i = 1;
+            if (lml.Count > 0)
+            {
+                foreach (var a in lml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Account Head</th><th>Emp. Id</th><th>Loan date</th><th>Loan Amount</th><th>Instl</th><th>Sec</th><th>Principal Due</th><th>O/D Principal</th><th>Int.Recv</th><th>Aint.Recv</th><th>Total Recievable</th><th>Account Head</th><th>Table</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                    }
+                    i = i + 1;
+                    //shcap_tot = shcap_tot + a.bal_amount;
+                }
+                //model.share_cap_tot = shcap_tot.ToString("0.00");
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult GETOTHLOANINFO(MemberStatusViewModel model)
+        {
+            decimal xtotpayb = 0;
+            Loan_Master lm = new Loan_Master();
+            List<Loan_Master> lml = new List<Loan_Master>();
+            lml = lm.getmemberotherloandetails(model.BranchID, model.member_no);
+            int i = 1;
+            if (lml.Count > 0)
+            {
+                foreach (var a in lml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Account Head</th><th>Loan Id</th><th>Loan date</th><th>Loan Amount</th><th>Instl</th><th>Sec</th><th>Principal Due</th><th>O/D Principal</th><th>Int.Recv</th><th>Aint.Recv</th><th>Total Recievable</th><th>Account Head</th><th>Table</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                    }
+                    i = i + 1;
+                    //shcap_tot = shcap_tot + a.bal_amount;
+                }
+                //model.share_cap_tot = shcap_tot.ToString("0.00");
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public decimal get_fdep_int_payble(string ac_hd, decimal int_rate)
         {
             decimal xtot_int = 0;
             string XLINTDATE = "";
@@ -1540,7 +1613,9 @@ namespace Amritnagar.Controllers
             string xintfr = "";
             string xstdt = "";
             decimal xfmnth = 0;
-
+            MemberStatusViewModel model = new MemberStatusViewModel();
+            List<FUNDDEP_MAST> fdml = new List<FUNDDEP_MAST>();
+           
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
             int year1 = (DateTime.Now.Year) - 1;
@@ -1553,9 +1628,135 @@ namespace Amritnagar.Controllers
                 XLINTDATE = "31/03/" + year1;
             }
             xintfr = Convert.ToDateTime(XLINTDATE).AddDays(1).ToString();
-            xfmnth = Convert.ToDecimal(Convert.ToDateTime(xintfr).Subtract(DateTime.Now).Days / (365.25 / 12));
-            return Json("");
+            xfmnth = Convert.ToDecimal(Convert.ToDateTime(XLINTDATE).Subtract(DateTime.Now).Days / (365.25 / 12));
+            if(xfmnth > 0)
+            {
+                xfmnth = Convert.ToDecimal(Convert.ToDateTime(xintfr).Subtract(DateTime.Now).Days / (365.25 / 12));
+                xintto = Convert.ToDateTime(xintfr).AddMonths(Convert.ToInt32(xfmnth)).ToString();
+                xintto = "01/" + Convert.ToDateTime(xintto).Month + Convert.ToDateTime(xintto).Year;
+                xintto = Convert.ToDateTime(xintto).AddDays(-1).ToString();
+                xfmnth = Convert.ToDecimal(Convert.ToDateTime(xintfr).Subtract(Convert.ToDateTime(xintto)).Days / (365.25 / 12)) + 1;
+                string[] arrdt = new string[Convert.ToInt32(xfmnth) + 1];
+                if(xfmnth > 0)
+                {
+                    for(int i=1; i <=xfmnth; i++)
+                    {
+
+                    }
+                }
+                xtot_int = Convert.ToDecimal(CAL_GFTF_INT(Convert.ToDateTime(xintfr), Convert.ToDateTime(xintto), fdml, Convert.ToInt32(xfmnth), int_rate, Convert.ToDecimal(0), model));
+            }
+            return xtot_int;
         }
+        public double CAL_GFTF_INT(DateTime xfrdt, DateTime XTODT, List<FUNDDEP_MAST> fdml, int xformonths, decimal XINT_RATE, decimal XMAX_MINBAL, MemberStatusViewModel model)
+        {
+            double open_bal = 0; double clos_bal = 0; double xtot = 0;
+            double xr_bal = 0; double xbal = 0; int xyear = 0; int xmonth = 0;
+            int xm = 0;  //decimal K=0;
+            //int mm = 0;
+            int tt = 0;
+
+            for (int K = 1; K <= 12; K++)
+            {
+                model.int_array[2, K] = 0;
+            }
+            double CAL_GFTF_INT = 0;
+            open_bal = 0;
+            clos_bal = 0;
+            xtot = 0;
+            xr_bal = 0;
+            xbal = 0;
+            xm = 1;
+            if (fdml.Count == 0)
+            {
+                return xbal;
+            }
+            else
+            {
+                var result = fdml.FindLast(delegate (FUNDDEP_MAST sbl)
+                {
+                    return sbl.vch_date < xfrdt;
+                });
+                if (result == null)
+                {
+                    open_bal = 0;
+                }
+                else
+                {
+                    open_bal = Convert.ToDouble(result.prin_bal);
+                }
+                xr_bal = open_bal;
+                int XMONTH = Convert.ToDateTime(model.int_array[1, xm]).Month; // int.Parse(int_array[1, xm].ToString("MM"));
+                int XYEAR = Convert.ToDateTime(model.int_array[1, xm]).Year; //int.Parse(int_array[1, xm].ToString("yyyy"));
+                model.int_array[2, xm] = Convert.ToInt32(xr_bal);
+                foreach (FUNDDEP_MAST tf in fdml)
+                {
+                    if (tf.vch_date > XTODT)
+                        break;
+                    if (tf.vch_date < xfrdt)
+                    {
+                        //do nothing
+                    }
+                    else
+                    {
+                        if (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
+                        {
+                            if (tf.vch_date.Month == XMONTH && tf.vch_date.Year == XYEAR)
+                            {
+
+                            }
+                            else
+                            {
+                                xm = xm + 1;
+                                XMONTH = Convert.ToDateTime(model.int_array[1, xm]).Month;  //int.Parse(int_array[1, xm].ToString("MM"));
+                                XYEAR = Convert.ToDateTime(model.int_array[1, xm]).Year; // int.Parse(int_array[1, xm].ToString("yyyy"));
+                                model.int_array[2, xm] = Convert.ToInt32(xr_bal);
+                            }
+                        }
+                        xbal = Convert.ToDouble(tf.prin_bal);
+                        //String XDRCR = tf.dr_cr;
+                        if(xbal < 0)
+                        {
+                            xbal = 0;
+                        }
+                        if (tf.vch_date.Day <= 10)
+                            model.int_array[2, xm] = Convert.ToInt32(xbal);
+                        else
+                        {
+                            if (xbal < model.int_array[2, xm])
+                            {
+                                model.int_array[2, xm] = Convert.ToInt32(xbal);
+                            }
+                        }
+                        xr_bal = xbal;
+                    }
+                }
+                if (xm < xformonths)
+                {
+                    for (int mm = xm + 1; mm <= xformonths; mm++)
+                    {
+                        model.int_array[2, mm] = xr_bal;
+                    }
+                }
+            }
+            if (model.int_array[2, xformonths] == 0)
+            {
+                xtot = 0;
+            }
+            else
+            {
+                for (int PP = 1; PP <= xformonths; PP++)
+                {
+                    xtot = xtot + model.int_array[2, PP];
+                }
+            }
+            CAL_GFTF_INT = Convert.ToDouble(((xtot * Convert.ToDouble(XINT_RATE) / 1200) + 0.00000002));
+            //  CAL_GFTF_INT = IIf(CAL_GFTF_INT < 1, 0, CAL_GFTF_INT);
+            CAL_GFTF_INT = CAL_GFTF_INT < 1 ? 0 : CAL_GFTF_INT;
+            CAL_GFTF_INT = Math.Round(CAL_GFTF_INT, 0);
+            return CAL_GFTF_INT;
+        }
+        
 
         //public JsonResult GetMemberLoanInfoByMemberId(MemberStatusViewModel model)
         //{
@@ -2577,10 +2778,8 @@ namespace Amritnagar.Controllers
         public ActionResult MemDepositeFundDetailList(MemDepositeFundDetailListViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
             model.achddesc = u.getGlAcchd();
-
             return View(model);
         }
 
@@ -2737,6 +2936,7 @@ namespace Amritnagar.Controllers
                 model.int_13_75 = XTOTISL4.ToString("0.00");
                 model.ln_prncl_13_5 = XTOTSL6.ToString("0.00");
                 model.int_13_5 = XTOTISL6.ToString("0.00");
+                model.total_mem = Convert.ToString(i - 1);
             }
             else
             {
@@ -2820,7 +3020,8 @@ namespace Amritnagar.Controllers
                 model.ln_prncl_12_5 = XTOTM14.ToString("0.00");               
                 model.ln_prncl_12_75 = XTOTM12.ToString("0.00");              
                 model.ln_prncl_11_5 = XTOTSFL1.ToString("0.00");               
-                model.ln_prncl_9 = XTOTPSL1.ToString("0.00");                                             
+                model.ln_prncl_9 = XTOTPSL1.ToString("0.00");
+                model.total_mem = Convert.ToString(i - 1);
             }
             else
             {
@@ -2888,41 +3089,43 @@ namespace Amritnagar.Controllers
                     sw.WriteLine("".ToString().PadLeft(4 - (serial).ToString().Length) + serial + "|"
                           + "".ToString().PadLeft(10 - (mem_id).ToString().Length) + mem_id + "|"
                           + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + mem_name + "|"
-                           + "".ToString().PadLeft(11 - (am.XSHARE).ToString().Length) + am.XSHARE.ToString("0.00") + "|"
-                            + "".ToString().PadLeft(12 - (am.XTF).ToString().Length) + am.XTF.ToString("0.00") + "|"
-                             + "".ToString().PadLeft(12 - (am.xgf).ToString().Length) + am.xgf.ToString("0.00") + "|"
-                              + "".ToString().PadLeft(12 - (am.xint_tf).ToString().Length) + am.xint_tf.ToString("0.00") + "|"
-                              + "".ToString().PadLeft(11 - (am.Xint_Gf).ToString().Length) + am.Xint_Gf.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xsfl).ToString().Length) + am.xsfl.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XISFL).ToString().Length) + am.XISFL.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xsjl).ToString().Length) + am.xsjl.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIsjl).ToString().Length) + am.XIsjl.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XSL3).ToString().Length) + am.XSL3.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XISL3).ToString().Length) + am.XISL3.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xpsl).ToString().Length) + am.xpsl.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIPSL).ToString().Length) + am.XIPSL.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xdll).ToString().Length) + am.xdll.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIDLL).ToString().Length) + am.XIDLL.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xsjl1).ToString().Length) + am.xsjl1.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIsjl1).ToString().Length) + am.XIsjl1.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xM14).ToString().Length) + am.xM14.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIM14).ToString().Length) + am.XIM14.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xM12).ToString().Length) + am.xM12.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIM12).ToString().Length) + am.XIM12.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xSFL1).ToString().Length) + am.xSFL1.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XISFL1).ToString().Length) + am.XISFL1.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xPSL1).ToString().Length) + am.xPSL1.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XIPSL1).ToString().Length) + am.XIPSL1.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xSL4).ToString().Length) + am.xSL4.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XISL4).ToString().Length) + am.XISL4.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.xSL6).ToString().Length) + am.xSL6.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(11 - (am.XISL6).ToString().Length) + am.XISL6.ToString("0.00") + "|"
+                           + "".ToString().PadLeft(15 - (am.XSHARE).ToString().Length) + am.XSHARE.ToString("0.00") + "|"
+                            + "".ToString().PadLeft(16 - (am.XTF).ToString().Length) + am.XTF.ToString("0.00") + "|"
+                             + "".ToString().PadLeft(16 - (am.xgf).ToString().Length) + am.xgf.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(16 - (am.xint_tf).ToString().Length) + am.xint_tf.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(15 - (am.Xint_Gf).ToString().Length) + am.Xint_Gf.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(16 - (am.xsfl).ToString().Length) + am.xsfl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XISFL).ToString().Length) + am.XISFL.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xsjl).ToString().Length) + am.xsjl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIsjl).ToString().Length) + am.XIsjl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XSL3).ToString().Length) + am.XSL3.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XISL3).ToString().Length) + am.XISL3.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xpsl).ToString().Length) + am.xpsl.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIPSL).ToString().Length) + am.XIPSL.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xdll).ToString().Length) + am.xdll.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIDLL).ToString().Length) + am.XIDLL.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xsjl1).ToString().Length) + am.xsjl1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIsjl1).ToString().Length) + am.XIsjl1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xM14).ToString().Length) + am.xM14.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIM14).ToString().Length) + am.XIM14.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xM12).ToString().Length) + am.xM12.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIM12).ToString().Length) + am.XIM12.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xSFL1).ToString().Length) + am.xSFL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XISFL1).ToString().Length) + am.XISFL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xPSL1).ToString().Length) + am.xPSL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XIPSL1).ToString().Length) + am.XIPSL1.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xSL4).ToString().Length) + am.xSL4.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XISL4).ToString().Length) + am.XISL4.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.xSL6).ToString().Length) + am.xSL6.ToString("0.00") + "|"
+                               + "".ToString().PadLeft(15 - (am.XISL6).ToString().Length) + am.XISL6.ToString("0.00") + "|"
                                //+ "".ToString().PadLeft(10 - (am.xSL7).ToString().Length) + am.xSL7.ToString("0.00") + "|"
                                //+ "".ToString().PadLeft(10 - (am.XISL7).ToString().Length) + am.XISL7.ToString("0.00") + "|"
-                               );
-
-                       Ln = Ln + 1;
+                               );                    
+                    Ln = Ln + 1;
+                    sw.WriteLine("");
+                    sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
                     i = i + 1;
+                    Ln = Ln + 1;
                 }
                 sw.WriteLine("");
                 sw.WriteLine("");
@@ -2948,8 +3151,6 @@ namespace Amritnagar.Controllers
             }
             return File(memory.ToArray(), "text/plain", "Member_Details_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
         }
-
-
 
         /********************************************Member Details List End*******************************************/
     }

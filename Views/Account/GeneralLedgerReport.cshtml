@@ -1,0 +1,192 @@
+﻿@model Amritnagar.Models.ViewModel.GeneralLedgerReportViewModel
+
+@{
+    ViewBag.Title = "GeneralLedgerReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 170px;
+        height: 25px;
+    }
+
+    .size2 {
+        width: 140px;
+        height: 25px;
+        background-color: white
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 800px;
+            overflow: auto;
+            height: 300px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 800px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+
+    .btn_size {
+        width: 120px;
+        height: 30px
+    }
+
+    .btn_arrow {
+        width: 50px;
+        padding: 8px;
+        background-color: aliceblue;
+        color: firebrick;
+        font-size: 20px
+    }
+</style>
+
+<form asp-controller="Account" asp-action="GeneralLedgerReport" method="post" enctype="multipart/form-data">
+    <div class="container" style="height:60px">
+
+    </div>
+    <div class="heading mt-4">
+        General Ledger
+    </div>
+    <div class="container mt-2" style="margin-bottom:15px">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+                <div class="row mt-1">
+                    <div class="col-md-10 col-lg-10 col-12">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Branch<br />
+                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Date From<br />
+                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                Date To<br />
+                                @Html.TextBoxFor(model => model.to_dt, new { @class = "size", @type = "text" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-12">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-12 text-center">
+                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Print" />
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-12 col-sm-12 col-12 text-center">
+                                <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn_size btn-sm btn-primary" value="Exit" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 col-sm-12 col-12 text-center" style="color:darksalmon; font-weight:bold;font-size:14px">
+                                <u>Account Head</u> &nbsp; <u>Account Head Description</u>
+                            </div>
+                        </div>
+                        <div class="row mt-1 mb-1 justify-content-md-center">
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 border border-1 border-dark">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                        <div class="table-responsive mt-1">
+                                            <table id=" " class="tab">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="btn"><i class="btn_arrow fa fa-angle-right"></i></div>
+                                </div>
+                                <div class="row">
+                                    <div class="btn"><i class="btn_arrow fa fa-angle-double-right"></i></div>
+                                </div>
+                                <div class="row">
+                                    <div class="btn"><i class="btn_arrow fa fa-angle-left"></i></div>
+                                </div>
+                                <div class="row">
+                                    <div class="btn"><i class="btn_arrow fa fa-angle-double-left"></i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 border border-1 border-dark">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                        <div class="table-responsive mt-1">
+                                            <table id=" " class="tab">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+     
+</form>

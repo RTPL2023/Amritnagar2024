@@ -386,7 +386,7 @@
                                         <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_fund, new { @type = "text",style = "border:0" })</th>
                                     </tr>
                                 </table>
-                                <table class="bordered table-responsive tab">
+                                <table id="MembersFund" class="bordered table-responsive tab">
                                     
                                 </table>
 
@@ -437,7 +437,7 @@
                                 <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_Loan, new { @type = "text", style = "border:0" })</th>
                             </tr>
                         </table>
-                        <table class="bordered table-responsive tab">
+                        <table id="ExistingMembersLoan" class="bordered table-responsive tab">
                             
 
                         </table>
@@ -452,7 +452,7 @@
                                 <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_Oth_Loan, new { @type = "text", style = "border:0" })</th>
                             </tr>
                         </table>
-                        <table class="bordered table-responsive tab">
+                        <table id="OtherExistingLoan" class="bordered table-responsive tab">
                             
                         </table>
 
@@ -570,8 +570,58 @@
                     //alert("Error Occured");
                      }
                     });
+        }
+
+         function ShowTableForMembersFund() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GetMemberFund", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("MembersFund").innerHTML = data.tableelement;
+                        $('#tot_fund').val(data.tot_fund);
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+        }
+
+        function ShowTableForMembersLoanInfo() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GETMEMLOANINFO", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("ExistingMembersLoan").innerHTML = data.tableelement;
+                        //$('#tot_fund').val(data.tot_fund);
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
          }
 
+        function ShowTableForMembersOtherLoanInfo() {
+              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("GETOTHLOANINFO", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("OtherExistingLoan").innerHTML = data.tableelement;
+                        //$('#tot_fund').val(data.tot_fund);
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+         }
 
         function evtmember_no(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -582,6 +632,9 @@
                 ShowTableForMemberNominee();
                 ShowTableForLoanSurity();
                 ShowTableForShareCapital();
+                ShowTableForMembersFund();
+                ShowTableForMembersLoanInfo();
+                ShowTableForMembersOtherLoanInfo();
             }
         }
 

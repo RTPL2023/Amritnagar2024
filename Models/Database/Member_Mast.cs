@@ -1004,7 +1004,6 @@ namespace Amritnagar.Models.Database
         }
         public List<Member_Mast> GetmemMastForDvidendCalculation(DividendCalcAndPostViewModel model)
         {
-
             List<Member_Mast> mmlst = new List<Member_Mast>();
             string sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + model.branch + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' AND ";
             sql = sql + "BOOK_NO= '" + model.book_no + "' AND MEM_CATEGORY='" + model.ex_gen + "' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + model.to_dt + "', 103) AND ";
@@ -1031,7 +1030,6 @@ namespace Amritnagar.Models.Database
 
 
         }
-
         public List<Member_Mast> getdetailsbybookno(string unit, string book_no, string on_date)
         {
             List<Member_Mast> mml = new List<Member_Mast>();

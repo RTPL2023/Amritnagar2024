@@ -926,51 +926,54 @@ namespace Amritnagar.Controllers
         /********************************************Loan Ledger Correction End*******************************************/
 
         /********************************************Loan Detail List Start***********************************************/
-        [HttpGet]
-        public ActionResult LoanDetailList(LoanDetailListViewModel model)
-        {
-            UtilityController u = new UtilityController();
-            model.BranchDesc = u.getBranchMastDetails();
-            model.lntypedesc = u.getLoanTypeMastDetails();
-            return View(model);
-        }
-        public JsonResult Getexistingloandetailsbybranchac_hdanddate(LoanDetailListViewModel model)
-        {
-            Loan_Ledger ld = new Loan_Ledger();
-            List<Loan_Ledger> ldl = new List<Loan_Ledger>();
-            ldl = ld.getallexistingloandetails(model.branch_id, model.ac_hd, model.on_date);
-            string vch_date = "";
-            int i = 1;            
-            if (ldl.Count > 0)
-            {
-                foreach (var a in ldl)
-                {
-                    if (Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
-                    {
-                        vch_date = "";
-                    }
-                    else
-                    {
-                        vch_date = Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/");
-                    }
-                    if (i == 1)
-                    {
-                        model.tableelement = "<tr><th>Sl</th><th>EmpId</th><th>Name Of Lonee</th><th>Loan Date</th><th>Loan Amount</th><th>Instl</th><th>Instl Amt</th><th>Last/Led Dt.</th><th>Principal Balance</th><th>Int Recv</th><th>Aint Recv</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + vch_date + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td></tr>";
-                    }
-                    else
-                    {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + vch_date + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td></tr>";
-                    }
-                    i = i + 1;
-                }
-            }
-            else
-            {
-                model.tableelement = null;
-            }
-            return Json(model);
-        }
+        //[HttpGet]
+        //public ActionResult LoanDetailList(LoanDetailListViewModel model)
+        //{
+        //    UtilityController u = new UtilityController();
+        //    model.BranchDesc = u.getBranchMastDetails();
+        //    model.lntypedesc = u.getLoanTypeMastDetails();
+        //    return View(model);
+        //}
+        //public JsonResult Getexistingloandetailsbybranchac_hdanddate(LoanDetailListViewModel model)
+        //{
+        //    Loan_Ledger ld = new Loan_Ledger();
+        //    List<Loan_Ledger> ldl = new List<Loan_Ledger>();
+        //    ldl = ld.getallexistingloandetails(model.branch_id, model.ac_hd, model.on_date);            
+        //    string vch_date = "";
+        //    int i = 1;            
+        //    if (ldl.Count > 0)
+        //    {
+        //        foreach (var a in ldl)
+        //        {
+        //            ld.get_current_due(model.branch_id, model.ac_hd, model.on_date, a.emp_id, a.loan_amt, a.inst_no, a.int_rate, a.ln_spcl);
+        //            if (Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
+        //            {
+        //                vch_date = "";
+        //            }
+        //            else
+        //            {
+        //                vch_date = Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/");
+        //            }
+        //            if (i == 1)
+        //            {
+        //                model.tableelement = "<tr><th>Sl</th><th>EmpId</th><th>Name Of Lonee</th><th>Loan Date</th><th>Loan Amount</th><th>Instl</th><th>Instl Amt</th><th>Last/Led Dt.</th><th>Principal Balance</th><th>Int Recv</th><th>Aint Recv</th></tr>";
+        //                model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + vch_date + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td></tr>";
+        //            }
+        //            else
+        //            {
+        //                model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + vch_date + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td></tr>";
+        //            }
+        //            i = i + 1;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        model.tableelement = null;
+        //    }
+        //    return Json(model);
+        //}
+
+       
         /************************************************Loan Detail List End**********************************************************/
 
         /********************************************Monthly Interest Posting Start***********************************************/
