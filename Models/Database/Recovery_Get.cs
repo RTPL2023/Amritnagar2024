@@ -10,7 +10,7 @@ namespace Amritnagar.Models.Database
 {
     public class Recovery_Get
     {
-        SQLConfig config = new SQLConfig();     
+        SQLConfig config = new SQLConfig();
         public string branch_id { get; set; }
         public string eMPLOYER_cD { get; set; }
         public string eMPLOYER_bRANCH { get; set; }
@@ -90,7 +90,7 @@ namespace Amritnagar.Models.Database
             decimal TOTISL7 = 0;
             decimal TOTSJL1 = 0;
             decimal TOTISJL1 = 0;
-            List<Recovery_Get> rgl = new List<Recovery_Get>();           
+            List<Recovery_Get> rgl = new List<Recovery_Get>();
             string sql = string.Empty;
             sql = "select * from recovery_get where convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + rec_dt + "', 103) order by employee_id";
             config.singleResult(sql);
@@ -105,16 +105,16 @@ namespace Amritnagar.Models.Database
                     if (config.dt.Rows.Count > 0)
                     {
                         foreach (DataRow dr1 in config.dt.Rows)
-                        {                            
+                        {
                             rg.mEMBER_iD = Convert.ToString(dr1["MEMBER_ID"]);
                             try
                             {
                                 config.Update("member_mast", new Dictionary<String, object>()
                                 {
-                                { "MEMBER_ID",        rg.mEMBER_iD},                              
+                                { "MEMBER_ID",        rg.mEMBER_iD},
                                 }, new Dictionary<string, object>()
-                                {                               
-                                { "EMPLOYEE_ID",     rg.eMPLOYEE_iD },                               
+                                {
+                                { "EMPLOYEE_ID",     rg.eMPLOYEE_iD },
                                 });
                             }
                             catch (Exception ex)
@@ -122,7 +122,7 @@ namespace Amritnagar.Models.Database
 
                             }
                         }
-                    }                 
+                    }
                 }
             }
             sql = "SELECT * FROM RECOVERY_GET WHERE  EMPLOYER_BRANCH='" + emp_branch + "' AND  BOOK_NO='" + book_no + "' AND convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + rec_dt + "', 103) ORDER BY MEMBER_ID";
@@ -138,7 +138,7 @@ namespace Amritnagar.Models.Database
                     rg.iNT_aMT = !Convert.IsDBNull(dr2["INT_AMT"]) ? Convert.ToDecimal(dr2["INT_AMT"]) : Convert.ToDecimal(00);
                     sql = "select * from member_mast where employee_id='" + rg.eMPLOYEE_iD + "' AND MEMBER_CLOSED IS NULL  order by MEMBER_ID";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         foreach (DataRow dr3 in config.dt.Rows)
                         {
@@ -150,18 +150,18 @@ namespace Amritnagar.Models.Database
                     {
                         TOTTF = (TOTTF + rg.pRIN_aMT + rg.iNT_aMT);
                         sql = "select * from TF_LEDGER where BRANCH_ID='MN' AND MEMBER_ID='" + rg.mEMBER_iD + "' order by MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
-                        config.singleResult(sql); 
-                        if(config.dt.Rows.Count > 0)
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
                         {
                             foreach (DataRow dr4 in config.dt.Rows)
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr4["PRIN_BAL"]) ? Convert.ToDecimal(dr4["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                                              
+                        }
                     }
                     if (rg.aC_hD == "SH")
                     {
-                        TOTSH = (TOTSH + rg.pRIN_aMT + rg.iNT_aMT);                        
+                        TOTSH = (TOTSH + rg.pRIN_aMT + rg.iNT_aMT);
                     }
                     if (rg.aC_hD == "LICP")
                     {
@@ -177,13 +177,13 @@ namespace Amritnagar.Models.Database
                         TOTISFL = (TOTISFL + rg.iNT_aMT);
                         sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='SFL'order by employee_id,vch_date,VCH_NO,VCH_SRL";
                         config.singleResult(sql);
-                        if(config.dt.Rows.Count > 0)
+                        if (config.dt.Rows.Count > 0)
                         {
                             foreach (DataRow dr5 in config.dt.Rows)
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr5["PRIN_BAL"]) ? Convert.ToDecimal(dr5["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                                                           
+                        }
                     }
                     if (rg.aC_hD == "SJL")
                     {
@@ -197,7 +197,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr6["PRIN_BAL"]) ? Convert.ToDecimal(dr6["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                                                    
+                        }
                     }
                     if (rg.aC_hD == "PSL")
                     {
@@ -211,7 +211,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr7["PRIN_BAL"]) ? Convert.ToDecimal(dr7["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                           
+                        }
                     }
                     if (rg.aC_hD == "DLL")
                     {
@@ -225,7 +225,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr8["PRIN_BAL"]) ? Convert.ToDecimal(dr8["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                            
+                        }
                     }
                     if (rg.aC_hD == "SL3")
                     {
@@ -239,7 +239,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr9["PRIN_BAL"]) ? Convert.ToDecimal(dr9["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                           
+                        }
                     }
                     if (rg.aC_hD == "M12")
                     {
@@ -253,7 +253,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr10["PRIN_BAL"]) ? Convert.ToDecimal(dr10["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                          
+                        }
                     }
                     if (rg.aC_hD == "M14")
                     {
@@ -261,13 +261,13 @@ namespace Amritnagar.Models.Database
                         TOTIM14 = (TOTIM14 + rg.iNT_aMT);
                         sql = "select * from loan_ledger where employee_id='" + rg.eMPLOYEE_iD + "' AND AC_HD='M14'order by employee_id,vch_date,VCH_NO,VCH_SRL";
                         config.singleResult(sql);
-                        if(config.dt.Rows.Count > 0)
+                        if (config.dt.Rows.Count > 0)
                         {
                             foreach (DataRow dr11 in config.dt.Rows)
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr11["PRIN_BAL"]) ? Convert.ToDecimal(dr11["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                       
+                        }
                     }
                     if (rg.aC_hD == "PSL1")
                     {
@@ -281,7 +281,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr12["PRIN_BAL"]) ? Convert.ToDecimal(dr12["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                           
+                        }
                     }
                     if (rg.aC_hD == "SFL1")
                     {
@@ -295,7 +295,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr13["PRIN_BAL"]) ? Convert.ToDecimal(dr13["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                          
+                        }
                     }
                     if (rg.aC_hD == "SL4")
                     {
@@ -309,7 +309,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr14["PRIN_BAL"]) ? Convert.ToDecimal(dr14["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                           
+                        }
                     }
                     if (rg.aC_hD == "SL6")
                     {
@@ -323,7 +323,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr15["PRIN_BAL"]) ? Convert.ToDecimal(dr15["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                            
+                        }
                     }
                     if (rg.aC_hD == "SL7")
                     {
@@ -337,7 +337,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr16["PRIN_BAL"]) ? Convert.ToDecimal(dr16["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                           
+                        }
                     }
                     if (rg.aC_hD == "SJL1")
                     {
@@ -351,7 +351,7 @@ namespace Amritnagar.Models.Database
                             {
                                 rg.prin_bal = !Convert.IsDBNull(dr17["PRIN_BAL"]) ? Convert.ToDecimal(dr17["PRIN_BAL"]) : Convert.ToDecimal(00);
                             }
-                        }                            
+                        }
                     }
                     rg.TOTDLL = TOTDLL;
                     rg.TOTIDLL = TOTIDLL;
@@ -387,6 +387,608 @@ namespace Amritnagar.Models.Database
                 }
             }
             return rgl;
+        }
+
+
+
+
+        public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model)
+        {
+            string sql = "";
+            string msg = "";
+            sql = "SELECT * FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                sql = "Delete FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
+                config.Execute_Query(sql);
+            }
+            Recovery_Schedule rs = new Recovery_Schedule();
+            List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
+            rslst = rs.getdetailsForRecoveryFrmSalartDeduction(model.ded_achd, model.branch, model.emplyer_name, model.emp_unit, model.book_no, model.sch_dt);
+            int i = 1;
+            string vch_no = "";
+            foreach (var a in rslst)
+            {
+
+                if (i == 1)
+                {
+                    vch_no = "SLDED" + "00001";
+
+                }
+                else
+                {
+                    string code = (i).ToString().PadLeft(5, '0');
+                    vch_no = "SLDED" + code;
+                }
+                //string vch_no = "SLDED" + i + "00000";
+                string mm = Convert.ToDateTime(model.rec_dt).Month.ToString();
+                string yy = Convert.ToDateTime(model.rec_dt).Year.ToString();
+                try
+                {
+                    sql = "INSERT INTO RECOVERY_GET(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, book_no, EMPLOYEE_ID , SCH_DATE, ac_hd ,vch_pacno ,RECOVERY_DATE ,recovery_mn,recovery_yr,PRIN_AMT,INT_AMT )";
+                    sql = sql + "VALUES('" + model.branch + "', '" + model.emplyer_name + "', '" + model.emp_unit + "', '" + model.book_no + "','" + a.emp_id + "', convert(datetime, '" + model.sch_dt + "', 103),'" + a.ac_hd + "', '" + a.vch_pacno + "', convert(datetime, '" + model.rec_dt + "', 103), '" + mm + "', '" + yy + "'," + Convert.ToDecimal(a.prin_amt) + ", " + Convert.ToDecimal(a.int_amt) + ")";
+                    config.Execute_Query(sql);
+                    msg = "update Done";
+                }
+                catch (Exception ex)
+                {
+                    msg = "error " + ex;
+                }
+                if (a.int_amt > 0)
+                {
+                    ADD_LEDGER("I" + a.ac_hd, a.vch_pacno, vch_no, 1, "C", a.int_amt, "SD", model.branch, model.sch_dt, model.rec_dt, a.vch_pacno);
+                }
+                if (a.prin_amt > 0)
+                {
+                    ADD_LEDGER(a.ac_hd, a.vch_pacno, vch_no, 1, "C", a.prin_amt, "SD", model.branch, model.sch_dt, model.rec_dt, a.vch_pacno);
+                }
+                i++;
+            }
+            return msg;
+        }
+
+        public void ADD_LEDGER(string XACHD, string xacno, string xvch_no, int XVCH_SRL, string VCH_DRCR, decimal XVCH_AMT, string XINSERT_MODE, string branch, string sch_dt, string rec_dt, string member_id)
+        {
+            string XLEDGER_TAB, XMAST_FLAG, xvchno;
+            decimal LBAL_PRIN = 0;
+            decimal LBAL_INT = 0;
+            decimal LBAL_AINT = 0;
+            decimal LBAL_CH = 0;
+            decimal TR_AMT = 0;
+            decimal TRAMT_PRIN = 0;
+            decimal TRAMT_INT = 0;
+            string xledtable = "";
+            string xledachd = "";
+            string XLEDGER_COL = "";
+            string tm = DateTime.Now.ToString("HH:mm:ss");
+            string sql = "Select * from ACC_HEAD  where ac_hd='" + XACHD + "'";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr = (DataRow)config.dt.Rows[0];
+                xledtable = Convert.ToString(dr["LEDGER_TAB"]);
+                xledachd = Convert.ToString(dr["LED_ACHD"]);
+                XLEDGER_COL = Convert.ToString(dr["LEDGER_COL"]);
+
+
+                string QRY1 = "";
+                if (Convert.ToString(dr["IFCHARGE"]) != "")
+                {
+                    QRY1 = "SELECT * FROM " + xledtable + " WHERE branch_id='" + branch + "'AND AC_HD='" + xledachd + "' AND convert(varchar, vch_DATE, 103) = convert(varchar, '" + sch_dt + "', 103)";
+                }
+                else
+                {
+                    if (xacno != "")
+                    {
+                        switch (xledtable)
+                        {
+                            case "DEPOSIT_LEDGER":
+                                QRY1 = "SELECT * FROM " + xledtable + " WHERE branch_id='" + branch + "' AND AC_HD='" + xledachd + "' AND AC_NO='" + xacno + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                                break;
+                            case "SHARE_LEDGER":
+                            case "GF_LEDGER":
+                            case "TF_LEDGER":
+                            case "LICP_LEDGER":
+                            case "DIVIDEND_LEDGER":
+                            case "RTB_LEDGER":
+                                QRY1 = "SELECT * FROM " + xledtable + " WHERE branch_id='" + branch + "' AND MEMBER_ID='" + xacno + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                                break;
+                            case "LOAN_LEDGER":
+                                QRY1 = "SELECT * FROM " + xledtable + " WHERE branch_id='" + branch + "' AND AC_HD='" + xledachd + "' AND EMPLOYEE_ID='" + xacno + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+
+                                break;
+
+                        }
+                    }
+
+                }
+                if (XLEDGER_COL == "")
+                {
+                    XLEDGER_COL = "P";
+                }
+                switch (xledtable.ToUpper())
+                {
+                    case "TF_LEDGER":
+                        config.singleResult(QRY1);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            string vchdt = Convert.ToDateTime(dr1["VCH_DATE"]).ToString("dd/MM/yyyy");
+                            if (Convert.ToDateTime(vchdt) <= Convert.ToDateTime(rec_dt))
+                            {
+                                LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                                LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            }
+                            else
+                            {
+                                LBAL_PRIN = 0;
+                                LBAL_INT = 0;
+                            }
+                        }
+                        else
+                        {
+                            LBAL_PRIN = 0;
+                            LBAL_INT = 0;
+                        }
+                        TR_AMT = XVCH_AMT;
+                        if (XLEDGER_COL == "P")
+                        {
+                            config.Insert("TF_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "PRIN_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN + TR_AMT },
+                            { "int_bal",  LBAL_INT },
+                            });
+                        }
+                        if (XLEDGER_COL == "I")
+                        {
+                            config.Insert("TF_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "INT_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN  },
+                            { "int_bal",  LBAL_INT+ TR_AMT },
+                            });
+                        }
+
+                        string sqll = "SELECT * FROM TF_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
+                        config.singleResult(sqll);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                            LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                            TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                            string drcr = Convert.ToString(dr1["dr_cr"]);
+                            config.Update("TF_LEDGER", new Dictionary<String, object>()
+                                {
+                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                                { "int_bal",   LBAL_INT     + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
+                                }, new Dictionary<string, object>()
+                                {
+                                { "VCH_NO",    xvch_no },
+                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                                });
+                        }
+                        break;
+                    case "LICP_LEDGER":
+                        config.singleResult(QRY1);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            string vchdt = Convert.ToDateTime(dr1["VCH_DATE"]).ToString("dd/MM/yyyy");
+                            if (Convert.ToDateTime(vchdt) <= Convert.ToDateTime(rec_dt))
+                            {
+                                LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                                LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            }
+                            else
+                            {
+                                LBAL_PRIN = 0;
+                                LBAL_INT = 0;
+                            }
+                        }
+                        else
+                        {
+                            LBAL_PRIN = 0;
+                            LBAL_INT = 0;
+                        }
+                        TR_AMT = XVCH_AMT;
+                        if (XLEDGER_COL == "P")
+                        {
+                            config.Insert("LICP_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",  Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "PRIN_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN + TR_AMT },
+                            { "int_bal",  LBAL_INT },
+                            });
+                        }
+                        if (XLEDGER_COL == "I")
+                        {
+                            config.Insert("LICP_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "INT_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN  },
+                            { "int_bal",  LBAL_INT+ TR_AMT },
+                            });
+                        }
+
+                        sqll = "SELECT * FROM LICP_LEDGER WHERE VCH_NO='" + xacno + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + rec_dt + "', 103)";
+                        config.singleResult(sqll);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                            LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                           
+                            config.singleResult(QRY1);
+                            foreach (DataRow drr in config.dt.Rows)
+                            {
+                                TRAMT_PRIN = !Convert.IsDBNull(drr["PRIN_AMOUNT"]) ? Convert.ToDecimal(drr["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                                TRAMT_INT = !Convert.IsDBNull(drr["INT_AMOUNT"]) ? Convert.ToDecimal(drr["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                                string drcr = Convert.ToString(dr1["dr_cr"]);
+                                config.Update("TF_LEDGER", new Dictionary<String, object>()
+                                {
+                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                                { "int_bal",   LBAL_INT     + (drcr=="D"?-TRAMT_INT:TRAMT_INT)},
+                                }, new Dictionary<string, object>()
+                                {
+                                { "VCH_NO",    xvch_no },
+                                { "VCH_DATE",    Convert.ToDateTime(rec_dt) },
+                                });
+                                LBAL_PRIN = !Convert.IsDBNull(drr["prin_bal"]) ? Convert.ToDecimal(drr["prin_bal"]) : Convert.ToDecimal("0");
+                                LBAL_INT = !Convert.IsDBNull(drr["int_bal"]) ? Convert.ToDecimal(drr["int_bal"]) : Convert.ToDecimal("0");
+                            }
+                           
+                        }
+                        break;
+
+                    case "RTB_LEDGER":
+                        config.singleResult(QRY1);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            string vchdt = Convert.ToDateTime(dr1["VCH_DATE"]).ToString("dd/MM/yyyy");
+                            if (Convert.ToDateTime(vchdt) <= Convert.ToDateTime(rec_dt))
+                            {
+                                LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                                LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            }
+                            else
+                            {
+                                LBAL_PRIN = 0;
+                                LBAL_INT = 0;
+                            }
+                        }
+                        else
+                        {
+                            LBAL_PRIN = 0;
+                            LBAL_INT = 0;
+                        }
+                        TR_AMT = XVCH_AMT;
+                        if (XLEDGER_COL == "P")
+                        {
+                            config.Insert("RTB_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",    Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "PRIN_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN + TR_AMT },
+                            { "int_bal",  LBAL_INT },
+                            });
+                        }
+                        if (XLEDGER_COL == "I")
+                        {
+                            config.Insert("RTB_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "INT_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN  },
+                            { "int_bal",  LBAL_INT+ TR_AMT },
+                            });
+                        }
+
+                        sqll = "SELECT * FROM RTB_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
+                        config.singleResult(sqll);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                            LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                            TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                            string drcr = Convert.ToString(dr1["dr_cr"]);
+                            config.Update("RTB_LEDGER", new Dictionary<String, object>()
+                                {
+                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                                { "int_bal",   LBAL_INT + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
+                                }, new Dictionary<string, object>()
+                                {
+                                { "VCH_NO",    xvch_no },
+                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                                });
+                        }
+                        break;
+                    case "SHARE_LEDGER":
+                        config.singleResult(QRY1);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            string vchdt = Convert.ToDateTime(dr1["VCH_DATE"]).ToString("dd/MM/yyyy");
+                            if (Convert.ToDateTime(vchdt) <= Convert.ToDateTime(rec_dt))
+                            {
+                                LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                                LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            }
+                            else
+                            {
+                                LBAL_PRIN = 0;
+                                LBAL_INT = 0;
+                            }
+                        }
+                        else
+                        {
+                            LBAL_PRIN = 0;
+                            LBAL_INT = 0;
+                        }
+                        TR_AMT = XVCH_AMT;
+                        if (XLEDGER_COL == "P")
+                        {
+                            config.Insert("SHARE_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "member_id",   member_id },
+                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "PRIN_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN + TR_AMT },
+                           // { "int_bal",  LBAL_INT },
+                            });
+                        }
+
+
+                        sqll = "SELECT * FROM SHARE_LEDGER WHERE VCH_NO='" + xacno + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + rec_dt + "', 103)";
+                        config.singleResult(sqll);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                            //LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                            // TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+
+                            config.Update("SHARE_LEDGER", new Dictionary<String, object>()
+                                {
+                                { "prin_bal",   LBAL_PRIN  + (Convert.ToString(dr1["dr_cr"])=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                              //  { "int_bal",   LBAL_INT     + (Convert.ToString(dr1["dr_cr"])=="D"?-TRAMT_INT:TRAMT_INT)},
+                                }, new Dictionary<string, object>()
+                                {
+                                { "VCH_NO",    xvch_no },
+                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                                });
+                        }
+                        break;
+                    case "LOAN_LEDGER":
+                        config.singleResult(QRY1);
+                        string dr_cr = "";
+
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            string vdate = Convert.ToDateTime(dr1["VCH_DATE"]).ToString("dd/MM/yyyy");
+
+                            if (Convert.ToDateTime(vdate) <= Convert.ToDateTime(rec_dt))
+                            {
+                                LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["prin_bal"]).ToString("0.00")) : Convert.ToDecimal("0");
+                                LBAL_INT = !Convert.IsDBNull(dr1["INT_DUE"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["INT_DUE"]).ToString("0.00")) : Convert.ToDecimal("0");
+                                LBAL_AINT = !Convert.IsDBNull(dr1["AINT_DUE"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["AINT_DUE"]).ToString("0.00")) : Convert.ToDecimal("0");
+                                LBAL_CH = !Convert.IsDBNull(dr1["ichrg_due"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["ichrg_due"]).ToString("0.00")) : Convert.ToDecimal("0");
+                                dr_cr = Convert.ToString(dr1["dr_cr"]);
+                            }
+                            else
+                            {
+                                LBAL_PRIN = 0;
+                                LBAL_INT = 0;
+                                LBAL_AINT = 0;
+                                LBAL_CH = 0;
+                            }
+                        }
+                        else
+                        {
+                            LBAL_PRIN = 0;
+                            LBAL_INT = 0;
+                            LBAL_AINT = 0;
+                            LBAL_CH = 0;
+                        }
+                        TR_AMT = XVCH_AMT;
+                        if (XLEDGER_COL == "P")
+                        {
+                            config.Insert("LOAN_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "ac_hd",     xledachd },
+                            { "EMPLOYEE_ID",   member_id },
+                            { "vch_date", Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "PRIN_AMOUNT",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN + (dr_cr=="D"?TR_AMT:-TR_AMT) },
+                            { "INT_DUE",  LBAL_INT },
+                            { "AINT_DUE",  LBAL_AINT },
+                            { "ichrg_due",  LBAL_CH },
+                            });
+                        }
+                        if (XLEDGER_COL == "I")
+                        {
+                            try
+                            {
+                                config.Insert("LOAN_LEDGER", new Dictionary<String, object>()
+                                {
+                                { "BRANCH_ID",     branch },
+                                { "ac_hd",     xledachd },
+                                { "EMPLOYEE_ID",   member_id },
+                                { "vch_date",    Convert.ToDateTime(rec_dt+" "+tm)},
+                                { "vch_no",    xvch_no },
+                                { "vch_srl",  XVCH_SRL },
+                                { "VCH_TYPE",    "T" },
+                                { "vch_achd",     XACHD},
+                                { "DR_CR",       VCH_DRCR},
+                                { "INSERT_MODE",  XINSERT_MODE},
+                                { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                                { "INT_AMOUNT", Convert.ToDecimal(TR_AMT )},
+                                { "prin_bal", Convert.ToDecimal(LBAL_PRIN )},
+                                { "INT_DUE", Convert.ToDecimal(LBAL_INT  + (dr_cr=="D"?TR_AMT:-TR_AMT)) },
+                                { "AINT_DUE",Convert.ToDecimal(LBAL_AINT) },
+                                { "ichrg_due",Convert.ToDecimal(LBAL_CH )},
+                                });
+                            }
+                            //    sql = "INSERT INTO LOAN_LEDGER(BRANCH_ID, ac_hd, EMPLOYEE_ID, vch_date, vch_no , vch_srl, VCH_TYPE ,vch_achd ,DR_CR ,INSERT_MODE,ref_oth,INT_AMOUNT,prin_bal,INT_DUE,AINT_DUE,ichrg_due )";
+                            //    sql = sql + "VALUES('" + branch + "', '" + xledachd + "', '" + member_id + "', convert(datetime, '" +Convert.ToDateTime(rec_dt)  + "', 103),'" + xvch_no + "', '" + XVCH_SRL + "', 'T', '" + XACHD + "', '" + VCH_DRCR + "','" + XINSERT_MODE + "','SALARY DEDUCTION(" +Convert.ToDateTime(sch_dt).ToString("MMM")+ " - " +Convert.ToDateTime(sch_dt).Year+ ")'," + Convert.ToDecimal(TR_AMT) + ", " + Convert.ToDecimal(LBAL_PRIN) + ", " + Convert.ToDecimal(LBAL_INT + (dr_cr == "D" ? TR_AMT : -TR_AMT)) + ", " + Convert.ToDecimal(LBAL_AINT) + ", " + Convert.ToDecimal(LBAL_CH) + ")";
+                            //    config.Execute_Query(sql);
+                            //}
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                        if (XLEDGER_COL == "A")
+                        {
+                            config.Insert("LOAN_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "ac_hd",     xledachd },
+                            { "EMPLOYEE_ID",   member_id },
+                            { "vch_date", Convert.ToDateTime( rec_dt+" "+tm)},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "aint_amount",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN },
+                            { "INT_DUE",  LBAL_INT },
+                            { "AINT_DUE",  LBAL_AINT + (dr_cr=="D"?TR_AMT:-TR_AMT)},
+                            { "ichrg_due",  LBAL_CH },
+                            });
+                        }
+                        if (XLEDGER_COL == "C")
+                        {
+                            config.Insert("LOAN_LEDGER", new Dictionary<String, object>()
+                            {
+                            { "BRANCH_ID",     branch },
+                            { "ac_hd",     xledachd },
+                            { "EMPLOYEE_ID",   member_id },
+                            { "vch_date",Convert.ToDateTime( rec_dt+" "+tm)},
+                            { "vch_no",    xvch_no },
+                            { "vch_srl",  XVCH_SRL },
+                            { "VCH_TYPE",    "T" },
+                            { "vch_achd",     XACHD},
+                            { "DR_CR",       VCH_DRCR},
+                            { "INSERT_MODE",  XINSERT_MODE},
+                            { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
+                            { "ichrg_amount",      TR_AMT },
+                            { "prin_bal",    LBAL_PRIN  },
+                            { "INT_DUE",  LBAL_INT },
+                            { "AINT_DUE",  LBAL_AINT },
+                            { "ichrg_due",  LBAL_CH + (dr_cr=="D"?TR_AMT:-TR_AMT)},
+                            });
+                        }
+
+
+                        sqll = "SELECT * FROM LOAN_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
+                        config.singleResult(sqll);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                            LBAL_INT = !Convert.IsDBNull(dr1["INT_DUE"]) ? Convert.ToDecimal(dr1["INT_DUE"]) : Convert.ToDecimal("0");
+                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                            TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                            string drcr = Convert.ToString(dr1["dr_cr"]);
+                            config.Update("LOAN_LEDGER", new Dictionary<String, object>()
+                                {
+                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?TRAMT_PRIN:-TRAMT_PRIN)},
+                                { "INT_DUE",   LBAL_INT     + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
+                                }, new Dictionary<string, object>()
+                                {
+                                { "VCH_NO",    xvch_no },
+                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                                });
+                        }
+                        break;
+                }
+            }
         }
     }
 }

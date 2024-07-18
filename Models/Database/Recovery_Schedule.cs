@@ -470,8 +470,8 @@ namespace Amritnagar.Models.Database
         {
             string SDL_QRY = "";
             SDL_QRY = "select * from recovery_schedule where branch_id='" + branch + "'";
-            SDL_QRY = SDL_QRY + " and employer_cd='" + emp_name + "' and EMPLOYEE_ID ='"+xemployee_ID+"' and ";
-            SDL_QRY = SDL_QRY + "employer_branch='" + unit + "' and ac_hd='" + rs.r4 + "' and ";
+            SDL_QRY = SDL_QRY + " and employer_cd='" + emp_name + "' and EMPLOYEE_ID ='"+xemployee_ID+"'";
+            SDL_QRY = SDL_QRY + " and ac_hd='" + rs.r4 + "' and ";
             SDL_QRY = SDL_QRY + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103)";
             SDL_QRY = SDL_QRY + " AND MEMBER_TYPE='" + mem_type + "' ";
             SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + book_no + "'";
@@ -480,28 +480,29 @@ namespace Amritnagar.Models.Database
             if (config.dt.Rows.Count > 0)
             {
                 SDL_QRY = "delete from recovery_schedule where branch_id='" + branch + "'";
-                SDL_QRY = SDL_QRY + " and employer_cd='" + emp_name + "' and EMPLOYEE_ID ='" + xemployee_ID + "' and ";
-                SDL_QRY = SDL_QRY + "employer_branch='" + unit + "' and ac_hd='" + rs.r4 + "' and ";
+                SDL_QRY = SDL_QRY + " and employer_cd='" + emp_name + "' and EMPLOYEE_ID ='" + xemployee_ID + "' ";
+                SDL_QRY = SDL_QRY + " and ac_hd='" + rs.r4 + "' and ";
                 SDL_QRY = SDL_QRY + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103)";
                 SDL_QRY = SDL_QRY + " AND MEMBER_TYPE='" + mem_type + "' ";
                 SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + book_no + "'";
                 config.Execute_Query(SDL_QRY);
 
-                SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT )";
-                SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + book_no + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
-
-                config.Execute_Query(SDL_QRY);
+              
             }
-            else
-            {
-                if(rs.r4== "LICP")
-                {
-                    SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT )";
-                    SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + book_no + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
+            SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT )";
+            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + book_no + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
 
-                    config.Execute_Query(SDL_QRY);
-                }
-            }
+            config.Execute_Query(SDL_QRY);
+            //else
+            //{
+            //    if(rs.r4== "LICP")
+            //    {
+            //        SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT )";
+            //        SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + book_no + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
+
+            //        config.Execute_Query(SDL_QRY);
+            //    }
+            //}
 
         }
         public List<Recovery_Schedule> getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
@@ -679,7 +680,7 @@ namespace Amritnagar.Models.Database
 
                                             if (CAL_LOAN_DUE == true)
                                             {
-                                                Tot_Due = Tot_Due + dd;
+                                                Tot_Due = Tot_Due + dd+ INT_CAL;
                                                 totalR7 = totalR7 + dd;
                                                 totalR8 = totalR8 + INT_CAL;
                                             }
@@ -936,7 +937,7 @@ namespace Amritnagar.Models.Database
             string sql = "";
             sql = "select * from recovery_schedule where branch_id='" + model.branch + "'";
             sql = sql + " and employer_cd='" + model.emp_name + "' and EMPLOYEE_ID ='" + model.employee_id + "' and ";
-            sql = sql + "employer_branch='" +model.unit + "' and ac_hd='" + model.ac_hd + "' and ";
+            sql = sql + " ac_hd='" + model.ac_hd + "' and ";
             sql = sql + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
             sql = sql + " AND MEMBER_TYPE='" + model.mem_type + "' ";
             sql = sql + " AND MEM_CATEGORY='" + model.mem_cat + "'and BOOK_NO='" + model.book_no + "'"; ;

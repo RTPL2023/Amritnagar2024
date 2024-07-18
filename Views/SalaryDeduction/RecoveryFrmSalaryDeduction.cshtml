@@ -178,7 +178,7 @@
 
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12 mt-3">
-                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save Dividend" onclick="btnsaveonclick()" />
+                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save Recovery" onclick="btnsaveRecoveryonclick()" />
 
                     </div>
                 </div>
@@ -223,7 +223,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab">
+                                <table id="list" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id="list" class="tab">
+                                <table id="list2" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -313,7 +313,10 @@
                 success: function (data) {
                     $("#loading").hide();
                     document.getElementById("list").innerHTML = data.grid1;
-
+                    document.getElementById("list2").innerHTML = data.grid2;
+                    $('#prnt_bal').val(data.prnt_bal);
+                    $('#int_bal').val(data.int_bal);
+                    $('#tot_bal').val(data.tot_bal);
 
 
                 },
@@ -343,35 +346,31 @@
             });
 
         };
-        function btnsaveonclick() {
+        function btnsaveRecoveryonclick() {
             $("#loading").show();
-            $('#forsave').val("Savedata");
-            /*alert("ok");*/
+         
+         
             let ModelObject = {
-                ac_hd: $('#ac_hd').val(),
-                fr_dt: $('#fr_dt').val(),
-                colliery_code: $('#colliery_code').val(),
+                ded_achd: $('#ded_achd').val(),
                 branch: $('#branch').val(),
-                ex_gen: $('#ex_gen').val(),
-                to_dt: $('#to_dt').val(),
+                emplyer_name: $('#emplyer_name').val(),
+                emp_unit: $('#emp_unit').val(),
                 book_no: $('#book_no').val(),
-                inst: $('#inst').val(),
-                post_dt: $('#post_dt').val(),
-                forsave: $('#forsave').val(),
+                sch_dt: $('#sch_dt').val(),
+                rec_dt: $('#rec_dt').val(),
             };
             /*alert(JSON.stringify(ModelObject));*/
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("getLIstForDividendpost", "Dividend")',
+                url: '@Url.Action("SaveRecoverylist", "SalaryDeduction")',
                 data: ModelObject,
                 dataType: "json",
                 success: function (data) {
-                    //alert(data);
-                    $("#loading").hide();
+                    alert(data);
                 },
                 error: function (err) {
-                    alert("Unable To Calculate");
-                    $("#loading").hide();
+                    alert(data);
+                 
 
                 }
             });
