@@ -571,26 +571,26 @@ namespace Amritnagar.Models.Database
                             });
                         }
 
-                        string sqll = "SELECT * FROM TF_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
-                        config.singleResult(sqll);
-                        if (config.dt.Rows.Count > 0)
-                        {
-                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
-                            LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
-                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
-                            TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
-                            string drcr = Convert.ToString(dr1["dr_cr"]);
-                            config.Update("TF_LEDGER", new Dictionary<String, object>()
-                                {
-                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
-                                { "int_bal",   LBAL_INT     + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
-                                }, new Dictionary<string, object>()
-                                {
-                                { "VCH_NO",    xvch_no },
-                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
-                                });
-                        }
+                        //string sqll = "SELECT * FROM TF_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
+                        //config.singleResult(sqll);
+                        //if (config.dt.Rows.Count > 0)
+                        //{
+                        //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        //    LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                        //    LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                        //    TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    string drcr = Convert.ToString(dr1["dr_cr"]);
+                        //    config.Update("TF_LEDGER", new Dictionary<String, object>()
+                        //        {
+                        //        { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                        //        { "int_bal",   LBAL_INT     + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
+                        //        }, new Dictionary<string, object>()
+                        //        {
+                        //        { "VCH_NO",    xvch_no },
+                        //        { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                        //        });
+                        //}
                         break;
                     case "LICP_LEDGER":
                         config.singleResult(QRY1);
@@ -654,34 +654,34 @@ namespace Amritnagar.Models.Database
                             });
                         }
 
-                        sqll = "SELECT * FROM LICP_LEDGER WHERE VCH_NO='" + xacno + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + rec_dt + "', 103)";
-                        config.singleResult(sqll);
-                        if (config.dt.Rows.Count > 0)
-                        {
-                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
-                            LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                        //sqll = "SELECT * FROM LICP_LEDGER WHERE VCH_NO='" + xacno + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + rec_dt + "', 103)";
+                        //config.singleResult(sqll);
+                        //if (config.dt.Rows.Count > 0)
+                        //{
+                        //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        //    LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                        //    LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
                            
-                            config.singleResult(QRY1);
-                            foreach (DataRow drr in config.dt.Rows)
-                            {
-                                TRAMT_PRIN = !Convert.IsDBNull(drr["PRIN_AMOUNT"]) ? Convert.ToDecimal(drr["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
-                                TRAMT_INT = !Convert.IsDBNull(drr["INT_AMOUNT"]) ? Convert.ToDecimal(drr["INT_AMOUNT"]) : Convert.ToDecimal("0");
-                                string drcr = Convert.ToString(dr1["dr_cr"]);
-                                config.Update("TF_LEDGER", new Dictionary<String, object>()
-                                {
-                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
-                                { "int_bal",   LBAL_INT     + (drcr=="D"?-TRAMT_INT:TRAMT_INT)},
-                                }, new Dictionary<string, object>()
-                                {
-                                { "VCH_NO",    xvch_no },
-                                { "VCH_DATE",    Convert.ToDateTime(rec_dt) },
-                                });
-                                LBAL_PRIN = !Convert.IsDBNull(drr["prin_bal"]) ? Convert.ToDecimal(drr["prin_bal"]) : Convert.ToDecimal("0");
-                                LBAL_INT = !Convert.IsDBNull(drr["int_bal"]) ? Convert.ToDecimal(drr["int_bal"]) : Convert.ToDecimal("0");
-                            }
+                        //    config.singleResult(QRY1);
+                        //    foreach (DataRow drr in config.dt.Rows)
+                        //    {
+                        //        TRAMT_PRIN = !Convert.IsDBNull(drr["PRIN_AMOUNT"]) ? Convert.ToDecimal(drr["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                        //        TRAMT_INT = !Convert.IsDBNull(drr["INT_AMOUNT"]) ? Convert.ToDecimal(drr["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                        //        string drcr = Convert.ToString(dr1["dr_cr"]);
+                        //        config.Update("TF_LEDGER", new Dictionary<String, object>()
+                        //        {
+                        //        { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                        //        { "int_bal",   LBAL_INT     + (drcr=="D"?-TRAMT_INT:TRAMT_INT)},
+                        //        }, new Dictionary<string, object>()
+                        //        {
+                        //        { "VCH_NO",    xvch_no },
+                        //        { "VCH_DATE",    Convert.ToDateTime(rec_dt) },
+                        //        });
+                        //        LBAL_PRIN = !Convert.IsDBNull(drr["prin_bal"]) ? Convert.ToDecimal(drr["prin_bal"]) : Convert.ToDecimal("0");
+                        //        LBAL_INT = !Convert.IsDBNull(drr["int_bal"]) ? Convert.ToDecimal(drr["int_bal"]) : Convert.ToDecimal("0");
+                        //    }
                            
-                        }
+                        //}
                         break;
 
                     case "RTB_LEDGER":
@@ -746,26 +746,26 @@ namespace Amritnagar.Models.Database
                             });
                         }
 
-                        sqll = "SELECT * FROM RTB_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
-                        config.singleResult(sqll);
-                        if (config.dt.Rows.Count > 0)
-                        {
-                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
-                            LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
-                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
-                            TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
-                            string drcr = Convert.ToString(dr1["dr_cr"]);
-                            config.Update("RTB_LEDGER", new Dictionary<String, object>()
-                                {
-                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
-                                { "int_bal",   LBAL_INT + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
-                                }, new Dictionary<string, object>()
-                                {
-                                { "VCH_NO",    xvch_no },
-                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
-                                });
-                        }
+                        //sqll = "SELECT * FROM RTB_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
+                        //config.singleResult(sqll);
+                        //if (config.dt.Rows.Count > 0)
+                        //{
+                        //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        //    LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                        //    LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                        //    TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    string drcr = Convert.ToString(dr1["dr_cr"]);
+                        //    config.Update("RTB_LEDGER", new Dictionary<String, object>()
+                        //        {
+                        //        { "prin_bal",   LBAL_PRIN  + (drcr=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                        //        { "int_bal",   LBAL_INT + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
+                        //        }, new Dictionary<string, object>()
+                        //        {
+                        //        { "VCH_NO",    xvch_no },
+                        //        { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                        //        });
+                        //}
                         break;
                     case "SHARE_LEDGER":
                         config.singleResult(QRY1);
@@ -811,26 +811,26 @@ namespace Amritnagar.Models.Database
                         }
 
 
-                        sqll = "SELECT * FROM SHARE_LEDGER WHERE VCH_NO='" + xacno + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + rec_dt + "', 103)";
-                        config.singleResult(sqll);
-                        if (config.dt.Rows.Count > 0)
-                        {
-                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
-                            //LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
-                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
-                            // TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                        //sqll = "SELECT * FROM SHARE_LEDGER WHERE VCH_NO='" + xacno + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + rec_dt + "', 103)";
+                        //config.singleResult(sqll);
+                        //if (config.dt.Rows.Count > 0)
+                        //{
+                        //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        //    LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                        //    //LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
+                        //    TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    // TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
 
-                            config.Update("SHARE_LEDGER", new Dictionary<String, object>()
-                                {
-                                { "prin_bal",   LBAL_PRIN  + (Convert.ToString(dr1["dr_cr"])=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
-                              //  { "int_bal",   LBAL_INT     + (Convert.ToString(dr1["dr_cr"])=="D"?-TRAMT_INT:TRAMT_INT)},
-                                }, new Dictionary<string, object>()
-                                {
-                                { "VCH_NO",    xvch_no },
-                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
-                                });
-                        }
+                        //    config.Update("SHARE_LEDGER", new Dictionary<String, object>()
+                        //        {
+                        //        { "prin_bal",   LBAL_PRIN  + (Convert.ToString(dr1["dr_cr"])=="D"?-TRAMT_PRIN:TRAMT_PRIN)},
+                        //      //  { "int_bal",   LBAL_INT     + (Convert.ToString(dr1["dr_cr"])=="D"?-TRAMT_INT:TRAMT_INT)},
+                        //        }, new Dictionary<string, object>()
+                        //        {
+                        //        { "VCH_NO",    xvch_no },
+                        //        { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                        //        });
+                        //}
                         break;
                     case "LOAN_LEDGER":
                         config.singleResult(QRY1);
@@ -911,10 +911,7 @@ namespace Amritnagar.Models.Database
                                 { "ichrg_due",Convert.ToDecimal(LBAL_CH )},
                                 });
                             }
-                            //    sql = "INSERT INTO LOAN_LEDGER(BRANCH_ID, ac_hd, EMPLOYEE_ID, vch_date, vch_no , vch_srl, VCH_TYPE ,vch_achd ,DR_CR ,INSERT_MODE,ref_oth,INT_AMOUNT,prin_bal,INT_DUE,AINT_DUE,ichrg_due )";
-                            //    sql = sql + "VALUES('" + branch + "', '" + xledachd + "', '" + member_id + "', convert(datetime, '" +Convert.ToDateTime(rec_dt)  + "', 103),'" + xvch_no + "', '" + XVCH_SRL + "', 'T', '" + XACHD + "', '" + VCH_DRCR + "','" + XINSERT_MODE + "','SALARY DEDUCTION(" +Convert.ToDateTime(sch_dt).ToString("MMM")+ " - " +Convert.ToDateTime(sch_dt).Year+ ")'," + Convert.ToDecimal(TR_AMT) + ", " + Convert.ToDecimal(LBAL_PRIN) + ", " + Convert.ToDecimal(LBAL_INT + (dr_cr == "D" ? TR_AMT : -TR_AMT)) + ", " + Convert.ToDecimal(LBAL_AINT) + ", " + Convert.ToDecimal(LBAL_CH) + ")";
-                            //    config.Execute_Query(sql);
-                            //}
+                          
                             catch (Exception ex)
                             {
 
@@ -966,26 +963,26 @@ namespace Amritnagar.Models.Database
                         }
 
 
-                        sqll = "SELECT * FROM LOAN_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
-                        config.singleResult(sqll);
-                        if (config.dt.Rows.Count > 0)
-                        {
-                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
-                            LBAL_INT = !Convert.IsDBNull(dr1["INT_DUE"]) ? Convert.ToDecimal(dr1["INT_DUE"]) : Convert.ToDecimal("0");
-                            TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
-                            TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
-                            string drcr = Convert.ToString(dr1["dr_cr"]);
-                            config.Update("LOAN_LEDGER", new Dictionary<String, object>()
-                                {
-                                { "prin_bal",   LBAL_PRIN  + (drcr=="D"?TRAMT_PRIN:-TRAMT_PRIN)},
-                                { "INT_DUE",   LBAL_INT     + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
-                                }, new Dictionary<string, object>()
-                                {
-                                { "VCH_NO",    xvch_no },
-                                { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
-                                });
-                        }
+                        //sqll = "SELECT * FROM LOAN_LEDGER WHERE VCH_NO='" + xvch_no + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + rec_dt + "', 103)";
+                        //config.singleResult(sqll);
+                        //if (config.dt.Rows.Count > 0)
+                        //{
+                        //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        //    LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
+                        //    LBAL_INT = !Convert.IsDBNull(dr1["INT_DUE"]) ? Convert.ToDecimal(dr1["INT_DUE"]) : Convert.ToDecimal("0");
+                        //    TRAMT_PRIN = !Convert.IsDBNull(dr1["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr1["PRIN_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    TRAMT_INT = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : Convert.ToDecimal("0");
+                        //    string drcr = Convert.ToString(dr1["dr_cr"]);
+                        //    config.Update("LOAN_LEDGER", new Dictionary<String, object>()
+                        //        {
+                        //        { "prin_bal",   LBAL_PRIN  + (drcr=="D"?TRAMT_PRIN:-TRAMT_PRIN)},
+                        //        { "INT_DUE",   LBAL_INT     + (drcr=="D"?TRAMT_INT:-TRAMT_INT)},
+                        //        }, new Dictionary<string, object>()
+                        //        {
+                        //        { "VCH_NO",    xvch_no },
+                        //        { "VCH_DATE",    Convert.ToDateTime(rec_dt+" "+tm) },
+                        //        });
+                        //}
                         break;
                 }
             }
