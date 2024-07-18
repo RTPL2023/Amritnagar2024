@@ -143,12 +143,12 @@
     select:focus {
         background-color: rgba(226,148,91, 0.6);
     }
+
     .size2 {
         width: 150px;
         height: 25px;
         background-color: white
     }
-   
 </style>
 <form asp-controller="Member" asp-action="RecoveryFrmSalaryDeduction" method="post">
     <div class="container" style="height:70px">
@@ -165,13 +165,21 @@
                         Branch<br />
                         @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-2 col-md-4 col-sm-12 col-12">
                         Schedule Date<br />
                         @Html.TextBoxFor(p => p.sch_dt, new { @class = "size", @type = "text" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-2 col-md-4 col-sm-12 col-12">
                         Recovery Date <br />
                         @Html.TextBoxFor(p => p.rec_dt, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="Btnrefreshonclick()" />
+
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12 mt-3">
+                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save Dividend" onclick="btnsaveonclick()" />
+
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -179,21 +187,21 @@
                         Employer Name
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        @Html.DropDownListFor(p => p.emp_name, new SelectList(Model.EmpDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
+                        @Html.DropDownListFor(p => p.emplyer_name, new SelectList(Model.EmpDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Employer Unit
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                        @Html.DropDownListFor(p => p.emp_unit, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select", new { @class = "sizeL" })
+                        @Html.DropDownListFor(p => p.emp_unit, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select", new { @class = "sizeL", @onchange = "Filldeductachd()" })
                     </div>
-                </div>
+                </div> 
                 <div class="row mt-2">
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Deduction A/c Head
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                        @Html.DropDownListFor(p => p.ded_achd, new SelectList(Model.EmpBranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.ded_achd, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "Select Subcategory", new { @class = " size" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Recovery A/c Head
@@ -231,7 +239,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab">
+                                <table id="list" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -245,7 +253,7 @@
 
                         <div class="row mt-1 mb-1">
                             <div class="col-lg-3 col-sm-12 col-12">
-                               
+
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
                                 @Html.TextBoxFor(model => model.prnt_bal, new { @class = "size2", @type = "text" })
@@ -266,5 +274,163 @@
         </div>
     </div>
 
-    </form>
+</form>
 
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading").hide();
+            //$("#frm_dt").hide();
+            //$("#to_dt").hide();
+        });
+
+        function Btnrefreshonclick() {
+            $("#loading").show();
+            /*alert("ok");*/
+            let ModelObject = {
+                ded_achd: $('#ded_achd').val(),
+                branch: $('#branch').val(),
+                emplyer_name: $('#emplyer_name').val(),
+                emp_unit: $('#emp_unit').val(),
+                book_no: $('#book_no').val(),
+                sch_dt: $('#sch_dt').val(),
+
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getRecoveryFrmSalaryDeductionList", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    document.getElementById("list").innerHTML = data.grid1;
+
+
+
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
+
+        };
+
+
+        function Filldeductachd() {
+            var emplyer_name = $('#emplyer_name').val();
+            var emp_unit = $('#emp_unit').val();
+            $.ajax({
+                url: '@Url.Action("getdeductlist", "SalaryDeduction")',
+                type: "GET",
+                dataType: "JSON",
+                data: { emplyer_name: emplyer_name, emp_unit: emp_unit },
+                success: function (subcategories) {
+                    $("#ded_achd").html(""); // clear before appending new list
+                    $.each(subcategories, function (i, sc) {
+                        $("#ded_achd").append(
+                            $('<option></option>').val(sc.Value).html(sc.Text));
+                    });
+                }
+            });
+
+        };
+        function btnsaveonclick() {
+            $("#loading").show();
+            $('#forsave').val("Savedata");
+            /*alert("ok");*/
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                fr_dt: $('#fr_dt').val(),
+                colliery_code: $('#colliery_code').val(),
+                branch: $('#branch').val(),
+                ex_gen: $('#ex_gen').val(),
+                to_dt: $('#to_dt').val(),
+                book_no: $('#book_no').val(),
+                inst: $('#inst').val(),
+                post_dt: $('#post_dt').val(),
+                forsave: $('#forsave').val(),
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getLIstForDividendpost", "Dividend")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    //alert(data);
+                    $("#loading").hide();
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                    $("#loading").hide();
+
+                }
+            });
+
+        };
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('list');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    var f1 = document.getElementById('member_id');
+
+                    f1.value = cells[1].innerHTML;
+                    getdividentledger();
+                };
+            }
+        })();
+        function getdividentledger() {
+
+                /*alert("ok");*/
+            let ModelObject = {
+                member_id: $('#member_id').val(),
+                branch: $('#branch').val(),
+            };
+                /*alert(JSON.stringify(ModelObject));*/
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getDividendLedgerBymember_id", "Dividend")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+
+                        document.getElementById("list2").innerHTML = data.tableelement1;
+
+
+
+                    },
+                    error: function (err) {
+                        alert("Unable To Calculate");
+                    }
+                });
+
+        };
+    </script>
+}
