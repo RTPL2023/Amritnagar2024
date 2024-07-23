@@ -134,22 +134,22 @@ namespace Amritnagar.Controllers
         public JsonResult GetTempData(string vch_date, string vch_no)
         {
             Temp_Vch_Entry tve = new Temp_Vch_Entry();
-            List<Temp_Vch_Entry> tvel = new List<Temp_Vch_Entry>();           
+            List<Temp_Vch_Entry> tvel = new List<Temp_Vch_Entry>();
             tvel = tve.GetTempVchDataByVchdate(vch_date, vch_no);
             string TableElement = string.Empty;
-            int i = 1;            
+            int i = 1;
             foreach (var a in tvel)
             {
                 if (i == 1)
                 {
                     TableElement = "<tr><th> Srl</th><th> Dr/Cr </th><th>Account Head</th><th>Account No</th><th>Paid To/Recd.From/Particulars</th><th>Amount</th><th>Ref.A/C Head</th><th>Ref.A/C No</th><th>Ref.A/C Particulars</th></tr>";
                     TableElement = TableElement + "<tr  id=" + Convert.ToString(i) + "><td>" + a.srl + "</td><td>" + a.drcr + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.paid_to_rcv_frm + "</td><td>" + a.amount + "</td>";
-                    TableElement = TableElement + "<td>" + a.ref_achd + "</td><td>" + a.ref_acno + "</td><td>" + a.ref_ac_particulars + "</td></tr>";                   
+                    TableElement = TableElement + "<td>" + a.ref_achd + "</td><td>" + a.ref_acno + "</td><td>" + a.ref_ac_particulars + "</td></tr>";
                 }
                 else
                 {
                     TableElement = TableElement + "<tr  id=" + Convert.ToString(i) + "><td>" + a.srl + "</td><td>" + a.drcr + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.paid_to_rcv_frm + "</td><td>" + a.amount + "</td>";
-                    TableElement = TableElement + "<td>" + a.ref_achd + "</td><td>" + a.ref_acno + "</td><td>" + a.ref_ac_particulars + "</td></tr>";                   
+                    TableElement = TableElement + "<td>" + a.ref_achd + "</td><td>" + a.ref_acno + "</td><td>" + a.ref_ac_particulars + "</td></tr>";
                 }
                 i = i + 1;
             }
@@ -179,6 +179,7 @@ namespace Amritnagar.Controllers
 
             return View(model);
         }
+
         [HttpGet]
         public ActionResult CashBookReport(CashBookReportViewModel model)
         {
@@ -208,6 +209,38 @@ namespace Amritnagar.Controllers
 
 
             return View(model);
+        }
+        public JsonResult getdataforTrialBlance(TrialBalanceReportViewModel model)
+        {
+            List<GL_BALNCE> glblst = new List<GL_BALNCE>();
+            GL_BALNCE gl = new GL_BALNCE();
+
+            glblst = gl.gettrialbalancelist(model);
+            if (glblst.Count > 0)
+            {
+                model.tableele = "<tr><th> Major Group</th><th> Account Head </th><th>Debit Balance</th><th>Credit Balance</th><th>Group Total</th></tr>";
+
+                foreach (var a in glblst)
+                {
+                    model.tableele = model.tableele + "<tr><td>" + a.majorgroup + "</td><td>" + a.acchd + "</td><td>" + a.dbalance.ToString("0.00") + "</td><td>" + a.cbalance.ToString("0.00") + "</td><td>" + a.grouptotal.ToString("0.00") + "</td></tr>";
+
+                    model.label1 = (Convert.ToDecimal(model.label1) + Convert.ToDecimal(a.dbalance)).ToString("0.00");
+                    model.label2 = (Convert.ToDecimal(model.label2) + Convert.ToDecimal(a.cbalance)).ToString("0.00");
+
+
+                }
+            }
+
+            return Json(model);
+        }
+        public JsonResult SaveDataoftrialblance(TrialBalanceReportViewModel model)
+        {
+           
+            GL_BALNCE gl = new GL_BALNCE();
+
+         string msg= gl.SaveInDividentLedger(model);
+
+            return Json(msg);
         }
         [HttpGet]
         public ActionResult GeneralLedgerReport(GeneralLedgerReportViewModel model)

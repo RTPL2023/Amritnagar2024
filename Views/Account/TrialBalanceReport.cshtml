@@ -10,11 +10,13 @@
         width: 170px;
         height: 25px;
     }
+
     .size2 {
         width: 140px;
         height: 25px;
         background-color: white
     }
+
     .heading {
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         color: saddlebrown;
@@ -115,14 +117,14 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Balance As On<br />
-                        @Html.TextBoxFor(model => model.bal_as_on, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.gl_date, new { @class = "size", @type = "text" })
                     </div>
                     <div class="col-md-2 col-lg-2 col-12 mt-3">
-                        <input id="BtnRefreshList" type="button" name="BtnRefreshList" Height="40" Width="100" class="btn btn-primary btn-sm pull-right" value="Refresh List" />
+                        <input id="BtnRefreshList" type="button" name="BtnRefreshList" Height="40" Width="100" class="btn btn-primary btn-sm pull-right" value="Refresh List" onclick="BtnRefreshOnClick()" />
                     </div>
 
                     <div class="col-md-1 col-lg-1 col-sm-12 col-12 mt-3">
-                        <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-sm btn-primary" value="Print" />
+                        <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-sm btn-primary" value="Print" onclick="BtnprintOnClick()"/>
                     </div>
                     <div class="col-md-3 col-lg-3 col-12 mt-3">
                         <input id="BtnExitWindow" type="button" name="BtnExitWindow" Height="40" Width="100" class="btn btn-primary btn-sm" value="Exit Window" />
@@ -134,7 +136,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id=" " class="tab">
+                                <table id="list" class="tab">
                                 </table>
                             </div>
                         </div>
@@ -147,13 +149,13 @@
                     <div class="col-lg-8 col-md-8 col-sm-12 col-12" style="background-color:burlywood;color:brown">
                         <div class="row mt-1 mb-1">
                             <div class="col-lg-4 col-sm-12 col-12">
-                                
+
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
-                                @Html.TextBoxFor(model => model.label, new { @class = "size2", @type = "text" })
+                                @Html.TextBoxFor(model => model.label1, new { @class = "size2", @type = "text" })
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
-                                @Html.TextBoxFor(model => model.label, new { @class = "size2", @type = "text" })
+                                @Html.TextBoxFor(model => model.label2, new { @class = "size2", @type = "text" })
                             </div>
                         </div>
 
@@ -165,3 +167,62 @@
     </div>
 
 </form>
+@section scripts
+    {
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //$("#debt_amt").val("0");
+            //$("#crdt_amt").val("0");
+            //$("#net_amt").val("0");
+            $('#loading').hide();
+        });
+        function BtnRefreshOnClick() {
+            let ModelObject = {
+                branch: $('#branch').val(),
+                gl_date: $('#gl_date').val(),
+
+            };
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("getdataforTrialBlance", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data)
+                {
+                    document.getElementById("list").innerHTML = data.tableele;
+                    $("#label1").val(data.label1);
+                    $("#label2").val(data.label2);
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+        function BtnprintOnClick() {
+            let ModelObject = {
+                branch: $('#branch').val(),
+                gl_date: $('#gl_date').val(),
+
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveDataoftrialblance", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    alert(data);
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+
+    </script>
+}
