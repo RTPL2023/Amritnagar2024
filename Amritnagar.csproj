@@ -151,6 +151,8 @@
     <Compile Include="Models\Database\Employer_Mast.cs" />
     <Compile Include="Models\Database\FUNDDEP_MAST.cs" />
     <Compile Include="Models\Database\GF_Ledger.cs" />
+    <Compile Include="Models\Database\GL_BALNCE.cs" />
+    <Compile Include="Models\Database\Ledger.cs" />
     <Compile Include="Models\Database\Licence.cs" />
     <Compile Include="Models\Database\LnPurpose_Mast.cs" />
     <Compile Include="Models\Database\LnStatus_Mast.cs" />
