@@ -204,23 +204,22 @@
                         @Html.DropDownListFor(p => p.vch_type, new SelectList(new string[] { "Cash", "Transfer" }), new { @class = "size" })
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
-                        <input id="ButtonSave" type="button" value="Save" name="ButtonSave" class="btn btn-primary btn-sm" />
+                        <input id="ButtonSave" type="button" value="Save" name="ButtonSave" class="btn btn-primary btn-sm" onclick="SaveVoucher()" />
                     </div>
-
                 </div>
+
                 <div class="container mt-2">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
                             p a r t i c u l a r s &nbsp;&nbsp; o f  &nbsp;&nbsp;  t r a n s a c t i o n s
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-
                             <table class="tab_txt">
-
                                 <tr>
-                                    <th>Srl</th>
+                                    @*<th>Srl</th>*@
                                     <th>Dr/Cr</th>
                                     <th>Account Head</th>
                                     <th>Ac No</th>
@@ -232,15 +231,16 @@
                                     <th>&nbsp;&nbsp;&nbsp;</th>
                                 </tr>
                                 <tr>
-                                    <td>@Html.TextBoxFor(model => model.srl, new { @class = "sizeS", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.drcr, new { @class = "sizeS", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.vch_achd, new { @class = "sizeM1", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.vchpacno, new { @class = "sizeM1", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.particular, new { @class = "size", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.amount, new { @class = "sizeM1", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.ref_ac_hd, new { @class = "sizeM1", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.refacno, new { @class = "sizeM1", @type = "text" })</td>
-                                    <td>@Html.TextBoxFor(model => model.refParticular, new { @class = "sizeM1", @type = "text" })</td>
+                                    @*<td>@Html.TextBoxFor(model => model.srl, new { @class = "sizeS", @type = "text" })</td>*@
+                                    <td>@Html.TextBoxFor(model => model.drcr, new { @class = "sizeS", @type = "text", onkeypress = "javascript:return evtdrcr(event);" })</td>
+                                    <td>@Html.TextBoxFor(model => model.vch_achd, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evt_vch_achd(event);" })</td>
+                                    @*<td><input id="vch_achd" name="vch_achd" type="text" size="20" value="" width="100" onkeypress="javascript:return evt_vch_achd(event);" /></td>*@
+                                    <td>@Html.TextBoxFor(model => model.vchpacno, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtvchpacno(event);" })</td>
+                                    <td>@Html.TextBoxFor(model => model.particular, new { @class = "size", @type = "text", onkeypress = "javascript:return evtparticular(event);" })</td>
+                                    <td>@Html.TextBoxFor(model => model.amount, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtamount(event);" })</td>
+                                    <td>@Html.TextBoxFor(model => model.ref_ac_hd, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evt_ref_ac_hd(event);" })</td>
+                                    <td>@Html.TextBoxFor(model => model.refacno, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtvchAcno(event);" })</td>
+                                    <td>@Html.TextBoxFor(model => model.refParticular, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtrefparticular(event);" })</td>
                                     <td><input id="ButtonAdd" type="button" value="ADD" name="ButtonAdd" class="btn btn-primary btn-sm" onclick="addvoucher()" /></td>
                                 </tr>
                             </table>
@@ -304,7 +304,7 @@
                             @Html.TextBoxFor(model => model.del_vch_no, new { @class = "sizebig", @type = "text" })
                         </div>
                         <div class="col-lg-4 col-sm-12 col-12">
-                            <input id="ButtonDelVchNo" type="button" value="Delete by VCH No" name="ButtonDelVchNo" class="btn btn-primary btn-sm" />
+                            <input id="ButtonDelVchNo" type="button" value="Delete by VCH No" name="ButtonDelVchNo" class="btn btn-primary btn-sm" onclick="DeleteTempVoucher()"  />
                         </div>
 
                     </div>
@@ -312,7 +312,7 @@
                 <div class="container mt-2">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
-                            n a r r a t i o n
+                            N a r r a t i o n
                         </div>
                     </div>
 
@@ -324,7 +324,13 @@
 
 @section scripts
     {
+    @*<script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>*@
     <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -332,6 +338,52 @@
             $("#crdt_amt").val("0");
             $("#net_amt").val("0");
             $('#loading').hide();
+
+            $("#vch_achd").autocomplete({
+                source: function (request, response) {
+                    let ModelObject = { vch_achd: $('#vch_achd').val() };
+                    $.ajax({
+                        url: "/Account/AchdListForVoucherEntry",
+                        type: "POST",
+                        dataType: "json",
+                        data: ModelObject,
+                        success: function (data) {
+                            response($.map(data, function (achd) {
+                                return { label: achd.ac_parti, value: achd.ac_hd };
+                            }))
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "",
+                    results: function (count) {
+                        return count + (count > 1 ? 'results' : 'result ') + 'found';
+                    }
+                }
+            });
+
+            $("#ref_ac_hd").autocomplete({
+                source: function (request, response) {
+                    let ModelObject = { vch_achd: $('#ref_ac_hd').val() };
+                    $.ajax({
+                        url: "/Account/AchdListForVoucherEntry",
+                        type: "POST",
+                        dataType: "json",
+                        data: ModelObject,
+                        success: function (data) {
+                            response($.map(data, function (achd) {
+                                return { label: achd.ac_parti, value: achd.ac_hd };
+                            }))
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "",
+                    results: function (count) {
+                        return count + (count > 1 ? 'results' : 'result ') + 'found';
+                    }
+                }
+            });
         });
 
         function evtDate(evt) {
@@ -411,31 +463,20 @@
                 success: function (data)
                 {
                     ShowTable();
-                    //if ($('#drcr').val() == "D") {
-                    //    $("#debit").val(parseFloat($('#debit').val()) + parseFloat($('#amount').val()));
-                    //    $("#net_amt").val(parseFloat($('#net_amt').val()) - parseFloat($('#amount').val()));
-                    //}
-                    //if ($('#drcr').val() == "C") {
-                    //    $("#credit").val(parseFloat($('#credit').val()) + parseFloat($('#amount').val()));
-                    //    $("#net_amt").val(parseFloat($('#net_amt').val()) + parseFloat($('#amount').val()));
-                    //}
-
                     $('#vchpacno').val("");
                     $('#drcr').val("");
                     $('#particular').val("");
                     $('#amount').val("");
                     $('#refacno').val("");
                     $('#refParticular').val("");
+                    $('#ref_ac_hd').val("");
+                    $('#vch_achd').val("");
                     $('#drcr').focus();
                 },
                 error: function (err) {
                     alert(err);
                 }
-
             });
-
-
-
         }
 
         function ShowTable() {
@@ -455,6 +496,236 @@
             });
         }
 
+        function evtamount(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetAmount();
+            }
+        }
+
+        function GetAmount() {
+             let ModelObject = {
+                 vch_date: $('#vch_date').val(),
+                 vch_no: $('#txtvch_No').val()
+             };
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetamountForvchEntry", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                  success: function (data)
+                  {
+                    //alert(data);
+                    if ($('#drcr').val() == "D") {
+                        $("#debt_amt").val(parseFloat(data.debt_amt) + parseFloat($('#amount').val()));
+                    }
+                    else {
+                        $("#crdt_amt").val(parseFloat(data.crdt_amt) + parseFloat($('#amount').val()));
+                    }
+                    $("#net_amt").val(parseFloat($('#crdt_amt').val()) - parseFloat($('#debt_amt').val()));
+                    $("#ref_ac_hd").focus();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+             });
+        }
+
+        function evtparticular(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#amount").focus();
+            }
+        }
+
+        function evtrefparticular(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#ButtonAdd").focus();
+            }
+        }
+
+        function evtdrcr(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#vch_achd").focus();
+            }
+        }
+
+        function evt_vch_achd(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#vchpacno").focus();
+            }
+        }
+
+        function evt_ref_ac_hd(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#refacno").focus();
+            }
+        }
+
+         function SaveVoucher() {
+            $('#loading').show();
+             let ModelObject = { vch_date: $('#vch_date').val(), txtvch_No: $('#txtvch_No').val(), vch_Type: $('#vch_type').val(), Vch_narr: $('#Vch_narr').val(), branch_id: $('#branch').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                     url: '@Url.Action("SaveVoucherData", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                success: function (data) {
+                    alert(data);
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                    $('#loading').hide();
+                }
+            });
+         }
+
+        function DeleteTempVoucher() {
+            if ($('#del_vch_no').val() == null || $('#del_vch_no').val() == "") {
+                alert("Voucher No Cannot Be Blank");
+            }
+            else {
+                 //alert("OK")
+            let ModelObject = {
+                vch_no: $('#del_vch_no').val()
+            };
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete_Vch_In_Temp_table_byVchNo", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data)
+                {
+                    alert(data);
+                    $('#del_vch_no').val("");
+                    ShowTable();
+                    $('#drcr').val("");
+                    $('#debt_amt').val("0");
+                    $('#crdt_amt').val("0");
+                    $('#net_amt').val("0");
+                    $('#vch_DrCr').val("");
+                    $('#drcr').focus();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+            }
+        }
+
+        function evtvchpacno(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetParticularPacno();
+            }
+        }
+
+        function GetParticularPacno() {
+
+            if ($('#vchpacno').val() != null && $('#vchpacno').val() != "") {
+                let ModelObject = {
+                    vch_achd: $('#vch_achd').val(),
+                    vchpacno: $('#vchpacno').val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetParticularsForvchEntry", "Accounts")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.clos_flag == "C") {
+                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
+                                $('#particular').val(data.particulars);
+                            }
+                            else
+                                $('#particular').val("");
+                        }
+                        else {
+                            //alert(data.particulars);
+                            $('#particular').val(data.particulars);
+                        }
+                        $("#particular").focus();
+                    },
+                    error: function (err) {
+                        //alert(err);
+                        $("#particular").focus();
+                    }
+                });
+            }
+            else {
+                $('#particular').val("");
+                $("#particular").focus();
+            }
+        }
+
+        function evtvchAcno(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                GetParticularAcno();
+            }
+        }
+
+       function GetParticularAcno() {
+            if ($('#refacno').val() != null && $('#refacno').val() != "") {
+                let ModelObject = {
+                    vch_achd: $('#ref_ac_hd').val(),
+                    vchpacno: $('#refacno').val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetParticularsForvchEntry", "Accounts")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.clos_flag == "C") {
+                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
+                                $('#refParticular').val(data.particulars);
+                            }
+                            else
+                                $('#refParticular').val("");
+                        }
+                        else {
+                            //alert(data.particulars);
+                            $('#refParticular').val(data.particulars);
+                        }
+                        $("#refParticular").focus();
+
+                    },
+                    error: function (err) {
+                        //alert(err);
+                        $("#refParticular").focus();
+                    }
+                });
+            }
+            else {
+                $('#refParticular').val("");
+                $("#refParticular").focus();
+            }
+       }
 
     </script>
 }

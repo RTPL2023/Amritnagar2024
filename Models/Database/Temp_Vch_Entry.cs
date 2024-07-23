@@ -97,5 +97,15 @@ namespace Amritnagar.Models.Database
             }
             return tvel;
         }
+        public void DeleteTempData(string dt, string vchno)
+        {
+            string sql = "delete from temp_vch_entry where convert(datetime, Vch_Dt, 103) = convert(datetime, '" + dt.Replace("-", "/") + "', 103) and vch_no='" + vchno + "'";
+            config.Execute_Query(sql);
+        }
+        public void DeleteTempDatabyvchno(string vchno)
+        {
+            string sql = "delete from temp_vch_entry where vch_no='" + vchno + "'";
+            config.Execute_Query(sql);
+        }
     }
 }

@@ -144,12 +144,14 @@
     <Compile Include="Models\Database\Caste_Mast.cs" />
     <Compile Include="Models\Database\Deduct_ACHD_Mast.cs" />
     <Compile Include="Models\Database\Department_Mast.cs" />
+    <Compile Include="Models\Database\Deposit_Ledger.cs" />
     <Compile Include="Models\Database\Designation_Mast.cs" />
     <Compile Include="Models\Database\DIVIDEND_LEDGER.cs" />
     <Compile Include="Models\Database\Employer_Branch_Mast.cs" />
     <Compile Include="Models\Database\Employer_Mast.cs" />
     <Compile Include="Models\Database\FUNDDEP_MAST.cs" />
     <Compile Include="Models\Database\GF_Ledger.cs" />
+    <Compile Include="Models\Database\Ledger.cs" />
     <Compile Include="Models\Database\Licence.cs" />
     <Compile Include="Models\Database\LnPurpose_Mast.cs" />
     <Compile Include="Models\Database\LnStatus_Mast.cs" />

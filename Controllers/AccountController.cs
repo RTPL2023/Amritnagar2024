@@ -155,10 +155,63 @@ namespace Amritnagar.Controllers
             }
             return Json(TableElement);
         }
-
+        public JsonResult GetParticularsForvchEntry(string vch_achd, string vchpacno, string branch_id)
+        {
+            ACC_HEAD ah = new ACC_HEAD();
+            ah = ah.Getparticular(vch_achd, vchpacno, branch_id);
+            return Json(ah);
+        }
+        public JsonResult AchdListForVoucherEntry(string vch_achd)
+        {
+            List<ACC_HEAD> aclist = new List<ACC_HEAD>();
+            VoucherEntryViewModel ve = new VoucherEntryViewModel();
+            ACC_HEAD acchd = new ACC_HEAD();
+            aclist = acchd.getAchdListForVchEntry(vch_achd);
+            return Json(aclist, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetamountForvchEntry(string vch_date, string vch_no)
+        {
+            Temp_Vch_Entry tve = new Temp_Vch_Entry();
+            List<Temp_Vch_Entry> tvel = new List<Temp_Vch_Entry>();
+            VoucherEntryViewModel model = new VoucherEntryViewModel();
+            model.debt_amt = "0";
+            model.crdt_amt = "0";
+            tvel = tve.GetTempVchDataByVchdate(vch_date, vch_no);
+            if (tvel.Count > 0)
+            {
+                foreach (var a in tvel)
+                {
+                    if (a.drcr == "D")
+                    {
+                        model.debt_amt = Convert.ToString(Convert.ToDecimal(model.debt_amt) + a.amount);
+                    }
+                    else
+                    {
+                        model.crdt_amt = Convert.ToString(Convert.ToDecimal(model.crdt_amt) + a.amount);
+                    }
+                }
+            }
+            return Json(model);
+        }
+        public JsonResult SaveVoucherData(string vch_date, string txtvch_No, string vch_Type, string Vch_narr, string branch_id)
+        {
+            Vch_header vh = new Vch_header();           
+            Vch_Details vd = new Vch_Details();            
+            vh.SaveUpdateVoucherHeader(vch_date, txtvch_No, vch_Type, Vch_narr, branch_id);
+            vd.Check_DeleteVchDetail(vch_date, txtvch_No, branch_id);
+            vd.SaveUpdateVchDetail(vch_date, txtvch_No, branch_id, vch_Type);            
+            Temp_Vch_Entry tve = new Temp_Vch_Entry();
+            tve.DeleteTempData(vch_date, txtvch_No);
+            return Json("OVER");
+        }
+        public JsonResult Delete_Vch_In_Temp_table_byVchNo(string vch_no)
+        {
+            Temp_Vch_Entry tve = new Temp_Vch_Entry();
+            tve.DeleteTempDatabyvchno(vch_no);
+            return Json("OVER");
+        }
 
         /********************************************Vouchar Entry End*******************************************/
-
         [HttpGet]
         public ActionResult CashAccountReport(CashAccountReportViewModel model)
         {

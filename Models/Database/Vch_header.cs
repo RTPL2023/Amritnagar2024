@@ -54,5 +54,45 @@ namespace Amritnagar.Models.Database
             }
             return vhlist;
         }
+        public void SaveUpdateVoucherHeader(string vchdt, string vchno, string vchtype, string vchnarr, string branch_id)
+        {
+            string voucher_type = string.Empty;
+            if (vchtype == "Cash")
+            {
+                voucher_type = "C";
+            }
+            if (vchtype == "Transfer")
+            {
+                voucher_type = "T";
+            }
+            string sql = "select * from VCH_HEADER where BRANCH_ID = '"+ branch_id + "' AND convert(varchar, vch_date, 103) = '" + vchdt.Replace("-", "/") + "' and insert_mode = 'D' and vch_no='" + vchno + "' order by branch_id,vch_date,vch_no";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                sql = "Delete from vch_header where convert(varchar, vch_date, 103) = '" + vchdt.Replace("-", "/") + "' and insert_mode = 'D' and vch_no='" + vchno + "'";
+                config.Execute_Query(sql);
+                config.Insert("vch_header", new Dictionary<String, object>()
+                {
+                    {"branch_id",   branch_id },
+                    {"vch_no", vchno },
+                    {"vch_narr",    vchnarr},
+                    {"vch_date",   vchdt},
+                    {"insert_mode","D" },
+                    {"vch_type",voucher_type}                    
+                });               
+            }
+            else
+            {
+                config.Insert("vch_header", new Dictionary<String, object>()
+                {
+                    {"branch_id",   branch_id },
+                    {"vch_no", vchno },
+                    {"vch_narr",    vchnarr},
+                    {"vch_date",   vchdt},
+                    {"insert_mode","D" },
+                    {"vch_type",voucher_type}
+                });
+            }
+        }
     }
 }

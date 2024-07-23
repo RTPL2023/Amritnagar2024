@@ -787,7 +787,6 @@ namespace Amritnagar.Controllers
 
         /********************************************Sending Schedule Report End*******************************************/
         /********************************************Prep Of Deduction Schedule Start*******************************************/
-
         [HttpGet]
         public ActionResult PrepOfDeductionSchedule(PrepOfDeductionScheduleViewModel model)
         {
@@ -800,23 +799,18 @@ namespace Amritnagar.Controllers
             model.sch_dt = "31/05/2024";
             return View(model);
         }
-
         public static int[] findIndex(string[,] stringArr, string keyString)
         {
-
             // initialising result array to -1 in case keyString
             // is not found
             int[] result = { -1, -1 };
-
             // iteration over all the elements of the 2-D array
             // rows
             for (int i = 0; i < stringArr.Length; i++)
             {
-
                 // columns
                 for (int j = 0; j < stringArr.GetLength(0); j++)
                 {
-
                     // if keyString is found
                     if (stringArr[i, j].Equals(keyString))
                     {
@@ -826,7 +820,6 @@ namespace Amritnagar.Controllers
                     }
                 }
             }
-
             // if keyString is not found then -1 is returned
             return result;
         }
@@ -846,7 +839,6 @@ namespace Amritnagar.Controllers
                 arrachd[i + 3] = "0";
                 i = i + 4;
             }
-
             rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
             if (rslst.Count > 0)
             {
@@ -868,17 +860,12 @@ namespace Amritnagar.Controllers
                         {
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
                         }
-
                     }
-
                     model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
-
                     model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
                        "<td>" + a.r5 + "</td><td>" + a.r6 + "</td><td>" + a.r7 + "</td>" +
                         "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td><td>" + a.r11 + "</td><td>" + a.r12 + "</td><td>" + a.r13 + "</td></tr>";
-
                 }
-
             }
             model.grid2 = "";
             model.grid2 = "<tr></th><th>Account Head Particulars</th><th>Principal Amount</th><th>Interest Amount</th><th>Total Amount</th></tr>";
@@ -894,7 +881,6 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-
         public JsonResult updateBlanceofLoans(PrepOfDeductionScheduleViewModel model)
         {
             Recovery_Schedule rs = new Recovery_Schedule();
@@ -924,7 +910,6 @@ namespace Amritnagar.Controllers
         public JsonResult getRecoveryFrmSalaryDeductionList(RecoveryFrmSalaryDeductionViewModel model)
         {
             Recovery_Schedule rs = new Recovery_Schedule();
-
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             rslst = rs.getdecachd(model.emplyer_name, model.emp_unit);
             string[] arrachd = new string[rslst.Count * 4];
@@ -943,7 +928,6 @@ namespace Amritnagar.Controllers
             {
                 model.grid1 = "<tr><th style =\"display:none\">Srl</th></th><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>Principal Ded.</th><th>Intrest Amt.</th><th>Total</th></tr>";
                 string emp = "";
-
                 decimal xprin = 0;
                 decimal xint = 0;
                 int rowsp = 0;
@@ -964,8 +948,6 @@ namespace Amritnagar.Controllers
                         model.grid1 = model.grid1 + "<td rowspan=\"" + j + "\">" + a.emp_id + " </td><td rowspan=\"" + j + "\">" + a.mem_name + " </td>";
                         rowsp++;
                     }
-
-
                     if (a.ac_hd != null)
                     {
                         var index = Array.FindIndex(arrachd, row => row.Contains(a.ac_hd));
@@ -977,11 +959,7 @@ namespace Amritnagar.Controllers
                         {
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.int_amt));
                         }
-
                     }
-
-
-
                     model.grid1 = model.grid1 + "<td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td>";
                     emp = a.emp_id;
 
@@ -1010,9 +988,6 @@ namespace Amritnagar.Controllers
                     model.tot_bal = (Convert.ToDecimal(model.tot_bal) + totalamt).ToString("0.00");
                     k = k + 4;
                 }
-
-
-
             }
             else
             {
@@ -1020,7 +995,6 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-
         public ActionResult SaveRecoverylist(RecoveryFrmSalaryDeductionViewModel model)
         {
             Recovery_Get rg = new Recovery_Get();
