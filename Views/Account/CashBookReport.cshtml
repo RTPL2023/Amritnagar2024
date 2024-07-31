@@ -22,24 +22,22 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        width: 400px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab tbody {
             display: block;
-            width: 400px;
             overflow: auto;
-            height: 200px;
+            height: 350px;
             text-align: center;
+            width: 750px
         }
 
         .tab td, .tab th {
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-            width: 400px;
         }
 
         .tab tr:nth-child(even) {
@@ -83,14 +81,15 @@
     .btn_size {
         width: 160px;
         height: 30px
-    } 
+    }
+
     .btn_size1 {
         width: 130px;
         /*height: 30px;*/
-        background-color:linen;
-        color:saddlebrown;
-        font-size:14px;
-        font-weight:bold
+        background-color: linen;
+        color: saddlebrown;
+        font-size: 14px;
+        font-weight: bold
     }
 
     .btn_arrow {
@@ -126,85 +125,64 @@
                                 Date To<br />
                                 @Html.TextBoxFor(model => model.to_dt, new { @class = "size", @type = "text" })
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-12" style="background-color:lightgoldenrodyellow">
-                                <div class="row mt-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.RadioButtonFor(model => model.cash_journal_book, "Cash Book")
-                                        Cash Book
-                                    </div>
-                                </div>
-                                <div class="row mt-1 mb-1">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.RadioButtonFor(model => model.cash_journal_book, "Journal Book")
-                                        Journal Book
-                                    </div>
-                                </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Account Head<br />
+                                @Html.TextBoxFor(p => p.ac_hd, new { @class = "size", @type = "text", onkeypress = "javascript:return evtachd(event);" })
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Account Desc<br />
+                                @Html.TextBoxFor(p => p.ac_hddesc, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                select Bank<br />
+                                @Html.DropDownListFor(p => p.book_type, new SelectList(new string[] { "Journal Book", "Cash Book" }), "Select Book", new { @class = "sizebig", @onchange = "onchangeNeftOrOtherBank()" })
 
                             </div>
+
+
+
+
 
                         </div>
                     </div>
                     <div class="col-md-3 col-lg-3 col-12">
                         <div class="row">
-                            <div class="col-md-12 col-sm-12 col-12 text-center">
+                            <div class="col-md-6 col-sm-6 col-12 text-center">
+                                <input id="btnPopulate" type="button" name="btnPopulate" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Populate" onclick="btnPopulateOnclick()" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6 col-12 text-center mt-1">
                                 <input id="BtnPrintGm" type="button" name="BtnPrintGm" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Print(Graphics Mode)" />
                             </div>
-                        </div>
+
+                        </div> 
                         <div class="row mt-1">
-                            <div class="col-md-12 col-sm-12 col-12 text-center">
+
+
+                            <div class="col-md-6 col-sm-6 col-12 text-center">
                                 <input id="BtnPrintDm" type="button" name="BtnPrintDm" Height="40" Width="100" class="btn btn_size btn-sm btn-primary" value="Print(Draft Mode)" />
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="row mt-1">
-                    <div class="col-md-10 col-lg-10 col-sm-12 col-12">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-6 col-sm-12 col-12 text-center" style="color:darksalmon; font-weight:bold;font-size:14px">
-                                Account Head &nbsp; Account Head Description
-                            </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+
+                            <table id="list" class="tab">
+                            </table>
                         </div>
-                        <div class="row mt-1 mb-1 justify-content-md-center">
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 border border-1 border-dark">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                        <div class="table-responsive mt-1">
-                                            <table id=" " class="tab">
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-right"></i></div>
-                                </div>
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-double-right"></i></div>
-                                </div>
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-left"></i></div>
-                                </div>
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-double-left"></i></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 border border-1 border-dark">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                        <div class="table-responsive mt-1">
-                                            <table id=" " class="tab">
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="col-md-2 col-lg-2 col-12">
                         <div class="row mt-4">
                             <div class="col-md-12 col-sm-12 col-12 text-center">
-                                <div id="BtnUpdateGenLed" type="button" name="BtnUpdateGenLed" Height="40" Width="100" class="btn btn-sm btn_size1">Update <br /> General Ledger</div> 
+                                <div id="BtnUpdateGenLed" type="button" name="BtnUpdateGenLed" Height="40" Width="100" class="btn btn-sm btn_size1" onclick="btnGeneralLedgerOnclick()">Update <br /> General Ledger</div>
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -218,3 +196,140 @@
         </div>
     </div>
 </form>
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#ac_hd").autocomplete({
+                source: function (request, response) {
+                    let ModelObject = { ac_hd: $('#ac_hd').val() };
+                    $.ajax({
+                        url: "/Account/getAccounthead",
+                        type: "POST",
+                        dataType: "json",
+                        data: ModelObject,
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.ac_hd, value: item.ac_hd };
+                            }))
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "",
+                    results: function (count) {
+                        return count + (count > 1 ? 'results' : 'result ') + 'found';
+                    }
+                }
+            });
+
+        });
+
+
+        function evtachd(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                getparticulars();
+            }
+        }
+
+        function getparticulars() {
+             let ModelObject = {
+                 ac_hd: $('#ac_hd').val(),
+
+             };
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("getaccountheadparticulars", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                  success: function (data)
+                  {
+                    //alert(data);
+                      $('#ac_hddesc').val(data);
+                      $('#daybook_dt').focus();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+             });
+        }
+        function evtdaybook_dt(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#BtnRefresh').focus();
+            }
+        }
+
+        function btnPopulateOnclick() {
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                branch: $('#branch').val(),
+                book_type: $('#book_type').val(),
+                fr_dt: $('#fr_dt').val(),
+                to_dt: $('#to_dt').val(),
+
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("populateCashBook", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    document.getElementById("list").innerHTML = data.tablee;
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+        function btnGeneralLedgerOnclick() {
+            if (confirm("General Ledger Previously Updated.Update Again ?")) {
+                let ModelObject = {
+                    ac_hd: $('#ac_hd').val(),
+                    branch: $('#branch').val(),
+                    book_type: $('#book_type').val(),
+                    fr_dt: $('#fr_dt').val(),
+                    to_dt: $('#to_dt').val(),
+
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateGenaralLedger", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data);
+
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
+
+
+        
+
+
+    </script>
+}

@@ -18,6 +18,9 @@ namespace Amritnagar.Models.ViewModel
         public string tl_credit { get; set; }
         public string tl_debit { get; set; }
         public string tl_clbal { get; set; }
+        public string table1 { get; set; }
+        public string table2 { get; set; }
+        public string table3 { get; set; }
 
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
     }

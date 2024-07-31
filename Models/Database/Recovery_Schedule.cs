@@ -12,6 +12,7 @@ namespace Amritnagar.Models.Database
     {
         SQLConfig config = new SQLConfig();
         public string branch_id { get; set; }
+        
         public string employer_cd { get; set; }
         public int employer_branch { get; set; }
         public string sch_date { get; set; }

@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="Includes\AmritnagarUtility.cs" />
     <Compile Include="Includes\SQLConfig.cs" />
+    <Compile Include="Models\Database\AccountsUtility.cs" />
     <Compile Include="Models\Database\ACC_HEAD.cs" />
     <Compile Include="Models\Database\AuthDbUtility.cs" />
     <Compile Include="Models\Database\Bank_Mast.cs" />
