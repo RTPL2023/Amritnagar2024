@@ -28,6 +28,7 @@ namespace Amritnagar.Models.ViewModel
         public string txtvch_No { get; set; }
         public string del_vch_no { get; set; }
         public string tableElement { get; set; }
+        public string clos_flag { get; set; }
 
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
     }

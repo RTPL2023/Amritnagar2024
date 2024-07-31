@@ -34,14 +34,11 @@ namespace Amritnagar.Models.Database
                         vh1.value = Convert.ToString("Select Voucher");
                         vh1.text = Convert.ToString("Select Voucher");
                         vhlist.Add(vh1);
-                    }
-                    else
-                    {
-                        Vch_header vh = new Vch_header();
-                        vh.value = dr["vch_no"].ToString();
-                        vh.text = dr["vch_no"].ToString();
-                        vhlist.Add(vh);
-                    }                  
+                    }                   
+                    Vch_header vh = new Vch_header();
+                    vh.value = dr["vch_no"].ToString();
+                    vh.text = dr["vch_no"].ToString();
+                    vhlist.Add(vh);                                  
                     i = i + 1;
                 }
             }
@@ -57,14 +54,14 @@ namespace Amritnagar.Models.Database
         public void SaveUpdateVoucherHeader(string vchdt, string vchno, string vchtype, string vchnarr, string branch_id)
         {
             string voucher_type = string.Empty;
-            if (vchtype == "Cash")
-            {
-                voucher_type = "C";
-            }
-            if (vchtype == "Transfer")
-            {
-                voucher_type = "T";
-            }
+            //if (vchtype == "Cash")
+            //{
+            //    voucher_type = "C";
+            //}
+            //if (vchtype == "Transfer")
+            //{
+            //    voucher_type = "T";
+            //}
             string sql = "select * from VCH_HEADER where BRANCH_ID = '"+ branch_id + "' AND convert(varchar, vch_date, 103) = '" + vchdt.Replace("-", "/") + "' and insert_mode = 'D' and vch_no='" + vchno + "' order by branch_id,vch_date,vch_no";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
@@ -76,9 +73,9 @@ namespace Amritnagar.Models.Database
                     {"branch_id",   branch_id },
                     {"vch_no", vchno },
                     {"vch_narr",    vchnarr},
-                    {"vch_date",   vchdt},
+                    {"vch_date",   Convert.ToDateTime(vchdt)},
                     {"insert_mode","D" },
-                    {"vch_type",voucher_type}                    
+                    {"vch_type",    vchtype}                    
                 });               
             }
             else
@@ -88,9 +85,9 @@ namespace Amritnagar.Models.Database
                     {"branch_id",   branch_id },
                     {"vch_no", vchno },
                     {"vch_narr",    vchnarr},
-                    {"vch_date",   vchdt},
+                    {"vch_date",   Convert.ToDateTime(vchdt)},
                     {"insert_mode","D" },
-                    {"vch_type",voucher_type}
+                    {"vch_type",    vchtype}
                 });
             }
         }

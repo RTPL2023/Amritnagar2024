@@ -212,6 +212,8 @@ namespace Amritnagar.Models.Database
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
+                    xdramt = 0;
+                    xcramt = 0;
                     Loan_Ledger ld = new Loan_Ledger();
                     ld.dr_cr = Convert.ToString(dr["DR_CR"]);
                     ld.vch_type = Convert.ToString(dr["VCH_TYPE"]);
