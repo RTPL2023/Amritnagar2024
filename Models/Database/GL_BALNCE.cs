@@ -46,15 +46,12 @@ namespace Amritnagar.Models.Database
             sql = sql + "ORDER BY B.AC_MAJGR,B.AC_SUBGR,A.AC_HD";
             config.singleResult(sql);
             GL_BALNCE gl1 = new GL_BALNCE();
-
             List<GL_BALNCE> glblst = new List<GL_BALNCE>();
             if (config.dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
-
                     GL_BALNCE gl = new GL_BALNCE();
-
                     LBAL = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
                     if (LBAL != 00)
                     {
@@ -85,7 +82,6 @@ namespace Amritnagar.Models.Database
                             c = c + Math.Abs(LBAL);
                         }
                     }
-
                     glblst.Add(gl);
                 }
                 if (xstart == 1)
@@ -93,7 +89,6 @@ namespace Amritnagar.Models.Database
                     gl1.grouptotal = Math.Abs(xgrptot);
                 }
                 glblst.Add(gl1);
-
             }
             return glblst;
         }
@@ -120,9 +115,7 @@ namespace Amritnagar.Models.Database
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
-
                     GL_BALNCE gl = new GL_BALNCE();
-
                     gl.ac_hd = Convert.ToString(dr["ac_hd"]);
                     gl.ac_desc = Convert.ToString(dr["AC_DESC"]);
                     gl.ac_majgr = Convert.ToString(dr["ac_majgr"]);
@@ -137,7 +130,6 @@ namespace Amritnagar.Models.Database
                     else
                     {
                         cr_balance = gl.gl_bal;
-
                     }
                     gl.gl_date = Convert.ToDateTime(dr["GL_DATE"]);
                     try
@@ -162,10 +154,7 @@ namespace Amritnagar.Models.Database
                     dr_balance = 0;
                     cr_balance = 0;
                 }
-
             }
-
-
             string msg = "Saved Successfully";
             return (msg);
         }

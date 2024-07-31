@@ -109,6 +109,12 @@ namespace Amritnagar.Controllers
             var vchnos = vh.VchNo(branch, vch_date);
             return Json(vchnos, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult FillVoucherType()
+        {
+            Vch_Type vh = new Vch_Type();
+            var vchtypes = vh.VchType();
+            return Json(vchtypes, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult Add_Vch_In_Temp_table(string vch_date, string drcr, string vch_achd, string vchpacno, string particular, string amount, string ref_ac_hd, string refacno, string refParticular, string vch_no)
         {
             Temp_Vch_Entry tve = new Temp_Vch_Entry();
@@ -155,11 +161,14 @@ namespace Amritnagar.Controllers
             }
             return Json(TableElement);
         }
-        public JsonResult GetParticularsForvchEntry(string vch_achd, string vchpacno, string branch_id)
+        public JsonResult GetParticularsForvchEntry(string vch_achd, string vchpacno, string branch)
         {
             ACC_HEAD ah = new ACC_HEAD();
-            ah = ah.Getparticular(vch_achd, vchpacno, branch_id);
-            return Json(ah);
+            VoucherEntryViewModel model = new VoucherEntryViewModel();
+            ah = ah.Getparticular(vch_achd, vchpacno, branch);
+            model.particular = ah.particulars;
+            model.clos_flag = ah.clos_flag;
+            return Json(model);
         }
         public JsonResult AchdListForVoucherEntry(string vch_achd)
         {
@@ -396,12 +405,6 @@ namespace Amritnagar.Controllers
 
             return Json(model);
         }
-
-
-        //******************************** Cash Bank Position Report End ******************************************
-
-        //********************************Trial Balance Report Start******************************************
-
         [HttpGet]
         public ActionResult TrialBalanceReport(TrialBalanceReportViewModel model)
         {
@@ -416,48 +419,88 @@ namespace Amritnagar.Controllers
         {
             List<GL_BALNCE> glblst = new List<GL_BALNCE>();
             GL_BALNCE gl = new GL_BALNCE();
-
             glblst = gl.gettrialbalancelist(model);
             if (glblst.Count > 0)
             {
                 model.tableele = "<tr><th> Major Group</th><th> Account Head </th><th>Debit Balance</th><th>Credit Balance</th><th>Group Total</th></tr>";
-
                 foreach (var a in glblst)
                 {
                     model.tableele = model.tableele + "<tr><td>" + a.majorgroup + "</td><td>" + a.acchd + "</td><td>" + a.dbalance.ToString("0.00") + "</td><td>" + a.cbalance.ToString("0.00") + "</td><td>" + a.grouptotal.ToString("0.00") + "</td></tr>";
-
                     model.label1 = (Convert.ToDecimal(model.label1) + Convert.ToDecimal(a.dbalance)).ToString("0.00");
                     model.label2 = (Convert.ToDecimal(model.label2) + Convert.ToDecimal(a.cbalance)).ToString("0.00");
-
-
                 }
             }
-
             return Json(model);
         }
         public JsonResult SaveDataoftrialblance(TrialBalanceReportViewModel model)
         {
-
+           
             GL_BALNCE gl = new GL_BALNCE();
 
-            string msg = gl.SaveInDividentLedger(model);
+         string msg= gl.SaveInDividentLedger(model);
 
             return Json(msg);
         }
-
-
-
-        //********************************Trial Balance Report End******************************************
-
         [HttpGet]
         public ActionResult GeneralLedgerReport(GeneralLedgerReportViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
-
-
+            model.fr_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
+            model.to_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
             return View(model);
         }
+        public JsonResult AchdListForAccountsReports(string vch_achd)
+        {
+            List<ACC_HEAD> aclist = new List<ACC_HEAD>();
+            VoucherEntryViewModel ve = new VoucherEntryViewModel();
+            ACC_HEAD acchd = new ACC_HEAD();
+            aclist = acchd.getAchdListForAccountsReports(vch_achd);
+            return Json(aclist, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getaccountheadparticulars(string ac_hd)
+        {
+            ACC_HEAD mi = new ACC_HEAD();
+            string achddesc = mi.getac_hddesc(ac_hd);
+            return Json(achddesc);
+        }
+        public JsonResult Populate_general_ledger(GeneralLedgerReportViewModel model)
+        {
+            Rep_Acc_Genled rag = new Rep_Acc_Genled();
+            rag.Check_Delete_SaveGenled(model.branch, model.ac_hd, model.fr_dt, model.to_dt);
+            return Json("Over");
+        }
+        public JsonResult getgeneralledgerdetails(GeneralLedgerReportViewModel model)
+        {
+            Rep_Acc_Genled rag = new Rep_Acc_Genled();
+            List<Rep_Acc_Genled> raglst = new List<Rep_Acc_Genled>();
+            raglst = rag.getdetails(model.fr_dt, model.to_dt);
+            int i = 1;
+            if (raglst.Count > 0)
+            {
+                foreach (var a in raglst)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Sr No</th><th>Ac_Hd</th><th>Ac_Desc</th><th>Ac_Majgrdesc</th><th>GL Type</th><th>GL Date</th><th>Cash Cr</th><th>Bank Cr</th><th>Trans Cr</th><th>Journal Cr</th><th>Total Cr</th><th>Cash Dr</th><th>Bank Dr</th><th>Trans Dr</th><th>Journal Dr</th><th>Total Dr</th><th>GL Bal</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.ac_majgrdesc + "</td><td>" + a.gl_type + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td>" + a.total_cr.ToString("0.00") + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td>" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.ac_majgrdesc + "</td><td>" + a.gl_type + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td>" + a.total_cr.ToString("0.00") + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td>" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+
+
+
+        /********************************************General Ledger End*******************************************/
     }
 }

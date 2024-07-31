@@ -173,6 +173,7 @@
     <Compile Include="Models\Database\Recovery_Schedule.cs" />
     <Compile Include="Models\Database\Relation_Mast.cs" />
     <Compile Include="Models\Database\Religion_Mast.cs" />
+    <Compile Include="Models\Database\Rep_Acc_Genled.cs" />
     <Compile Include="Models\Database\Service_Status_Mast.cs" />
     <Compile Include="Models\Database\SHARE_LEDGER.cs" />
     <Compile Include="Models\Database\Temp_Vch_Entry.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Models\Database\Users.cs" />
     <Compile Include="Models\Database\Vch_Details.cs" />
     <Compile Include="Models\Database\Vch_header.cs" />
+    <Compile Include="Models\Database\Vch_Type.cs" />
     <Compile Include="Models\ViewModel\BankMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\CashAccountReportViewModel.cs" />
     <Compile Include="Models\ViewModel\CashBankPositionReportViewModel.cs" />

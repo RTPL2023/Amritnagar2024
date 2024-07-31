@@ -81,7 +81,36 @@ namespace Amritnagar.Models.Database
                     if (i == 1)
                     {
                         ACC_HEAD ah1 = new ACC_HEAD();
-                        ah1.ac_desc = "Select Achd";
+                        //ah1.ac_desc = "Select Achd";
+                        ah1.ac_hd = "";                       
+                        ah1.ac_parti = "Select Achd";
+                        aclist.Add(ah1);
+                    }
+                    ACC_HEAD ah = new ACC_HEAD();
+                    //ah.ac_desc = dr["ac_desc"].ToString();
+                    ah.ac_hd = dr["ac_hd"].ToString();                    
+                    ah.ac_parti = ah.ac_hd + " - " + dr["AC_PARTI"].ToString();
+                    aclist.Add(ah);
+                    i = i + 1;
+                }
+            }
+            else aclist = null;
+            return aclist;
+        }
+        public List<ACC_HEAD> getAchdListForAccountsReports(string vch_achd)
+        {
+            List<ACC_HEAD> aclist = new List<ACC_HEAD>();
+            string sql = "SELECT a.AC_HD,a.AC_DESC AS AC_PARTI FROM ACC_HEAD a where a.AC_HD LIKE '" + vch_achd.ToUpper() + "%' ORDER BY a.AC_HD";
+            config.singleResult(sql);
+            int i = 1;
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    if (i == 1)
+                    {
+                        ACC_HEAD ah1 = new ACC_HEAD();
+                        //ah1.ac_desc = "Select Achd";
                         ah1.ac_hd = "";
                         ah1.ac_parti = "Select Achd";
                         aclist.Add(ah1);
@@ -94,7 +123,21 @@ namespace Amritnagar.Models.Database
                     i = i + 1;
                 }
             }
-            else aclist = null;
+            else
+                {
+                ACC_HEAD ah2 = new ACC_HEAD();               
+                if (vch_achd.ToUpper()=="AL"|| vch_achd.ToUpper()=="ALL")
+                {
+                    ah2.ac_hd = "ALL";
+                    ah2.ac_parti = "ALL";
+                }
+                else 
+                {
+                    ah2.ac_hd = "No Ac Hd Found";
+                    ah2.ac_parti = "No Ac Hd Found";
+                }
+                aclist.Add(ah2);
+            }
             return aclist;
         }
         public ACC_HEAD Getparticular(string achd, string acno, string branch_id)
@@ -133,6 +176,7 @@ namespace Amritnagar.Models.Database
             }
             return ah;
         }
+
         public List<ACC_HEAD> getac_hhdName(string name)
         {
             string sql = "";
@@ -150,7 +194,6 @@ namespace Amritnagar.Models.Database
             }
             return acclst;
         }
-
         public string getac_hddesc(string ac_hd)
         {
             string sql = "";

@@ -10,6 +10,10 @@
         width: 150px;
         height: 25px;
     }
+    .size_vt {
+        width: 180px;
+        height: 25px;
+    }
 
     .sizeM {
         width: 120px;
@@ -171,6 +175,7 @@
         background-color: rgba(226,148,91, 0.6);
     }
 </style>
+
 <form asp-controller="Account" asp-action="VoucherEntry" method="post" enctype="multipart/form-data">
     <div class="container" style="height:60px">
 
@@ -185,7 +190,7 @@
                 <div class="row mt-1">
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size", @onchange= "changefocus()" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Voucher Date:<br />
@@ -193,15 +198,16 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Voucher No:<br />
-                        @Html.TextBoxFor(model => model.txtvch_No, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.txtvch_No, new { @class = "size", @type = "text", onkeypress = "javascript:return evt_txtvch_No(event);" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         <br />
                         @Html.DropDownListFor(p => p.vch_no, new SelectList(new string[] { "Select Voucher" }), new { @onchange = "GetVoucherList()", @class = "size" })
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                         Voucher Type:<br />
-                        @Html.DropDownListFor(p => p.vch_type, new SelectList(new string[] { "Cash", "Transfer" }), new { @class = "size" })
+                        @Html.DropDownListFor(p => p.vch_type, new SelectList(new string[] { "Select Voucher Type" }), new {@class = "size_vt", @onchange = "changefocusforvchtype()" })
+                        @*@Html.DropDownListFor(p => p.vch_type, new SelectList(new string[] { "Cash", "Transfer" }), new { @class = "size" })*@
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
                         <input id="ButtonSave" type="button" value="Save" name="ButtonSave" class="btn btn-primary btn-sm" onclick="SaveVoucher()" />
@@ -246,8 +252,10 @@
                             </table>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
                             <div class="table-responsive mt-1">
                                 <table id="TempVchData" class="tab">
                                 </table>
@@ -255,6 +263,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="container mt-1 p-1" style="border: 1px solid; border-color: darkslateblue; background-color: rgb(216, 191, 216,0.5); color: #722F37;font-weight:bold;font-size:14px">
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -271,14 +280,16 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="container mt-2">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
                             c h e q u e &nbsp;&nbsp; p a r t i c u l a r s
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">                            
                             <div class="table-responsive mt-1">
                                 <table id="" class="tab">
                                 </table>
@@ -286,6 +297,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="container mt-1 p-2" style="background-color: #fafad2;color:saddlebrown;font-weight:bold;font-size:14px;border:1px solid; border-color:saddlebrown">
                     <div class="row">
                         <div class="col-lg-8 col-sm-12 col-12">
@@ -294,9 +306,9 @@
                         <div class="col-lg-4 col-sm-12 col-12">
                             Total Cheque Amount @Html.TextBoxFor(model => model.tot_chq_amt, new { @class = "sizeM_whitebg", @type = "text" })
                         </div>
-
                     </div>
                 </div>
+
                 <div class="container mt-1 p-2" style="color:saddlebrown;font-weight:bold;font-size:14px;border:1px solid; border-color:saddlebrown">
                     <div class="row">
 
@@ -306,9 +318,9 @@
                         <div class="col-lg-4 col-sm-12 col-12">
                             <input id="ButtonDelVchNo" type="button" value="Delete by VCH No" name="ButtonDelVchNo" class="btn btn-primary btn-sm" onclick="DeleteTempVoucher()"  />
                         </div>
-
                     </div>
                 </div>
+
                 <div class="container mt-2">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
@@ -338,6 +350,7 @@
             $("#crdt_amt").val("0");
             $("#net_amt").val("0");
             $('#loading').hide();
+            $('#branch').focus();
 
             $("#vch_achd").autocomplete({
                 source: function (request, response) {
@@ -384,7 +397,17 @@
                     }
                 }
             });
+
+            GetVoucherType();
         });
+
+        function changefocus() {
+            $('#txtvch_No').focus();
+        }
+
+        function changefocusforvchtype() {
+            $('#drcr').focus();
+        }
 
         function evtDate(evt) {
 
@@ -415,6 +438,25 @@
             });
         }
 
+         function GetVoucherType() {
+            //var branch = $('#branch').val();
+            //var vch_date = $('#vch_date').val();
+            $.ajax({
+                url: '@Url.Action("FillVoucherType", "Account")',
+            type: "GET",
+            dataType: "JSON",
+                data: {/*branch: branch, vch_date: vch_date*/},
+                success: function (vchtypes) {
+                    $("#vch_type").html(""); // clear before appending new list
+                    $.each(vchtypes, function (i, c) {
+                        $("#vch_type").append(
+                    $('<option></option>').val(c.value).html(c.text));
+                    });
+                    /*$("#vch_no").focus();*/
+                }
+            });
+        }
+
         function GetVoucherList() {
             let ModelObject = {
                 vch_date: $('#vch_date').val(),
@@ -433,6 +475,7 @@
                     $("#crdt_amt").val(data.crdt_amt);
                     $("#net_amt").val(data.net_amt);
                     /*$("#vch_DrCr").val(data.vch_DrCr);*/
+                    $('#ButtonSave').prop('disabled', true);
                 },
                 error: function (err) {
                     alert(err);
@@ -591,6 +634,15 @@
                 success: function (data) {
                     alert(data);
                     $('#loading').hide();
+                    ShowTable();
+                    $('#debt_amt').val("0");
+                    $('#crdt_amt').val("0");
+                    $('#net_amt').val("0");
+                    $('#vch_date').val("");
+                    $('#txtvch_No').val("");
+                    $('#vch_type').val("");
+                    $('#Vch_narr').val("");
+                    $('#branch').val("");
                 },
                 error: function (err) {
                     alert("Error Occured");
@@ -648,23 +700,24 @@
                 let ModelObject = {
                     vch_achd: $('#vch_achd').val(),
                     vchpacno: $('#vchpacno').val(),
+                    branch: $('#branch').val(),
                 };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetParticularsForvchEntry", "Accounts")',
+                    url: '@Url.Action("GetParticularsForvchEntry", "Account")',
                     data: ModelObject,
                     dataType: "json",
                     success: function (data) {
                         if (data.clos_flag == "C") {
                             if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
-                                $('#particular').val(data.particulars);
+                                $('#particular').val(data.particular);
                             }
                             else
                                 $('#particular').val("");
                         }
                         else {
                             //alert(data.particulars);
-                            $('#particular').val(data.particulars);
+                            $('#particular').val(data.particular);
                         }
                         $("#particular").focus();
                     },
@@ -694,23 +747,24 @@
                 let ModelObject = {
                     vch_achd: $('#ref_ac_hd').val(),
                     vchpacno: $('#refacno').val(),
+                    branch: $('#branch').val(),
                 };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("GetParticularsForvchEntry", "Accounts")',
+                    url: '@Url.Action("GetParticularsForvchEntry", "Account")',
                     data: ModelObject,
                     dataType: "json",
                     success: function (data) {
                         if (data.clos_flag == "C") {
                             if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
-                                $('#refParticular').val(data.particulars);
+                                $('#refParticular').val(data.particular);
                             }
                             else
                                 $('#refParticular').val("");
                         }
                         else {
                             //alert(data.particulars);
-                            $('#refParticular').val(data.particulars);
+                            $('#refParticular').val(data.particular);
                         }
                         $("#refParticular").focus();
 
@@ -724,6 +778,15 @@
             else {
                 $('#refParticular').val("");
                 $("#refParticular").focus();
+            }
+        }
+
+        function evt_txtvch_No(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#vch_type").focus();
             }
        }
 

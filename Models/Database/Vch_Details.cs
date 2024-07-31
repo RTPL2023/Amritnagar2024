@@ -75,7 +75,6 @@ namespace Amritnagar.Models.Database
                 config.Execute_Query(sql);
             }
         }
-
         public void SaveUpdateVchDetail(string vch_date, string txtvch_No, string branch_id, string vch_type)
         {
             Temp_Vch_Entry tve = new Temp_Vch_Entry();
@@ -87,6 +86,7 @@ namespace Amritnagar.Models.Database
                 vd.branch_id = branch_id;
                 vd.vch_date = vch_date;
                 vd.vch_no = txtvch_No;
+                vd.vch_type = vch_type;
                 vd.vch_srl = a.srl;                               
                 vd.vch_drcr = a.drcr;
                 vd.ac_hd = a.ac_hd;
@@ -95,20 +95,12 @@ namespace Amritnagar.Models.Database
                 vd.vch_amt = Convert.ToDecimal(a.amount);
                 vd.ref_ac_hd = a.ref_achd;
                 vd.ref_pacno = a.ref_acno;
-                vd.ref_oth = a.ref_ac_particulars;
-                if(vch_type == "Cash")
-                {
-                    vd.vch_type = "C";
-                }
-                else
-                {
-                    vd.vch_type = "T";
-                }
+                vd.ref_oth = a.ref_ac_particulars;              
                 vd.insert_mode = "D";                
                 config.Insert("vch_detail", new Dictionary<String, object>()
                 {
                     {"branch_id",   vd.branch_id },
-                    { "vch_date",   vd.vch_date },
+                    { "vch_date",   Convert.ToDateTime(vd.vch_date) },
                     { "vch_no", vd.vch_no },
                     { "vch_srl",    vd.vch_srl },
                     { "VCH_DRCR",   vd.vch_drcr },
