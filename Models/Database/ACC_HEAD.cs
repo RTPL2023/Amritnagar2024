@@ -154,7 +154,7 @@ namespace Amritnagar.Models.Database
             }
             if (ah.ac_lf_mast_fl == "D")
             {
-                sql = "SELECT AC_NAME AS NAME_OUT,AC_CLOSED AS CLOS_FLG FROM DEPOSIT_MAST WHERE BRANCH_ID='"+ branch_id + "' AND ";
+                sql = "SELECT AC_NAME AS NAME_OUT,AC_CLOSED AS CLOS_FLG FROM DEPOSIT_MAST WHERE BRANCH_ID='" + branch_id + "' AND ";
                 sql = sql + "AC_HD='" + ah.led_achd + "' AND AC_NO='" + acno + "'";
             }
             if (ah.ac_lf_mast_fl == "L")
@@ -166,7 +166,7 @@ namespace Amritnagar.Models.Database
             {
                 sql = "SELECT MEMBER_NAME AS NAME_OUT,MEMBER_CLOSED AS CLOS_FLG FROM MEMBER_MAST WHERE BRANCH_ID='" + branch_id + "' AND ";
                 sql = sql + "MEMBER_ID='" + acno + "'";
-            }            
+            }
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -175,26 +175,6 @@ namespace Amritnagar.Models.Database
                 ah.clos_flag = Convert.ToString(dr1["CLOS_FLG"]);
             }
             return ah;
-        }
-
-        public string getac_hddesc(string ac_hd)
-        {
-            string sql = "";
-            sql = "select * from acc_head where ac_hd ='" + ac_hd + "'";
-            ACC_HEAD ah = new ACC_HEAD();
-            config.singleResult(sql);
-            if (config.dt.Rows.Count > 0)
-            {
-                foreach (DataRow dr in config.dt.Rows)
-                {
-                    ah.ac_desc = Convert.ToString(dr["AC_DESC"]);
-                }
-            }
-            if (ac_hd.ToUpper() == "ALL")
-            {
-                ah.ac_desc = "All Account Head";
-            }
-            return ah.ac_desc;
         }
     }
 }

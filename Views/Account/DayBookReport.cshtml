@@ -22,16 +22,16 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        width: 400px;
+        width: 800px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab tbody {
             display: block;
-            width: 400px;
+            /*width: 400px;*/
             overflow: auto;
-            height: 200px;
+            height: 300px;
             text-align: center;
         }
 
@@ -39,7 +39,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-            width: 400px;
+            /*  width: 400px;*/
         }
 
         .tab tr:nth-child(even) {
@@ -106,79 +106,235 @@
                 <div class="row mt-1">
                     <div class="col-md-10 col-lg-10 col-12">
                         <div class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Branch<br />
                                 @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Account Head<br />
+                                @Html.TextBoxFor(p => p.ac_hd, new { @class = "size", @type = "text", onkeypress = "javascript:return evtachd(event);" })
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                Account Desc<br />
+                                @Html.TextBoxFor(p => p.ac_hddesc, new { @class = "size", @type = "text" })
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Day Book Date<br />
-                                @Html.TextBoxFor(model => model.daybook_dt, new { @class = "size", @type = "text" })
+                                @Html.TextBoxFor(model => model.daybook_dt, new { @class = "size", @type = "text", onkeypress = "javascript:return evtdaybook_dt(event);" })
                             </div>
-                           
+
                         </div>
-                    </div> 
-                    <div class="col-md-2 col-lg-2 col-12">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-12 text-center">
-                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Print" />
-                            </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-12 col-12">
+                    <div class="row mt-1">
+                        <div class="col-md-2 col-sm-6 col-12 text-center">
+                            <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Refresh" onclick="BtnRefreshOnclick()" />
                         </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12 col-sm-12 col-12 text-center">
-                                <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn_size btn-sm btn-primary" value="Exit" />
-                            </div>
+                        <div class="col-md-2 col-sm-6 col-162 text-center">
+                            <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Print" />
                         </div>
+
+                        <div class="col-md-2 col-sm-12 col-12 text-center">
+                            <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn_size btn-sm btn-primary" value="Exit" />
+                        </div>
+
                     </div>
                 </div>
                 <div class="row mt-1">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-12">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-6 col-sm-12 col-12 text-center" style="color:darksalmon; font-weight:bold;font-size:14px">
-                                <u>Account Head</u> &nbsp; <u>Account Head Description</u>
-                            </div>
-                        </div>
-                        <div class="row mt-1 mb-1 justify-content-md-center">
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 border border-1 border-dark">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                        <div class="table-responsive mt-1">
-                                            <table id=" " class="tab">
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-right"></i></div>
-                                </div> 
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-double-right"></i></div>
-                                </div> 
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-left"></i></div>
-                                </div> 
-                                <div class="row">
-                                    <div class="btn"><i class="btn_arrow fa fa-angle-double-left"></i></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-12 col-12 border border-1 border-dark">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                        <div class="table-responsive mt-1">
-                                            <table id=" " class="tab">
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="table-responsive mt-1">
+                            <table id="list" class="tab">
+                            </table>
                         </div>
                     </div>
                 </div>
-                
+                <div class="row mt-2 mb-1">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12" id="close" style="background-color: saddlebrown; color: floralwhite; font-size: 14px; font-weight: bold; text-align: center">
+                        <br />
+
+                        <br />
+                        << Grand Total >>
+
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12" style="background-color:burlywood;color:brown">
+                        <div class="row mt-1 mb-1">
+
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Cash DR Balance
+                                @Html.TextBoxFor(model => model.label1, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Bank DR Balance
+
+                                @Html.TextBoxFor(model => model.label2, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                TRANS DR Balance
+
+                                @Html.TextBoxFor(model => model.label3, new { @class = "size2", @type = "text" })
+                            </div>
+                        </div>
+                        <div class="row mt-1 mb-1">
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Cash CR Balance
+                                @Html.TextBoxFor(model => model.label4, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                Bank CR Balance
+
+                                @Html.TextBoxFor(model => model.label5, new { @class = "size2", @type = "text" })
+                            </div>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                TRANS CR Balance
+                                @Html.TextBoxFor(model => model.label6, new { @class = "size2", @type = "text" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 
 
 </form>
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#ac_hd").autocomplete({
+                source: function (request, response) {
+                    let ModelObject = { ac_hd: $('#ac_hd').val() };
+                    $.ajax({
+                        url: "/Account/getAccounthead",
+                        type: "POST",
+                        dataType: "json",
+                        data: ModelObject,
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.ac_hd, value: item.ac_hd };
+                            }))
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "",
+                    results: function (count) {
+                        return count + (count > 1 ? 'results' : 'result ') + 'found';
+                    }
+                }
+            });
+
+        });
+
+
+        function evtachd(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                getparticulars();
+            }
+        }
+
+        function getparticulars() {
+             let ModelObject = {
+                 ac_hd: $('#ac_hd').val(),
+
+             };
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("getaccountheadparticulars", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                  success: function (data)
+                  {
+                    //alert(data);
+                      $('#ac_hddesc').val(data);
+                      $('#daybook_dt').focus();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+             });
+        }
+        function evtdaybook_dt(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#BtnRefresh').focus();
+            }
+        }
+
+        function BtnRefreshOnclick() {
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                branch: $('#branch').val(),
+                daybook_dt: $('#daybook_dt').val(),
+
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveDataforDaybook", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    alert(data);
+                    ShowTabel();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+
+          function ShowTabel() {
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                branch: $('#branch').val(),
+                daybook_dt: $('#daybook_dt').val(),
+
+            };
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("getdaybooklist", "Account")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data)
+                {
+                    document.getElementById("list").innerHTML = data.tableele;
+                    $("#label1").val(data.label1);
+                    $("#label2").val(data.label2);
+                    $("#label3").val(data.label3);
+                    $("#label4").val(data.label4);
+                    $("#label5").val(data.label5);
+                    $("#label6").val(data.label6);
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+    </script>
+}
+

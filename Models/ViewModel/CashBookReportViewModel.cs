@@ -11,7 +11,10 @@ namespace Amritnagar.Models.ViewModel
         public string branch { get; set; }
         public string fr_dt { get; set; }
         public string to_dt { get; set; }
-        public bool cash_journal_book { get; set; }
+        public string  book_type { get; set; }
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
+        public string ac_hddesc { get; set; }
+        public string ac_hd { get; set; }
+        public string tablee { get; set; }
     }
 }
