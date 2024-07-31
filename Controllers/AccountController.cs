@@ -441,6 +441,7 @@ namespace Amritnagar.Controllers
 
             return Json(msg);
         }
+
         [HttpGet]
         public ActionResult GeneralLedgerReport(GeneralLedgerReportViewModel model)
         {
