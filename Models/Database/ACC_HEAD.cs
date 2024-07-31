@@ -176,5 +176,44 @@ namespace Amritnagar.Models.Database
             }
             return ah;
         }
+
+        public List<ACC_HEAD> getac_hhdName(string name)
+        {
+            string sql = "";
+            sql = "select * from acc_head where ac_hd LIKE '" + name + "%'";
+            List<ACC_HEAD> acclst = new List<ACC_HEAD>();
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    ACC_HEAD ah = new ACC_HEAD();
+                    ah.ac_hd = Convert.ToString(dr["ac_hd"]);
+                    acclst.Add(ah);
+                }
+            }
+            return acclst;
+        }
+        public string getac_hddesc(string ac_hd)
+        {
+            string sql = "";
+            sql = "select * from acc_head where ac_hd ='" + ac_hd + "'";
+            ACC_HEAD ah = new ACC_HEAD();
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+
+                    ah.ac_desc = Convert.ToString(dr["AC_DESC"]);
+
+                }
+            }
+            if (ac_hd.ToUpper() == "ALL")
+            {
+                ah.ac_desc = "All Account Head";
+            }
+            return ah.ac_desc;
+        }
     }
 }
