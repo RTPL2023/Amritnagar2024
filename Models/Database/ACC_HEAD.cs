@@ -133,7 +133,6 @@ namespace Amritnagar.Models.Database
             }
             return ah;
         }
-
         public List<ACC_HEAD> getac_hhdName(string name)
         {
             string sql = "";
@@ -151,6 +150,7 @@ namespace Amritnagar.Models.Database
             }
             return acclst;
         }
+
         public string getac_hddesc(string ac_hd)
         {
             string sql = "";
