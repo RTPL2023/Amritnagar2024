@@ -282,12 +282,12 @@ namespace Amritnagar.Controllers
             var achdname = mi.getac_hhdName(ac_hd);
             return Json(achdname, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult getaccountheadparticulars(string ac_hd)
-        {
-            ACC_HEAD mi = new ACC_HEAD();
-            string achddesc = mi.getac_hddesc(ac_hd);
-            return Json(achddesc);
-        }
+        //public JsonResult getaccountheadparticulars(string ac_hd)
+        //{
+        //    ACC_HEAD mi = new ACC_HEAD();
+        //    string achddesc = mi.getac_hddesc(ac_hd);
+        //    return Json(achddesc);
+        //}
         public JsonResult SaveDataforDaybook(DayBookReportViewModel model)
         {
             AccountsUtility au = new AccountsUtility();
