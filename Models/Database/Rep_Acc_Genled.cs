@@ -67,16 +67,16 @@ namespace Amritnagar.Models.Database
                         sql = sql + "convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
                         sql = sql + "AND AC_HD='" + rag.ac_hd + "' ORDER BY GL_DATE";
                         config.singleResult(sql);
-                        if(config.dt.Rows.Count > 0)
-                        {
-                            DataRow dr1 =(DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            rag.GETBAL = true;
-                            rag.XACBAL = !Convert.IsDBNull(dr1["gl_bal"]) ? Convert.ToDecimal(dr1["gl_bal"]) : Convert.ToDecimal(00);
-                        }
-                        else
+                        if(config.dt.Rows.Count == 0)
                         {
                             rag.GETBAL = false;
                             rag.XACBAL = 0;
+                        }                       
+                        else
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rag.GETBAL = true;
+                            rag.XACBAL = !Convert.IsDBNull(dr1["gl_bal"]) ? Convert.ToDecimal(dr1["gl_bal"]) : Convert.ToDecimal(00);
                         }
                         sql = "SELECT A.AC_HD, A.VCH_DATE AS TR_DATE,";
                         sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
@@ -210,28 +210,28 @@ namespace Amritnagar.Models.Database
             sql = sql + "convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
             sql = sql + "AND AC_HD='CASH' ORDER BY GL_DATE";
             config.singleResult(sql);
-            if(config.dt.Rows.Count > 0)
+            if(config.dt.Rows.Count == 0)
+            {
+                XCASHBAL = 0;
+            }            
+            else
             {
                 DataRow dr9 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                 XCASHBAL = !Convert.IsDBNull(dr9["gl_bal"]) ? Convert.ToDecimal(dr9["gl_bal"]) : Convert.ToDecimal(00);
-            }
-            else
-            {
-                XCASHBAL = 0;
             }
             sql = "SELECT * FROM GL_BALNCE ";
             sql = sql + "WHERE branch_id='" + branch + "' and ";
             sql = sql + "convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
             sql = sql + "AND AC_HD='BANK' ORDER BY GL_DATE";
             config.singleResult(sql);
-            if (config.dt.Rows.Count > 0)
+            if(config.dt.Rows.Count == 0)
+            {
+                XBANKBAL = 0;
+            }            
+            else
             {
                 DataRow dr5 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                 XBANKBAL = !Convert.IsDBNull(dr5["gl_bal"]) ? Convert.ToDecimal(dr5["gl_bal"]) : Convert.ToDecimal(00);
-            }
-            else
-            {
-                XBANKBAL = 0;
             }
             bool XCASHBF = false;
             bool XBANKBF = false;
@@ -422,7 +422,6 @@ namespace Amritnagar.Models.Database
                 }
             }
         }
-
         public string GET_MGR(string XMGR)
         {
             string get_XMGR = "";
@@ -435,7 +434,6 @@ namespace Amritnagar.Models.Database
             }
             return get_XMGR;
         }
-
         public List<Rep_Acc_Genled> getdetails(string fr_dt, string to_dt)
         {
             List<Rep_Acc_Genled> raglst = new List<Rep_Acc_Genled>();

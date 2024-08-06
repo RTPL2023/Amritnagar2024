@@ -144,6 +144,7 @@ namespace Amritnagar.Models.Database
         {
             ACC_HEAD ah = new ACC_HEAD();
             string sql;
+            string qry = string.Empty;
             sql = "select * from ACC_HEAD WHERE AC_HD = '" + achd + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
@@ -154,29 +155,32 @@ namespace Amritnagar.Models.Database
             }
             if (ah.ac_lf_mast_fl == "D")
             {
-                sql = "SELECT AC_NAME AS NAME_OUT,AC_CLOSED AS CLOS_FLG FROM DEPOSIT_MAST WHERE BRANCH_ID='" + branch_id + "' AND ";
-                sql = sql + "AC_HD='" + ah.led_achd + "' AND AC_NO='" + acno + "'";
+                qry = "SELECT AC_NAME AS NAME_OUT,AC_CLOSED AS CLOS_FLG FROM DEPOSIT_MAST WHERE BRANCH_ID='" + branch_id + "' AND ";
+                qry = qry + "AC_HD='" + ah.led_achd + "' AND AC_NO='" + acno + "'";
             }
             if (ah.ac_lf_mast_fl == "L")
             {
-                sql = "SELECT loanee_name AS NAME_OUT,CLOS_FLAG AS CLOS_FLG FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
-                sql = sql + "AC_HD='" + ah.led_achd + "' AND employee_ID='" + acno + "'";
+                qry = "SELECT loanee_name AS NAME_OUT,CLOS_FLAG AS CLOS_FLG FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
+                qry = qry + "AC_HD='" + ah.led_achd + "' AND employee_ID='" + acno + "'";
             }
             if (ah.ac_lf_mast_fl == "M")
             {
-                sql = "SELECT MEMBER_NAME AS NAME_OUT,MEMBER_CLOSED AS CLOS_FLG FROM MEMBER_MAST WHERE BRANCH_ID='" + branch_id + "' AND ";
-                sql = sql + "MEMBER_ID='" + acno + "'";
+                qry = "SELECT MEMBER_NAME AS NAME_OUT,MEMBER_CLOSED AS CLOS_FLG FROM MEMBER_MAST WHERE BRANCH_ID='" + branch_id + "' AND ";
+                qry = qry + "MEMBER_ID='" + acno + "'";
             }
-            config.singleResult(sql);
+            config.singleResult(qry);
             if (config.dt.Rows.Count > 0)
             {
                 DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                 ah.particulars = Convert.ToString(dr1["NAME_OUT"]);
                 ah.clos_flag = Convert.ToString(dr1["CLOS_FLG"]);
             }
+            else
+            {
+                ah.particulars = "";
+            }
             return ah;
         }
-
         public List<ACC_HEAD> getac_hhdName(string name)
         {
             string sql = "";

@@ -582,6 +582,7 @@
                     success: function (data) {
                         document.getElementById("MembersFund").innerHTML = data.tableelement;
                         $('#tot_fund').val(data.tot_fund);
+                        $('#tot_assets').val(data.tot_assets);
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -598,13 +599,14 @@
                         dataType: "json",
                     success: function (data) {
                         document.getElementById("ExistingMembersLoan").innerHTML = data.tableelement;
-                        //$('#tot_fund').val(data.tot_fund);
+                        $('#tot_Loan').val(data.tot_Loan);
+                        $('#tot_liabilities').val(data.tot_liabilities);
                     },
                      error: function (err) {
                     //alert("Error Occured");
                      }
                     });
-         }
+        }
 
         function ShowTableForMembersOtherLoanInfo() {
               let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
@@ -615,13 +617,13 @@
                         dataType: "json",
                     success: function (data) {
                         document.getElementById("OtherExistingLoan").innerHTML = data.tableelement;
-                        //$('#tot_fund').val(data.tot_fund);
+                        $('#tot_Oth_Loan').val(data.tot_Oth_Loan);                       
                     },
                      error: function (err) {
                     //alert("Error Occured");
                      }
                     });
-         }
+        }
 
         function evtmember_no(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -635,6 +637,7 @@
                 ShowTableForMembersFund();
                 ShowTableForMembersLoanInfo();
                 ShowTableForMembersOtherLoanInfo();
+                //$('#tot_liabilities').val(data.tot_Oth_Loan)+;
             }
         }
 

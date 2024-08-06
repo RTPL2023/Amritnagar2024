@@ -796,7 +796,7 @@ namespace Amritnagar.Controllers
             model.EmpDesc = u.getEmployerMastDetails();
             model.EmpBranchDesc = u.getEmployerBranchMastDetails();
             model.CategoryDesc = u.getCategoryMastDetails();
-            model.sch_dt = "31/05/2024";
+            model.sch_dt = DateTime.Now.ToShortDateString();
             return View(model);
         }
         public static int[] findIndex(string[,] stringArr, string keyString)

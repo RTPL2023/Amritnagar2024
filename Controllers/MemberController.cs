@@ -1536,6 +1536,7 @@ namespace Amritnagar.Controllers
                     fnd_dep = fnd_dep + dep;
                 }
                 model.tot_fund = fnd_dep.ToString("0.00");
+                model.tot_assets = Convert.ToDecimal(model.share_cap_tot + model.tot_fund).ToString("0.00");
             }
             else
             {
@@ -1549,24 +1550,27 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             List<Loan_Master> lml = new List<Loan_Master>();
             lml = lm.getmemberloandetails(model.BranchID, model.member_no);
-            int i = 1;
+            int i = 1;            
             if (lml.Count > 0)
             {
                 foreach (var a in lml)
-                {
+                {                  
+                    lm = lm.getloanledger(a.ledger_tab, a.ac_hd, a.branch_id, a.emp_id, a.loan_amt, a.inst_no, a.ln_spcl, a.inst_rate, a.loan_dt);
+                    //lm = lm.get_loan_current_due(a.ac_hd, a.loan_amt, a.inst_no, a.ln_spcl, a.inst_rate, a.loan_dt, a.branch_id, a.mem_id);
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Account Head</th><th>Emp. Id</th><th>Loan date</th><th>Loan Amount</th><th>Instl</th><th>Sec</th><th>Principal Due</th><th>O/D Principal</th><th>Int.Recv</th><th>Aint.Recv</th><th>Total Recievable</th><th>Account Head</th><th>Table</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + lm.prin_bal.ToString("0.00") + "</td><td>" + lm.xodprin.ToString("0.00") + "</td><td>" + lm.int_bal.ToString("0.00") + "</td><td>" + lm.lbal_aint.ToString("0.00") + "</td><td>" + (lm.prin_bal + lm.int_bal + lm.lbal_aint).ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + lm.prin_bal.ToString("0.00") + "</td><td>" + lm.xodprin.ToString("0.00") + "</td><td>" + lm.int_bal.ToString("0.00") + "</td><td>" + lm.lbal_aint.ToString("0.00") + "</td><td>" + (lm.prin_bal + lm.int_bal + lm.lbal_aint).ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                     }
                     i = i + 1;
-                    //shcap_tot = shcap_tot + a.bal_amount;
+                    xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
                 }
-                //model.share_cap_tot = shcap_tot.ToString("0.00");
+                model.tot_Loan = xtotpayb.ToString("0.00");
+                model.tot_liabilities = Convert.ToDecimal(model.tot_Oth_Loan + model.tot_Loan).ToString("0.00");
             }
             else
             {
@@ -1587,24 +1591,27 @@ namespace Amritnagar.Controllers
                 {
                     if (i == 1)
                     {
+                        //lm = lm.get_loan_current_due(a.ac_hd, a.loan_amt, a.inst_no, a.ln_spcl, a.inst_rate, a.loan_dt, a.branch_id, a.mem_id);
+                        lm = lm.getloanledger(a.ledger_tab, a.ac_hd, a.branch_id, a.emp_id, a.loan_amt, a.inst_no, a.ln_spcl, a.inst_rate, a.loan_dt);
                         model.tableelement = "<tr><th>Account Head</th><th>Loan Id</th><th>Loan date</th><th>Loan Amount</th><th>Instl</th><th>Sec</th><th>Principal Due</th><th>O/D Principal</th><th>Int.Recv</th><th>Aint.Recv</th><th>Total Recievable</th><th>Account Head</th><th>Table</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + lm.prin_bal.ToString("0.00") + "</td><td>" + lm.xodprin.ToString("0.00") + "</td><td>" + lm.int_bal.ToString("0.00") + "</td><td>" + lm.lbal_aint.ToString("0.00") + "</td><td>" + (lm.prin_bal + lm.int_bal + lm.lbal_aint).ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.ac_desc + "</td><td>" + a.emp_id + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_no + "</td><td>" + "" + "</td><td>" + lm.prin_bal.ToString("0.00") + "</td><td>" + lm.xodprin.ToString("0.00") + "</td><td>" + lm.int_bal.ToString("0.00") + "</td><td>" + lm.lbal_aint.ToString("0.00") + "</td><td>" + (lm.prin_bal + lm.int_bal + lm.lbal_aint).ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                     }
                     i = i + 1;
-                    //shcap_tot = shcap_tot + a.bal_amount;
+                    xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
                 }
-                //model.share_cap_tot = shcap_tot.ToString("0.00");
+                model.tot_Oth_Loan = xtotpayb.ToString("0.00");
+                
             }
             else
             {
                 model.tableelement = null;
             }
             return Json(model);
-        }
+        }             
         public decimal get_fdep_int_payble(string ac_hd, decimal int_rate)
         {
             decimal xtot_int = 0;
@@ -1757,7 +1764,6 @@ namespace Amritnagar.Controllers
             return CAL_GFTF_INT;
         }
         
-
         //public JsonResult GetMemberLoanInfoByMemberId(MemberStatusViewModel model)
         //{
         //    Loan_Master lm = new Loan_Master();
