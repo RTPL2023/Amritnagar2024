@@ -922,6 +922,8 @@ namespace Amritnagar.Controllers
                 arrachd[i + 3] = "0";
                 i = i + 4;
             }
+            Recovery_Get rg = new Recovery_Get();
+            // string msg = rg.saveRecovery(model);
             rslst = rs.getdetailsForRecoveryFrmSalartDeduction(model.ded_achd, model.branch, model.emplyer_name, model.emp_unit, model.book_no, model.sch_dt);
             int l = 0;
             if (rslst.Count > 0)
@@ -937,17 +939,17 @@ namespace Amritnagar.Controllers
 
                     model.grid1 = model.grid1 + "<tr><td style =\"display:none\">" + Convert.ToString(i) + "</td><td>" + a.book_no + "</td>";
 
-                    if (emp != a.emp_id)
-                    {
-                        rowsp = 0;
-                        model.grid1 = model.grid1 + "<td rowspan=\"" + j + "\">" + a.emp_id + " </td><td rowspan=\"" + j + "\">" + a.mem_name + " </td>";
-                        rowsp++;
-                    }
-                    if (rowsp == 0)
-                    {
-                        model.grid1 = model.grid1 + "<td rowspan=\"" + j + "\">" + a.emp_id + " </td><td rowspan=\"" + j + "\">" + a.mem_name + " </td>";
-                        rowsp++;
-                    }
+                    //if (emp != a.emp_id)
+                    //{
+                    //    rowsp = 0;
+                    //    model.grid1 = model.grid1 + "<td rowspan=\"" + j + "\">" + a.emp_id + " </td><td rowspan=\"" + j + "\">" + a.mem_name + " </td>";
+                    //    rowsp++;
+                    //}
+                    //if (rowsp == 0)
+                    //{
+                    //    model.grid1 = model.grid1 + "<td rowspan=\"" + j + "\">" + a.emp_id + " </td><td rowspan=\"" + j + "\">" + a.mem_name + " </td>";
+                    //    rowsp++;
+                    //}
                     if (a.ac_hd != null)
                     {
                         var index = Array.FindIndex(arrachd, row => row.Contains(a.ac_hd));
@@ -960,17 +962,16 @@ namespace Amritnagar.Controllers
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.int_amt));
                         }
                     }
-                    model.grid1 = model.grid1 + "<td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td>";
+                    rg = rg.getPrinBalIntBal(a.ac_hd, a.branch_id, a.employer_cd, a.emp_id, a.book_no, a.sch_date, a.employer_branch);
+                    model.grid1 = model.grid1 + "<td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + rg.pRIN_aMT.ToString("0.00") + "</td><td>" + rg.iNT_aMT.ToString("0.00") + "</td></tr>";
                     emp = a.emp_id;
-
-                    xprin = xprin + a.prin_amt;
-                    xint = xint + a.int_amt;
+                    xprin = xprin + rg.pRIN_aMT;
+                    xint = xint + rg.iNT_aMT;
                     l = l + 1;
-
                     if (l == j)
                     {
                         j = 0;
-                        model.grid1 = model.grid1 + "<td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
+                        model.grid1 = model.grid1 + "<tr style =\"background-color:pink\"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
                         l = 0;
                         xprin = 0;
                         xint = 0;
@@ -993,13 +994,26 @@ namespace Amritnagar.Controllers
             {
                 model.grid1 = "";
             }
+
             return Json(model);
         }
-        public ActionResult SaveRecoverylist(RecoveryFrmSalaryDeductionViewModel model)
+        public ActionResult UpdateLedgerListByEmpId(RecoveryFrmSalaryDeductionViewModel model)
+        {
+            Recovery_Get rg = new Recovery_Get();
+            rg.UpdateLedgerListByEmpId(model);
+            return Json("Updated");
+        }
+        public ActionResult saveRecoveryGet(RecoveryFrmSalaryDeductionViewModel model)
         {
             Recovery_Get rg = new Recovery_Get();
             string msg = rg.saveRecovery(model);
             return Json(msg);
+        }
+        public ActionResult SaveInledger(RecoveryFrmSalaryDeductionViewModel model)
+        {
+            Recovery_Get rg = new Recovery_Get();
+            rg.SaveInLedger(model);
+            return Json("Updated");
         }
         /********************************************Recovery From Salary Deduction End*******************************************/
 
