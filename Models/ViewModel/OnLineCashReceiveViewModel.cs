@@ -23,7 +23,10 @@ namespace Amritnagar.Models.ViewModel
         public string amt_due { get; set; }
         public string gt_head { get; set; }
         public string gt_amt { get; set; }
+        public string tableelement { get; set; }
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
         public IEnumerable<SelectListItem> TypeDesc { get; set; }
+        public IEnumerable<SelectListItem> achddesc { get; set; }
+        public IEnumerable<SelectListItem> CounterDesc { get; set; }
     }
 }

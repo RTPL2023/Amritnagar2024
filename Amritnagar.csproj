@@ -143,6 +143,7 @@
     <Compile Include="Models\Database\AuthDbUtility.cs" />
     <Compile Include="Models\Database\Bank_Mast.cs" />
     <Compile Include="Models\Database\Caste_Mast.cs" />
+    <Compile Include="Models\Database\COUNTER_MAST.cs" />
     <Compile Include="Models\Database\Deduct_ACHD_Mast.cs" />
     <Compile Include="Models\Database\Department_Mast.cs" />
     <Compile Include="Models\Database\Deposit_Ledger.cs" />
@@ -178,6 +179,8 @@
     <Compile Include="Models\Database\SHARE_LEDGER.cs" />
     <Compile Include="Models\Database\Temp_Vch_Entry.cs" />
     <Compile Include="Models\Database\TF_Ledger.cs" />
+    <Compile Include="Models\Database\TVCH_DETAIL.cs" />
+    <Compile Include="Models\Database\TVCH_HEADER.cs" />
     <Compile Include="Models\Database\UserDBUtility.cs" />
     <Compile Include="Models\Database\Users.cs" />
     <Compile Include="Models\Database\Vch_Details.cs" />

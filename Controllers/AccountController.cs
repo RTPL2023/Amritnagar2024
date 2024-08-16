@@ -11,17 +11,227 @@ namespace Amritnagar.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Account
+        /********************************************Online Cash Recieve Start*******************************************/
         [HttpGet]
         public ActionResult OnLineCashReceive(OnLineCashReceiveViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
             model.TypeDesc = u.getTypeMastDetails();
-
+            model.CounterDesc = u.getCounterMast();
+            model.achddesc = u.getAcc_hd();
+            model.date = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
             return View(model);
         }
+        public JsonResult getpersonalaccountinformation(OnLineCashReceiveViewModel model)
+        {
+            Loan_Ledger ld = new Loan_Ledger();
+            List<Loan_Ledger> ldl = new List<Loan_Ledger>();
+            ldl = ld.gepesonalandledgerdetails(model.branch, model.acc_no, model.achd);
+            int i = 1;
+            string str_if_lti = "";
+            if (ldl.Count > 0)
+            {
+                foreach (var a in ldl)
+                {       
+                    if(a.if_lti == 1)
+                    {
+                        str_if_lti = "YES";
+                    }
+                    else
+                    {
+                        str_if_lti = "NO";
+                    }
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>CustomerId</th><th>Name of Customer</th><th>Sex</th><th>Occupation</th><th>Sign</th><th>LTI</th><th>PAN No</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.cus_id + "</td><td>" + a.cus_name + "</td><td>" + a.sex + "</td><td>" + a.occp + "</td><td>" + a.sign + "</td><td>" + str_if_lti + "</td><td>" + a.pan_no + "</td></tr>";                       
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.cus_id + "</td><td>" + a.cus_name + "</td><td>" + a.sex + "</td><td>" + a.occp + "</td><td>" + a.sign + "</td><td>" + str_if_lti + "</td><td>" + a.pan_no + "</td></tr>";
+                    }
+                    i = i + 1;
+                    model.name = a.cus_name.ToUpper();
+                    model.op_dt = a.open_dt.ToString("dd/MM/yyyy").Replace("-", "/");
+                    if(a.led_base_amt > 0)
+                    {
+                        model.amt = a.led_base_amt.ToString("0.00");
+                    }
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult getpersonalledgerinformation(OnLineCashReceiveViewModel model)
+        {
+            Loan_Ledger ld = new Loan_Ledger();
+            List<Loan_Ledger> ldl = new List<Loan_Ledger>();
+            ldl = ld.gepesonalandledgerdetails(model.branch, model.acc_no, model.achd);
+            int i = 1;
+            if (ldl.Count > 0)
+            {
+                foreach (var a in ldl)
+                {
+                    if (i == 1)
+                    {
+                        if(a.dr_cr == "D")
+                        {
+                            if(a.prin_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                            }
+                            if(a.int_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                            }                          
+                        }
+                        else
+                        {
+                            if (a.prin_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                            }
+                            if (a.int_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                            }
+                        }                        
+                    }
+                    else
+                    {
+                        if (a.dr_cr == "D")
+                        {
+                            if (a.prin_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                            }
+                            if (a.int_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                            }
+                        }
+                        else
+                        {
+                            if (a.prin_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                            }
+                            if (a.int_bal > 0)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                            }
+                        }
+                    }
+                    i = i + 1;                   
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult SaveCashRecieptData(string branch, string date, string shift, string counter, string vch_no, string achd, string acc_no, string name, string amt)
+        {            
+            TVCH_HEADER vh = new TVCH_HEADER();
+            TVCH_DETAIL vd = new TVCH_DETAIL();
+            vh.SaveUpdateTVCH_Header(branch, date, shift, counter, vch_no);
+            vd.Check_DeleteTVCH_Detail(branch, date, shift, vch_no, counter);
+            vd.SaveUpdateTVch_Detail(date, vch_no, branch, shift, counter, acc_no, name, achd, amt);
+            return Json("OVER");
+        }
+        public JsonResult GetRecieptdetails(OnLineCashReceiveViewModel model)
+        {
+            TVCH_DETAIL tvd = new TVCH_DETAIL();
+            List<TVCH_DETAIL> tvdl = new List<TVCH_DETAIL>();
+            tvdl = tvd.getpersonalrecieptdetails(model.branch, model.shift, model.date, model.counter);
+            int i = 1;           
+            if (tvdl.Count > 0)
+            {
+                foreach (var a in tvdl)
+                {                  
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>A/C Head</th><th>Voucher No</th><th>Account No</th><th>Recieved From Particulars</th><th>Amount</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.trn_no + "</td><td>" + a.vch_pacno + "</td><td>" + a.vch_acname + "</td><td>" + a.vch_amt + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.trn_no + "</td><td>" + a.vch_pacno + "</td><td>" + a.vch_acname + "</td><td>" + a.vch_amt + "</td></tr>";
+                    }
+                    i = i + 1;                  
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult GetRecieptSummary(OnLineCashReceiveViewModel model)
+        {
+            decimal GT_HD = 0;
+            decimal GT_AMT = 0;
+            TVCH_DETAIL tvd = new TVCH_DETAIL();
+            List<TVCH_DETAIL> tvdl = new List<TVCH_DETAIL>();
+            tvdl = tvd.getsummaryreciept(model.branch, model.shift, model.date, model.counter);
+            int i = 1;
+            if (tvdl.Count > 0)
+            {
+                foreach (var a in tvdl)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>A/C Head</th><th>Heads</th><th>A/C Deposit</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.tot_cnt + "</td><td>" + a.tot_depamt + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.tot_cnt + "</td><td>" + a.tot_depamt + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult Get_Last_TR(OnLineCashReceiveViewModel model)
+        {
+            TVCH_DETAIL vd = new TVCH_DETAIL();
+            vd = vd.getlasttr(model.branch, model.shift, model.date, model.counter);
+            model.gt_head = vd.tot_cnt.ToString();
+            model.gt_amt = vd.tot_amt.ToString("0.00");
+            return Json(model);
+        }
+        public JsonResult getvchno(OnLineCashReceiveViewModel model)
+        {
+            TVCH_DETAIL vd = new TVCH_DETAIL();
+            vd = vd.getlastvch_no(model.branch, model.shift, model.date, model.counter);
+            model.vch_no = vd.trn_no;
+            return Json(model);
+        }
+        public JsonResult DeleteCashReciept(OnLineCashReceiveViewModel model)
+        {
+            TVCH_DETAIL vd = new TVCH_DETAIL();
+            vd.Delete_Cash_Reciept(model.achd, model.vch_no, model.date, model.acc_no);
+            return Json("Record Deleted");
+        }
+        /********************************************Online Cash Recieve End*******************************************/
         [HttpGet]
         public ActionResult OnLineCashPayment(OnLineCashPaymentViewModel model)
         {
@@ -398,11 +608,8 @@ namespace Amritnagar.Controllers
         }
         public JsonResult getcashBankPositionReport(CashBankPositionReportViewModel model)
         {
-
             AccountsUtility au = new AccountsUtility();
-
             model = au.getCashBankPositionReport(model);
-
             return Json(model);
         }
         [HttpGet]

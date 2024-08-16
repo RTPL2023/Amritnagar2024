@@ -942,7 +942,7 @@ namespace Amritnagar.Models.Database
         public string getmemid()
         {
             string qry;
-            qry = "select MEMBER_ID from MEMBER_MAST";
+            qry = "select MEMBER_ID from MEMBER_MAST order by MEMBER_ID";
             config.singleResult(qry);
             Member_Mast mm = new Member_Mast();
             if (config.dt.Rows.Count > 0)

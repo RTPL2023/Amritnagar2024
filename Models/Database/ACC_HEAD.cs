@@ -68,6 +68,23 @@ namespace Amritnagar.Models.Database
             }
             return aclst;
         }
+        public List<ACC_HEAD> getachd()
+        {
+            string sql = "Select * from  ACC_HEAD  order by AC_HD";
+            config.singleResult(sql);
+            List<ACC_HEAD> aclst = new List<ACC_HEAD>();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    ACC_HEAD ac = new ACC_HEAD();
+                    ac.ac_hd = Convert.ToString(dr["AC_HD"]);
+                    ac.ac_desc = Convert.ToString(dr["AC_DESC"]);
+                    aclst.Add(ac);
+                }
+            }
+            return aclst;
+        }
         public List<ACC_HEAD> getAchdListForVchEntry(string vch_achd)
         {
             List<ACC_HEAD> aclist = new List<ACC_HEAD>();

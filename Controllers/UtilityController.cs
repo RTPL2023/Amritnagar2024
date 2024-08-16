@@ -59,6 +59,19 @@ namespace Amritnagar.Controllers
             return lmevm.achddesc;
         }
 
+        //****************For Ac_hd Dropdown 
+        public IEnumerable<SelectListItem> getAcc_hd()
+        {
+            OnLineCashReceiveViewModel ocrvm = new OnLineCashReceiveViewModel();
+            ACC_HEAD acc = new ACC_HEAD();
+            ocrvm.achddesc = acc.getachd().ToList().Select(x => new SelectListItem
+            {
+                Value = x.ac_hd.ToString(),
+                Text = x.ac_desc.ToString()
+            }); ;
+            return ocrvm.achddesc;
+        }
+
         //****************For Employer Name Drop Down
         public IEnumerable<SelectListItem> getEmployerMastDetails()
         {
@@ -241,7 +254,18 @@ namespace Amritnagar.Controllers
             }); ;
             return lmevm.lntypedesc;
         }
-
+        //****************For Counter Drop Down
+        public IEnumerable<SelectListItem> getCounterMast()
+        {
+            OnLineCashReceiveViewModel ocrvm = new OnLineCashReceiveViewModel();
+            COUNTER_MAST cm = new COUNTER_MAST();
+            ocrvm.CounterDesc = cm.getCounterMast().ToList().Select(x => new SelectListItem
+            {
+                Value = x.counter_no.ToString(),
+                Text = x.counter_desc.ToString()
+            }); ;
+            return ocrvm.CounterDesc;
+        }
         public MemoryStream DownloadTextFiles(string filename, string uploadPath)
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), uploadPath, filename);

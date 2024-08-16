@@ -190,7 +190,7 @@
                 <div class="row mt-1">
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size", @onchange= "changefocus()" })
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text")@*, "Select"*@, new { @class = "size"@*, @onchange= "changefocus()"*@ })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Voucher Date:<br />
@@ -202,7 +202,7 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         <br />
-                        @Html.DropDownListFor(p => p.vch_no, new SelectList(new string[] { "Select Voucher" }), new { @onchange = "GetVoucherList()", @class = "size" })
+                        @Html.DropDownListFor(p => p.vch_no, new SelectList(new string[] { "Select Voucher" }), new { @onchange = "GetVoucherList()", @class = "size"})
                     </div>
                     <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                         Voucher Type:<br />
@@ -350,7 +350,7 @@
             $("#crdt_amt").val("0");
             $("#net_amt").val("0");
             $('#loading').hide();
-            $('#branch').focus();
+            $('#vch_date').focus();
 
             $("#vch_achd").autocomplete({
                 source: function (request, response) {
@@ -401,14 +401,14 @@
             GetVoucherType();
         });
 
-        function changefocus() {
-            $('#txtvch_No').focus();
-        }
+        //function changefocus() {
+        //    $('#vch_date').focus();
+        //}
 
         function changefocusforvchtype() {
             $('#drcr').focus();
         }
-
+       
         function evtDate(evt) {
 
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -416,6 +416,7 @@
                 return false;
             else if (charCode == 13) {
                 GetVoucherNo();
+                
             }
         }
 
@@ -433,7 +434,8 @@
                         $("#vch_no").append(
                     $('<option></option>').val(c.value).html(c.text));
                     });
-                    $("#vch_no").focus();
+                    $('#txtvch_No').focus();
+                    //$("#vch_no").focus();
                 }
             });
         }
@@ -476,6 +478,7 @@
                     $("#net_amt").val(data.net_amt);
                     /*$("#vch_DrCr").val(data.vch_DrCr);*/
                     $('#ButtonSave').prop('disabled', true);
+                    $('#vch_type').focus();
                 },
                 error: function (err) {
                     alert(err);
@@ -788,7 +791,7 @@
             else if (charCode == 13) {
                 $("#vch_type").focus();
             }
-       }
+        }
 
     </script>
 }

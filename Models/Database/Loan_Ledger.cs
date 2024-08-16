@@ -23,6 +23,7 @@ namespace Amritnagar.Models.Database
         public string chq_no { get; set; }
         public Nullable<DateTime> chq_dt { get; set; }
         public Nullable<DateTime> loan_dt { get; set; }
+        public DateTime open_dt { get; set; }
         public string bank_cd { get; set; }
         public decimal prin_amt { get; set; }
         public decimal int_amt { get; set; }
@@ -47,6 +48,9 @@ namespace Amritnagar.Models.Database
         public string employer_branch { get; set; }
         public string trns_particular { get; set; }
         public string loanee_name { get; set; }
+        public string ledger_tab { get; set; }
+        public string led_ac_hd { get; set; }
+        public string ledger_col { get; set; }
         public decimal cr_amt { get; set; }
         public decimal dr_amt { get; set; }
         public decimal loan_amt { get; set; }
@@ -66,7 +70,9 @@ namespace Amritnagar.Models.Database
         public decimal aint_rate { get; set; }
         public string int_scheme_name { get; set; }
         public string int_scheme_desc { get; set; }
+        public string xmast { get; set; }
         public decimal int_addl_tdl { get; set; }
+        public decimal led_base_amt { get; set; }
         public int int_frq_mm { get; set; }
         public string int_product_flag { get; set; }
         public string int_comm_flag { get; set; }
@@ -79,12 +85,27 @@ namespace Amritnagar.Models.Database
         public int aint_period_od { get; set; }
         public int aint_due_day { get; set; }
         public int aint_rnd_flag { get; set; }
+        public int if_lti { get; set; }
         public string aint_rnd_stage { get; set; }
         public string aint_scheme_desc { get; set; }
+        public string cus_id { get; set; }
+        public string cus_name { get; set; }
+        public string sex { get; set; }
+        public string occp { get; set; }
+        public string sign { get; set; }
+        public string lti { get; set; }
+        public string pan_no { get; set; }
         public decimal xirate { get; set; }
         public decimal xinstl { get; set; }
         public decimal xless_int { get; set; }
+        public decimal xamt { get; set; }
+        public decimal int_bal { get; set; }
+        public decimal tr_amt { get; set; }
+        public decimal bal_amt { get; set; }
         public string ln_spcl { get; set; }
+        public string xpart { get; set; }
+        public string ac_closed { get; set; }
+        public string msg { get; set; }
 
 
         public string SaveLoanLedger(Loan_Ledger ld)
@@ -474,6 +495,219 @@ namespace Amritnagar.Models.Database
             string tm = Convert.ToDateTime(model.date).ToString("HH:mm:ss");
             string sql = "Delete from loan_ledger where branch_id='" + model.branch_id + "' and ac_hd='" + model.ac_hd + "' and employee_id='" + model.emp_id + "'AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND VCH_NO='" + model.vch_no + "' AND VCH_SRL='" + model.vch_srl + "'";
             config.Execute_Query(sql);
+        }
+        public List<Loan_Ledger> gepesonalandledgerdetails(string branch, string acc_no, string achd)
+        {
+            List<Loan_Ledger> ldl = new List<Loan_Ledger>();
+            Loan_Ledger ld = new Loan_Ledger();
+            string sql = string.Empty;
+            string xpart = "";
+            sql = "Select * from  ACC_HEAD  order by AC_HD";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    ld.ac_hd = Convert.ToString(dr["AC_HD"]);
+                    ld.ledger_tab = Convert.ToString(dr["LEDGER_TAB"]);
+                    ld.ledger_col = Convert.ToString(dr["LEDGER_COL"]);
+                    ld.led_ac_hd = Convert.ToString(dr["LED_ACHD"]);
+                    ld.xmast = Convert.ToString(dr["AC_LF_MAST_FL"]);
+                    ld.led_base_amt = !Convert.IsDBNull(dr["MISCDEP_BASEAMT"]) ? Convert.ToDecimal(dr["MISCDEP_BASEAMT"]) : Convert.ToDecimal("0.00");
+                    if(ld.xmast == "D")
+                    {
+                        sql = "SELECT * FROM DEPOSIT_MAST WHERE BRANCH_ID='" + branch + "'AND ";
+                        sql = sql + "AC_HD='" + led_ac_hd + "' AND AC_NO='" + acc_no + "'";
+                        config.singleResult(sql);
+                        if(config.dt.Rows.Count > 0)
+                        {
+                            foreach(DataRow dr1 in config.dt.Rows)
+                            {
+                                ld.cus_name = Convert.ToString(dr1["ac_name"]);
+                                ld.ac_closed = Convert.ToString(dr1["ac_closed"]);
+                                ld.open_dt = !Convert.IsDBNull(dr1["open_date"]) ? Convert.ToDateTime(dr1["open_date"]) : Convert.ToDateTime(null);
+                            }
+                        }
+                        sql = "SELECT A.CUST_ID,A.CUST_NAME,a.sex,a.occup_id,A.DESIGNATION,B.SIGN_FLAG FROM CUSTOMER A,DEPOSIT_CUSTOMER B ";
+                        sql = sql + "WHERE (A.BRANCH_ID=B.BRANCH_ID AND A.CUST_ID=B.CUST_ID) AND ";
+                        sql = sql + "(B.BRANCH_ID='" + branch + "' AND B.AC_HD='" + ld.led_ac_hd + "' AND ";
+                        sql = sql + "B.AC_NO='" + acc_no + "')";
+                        config.singleResult(sql);
+                        if(config.dt.Rows.Count > 0)
+                        {
+                            foreach(DataRow dr2 in config.dt.Rows)
+                            {
+                                ld.cus_id = Convert.ToString(dr2["cust_id"]);
+                                ld.cus_name = Convert.ToString(dr2["cust_name"]);
+                                ld.sex = Convert.ToString(dr2["SEX"]);
+                                ld.occp = Convert.ToString(dr2["OCCUP_ID"]);
+                                ld.sign = Convert.ToString(dr2["SIGN_FLAG"]);
+                            }
+                        }
+                        if(ld.ledger_tab != "")
+                        {
+                            Ledger l = new Ledger();
+                            l = l.GET_LEDGER_QRY(ld.led_ac_hd, acc_no, ld.ledger_tab, branch);
+                            string QRYLED = l.query;
+                            config.singleResult(QRYLED);
+                            if(config.dt.Rows.Count > 0)
+                            {
+                                DataRow dr3 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                                ld.vch_dt = !Convert.IsDBNull(dr3["vch_date"]) ? Convert.ToDateTime(dr3["vch_date"]) : Convert.ToDateTime(null);
+                                ld.int_amt = !Convert.IsDBNull(dr3["INT_AMOUNT"]) ? Convert.ToDecimal(dr3["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                                ld.prin_amt = !Convert.IsDBNull(dr3["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr3["PRIN_AMOUNT"]) : Convert.ToDecimal("0.00");
+                                ld.prin_bal = !Convert.IsDBNull(dr3["prin_bal"]) ? Convert.ToDecimal(dr3["prin_bal"]) : Convert.ToDecimal("0.00");
+                                ld.int_bal = !Convert.IsDBNull(dr3["INT_BAL"]) ? Convert.ToDecimal(dr3["INT_BAL"]) : Convert.ToDecimal("0.00");
+                                ld.dr_cr = Convert.ToString(dr3["DR_CR"]);
+                                ld.vch_type = Convert.ToString(dr3["VCH_TYPE"]);
+                                if(ld.dr_cr == "D")
+                                {
+                                    xpart = "To ";
+                                }
+                                else
+                                {
+                                    xpart = "By ";
+                                }
+                                if(ld.vch_type == "C")
+                                {
+                                    xpart = xpart + "Cash ";
+                                }
+                                if (ld.vch_type == "B")
+                                {
+                                    xpart = xpart + "Bank ";
+                                }
+                                if (ld.vch_type == "T")
+                                {
+                                    xpart = xpart + "Transfer ";
+                                }
+                                if (ld.vch_type == "J")
+                                {
+                                    xpart = xpart + "Journal ";
+                                }
+                                if(ld.int_amt > 0)
+                                {
+                                    xpart = xpart + "@Interest";
+                                }
+                                ld.xamt = ld.prin_amt + ld.int_amt;                               
+                            }
+                        }
+                        if(ld.ac_closed == "C")
+                        {
+                            ld.msg = "A/C is Closed";
+                        }
+                        if (ld.ac_closed == "T")
+                        {
+                            ld.msg = "A/C is Subject to Closure";
+                        }
+                    }
+                    if(ld.xmast == "L")
+                    {
+                        sql = "SELECT * FROM LOAN_MASTER WHERE BRANCH_ID='" +branch+ "' AND ";
+                        sql = sql + "AC_HD='" + achd + "'  AND employee_ID='" + acc_no + "'";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr1 in config.dt.Rows)
+                            {
+                                ld.cus_name = Convert.ToString(dr1["loanee_name"]);
+                                ld.open_dt = !Convert.IsDBNull(dr1["loan_date"]) ? Convert.ToDateTime(dr1["loan_date"]) : Convert.ToDateTime(null);
+                            }
+                        }
+                    }
+                    if(ld.xmast == "M")
+                    {
+                        sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" +branch+ "' AND ";
+                        sql = sql + "MEMBER_ID='" + acc_no + "'";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr1 in config.dt.Rows)
+                            {
+                                ld.cus_name = Convert.ToString(dr1["member_name"]);
+                                ld.ac_closed = Convert.ToString(dr1["MEMBER_CLOSED"]);
+                                ld.open_dt = !Convert.IsDBNull(dr1["MEMBER_DATE"]) ? Convert.ToDateTime(dr1["MEMBER_DATE"]) : Convert.ToDateTime(null);
+                                ld.cus_id = Convert.ToString(dr1["EMPLOYEE_ID"]);
+                                ld.cus_name = Convert.ToString(dr1["member_name"]);
+                                ld.sex = Convert.ToString(dr1["SEX"]);
+                                ld.occp = Convert.ToString(dr1["OCCUP_ID"]);
+                                ld.if_lti = !Convert.IsDBNull(dr1["IF_LTI"]) ? Convert.ToInt32(dr1["IF_LTI"]) : Convert.ToInt32("0.00");
+                                ld.pan_no = !Convert.IsDBNull(dr1["PAN_NO"]) ? Convert.ToString(dr1["PAN_NO"]) : Convert.ToString("");
+                            }
+                        }                
+                        if (ld.ledger_tab != "")
+                        {
+                            Ledger l = new Ledger();
+                            l = l.GET_LEDGER_QRY(ld.led_ac_hd, acc_no, ld.ledger_tab, branch);
+                            string QRYLED = l.query;
+                            config.singleResult(QRYLED);
+                            if (config.dt.Rows.Count > 0)
+                            {
+                                DataRow dr3 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                                ld.vch_dt = !Convert.IsDBNull(dr3["vch_date"]) ? Convert.ToDateTime(dr3["vch_date"]) : Convert.ToDateTime(null);                                                                            
+                                ld.dr_cr = Convert.ToString(dr3["DR_CR"]);
+                                ld.vch_type = Convert.ToString(dr3["VCH_TYPE"]);
+                                if (ld.dr_cr == "D")
+                                {
+                                    xpart = "To ";
+                                }
+                                else
+                                {
+                                    xpart = "By ";
+                                }
+                                if (ld.vch_type == "C")
+                                {
+                                    xpart = xpart + "Cash ";
+                                }
+                                if (ld.vch_type == "B")
+                                {
+                                    xpart = xpart + "Bank ";
+                                }
+                                if (ld.vch_type == "T")
+                                {
+                                    xpart = xpart + "Transfer ";
+                                }
+                                if (ld.vch_type == "J")
+                                {
+                                    xpart = xpart + "Journal ";
+                                }
+                                if(ld.ledger_tab == "GF_LEDGER" || ld.ledger_tab == "TF_LEDGER")
+                                {
+                                    ld.int_amt = !Convert.IsDBNull(dr3["INT_AMOUNT"]) ? Convert.ToDecimal(dr3["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                                    ld.int_amt = !Convert.IsDBNull(dr3["INT_AMOUNT"]) ? Convert.ToDecimal(dr3["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                                    ld.prin_amt = !Convert.IsDBNull(dr3["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr3["PRIN_AMOUNT"]) : Convert.ToDecimal("0.00");
+                                    ld.prin_bal = !Convert.IsDBNull(dr3["prin_bal"]) ? Convert.ToDecimal(dr3["prin_bal"]) : Convert.ToDecimal("0.00");
+                                    ld.int_bal = !Convert.IsDBNull(dr3["INT_BAL"]) ? Convert.ToDecimal(dr3["INT_BAL"]) : Convert.ToDecimal("0.00");
+                                    if (ld.int_amt > 0)
+                                    {
+                                        xpart = xpart + "@Interest";
+                                    }
+                                    ld.xamt = ld.prin_amt + ld.int_amt;
+                                }                               
+                                else if (ld.ledger_tab == "SHARE_LEDGER" || ld.ledger_tab == "DIVIDEND_LEDGER")
+                                {
+                                    ld.xamt = !Convert.IsDBNull(dr3["TR_AMOUNT"]) ? Convert.ToDecimal(dr3["TR_AMOUNT"]) : Convert.ToDecimal("0.00");
+                                    ld.prin_bal = !Convert.IsDBNull(dr3["BAL_AMOUNT"]) ? Convert.ToDecimal(dr3["BAL_AMOUNT"]) : Convert.ToDecimal("0.00");                                    
+                                }
+                            }
+                        }
+                        if(ld.ac_closed == "C")
+                        {
+                            ld.msg = "A/C is Closed";
+                        }
+                        if(ld.ac_closed == "T")
+                        {
+                            ld.msg = "Membership is Subject to Closure";
+                        }
+                    }
+                    if(ld.xmast == "C")
+                    {
+
+                    }
+                    ld.xpart = xpart;                    
+                }
+            }
+            ldl.Add(ld);
+            return ldl;
         }
 
         //public List<Loan_Ledger> getallexistingloandetails(string branch_id, string ac_hd, string on_date)
