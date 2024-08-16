@@ -392,6 +392,8 @@ namespace Amritnagar.Models.Database
 
 
 
+
+
         public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model)
         {
             string sql = "";
@@ -429,26 +431,145 @@ namespace Amritnagar.Models.Database
                     sql = "INSERT INTO RECOVERY_GET(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, book_no, EMPLOYEE_ID , SCH_DATE, ac_hd ,vch_pacno ,RECOVERY_DATE ,recovery_mn,recovery_yr,PRIN_AMT,INT_AMT )";
                     sql = sql + "VALUES('" + model.branch + "', '" + model.emplyer_name + "', '" + model.emp_unit + "', '" + model.book_no + "','" + a.emp_id + "', convert(datetime, '" + model.sch_dt + "', 103),'" + a.ac_hd + "', '" + a.vch_pacno + "', convert(datetime, '" + model.rec_dt + "', 103), '" + mm + "', '" + yy + "'," + Convert.ToDecimal(a.prin_amt) + ", " + Convert.ToDecimal(a.int_amt) + ")";
                     config.Execute_Query(sql);
-                    msg = "update Done";
+                    // msg = "update Done";
                 }
                 catch (Exception ex)
                 {
                     msg = "error " + ex;
                 }
-                if (a.int_amt > 0)
-                {
-                    ADD_LEDGER("I" + a.ac_hd, a.vch_pacno, vch_no, 1, "C", a.int_amt, "SD", model.branch, model.sch_dt, model.rec_dt, a.vch_pacno);
-                }
-                if (a.prin_amt > 0)
-                {
-                    ADD_LEDGER(a.ac_hd, a.vch_pacno, vch_no, 1, "C", a.prin_amt, "SD", model.branch, model.sch_dt, model.rec_dt, a.vch_pacno);
-                }
+
                 i++;
             }
             return msg;
         }
 
-        public void ADD_LEDGER(string XACHD, string xacno, string xvch_no, int XVCH_SRL, string VCH_DRCR, decimal XVCH_AMT, string XINSERT_MODE, string branch, string sch_dt, string rec_dt, string member_id)
+        public void UpdateLedgerListByEmpId(RecoveryFrmSalaryDeductionViewModel model)
+        {
+            string sql = "Select * from RECOVERY_GET where BRANCH_ID='" + model.branch + "' and book_no='" + model.book_no + "' and EMPLOYEE_ID='" + model.employee_id + "'and EMPLOYER_CD='" + model.emplyer_name + "' and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103) AND convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + model.rec_dt + "', 103) AND AC_HD='" + model.ac_hd + "'";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                string qry = "Update RECOVERY_GET set PRIN_AMT=" + model.over_due + ",INT_AMT=" + model.int_amt + " where convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + model.rec_dt + "', 103) and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103)   AND BRANCH_ID='" + model.branch + "' and EMPLOYEE_ID='" + model.employee_id + "'and EMPLOYER_CD='" + model.emplyer_name + "' AND AC_HD='" + model.ac_hd + "'";
+                config.Execute_Query(qry);
+            }
+        }
+        public Recovery_Get getPrinBalIntBal(string achd, string branch, string empcd, string empId, string bookno, string sch_date, int empbranch)
+        {
+            Recovery_Get rg = new Recovery_Get();
+
+            string sql = "Select * from RECOVERY_GET where BRANCH_ID='" + branch + "' and book_no='" + bookno + "' and EMPLOYEE_ID='" + empId + "'and EMPLOYER_CD='" + empcd + "' and EMPLOYER_BRANCH='" + empbranch + "' and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + sch_date + "', 103)  AND AC_HD='" + achd + "'";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    rg.pRIN_aMT = !Convert.IsDBNull(dr["PRIN_AMT"]) ? Convert.ToDecimal(dr["PRIN_AMT"]) : Convert.ToDecimal("00");
+                    rg.iNT_aMT = !Convert.IsDBNull(dr["INT_AMT"]) ? Convert.ToDecimal(dr["INT_AMT"]) : Convert.ToDecimal("00");
+                }
+            }
+            return rg;
+        }
+
+        public string SaveInLedger(RecoveryFrmSalaryDeductionViewModel model)
+        {
+            string sql = "";
+            string msg = "";
+            sql = "SELECT * FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
+            config.singleResult(sql);
+            int i = 1;
+            string vch_no = "";
+            if (config.dt.Rows.Count > 0)
+            { 
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    if (i == 1)
+                    {
+                        vch_no = "SLDED" + "00001";
+
+                    }
+                    else
+                    {
+                        string code = (i).ToString().PadLeft(5, '0');
+                        vch_no = "SLDED" + code;
+                    }
+                    Recovery_Get rg = new Recovery_Get();
+                    rg.aC_hD = Convert.ToString(dr["aC_hD"]);
+                    rg.vCH_pACNO = Convert.ToString(dr["vCH_pACNO"]);
+                    rg.branch_id = Convert.ToString(dr["branch_id"]);
+                    rg.sCH_dATE = Convert.ToDateTime(dr["sch_date"]);
+                    rg.rECOVERY_dATE = Convert.ToDateTime(dr["rECOVERY_dATE"]);
+                    rg.pRIN_aMT = !Convert.IsDBNull(dr["PRIN_AMT"]) ? Convert.ToDecimal(dr["PRIN_AMT"]) : Convert.ToDecimal("00");
+                    rg.iNT_aMT = !Convert.IsDBNull(dr["INT_AMT"]) ? Convert.ToDecimal(dr["INT_AMT"]) : Convert.ToDecimal("00");
+                    if (rg.iNT_aMT > 0)
+                    {
+                        ADD_LEDGER("I" +rg.aC_hD, rg.vCH_pACNO, vch_no, 1, "C", rg.iNT_aMT, "SD", rg.branch_id, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
+                    }
+                    if (rg.pRIN_aMT > 0)
+                    {
+                        ADD_LEDGER(rg.aC_hD, rg.vCH_pACNO, vch_no, 1, "C", rg.pRIN_aMT, "SD", model.branch, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
+                    }
+                    i++;
+
+                }
+            }
+            return msg;
+        }
+        //public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model)
+        //{
+        //    string sql = "";
+        //    string msg = "";
+        //    sql = "SELECT * FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
+        //    config.singleResult(sql);
+        //    if (config.dt.Rows.Count > 0)
+        //    {
+        //        sql = "Delete FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
+        //        config.Execute_Query(sql);
+        //    }
+        //    Recovery_Schedule rs = new Recovery_Schedule();
+        //    List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
+        //    rslst = rs.getdetailsForRecoveryFrmSalartDeduction(model.ded_achd, model.branch, model.emplyer_name, model.emp_unit, model.book_no, model.sch_dt);
+        //    int i = 1;
+        //    string vch_no = "";
+        //    foreach (var a in rslst)
+        //    {
+
+        //        if (i == 1)
+        //        {
+        //            vch_no = "SLDED" + "00001";
+
+        //        }
+        //        else
+        //        {
+        //            string code = (i).ToString().PadLeft(5, '0');
+        //            vch_no = "SLDED" + code;
+        //        }
+        //        //string vch_no = "SLDED" + i + "00000";
+        //        string mm = Convert.ToDateTime(model.rec_dt).Month.ToString();
+        //        string yy = Convert.ToDateTime(model.rec_dt).Year.ToString();
+        //        try
+        //        {
+        //            sql = "INSERT INTO RECOVERY_GET(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, book_no, EMPLOYEE_ID , SCH_DATE, ac_hd ,vch_pacno ,RECOVERY_DATE ,recovery_mn,recovery_yr,PRIN_AMT,INT_AMT )";
+        //            sql = sql + "VALUES('" + model.branch + "', '" + model.emplyer_name + "', '" + model.emp_unit + "', '" + model.book_no + "','" + a.emp_id + "', convert(datetime, '" + model.sch_dt + "', 103),'" + a.ac_hd + "', '" + a.vch_pacno + "', convert(datetime, '" + model.rec_dt + "', 103), '" + mm + "', '" + yy + "'," + Convert.ToDecimal(a.prin_amt) + ", " + Convert.ToDecimal(a.int_amt) + ")";
+        //            config.Execute_Query(sql);
+        //            msg = "update Done";
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            msg = "error " + ex;
+        //        }
+        //        if (a.int_amt > 0)
+        //        {
+        //            ADD_LEDGER("I" + a.ac_hd, a.vch_pacno, vch_no, 1, "C", a.int_amt, "SD", model.branch, model.sch_dt, model.rec_dt, a.vch_pacno);
+        //        }
+        //        if (a.prin_amt > 0)
+        //        {
+        //            ADD_LEDGER(a.ac_hd, a.vch_pacno, vch_no, 1, "C", a.prin_amt, "SD", model.branch, model.sch_dt, model.rec_dt, a.vch_pacno);
+        //        }
+        //        i++;
+        //    }
+        //    return msg;
+        //}
+        public void ADD_LEDGER(string XACHD, string xacno, string xvch_no, int XVCH_SRL, string VCH_DRCR, decimal XVCH_AMT, string XINSERT_MODE, string branch, DateTime sch_dt, DateTime rec_dt, string member_id)
         {
             string XLEDGER_TAB, XMAST_FLAG, xvchno;
             decimal LBAL_PRIN = 0;
@@ -538,7 +659,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_date",Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -557,7 +678,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_date",    Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -621,7 +742,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",  Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_date", Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -640,7 +761,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_date",  Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -661,7 +782,7 @@ namespace Amritnagar.Models.Database
                         //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         //    LBAL_PRIN = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("0");
                         //    LBAL_INT = !Convert.IsDBNull(dr1["int_bal"]) ? Convert.ToDecimal(dr1["int_bal"]) : Convert.ToDecimal("0");
-                           
+
                         //    config.singleResult(QRY1);
                         //    foreach (DataRow drr in config.dt.Rows)
                         //    {
@@ -680,7 +801,7 @@ namespace Amritnagar.Models.Database
                         //        LBAL_PRIN = !Convert.IsDBNull(drr["prin_bal"]) ? Convert.ToDecimal(drr["prin_bal"]) : Convert.ToDecimal("0");
                         //        LBAL_INT = !Convert.IsDBNull(drr["int_bal"]) ? Convert.ToDecimal(drr["int_bal"]) : Convert.ToDecimal("0");
                         //    }
-                           
+
                         //}
                         break;
 
@@ -713,7 +834,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",    Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_date",   Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -732,7 +853,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_date",   Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -796,7 +917,7 @@ namespace Amritnagar.Models.Database
                             {
                             { "BRANCH_ID",     branch },
                             { "member_id",   member_id },
-                            { "vch_date",        rec_dt+" "+DateTime.Now.ToShortTimeString()},
+                            { "vch_date",      Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -872,7 +993,7 @@ namespace Amritnagar.Models.Database
                             { "BRANCH_ID",     branch },
                             { "ac_hd",     xledachd },
                             { "EMPLOYEE_ID",   member_id },
-                            { "vch_date", Convert.ToDateTime(rec_dt+" "+tm)},
+                            { "vch_date", Convert.ToDateTime(rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -896,7 +1017,7 @@ namespace Amritnagar.Models.Database
                                 { "BRANCH_ID",     branch },
                                 { "ac_hd",     xledachd },
                                 { "EMPLOYEE_ID",   member_id },
-                                { "vch_date",    Convert.ToDateTime(rec_dt+" "+tm)},
+                                { "vch_date",    Convert.ToDateTime(rec_dt)},
                                 { "vch_no",    xvch_no },
                                 { "vch_srl",  XVCH_SRL },
                                 { "VCH_TYPE",    "T" },
@@ -911,7 +1032,7 @@ namespace Amritnagar.Models.Database
                                 { "ichrg_due",Convert.ToDecimal(LBAL_CH )},
                                 });
                             }
-                          
+
                             catch (Exception ex)
                             {
 
@@ -924,7 +1045,7 @@ namespace Amritnagar.Models.Database
                             { "BRANCH_ID",     branch },
                             { "ac_hd",     xledachd },
                             { "EMPLOYEE_ID",   member_id },
-                            { "vch_date", Convert.ToDateTime( rec_dt+" "+tm)},
+                            { "vch_date",Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },
@@ -946,7 +1067,7 @@ namespace Amritnagar.Models.Database
                             { "BRANCH_ID",     branch },
                             { "ac_hd",     xledachd },
                             { "EMPLOYEE_ID",   member_id },
-                            { "vch_date",Convert.ToDateTime( rec_dt+" "+tm)},
+                            { "vch_date",Convert.ToDateTime( rec_dt)},
                             { "vch_no",    xvch_no },
                             { "vch_srl",  XVCH_SRL },
                             { "VCH_TYPE",    "T" },

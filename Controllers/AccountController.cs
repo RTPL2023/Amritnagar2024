@@ -195,11 +195,11 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Srl</th><th>A/C Head</th><th>Heads</th><th>A/C Deposit</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.tot_cnt + "</td><td>" + a.tot_depamt + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.tot_cnt + "</td><td>" + a.tot_depamt.ToString("0.00") + "</td></tr>";
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.tot_cnt + "</td><td>" + a.tot_depamt + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.tot_cnt + "</td><td>" + a.tot_depamt.ToString("0.00") + "</td></tr>";
                     }
                     i = i + 1;
                 }

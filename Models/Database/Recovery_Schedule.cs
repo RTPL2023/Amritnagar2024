@@ -452,11 +452,16 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs = new Recovery_Schedule();
                     YMAN_NO = Convert.ToString(dr["book_no"]) + Convert.ToString(dr["EMPLOYEE_ID"]);
                     rs.emp_id = Convert.ToString(dr["EMPLOYEE_ID"]);
+                    rs.branch_id = Convert.ToString(dr["branch_id"]);
+                    rs.employer_cd = Convert.ToString(dr["employer_cd"]);
+                    rs.employer_branch = Convert.ToInt32(dr["employer_branch"]);
+                    rs.sch_date = Convert.ToDateTime(dr["sch_date"]).ToString("dd/MM/yyyy").Replace("-","/");
                     rs.ac_hd = Convert.ToString(dr["AC_HD"]);
                     rs.mem_name = Convert.ToString(dr["MEMBER_NAME"]);
                     rs.book_no = Convert.ToString(dr["book_no"]);
                     rs.vch_pacno = Convert.ToString(dr["vch_pacno"]);
                     rs.prin_bal = !Convert.IsDBNull(dr["PRIN_BAL"]) ? Convert.ToDecimal(dr["PRIN_BAL"]) : Convert.ToDecimal("00");
+
                     rs.prin_amt = !Convert.IsDBNull(dr["PRIN_AMT"]) ? Convert.ToDecimal(dr["PRIN_AMT"]) : Convert.ToDecimal("00");
                     rs.int_amt = !Convert.IsDBNull(dr["INT_AMT"]) ? Convert.ToDecimal(dr["INT_AMT"]) : Convert.ToDecimal("00");
 
