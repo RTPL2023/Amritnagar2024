@@ -47,14 +47,14 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        width: 1000px;
+        width: 900px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab tbody {
             display: block;
-            width: 1000px;
+            width: 900px;
             overflow: auto;
             height: 250px;
             text-align: center;
@@ -64,7 +64,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-            width: 1000px;
+            width: 900px;
         }
 
         .tab tr:nth-child(even) {
@@ -470,6 +470,42 @@
                     $('#member_name').val("");
                     $("#changesTbox").hide();
 
+                    afterUpdateList();
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
+
+        }; 
+
+         function afterUpdateList() {
+            $("#loading").show();
+            /*alert("ok");*/
+            let ModelObject = {
+                emp_name: $('#emp_name').val(),
+                branch: $('#branch').val(),
+                mem_type: $('#mem_type').val(),
+                mem_cat: $('#mem_cat').val(),
+                book_no: $('#book_no').val(),
+                sch_date: $('#sch_dt').val(),
+                unit: $('#unit').val(),
+
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetListAfterUpdate", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    document.getElementById("list").innerHTML = data.grid1;
+                    document.getElementById("list2").innerHTML = data.grid2;
+                    $('#prnt_bal').val(data.prnt_bal);
+                    $('#int_bal').val(data.int_bal);
+                    $('#tot_bal').val(data.tot_bal);
+
 
                 },
                 error: function (err) {
@@ -478,5 +514,5 @@
             });
 
         };
-    </script>l
+    </script>
 }
