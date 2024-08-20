@@ -301,7 +301,7 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Counter:<br />
-                        @Html.DropDownListFor(p => p.counter, new SelectList(Model.CounterDesc, "Value", "Text"), new { @class = "size" })
+                        @Html.DropDownListFor(p => p.counter, new SelectList(Model.CounterDesc, "Value", "Text"), new { @class = "size", @onchange = "PopulateRecieptAndSummary()" })
 
                     </div>
                    <div class="col-md-2 col-sm-2 col-12 mt-3">
@@ -510,6 +510,11 @@
                     alert(err);
                 }
             });
+        }
+
+        function PopulateRecieptAndSummary() {
+            ShowTableForRecieptDetails();
+            ShowTableForRecieptSummary();
         }
 
         function evt_acc_no(evt) {

@@ -278,7 +278,6 @@ namespace Amritnagar.Models.Database
         }
         public List<SHARE_LEDGER> getShareLedherDetail(string branch, string mem_id)
         {
-
             string sql;
             List<SHARE_LEDGER> sllst = new List<SHARE_LEDGER>();
             sql = "SELECT * FROM SHare_LEDGER WHERE BRANCH_ID='" + branch + "' and ";

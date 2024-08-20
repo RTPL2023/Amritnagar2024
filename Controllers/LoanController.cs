@@ -399,18 +399,18 @@ namespace Amritnagar.Controllers
             List<Loan_Ledger> ldl = new List<Loan_Ledger>();
             ldl = ld.getmemberdetailsbymemid(emp_id, branch_id, loan_type);
             int i = 1;
-            model.tableelement = "<tr><th>Date</th><th>Transaction Particulars</th><th>Cheque No.</th><th>Dr Amount</th><th>Cr Amount</th><th>Prin/Balance</th><th>Int/Balance</th><th>Oth/Chrgs</th></tr>";
+            model.tableelement = "<tr><th>Date</th><th>Transaction Particulars</th><th>Cheque No.</th><th>Dr Amount</th><th>Cr Amount</th><th>Prin/Balance</th><th>Int/Balance</th><th>Aint/Bal</th><th>Oth/Chrgs</th></tr>";
             if (ldl.Count > 0)
             {
                 foreach (var a in ldl)
                 {
                     if (a.dr_amt > 0)
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td>" + a.dr_amt.ToString("0.00") + "</td><td></td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td>" + a.dr_amt.ToString("0.00") + "</td><td></td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
                     }
                     if (a.cr_amt > 0)
                     {                      
-                        model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
                     }
                     i = i + 1;
                 }

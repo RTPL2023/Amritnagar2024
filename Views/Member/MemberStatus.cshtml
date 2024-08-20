@@ -72,15 +72,28 @@
             text-align: center;
             padding: 8px;
         }
-
-    .tab {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
+        table.bordered1 {
         border-collapse: collapse;
-       /* width: 1000px;*/
-        margin-left: auto;
-        margin-right: auto;
+        font-size: 12px;
     }
+
+        table.bordered1 td, table.bordered1 th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+            table.bordered1 th{
+                background-color:firebrick;
+                color:white
+            }
+            .tab {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 12px;
+                border-collapse: collapse;
+                /* width: 1000px;*/
+                margin-left: auto;
+                margin-right: auto;
+            }
 
         .tab tbody {
             display: block;
@@ -106,6 +119,132 @@
         }
 
         .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .tab2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+            .tab2 tbody {
+                display: block;
+                width: 850px;
+                overflow: auto;
+                height: 300px;
+                text-align: center;
+            }
+
+            .tab2 td, .tab2 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                border-collapse: collapse;
+                width: 850px;
+            }
+
+        .tab2 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab2 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab2 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        } 
+        .tab3 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+       /* width: 1000px;*/
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab3 tbody {
+            display: block;
+           /* width: 1000px;*/
+            overflow: auto;
+            height: 300px;
+            text-align: center;
+        }
+
+        .tab3 td, .tab3 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+           /* width: 1000px;*/
+        }
+
+        .tab3 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab3 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab3 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        .tab_sh {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+            .tab_sh tbody {
+                display: block;
+                 width:850px;
+                overflow: auto;
+                height: 300px;
+                text-align: center;
+            }
+
+            .tab_sh td, .tab_sh th {
+                border: 1px solid #ddd;
+                padding: 8px;
+                border-collapse: collapse;
+                 width: 850px;
+            }
+
+            .tab_sh tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .tab_sh tr:hover {
+                background-color: rgba(255, 182, 193, 0.2);
+            }
+
+        .tab_sh th {
             padding: 8px;
             text-align: center;
             /*background-color: #04AA6D;*/
@@ -162,6 +301,7 @@
         font-size: 12px;
         border-collapse: collapse;
         width: 276px;
+        height: 90px;
         /*margin-left: auto;
         margin-right: auto;*/
     }
@@ -170,7 +310,7 @@
             display: block;
             width: 276px;
             overflow: auto;
-            height: 150px;
+            
             text-align: center;
         }
 
@@ -238,6 +378,194 @@
         color: firebrick;
         text-align: center
     }
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    .section {
+        position: relative;
+    }
+
+    [type="radio"]:checked,
+    [type="radio"]:not(:checked) {
+        position: absolute;
+        left: -9999px;
+    }
+
+    .modal-btn:checked + label,
+    .modal-btn:not(:checked) + label {
+       /* position: relative;
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 2;
+        height: 30px;
+        transition: all 200ms linear;
+        border-radius: 4px;
+        width: 140px;
+        letter-spacing: 1px;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -ms-flex-pack: center;
+        text-align: center;
+        -ms-flex-item-align: center;
+        align-self: center;
+        border: none;
+        cursor: pointer;
+        background-color: lightcoral;
+        color: darkblue;
+        box-shadow: 0 12px 35px 0 rgba(224,167,167,.25);*/
+    }
+
+        .modal-btn:not(:checked) + label:hover {
+          /*  background-color: #ffeba7;
+            color: #102770;*/
+        }
+
+        .modal-btn:checked + label .uil,
+        .modal-btn:not(:checked) + label .uil {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        /* .modal-btn:checked + label:after,
+    .modal-btn:not(:checked) + label:after {
+        position: fixed;
+        top: 90px;
+        right: 30px;
+        z-index: 110;
+        width: 40px;
+        border-radius: 3px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 15px;
+        background-color: #ffeba7;
+        color: #102770;
+        content: ' \2573';
+        box-shadow: 0 12px 25px 0 rgba(16,39,112,.25);
+        transition: all 200ms linear;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+    }*/
+
+        .modal-btn:checked + label:hover:after,
+        .modal-btn:not(:checked) + label:hover:after {
+            background-color: #102770;
+            color: #ffeba7;
+        }
+
+        .modal-btn:checked + label:after {
+            transition: opacity 300ms 300ms ease, transform 300ms 300ms ease, background-color 250ms linear, color 250ms linear;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+    .modal {
+        position: fixed;
+        display: block;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin: 0 auto;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        overflow-x: hidden;
+        background-color: rgba(31,32,41,.75);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 250ms 700ms ease;
+    }
+
+    .modal-btn:checked ~ .modal {
+        pointer-events: auto;
+        opacity: 1;
+        transition: all 300ms ease-in-out;
+    }
+
+    .modal-wrap {
+        position: relative;
+        display: block;
+        width: 100%;
+        max-width: 950px;
+        padding:10px;
+        margin-left: 200px;
+        margin-top: 180px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        overflow: hidden;
+        padding-bottom: 20px;
+        background-color: #fff;
+        -ms-flex-item-align: center;
+        align-self: center;
+        box-shadow: 0 12px 25px 0 rgba(199,175,189,.25);
+        opacity: 0;
+        transform: scale(0.6);
+        transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
+    }
+
+        .modal-wrap img {
+            display: block;
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+        }
+
+        .modal-wrap table {
+            padding-left: 10px;
+            padding-bottom: 5px;
+            padding-right: 10px;
+            text-align: justify;
+        }
+
+    .modal-btn:checked ~ .modal .modal-wrap {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+    }
+
+    .modal-btn:checked ~ .logo img {
+        filter: brightness(100%);
+        transition: all 250ms linear;
+    }
+
+    @@media screen and (max-width: 500px) {
+        .modal-wrap {
+            width: calc(100% - 40px);
+            padding-bottom: 15px;
+        }
+
+            .modal-wrap table {
+                padding: 15px 20px 0 20px;
+            }
+    }
+    .close-btn {
+       /* position: absolute;
+        top: 10px;
+        right: 15px;*/
+        font-size: 28px;
+        font-weight: bold;
+        color: firebrick;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: #ff0000;
+        }
 </style>
 
 <form  asp-controller="Member" asp-action="MemberStatus" method="post" enctype="multipart/form-data">
@@ -252,7 +580,7 @@
                 <div class="row mt-2">
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.BranchID, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.BranchID, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Member NO.<br />
@@ -269,6 +597,15 @@
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Member Category <br />
                         @Html.DropDownListFor(p => p.mem_category, new SelectList(Model.CategoryDesc, "Value", "Text"), new { @class = "size" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        @Html.TextBoxFor(p => p.emp_id, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        @Html.TextBoxFor(p => p.table, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                        @Html.TextBoxFor(p => p.ac_hd, new { @class = "size", @type = "text" })
                     </div>
                 </div>
                 <div class="row border border-1 border-danger mt-1">
@@ -287,15 +624,15 @@
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        @Html.TextBoxFor(p => p.mail_hno, new { @class = "sizebig1", @type = "text"})
+                                        @Html.TextBoxFor(p => p.mail_hno, new { @class = "sizebig1", @type = "text" })
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                         @Html.TextBoxFor(p => p.mail_add1, new { @class = "size1", @type = "text" })
-                                    </div> 
+                                    </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                        @Html.TextBoxFor(p => p.mail_add2, new { @class = "size2", @type = "text"})
+                                        @Html.TextBoxFor(p => p.mail_add2, new { @class = "size2", @type = "text" })
                                     </div>
                                 </div>
                                 <div class="row">
@@ -312,7 +649,7 @@
                                         @Html.TextBoxFor(p => p.mail_pin, new { @class = "sizeM2", @type = "text" })
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -323,7 +660,7 @@
                                     </th>
                                 </tr>
                             </table>
-                            <table  id="MemberNominee" class="bordered table-responsive">                               
+                            <table id="MemberNominee" class="bordered1 table-responsive">
                             </table>
                         </div>
                     </div>
@@ -336,7 +673,7 @@
                                     </th>
                                 </tr>
                             </table>
-                            <table id="MembershipHolders" class="bordered table-responsive tab_mh">                             
+                            <table id="MembershipHolders" class="bordered table-responsive tab_mh">
                             </table>
 
                         </div>
@@ -346,8 +683,9 @@
                                     <th colspan="6" align="center" style="background-color: #f2dfb7; color: #7f2917">STANDING SURITY STATUS OF MEMBER</th>
                                 </tr>
                             </table>
-                            <table  id="SurityStatus" class="bordered table-responsive tab">                           
+                            <table id="SurityStatus" class="bordered table-responsive tab">
                             </table>
+                            
                         </div>
                     </div>
                 </div>
@@ -369,13 +707,49 @@
                                 <table class="bordered table-responsive">
                                     <tr>
                                         <th colspan="2" align="center" style="background-color: #f2dfb7; color: #7f2917 ">1.1.Share Capital</th>
-                                        <th colspan="2" align="right">@Html.TextBoxFor(p => p.share_cap_tot, new { @type = "text", style="border:0" })</th>
+                                        <th colspan="2" align="right">@Html.TextBoxFor(p => p.share_cap_tot, new { @type = "text", style = "border:0" })</th>
                                     </tr>
                                 </table>
-                                <table id="sharecapital" class="bordered table-responsive tab_sharecapital" align="left">
-                                    
-                                </table>
+                                
+                                <input class="modal-btn" type="radio" id="ShareCap-modal-btn" name="modal-btn" />
+                                <label for="ShareCap-modal-btn">
+                                    <table id="sharecapital" class="bordered table-responsive tab_sharecapital" align="left">
+                                    </table>
+                                </label>
+                                <div class="modal" id="shareCap-modal">
+                                    <div class="modal-wrap">
+                                        
+                                        <div class="row mb-1">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:lightcoral;color:white;text-transform:uppercase">
+                                                Share Ledger
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1 mb-1">
+                                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
 
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                                Branch<br />
+                                                @Html.TextBoxFor(p => p.Branch_sh, new { @class = "size", @type = "text", @readonly = "true" })
+                                            </div>
+                                            <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                                Member NO.<br />
+                                                @Html.TextBoxFor(p => p.mem_no_sh, new { @class = "size", @type = "text", @readonly = "true" })
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                Name<br />
+                                                @Html.TextBoxFor(p => p.mem_name_sh, new { @class = "sizebig", @type = "text", @readonly = "true" })
+                                            </div>
+                                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+                                                <span class="close-btn" onclick="document.getElementById('ShareCap-modal-btn').checked = false;">&times;</span>
+
+                                            </div>
+                                        </div>
+                                        <table id="ledgerdetails_sh" class="bordered table-responsive tab_sh">
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-12">
@@ -383,13 +757,56 @@
                                 <table class="bordered table-responsive" width="100%">
                                     <tr>
                                         <th colspan="4" align="center" style="background-color: #f2dfb7; color: #7f2917">1.2.Funded Deposits</th>
-                                        <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_fund, new { @type = "text",style = "border:0" })</th>
+                                        <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_fund, new { @type = "text", style = "border:0" })</th>
                                     </tr>
                                 </table>
-                                <table id="MembersFund" class="bordered table-responsive tab">
-                                    
-                                </table>
+                                <input class="modal-btn" type="radio" id="GfTfDiv-modal-btn" name="modal-btn" />
+                                <label for="GfTfDiv-modal-btn">
+                                    <table id="MembersFund" class="bordered table-responsive tab">
+                                    </table>
+                                </label>
+                                <div class="modal" id="GfTfDiv-modal">
+                                    <div class="modal-wrap">
+                                        
+                                        <div class="row mb-1">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:lightcoral;color:white;text-transform:uppercase" id="gf_head">
+                                                Guarantee Fund Ledger
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:lightcoral;color:white;text-transform:uppercase" id="tf_head">
+                                                Thrift Fund Ledger
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:lightcoral;color:white;text-transform:uppercase" id="divd_head">
+                                                Dividend Ledger
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1 mb-1">
+                                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
 
+                                            </div>
+                                            <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                                Branch<br />
+                                                @Html.TextBoxFor(p => p.Branch, new { @class = "size", @type = "text", @readonly = "true" })
+                                            </div>
+                                            <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                                Member NO.<br />
+                                                @Html.TextBoxFor(p => p.mem_no, new { @class = "size", @type = "text", @readonly = "true" })
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                Name<br />
+                                                @Html.TextBoxFor(p => p.mem_name, new { @class = "sizebig", @type = "text", @readonly = "true" })
+                                            </div>
+                                            <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+                                                <span class="close-btn" onclick="document.getElementById('GfTfDiv-modal-btn').checked = false;">&times;</span>
+                                            </div>
+                                        </div>
+                                        <table id="ledgerdetails_gf" class="bordered table-responsive tab2">
+                                        </table>
+                                        <table id="ledgerdetails_tf" class="bordered table-responsive tab2">
+                                        </table>
+                                        <table id="ledgerdetails_divd" class="bordered table-responsive tab2">
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -403,7 +820,6 @@
                                 </tr>
                             </table>
                             <table class="bordered table-responsive tab">
-                               
                             </table>
                             <br />
 
@@ -418,8 +834,6 @@
                                 </tr>
                             </table>
                             <table class="bordered table-responsive tab">
-                                
-
                             </table>
                             <br />
 
@@ -437,11 +851,45 @@
                                 <th colspan="4" align="right">@Html.TextBoxFor(p => p.tot_Loan, new { @type = "text", style = "border:0" })</th>
                             </tr>
                         </table>
-                        <table id="ExistingMembersLoan" class="bordered table-responsive tab">
-                            
+                        
+                        <input class="modal-btn" type="radio" id="Loan-modal-btn" name="modal-btn" />
+                        <label for="Loan-modal-btn">
+                            <table id="ExistingMembersLoan" class="bordered table-responsive tab">
+                            </table>
+                        </label>
+                        <div class="modal" id="loan-modal">
+                            <div class="modal-wrap">
+                               
+                                <div class="row mb-1">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:lightcoral;color:white;text-transform:uppercase">
+                                        Loan Ledger
+                                    </div>
+                                </div>
+                                <div class="row mt-1 mb-1">
+                                    <div class="col-lg-1 col-md-1 col-sm-12 col-12">
 
-                        </table>
+                                    </div>
+                                    <div class="col-lg-3 col-md-2 col-sm-12 col-12">
+                                        Branch<br />
+                                        @Html.TextBoxFor(p => p.ln_Branch, new { @class = "size", @type = "text", @readonly = "true" })
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        Loan Type<br />
+                                        @Html.TextBoxFor(p => p.ln_type, new { @class = "sizebig", @type = "text", @readonly = "true" })
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                        Emp Id<br />
+                                        @Html.TextBoxFor(p => p.loanee_emp_id, new { @class = "size", @type = "text", @readonly="true"  })
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-12 col-12">
+                                        <span class="close-btn" onclick="document.getElementById('Loan-modal-btn').checked = false;">&times;</span>
+                                    </div>
+                                </div>
+                                <table id="ledgerdetails_loan" class="bordered table-responsive tab3">
+                                </table>
 
+                            </div>
+                        </div>
                     </div>
 
                     <div>
@@ -453,7 +901,6 @@
                             </tr>
                         </table>
                         <table id="OtherExistingLoan" class="bordered table-responsive tab">
-                            
                         </table>
 
 
@@ -463,13 +910,15 @@
                     <div class="col-lg-12 col-12" style="font-weight: bold; background-color: #f7d9d3">
                         <div class="row mt-1 mb-1">
                             <div class="col-lg-6 col-12"> <input id="btnsummary" type="button" name="btnsummary" class="btn btn-primary btn-sm" value="SUMMARY" /></div>
-                            
+
                             <div class="col-lg-3 col-12">Capital & Assets:<br /> @Html.TextBoxFor(p => p.tot_assets, new { @class = "size", @type = "text", @readonly = "true" })</div>
-                            
+
                             <div class="col-lg-3 col-12">Liabilities: <br /> @Html.TextBoxFor(p => p.tot_liabilities, new { @class = "size", @type = "text", @readonly = "true" })</div>
                         </div>
                     </div>
                 </div>
+               
+            
             </div>
         </div>
     </div>
@@ -480,10 +929,13 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript">
 
-
         $(document).ready(function () {
             $("#LIABILITIES").hide();
             $("#capital").show();
+            $("#emp_id").hide();
+            $("#table").hide();
+            $("#ac_hd").hide();
+            $("#member_no").focus();
         });
 
         function show() {
@@ -516,6 +968,7 @@
                         $('#mail_dist').val(data.mail_dist);
                         $('#mail_state').val(data.mail_state);
                         $('#mail_pin').val(data.mail_pin);
+                       /* $('#mem_name').val(data.name);*/
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -617,7 +1070,7 @@
                         dataType: "json",
                     success: function (data) {
                         document.getElementById("OtherExistingLoan").innerHTML = data.tableelement;
-                        $('#tot_Oth_Loan').val(data.tot_Oth_Loan);                       
+                        $('#tot_Oth_Loan').val(data.tot_Oth_Loan);
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -637,9 +1090,169 @@
                 ShowTableForMembersFund();
                 ShowTableForMembersLoanInfo();
                 ShowTableForMembersOtherLoanInfo();
+                //$('#Branch').val($('#BranchID').val());               
+                //$('#mem_no').val($('#member_no').val());
+                //$('#ln_type').val($('#ac_hd').val());
                 //$('#tot_liabilities').val(data.tot_Oth_Loan)+;
             }
         }
+
+        function ShowLedgerTable() {
+            let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val(), table: $('#table').val(), emp_id: $('#emp_id').val(), ac_hd: $('#ac_hd').val(), name: $('#name').val()};
+                    $.ajax({
+                        type: "POST",
+                         url: '@Url.Action("getledgerbymemid", "Member")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            if ($('#table').val() == "GF_LEDGER") {
+                                document.getElementById("ledgerdetails_gf").innerHTML = data.tableelement;
+                                $("#ledgerdetails_gf").show();
+                                $("#gf_head").show();
+                                $("#ledgerdetails_tf").hide();
+                                $("#tf_head").hide();
+                                $("#ledgerdetails_divd").hide();
+                                $("#divd_head").hide();
+                                $('#BranchID').val()
+                                $('#Branch').val(data.Branch);
+                                $('#mem_no').val(data.mem_no);                               
+                                $('#mem_name').val(data.mem_name);
+                            }
+                            if ($('#table').val() == "TF_LEDGER") {                               
+                                document.getElementById("ledgerdetails_tf").innerHTML = data.tableelement;
+                                $("#ledgerdetails_tf").show();
+                                $("#tf_head").show();
+                                $("#ledgerdetails_gf").hide();
+                                $("#gf_head").hide();
+                                $("#ledgerdetails_divd").hide();
+                                $("#divd_head").hide();
+                                $('#Branch').val(data.Branch);
+                                $('#mem_no').val(data.mem_no);                              
+                                $('#mem_name').val(data.mem_name);
+                            }
+                            if ($('#table').val() == "DIVIDEND_LEDGER") {                               
+                                document.getElementById("ledgerdetails_divd").innerHTML = data.tableelement;
+                                $("#ledgerdetails_divd").show();
+                                $("#divd_head").show();
+                                $("#ledgerdetails_tf").hide();
+                                $("#ledgerdetails_gf").hide();
+                                $('#Branch').val(data.Branch);
+                                $('#mem_no').val(data.mem_no);                                
+                                $('#mem_name').val(data.mem_name);
+                            }
+                            if ($('#table').val() == "SHARE_LEDGER") {
+                                document.getElementById("ledgerdetails_sh").innerHTML = data.tableelement;
+                                $('#Branch_sh').val(data.Branch);
+                                $('#mem_no_sh').val(data.mem_no);                                
+                                $('#mem_name_sh').val(data.mem_name);
+                            }
+                            if ($('#table').val() == "LOAN_LEDGER") {
+                                document.getElementById("ledgerdetails_loan").innerHTML = data.tableelement;
+                                $('#ln_Branch').val(data.Branch);
+                                $('#ln_type').val(data.ln_type);                               
+                                $('#loanee_emp_id').val(data.loanee_emp_id);
+                            }
+                        },
+                     error: function (err) {
+                        //alert("Error Occured");
+                     }
+                    });
+        }
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', run, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', run);
+            }
+
+            function run() {
+                var t = document.getElementById('ExistingMembersLoan');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }
+                    var f1 = document.getElementById('emp_id');
+                    var f2 = document.getElementById('ac_hd');
+                    var f3 = document.getElementById('table');
+                    
+                    f1.value = cells[1].innerHTML;
+                    f2.value = cells[11].innerHTML;
+                    f3.value = cells[12].innerHTML;
+                    ShowLedgerTable();
+                    
+                };
+            }
+        })();
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', runformemberfund, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', runformemberfund);
+            }
+
+            function runformemberfund() {
+                var t = document.getElementById('MembersFund');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }                  
+                    var f2 = document.getElementById('ac_hd');
+                    var f3 = document.getElementById('table');
+                                      
+                    f2.value = cells[5].innerHTML;
+                    f3.value = cells[6].innerHTML;                  
+                    ShowLedgerTable();
+                };
+            }
+        })();
+
+        (function () {
+            if (window.addEventListener) {
+                window.addEventListener('load', runforshare, false);
+            }
+            else if (window.attachEvent) {
+                window.attachEvent('onload', runforshare);
+            }
+
+            function runforshare() {
+                var t = document.getElementById('sharecapital');
+                t.onclick = function (event) {
+                    event = event || window.event;
+                    var target = event.target || event.srcElement;
+                    while (target && target.nodeName != 'TR') {
+                        target = target.parentElement;
+                    }
+
+                    var cells = target.cells;
+                    if (!cells.length || target.parentNode.nodeName == 'THEAD') {
+                        return;
+                    }                  
+                    var f1 = document.getElementById('ac_hd');                   
+
+                    f1.value = cells[0].innerHTML;
+                    $("#table").val("SHARE_LEDGER");
+                    ShowLedgerTable();
+                };
+            }
+        })();
 
     </script>
 }

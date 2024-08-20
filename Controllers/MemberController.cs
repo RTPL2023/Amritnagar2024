@@ -1570,7 +1570,7 @@ namespace Amritnagar.Controllers
                     xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
                 }
                 model.tot_Loan = xtotpayb.ToString("0.00");
-                model.tot_liabilities = Convert.ToDecimal(model.tot_Oth_Loan + model.tot_Loan).ToString("0.00");
+                model.tot_liabilities = Convert.ToDecimal(model.tot_Oth_Loan + model.tot_Loan).ToString("0.00");                
             }
             else
             {
@@ -1762,8 +1762,186 @@ namespace Amritnagar.Controllers
             CAL_GFTF_INT = CAL_GFTF_INT < 1 ? 0 : CAL_GFTF_INT;
             CAL_GFTF_INT = Math.Round(CAL_GFTF_INT, 0);
             return CAL_GFTF_INT;
+        }       
+        public JsonResult getledgerbymemid(string BranchID, string member_no, string table, string emp_id, string ac_hd, string name)
+        {
+            Ledger ld = new Ledger();
+            List<Ledger> ldl = new List<Ledger>();
+            MemberStatusViewModel model = new MemberStatusViewModel();           
+            ldl = ld.getledgerdetails(BranchID, member_no, table, emp_id, ac_hd);
+            int i = 1;
+            string certificate_date = "";           
+            if (ldl.Count > 0)
+            {
+                foreach (var a in ldl)
+                {
+                    if(table == "GF_LEDGER" || table == "TF_LEDGER")
+                    {                      
+                        if(a.dr_cr== "C")
+                        {
+                            if(a.prin_amount > 0)
+                            {
+                                if (i == 1)
+                                {
+                                    model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Balance</th><th>Interest Balance</th></tr>";
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                else
+                                {
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                i = i + 1;
+                            }
+                            else
+                            {
+                                if (i == 1)
+                                {
+                                    model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Balance</th><th>Interest Balance</th></tr>";
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                else
+                                {
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                i = i + 1;
+                            }
+                        }
+                        else
+                        {
+                            if (a.prin_amount > 0)
+                            {
+                                if (i == 1)
+                                {
+                                    model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Balance</th><th>Interest Balance</th></tr>";
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                else
+                                {
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                i = i + 1;
+                            }
+                            else
+                            {
+                                if (i == 1)
+                                {
+                                    model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Balance</th><th>Interest Balance</th></tr>";
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                else
+                                {
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                }
+                                i = i + 1;
+                            }
+                        }                        
+                    } 
+                    else if(table == "DIVIDEND_LEDGER")
+                    {
+                        if(a.dr_cr == "C")
+                        {
+                            if (i == 1)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Balance</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
+                            }
+                            else
+                            {
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
+                            }
+                        }
+                        else
+                        {
+                            if (i == 1)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Balance</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
+                            }
+                            else
+                            {
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
+                            }
+                        }                       
+                        i = i + 1;                       
+                    }
+                    else if(ac_hd == "SHARE CAPITAL")
+                    {
+                        if (Convert.ToDateTime(a.certificate_date).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
+                        {
+                            certificate_date = "";
+                        }
+                        else
+                        {
+                            certificate_date = Convert.ToDateTime(a.certificate_date).ToString("dd-MM-yyyy").Replace("-", "/");
+                        }
+                        if (a.dr_cr == "C")
+                        {
+                            if (i == 1)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>F/Value</th><th>Units</th><th>Debit Amount</th><th>Credit Amount</th><th>Balance Capital</th><th>Certificate No</th><th>Certificate Dt</th><th>Distinct No(From-To)</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range + "</td></tr>";
+                            }
+                            else
+                            {
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range + "</td></tr>";
+                            }
+                        }
+                        else
+                        {
+                            if (i == 1)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>F/Value</th><th>Units</th><th>Debit Amount</th><th>Credit Amount</th><th>Balance Capital</th><th>Certificate Dt</th><th>Dist Range</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range + "</td></tr>";
+                            }
+                            else
+                            {
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.face_val.ToString("0.00") + "</td><td>" + a.units.ToString("0.00") + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + a.certificate_no + "</td><td>" + certificate_date + "</td><td>" + a.dist_range + "</td></tr>";
+                            }
+                        }
+                        i = i + 1;
+                    }
+                    else if(table == "LOAN_LEDGER")
+                    {
+                        if (a.dr_amt > 0)
+                        {
+                            if (i == 1)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Transaction Particulars</th><th>Cheque No.</th><th>Dr Amount</th><th>Cr Amount</th><th>Prin/Balance</th><th>Int/Balance</th><th>Aint/Bal</th><th>Oth/Chrgs</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td>" + a.dr_amt.ToString("0.00") + "</td><td></td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                            }
+                            else
+                            {
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td>" + a.dr_amt.ToString("0.00") + "</td><td></td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                            }
+                        }
+                        if (a.cr_amt > 0)
+                        {
+                            if (i == 1)
+                            {
+                                model.tableelement = "<tr><th>Date</th><th>Transaction Particulars</th><th>Cheque No.</th><th>Dr Amount</th><th>Cr Amount</th><th>Prin/Balance</th><th>Int/Balance</th><th>Aint/Bal</th><th>Oth/Chrgs</th></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                            }
+                            else
+                            {
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                            }
+                        }
+                        i = i + 1;
+                    }
+                }
+                model.Branch = BranchID;
+                model.mem_no = member_no;
+                model.mem_name = name;
+                model.ln_type = ac_hd;
+                model.loanee_emp_id = emp_id;
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
         }
-        
+
         //public JsonResult GetMemberLoanInfoByMemberId(MemberStatusViewModel model)
         //{
         //    Loan_Master lm = new Loan_Master();
@@ -3159,5 +3337,5 @@ namespace Amritnagar.Controllers
         }
 
         /********************************************Member Details List End*******************************************/
-    }
+    }    
 }

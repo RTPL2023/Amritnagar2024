@@ -901,7 +901,6 @@ namespace Amritnagar.Controllers
         {
             Recovery_Schedule rs = new Recovery_Schedule();
             string msg = rs.updatloanblances(model);
-
             return Json(msg);
         }
         public JsonResult getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
