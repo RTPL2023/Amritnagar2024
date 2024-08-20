@@ -312,7 +312,7 @@
                 <div class="row mt-1">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                         Account Head:<br />
-                        @Html.DropDownListFor(p => p.achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "sizeL" })
+                        @Html.DropDownListFor(p => p.achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "sizeL", @onchange= "changevch_noforac_hd()" })
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                         Voucher No.: <br />
@@ -604,7 +604,12 @@
                         alert("Unable To Calculate");
                     }
                 });
-         }
+        }
+
+        function changevch_noforac_hd() {
+            getvch_no();
+            $('#acc_no').focus();
+        }
 
         function getvch_no() {
              let ModelObject = { branch: $('#branch').val(), shift: $('#shift').val(), date: $('#date').val(), counter: $('#counter').val() };
