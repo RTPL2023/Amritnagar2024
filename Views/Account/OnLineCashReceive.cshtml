@@ -637,7 +637,7 @@
             }
         }
 
-         function DeleteReciept() {
+       function DeleteReciept() {
             $('#loading').show();
              let ModelObject = { achd: $('#achd').val(), vch_no: $('#vch_no').val(), date: $('#date').val(), acc_no: $('#acc_no').val()};
             //alert(JSON.stringify(ModelObject));
@@ -648,11 +648,12 @@
                     dataType: "json",
                 success: function (data) {
                     alert(data);
-                    howTableForRecieptDetails();
+                    ShowTableForRecieptDetails();
                     ShowTableForRecieptSummary();
                     $('#personalaccountinfo').hide();
                     $('#personalledgerinfo').hide();
-                    $('#loading').hide();                   
+                    //$('#gt_head').val("");
+                    //$('#gt_amt').val("");                   
                 },
                 error: function (err) {
                     alert("Error Occured");

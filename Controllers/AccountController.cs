@@ -231,6 +231,7 @@ namespace Amritnagar.Controllers
             vd.Delete_Cash_Reciept(model.achd, model.vch_no, model.date, model.acc_no);
             return Json("Record Deleted");
         }
+
         /********************************************Online Cash Recieve End*******************************************/
         [HttpGet]
         public ActionResult OnLineCashPayment(OnLineCashPaymentViewModel model)
