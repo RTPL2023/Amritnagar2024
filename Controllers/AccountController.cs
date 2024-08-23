@@ -27,7 +27,7 @@ namespace Amritnagar.Controllers
         {
             Loan_Ledger ld = new Loan_Ledger();
             List<Loan_Ledger> ldl = new List<Loan_Ledger>();
-            ldl = ld.gepesonalandledgerdetails(model.branch, model.acc_no, model.achd);
+            ldl = ld.gepesonalandledgerdetails(model.branch, model.acc_no, model.achd, model.op_dt, model.date);
             int i = 1;
             string str_if_lti = "";
             if (ldl.Count > 0)
@@ -70,8 +70,12 @@ namespace Amritnagar.Controllers
         {
             Loan_Ledger ld = new Loan_Ledger();
             List<Loan_Ledger> ldl = new List<Loan_Ledger>();
-            ldl = ld.gepesonalandledgerdetails(model.branch, model.acc_no, model.achd);
+            ldl = ld.gepesonalandledgerdetails(model.branch, model.acc_no, model.achd, model.op_dt, model.date);
             int i = 1;
+            decimal amt = 0;
+            decimal base_amt = 0;
+            string ledger_tab = "";
+            string tf_buffer = "";
             if (ldl.Count > 0)
             {
                 foreach (var a in ldl)
@@ -85,7 +89,8 @@ namespace Amritnagar.Controllers
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
                             }
-                            if(a.int_bal > 0)
+                            amt = a.prin_bal;
+                            if (a.int_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
@@ -98,6 +103,7 @@ namespace Amritnagar.Controllers
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
                             }
+                            amt = a.prin_bal;
                             if (a.int_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
@@ -114,6 +120,7 @@ namespace Amritnagar.Controllers
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
                             }
+                            amt = a.prin_bal;
                             if (a.int_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
@@ -126,7 +133,9 @@ namespace Amritnagar.Controllers
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                                amt = a.prin_bal;
                             }
+                            amt = a.prin_bal;
                             if (a.int_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
@@ -134,7 +143,31 @@ namespace Amritnagar.Controllers
                             }
                         }
                     }
+                    ledger_tab = a.ledger_tab;
+                    tf_buffer = a.tf_buffer.ToString();
+                    base_amt = a.led_base_amt;
                     i = i + 1;                   
+                }
+                ld = ld.PROCESS_DUE(amt, Convert.ToDateTime(model.op_dt), Convert.ToDateTime(model.date), ledger_tab, Convert.ToDecimal(tf_buffer));
+                if(ld.XPDUPTO.ToString("dd/MM/yyyy").Replace("-", "/") == "01/01/0001")
+                {
+                    model.clrd_upto = "";
+                }
+                else
+                {
+                    model.clrd_upto = ld.XPDUPTO.ToString("dd/MM/yyyy").Replace("-", "/");
+                }
+                if(ld.due > 0)
+                {
+                    model.amt_due = ld.due.ToString("0.00");
+                }
+                else
+                {
+                    model.amt_due = "";
+                }               
+                if(base_amt > 0)
+                {
+                    model.amt = base_amt.ToString("0.00");
                 }
             }
             else
@@ -155,6 +188,7 @@ namespace Amritnagar.Controllers
         public JsonResult GetRecieptdetails(OnLineCashReceiveViewModel model)
         {
             TVCH_DETAIL tvd = new TVCH_DETAIL();
+            Loan_Ledger ld = new Loan_Ledger();
             List<TVCH_DETAIL> tvdl = new List<TVCH_DETAIL>();
             tvdl = tvd.getpersonalrecieptdetails(model.branch, model.shift, model.date, model.counter);
             int i = 1;           
@@ -173,6 +207,7 @@ namespace Amritnagar.Controllers
                     }
                     i = i + 1;                  
                 }
+                
             }
             else
             {

@@ -18,6 +18,7 @@ namespace Amritnagar.Models.ViewModel
         public string rcv_prtclr { get; set; }
         public string amt { get; set; }
         public string name { get; set; }
+        public string prin_amt { get; set; }
         public string op_dt { get; set; }
         public string clrd_upto { get; set; }
         public string amt_due { get; set; }

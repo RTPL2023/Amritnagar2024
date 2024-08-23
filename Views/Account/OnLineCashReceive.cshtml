@@ -302,12 +302,13 @@
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Counter:<br />
                         @Html.DropDownListFor(p => p.counter, new SelectList(Model.CounterDesc, "Value", "Text"), new { @class = "size", @onchange = "PopulateRecieptAndSummary()" })
-
                     </div>
                    <div class="col-md-2 col-sm-2 col-12 mt-3">
                        <input id="BtnDelete" type="button" name="BtnDelete" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Delete" onclick="DeleteReciept()" />
-                   </div>
-                   
+                   </div>   
+                   @*<div class="col-lg-3 col-md-3 col-sm-12 col-12">                       
+                       @Html.TextBoxFor(model => model.prin_amt, new { @class = "size", @type = "text" })
+                   </div>*@
                 </div>
                 <div class="row mt-1">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -463,6 +464,7 @@
 
         $(document).ready(function () {
             $('#loading').hide();
+            /*$('#prin_amt').hide();*/
         });
 
         function GetpersonalAccountinformation() {
@@ -505,6 +507,9 @@
                 success: function (data)
                 {
                     document.getElementById("personalledgerinfo").innerHTML = data.tableelement;
+                    $('#clrd_upto').val(data.clrd_upto);
+                    $('#amt_due').val(data.amt_due);
+                    $('#amt').val(data.amt);
                 },
                 error: function (err) {
                     alert(err);
