@@ -708,8 +708,8 @@ namespace Amritnagar.Models.Database
                     if(ld.xmast == "C")
                     {
 
-                    }
-                    //ld = PROCESS_DUE(prin_amt, Convert.ToDateTime(op_dt), Convert.ToDateTime(date), ld.ledger_tab, ld.tf_buffer);
+                    }                   
+                    //ld = PROCESS_DUE(prin_amt, Convert.ToDateTime(op_dt), Convert.ToDateTime(date), ld.ledger_tab, ld.tf_buffer);                                  
                     ld.xpart = xpart;                    
                 }
             }

@@ -52,7 +52,14 @@ namespace Amritnagar.Controllers
                         model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.cus_id + "</td><td>" + a.cus_name + "</td><td>" + a.sex + "</td><td>" + a.occp + "</td><td>" + a.sign + "</td><td>" + str_if_lti + "</td><td>" + a.pan_no + "</td></tr>";
                     }
                     i = i + 1;
-                    model.name = a.cus_name.ToUpper();
+                    if(a.cus_name == null)
+                    {
+                        model.name = "";
+                    }
+                    else
+                    {
+                        model.name = a.cus_name.ToUpper();
+                    }                    
                     model.op_dt = a.open_dt.ToString("dd/MM/yyyy").Replace("-", "/");
                     if(a.led_base_amt > 0)
                     {
@@ -142,8 +149,8 @@ namespace Amritnagar.Controllers
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
                             }
                         }
-                    }
-                    ledger_tab = a.ledger_tab;
+                    }                       
+                    ledger_tab = a.ledger_tab;                               
                     tf_buffer = a.tf_buffer.ToString();
                     base_amt = a.led_base_amt;
                     i = i + 1;                   
