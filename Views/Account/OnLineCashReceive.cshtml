@@ -413,7 +413,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row mt-1" id="recpt">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                                     <div class="table-responsive mt-1">
                                         <table id="recieptdetails" class="tab_rd">
@@ -429,7 +429,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row mt-1" id="smmry">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                                     <div class="table-responsive mt-1">
                                         <table id="recieptsummary" class="tab_rs">
@@ -530,6 +530,8 @@
                 getvch_no();
                 GetpersonalAccountinformation();
                 Getpersonalledgerformation();
+                //$('#recpt').hide();
+                //$('#smmry').hide();
                 $("#amt").focus();
             }
         }

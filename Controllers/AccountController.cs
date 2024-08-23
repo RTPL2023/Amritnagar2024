@@ -125,13 +125,13 @@ namespace Amritnagar.Controllers
                             if (a.prin_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
-                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
                             }
                             amt = a.prin_bal;
                             if (a.int_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
-                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
                             }
                         }
                         else
@@ -139,14 +139,14 @@ namespace Amritnagar.Controllers
                             if (a.prin_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
-                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + "" + "</td></tr>";
                                 amt = a.prin_bal;
                             }
                             amt = a.prin_bal;
                             if (a.int_bal > 0)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Prin Capital Balance</th><th>Interest</th></tr>";
-                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.xpart + "</td><td>" + "" + "</td><td>" + a.xamt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
                             }
                         }
                     }                       
