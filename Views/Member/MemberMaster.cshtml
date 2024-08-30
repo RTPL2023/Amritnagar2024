@@ -311,6 +311,7 @@
             <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
                 <div class="row mt-2">
                     <div class="col-md-1 col-sm-12 col-12 ">
+                        <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
                         <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="SaveMemberMaster()" />
                     </div>
                     <div class="col-md-1 col-sm-12 col-12 ">
@@ -628,7 +629,7 @@
                                             Name of Nominee:
                                         </div>
                                         <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                            @Html.TextBoxFor(model => model.nominee_name, new { @class = "size", @type = "text" })
+                                            @Html.TextBoxFor(model => model.nominee_name, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtnominee_name(event);" })
                                         </div>
                                     </div>
                                     <div class="row mt-1">
@@ -814,10 +815,12 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $("#loading").hide();
             //$('#caste_id').focus();
             //$('#btndelete').hide();
             //ShowTable();
         });
+
         var modal = document.getElementById('bankCorp-modal');
 
         // When the user clicks anywhere outside of the modal, close it
@@ -852,7 +855,8 @@
            else if ($('#l_name').val() == null || $('#l_name').val() == "") {
                alert("Last Name Cannot be Blank");
            }
-            else{
+           else {
+               $("#loading").show();
                     let ModelObject = {
                     emp_cd: $('#emp_cd').val(),
                     emp_branch: $('#emp_branch').val(),
@@ -933,6 +937,7 @@
                         dataType: "json",
                         success: function (data) {
                             alert(data);
+                            $("#loading").hide();
                         },
                         error: function (err) {
                             alert("Error Occured");
@@ -1395,10 +1400,11 @@
                 $("#mailAdd_city").val("RANIGANJ");
                 $("#mailAdd_dist").val("BURDWAN");
                 $("#mailAdd_state").val("WB");
+                $('#member_rel').focus();
             }
        }
 
-    function ShowTable() {
+        function ShowTable() {
         let ModelObject = {};
         $.ajax({
             type: "POST",
@@ -1416,7 +1422,7 @@
     }
 
 
-    document.querySelector('.close-modal').addEventListener('click', function() {
+     document.querySelector('.close-modal').addEventListener('click', function() {
         document.getElementById('close-modal-btn').checked = true;
     });
 
@@ -1435,6 +1441,20 @@
                      }
                     });
         }*@
+
+        function evtnominee_name(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+
+                $("#nominee_add1").val("AMRITNAGAR - COLLIERY");
+                $("#nominee_city").val("RANIGANJ");
+                $("#nominee_dist").val("BURDWAN");
+                $("#nominee_state").val("WB");
+                $('#nominee_pin').focus();
+            }
+        }
 
         function ReloadPage() {
             window.location.href = "@Url.Action("MemberMaster", "Member")"

@@ -208,6 +208,7 @@ namespace Amritnagar.Models.Database
         public string CloseFlag(Loan_Master lm)
         {
             string sql = string.Empty;
+            string msg = "";
             sql = "SELECT * FROM LOAN_MASTER WHERE BRANCH_ID='" + lm.branch_id + "' AND AC_HD='" + lm.ac_hd + "' AND EMPLOYEE_ID='" + lm.emp_id + "'AND convert(datetime, LOAN_DATE, 103) = convert(datetime, '" + lm.loan_dt + "', 103)";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
@@ -225,13 +226,17 @@ namespace Amritnagar.Models.Database
                         { "EMPLOYEE_ID",lm.emp_id },
                         { "AC_HD",lm.ac_hd },
                     });
+                    msg = "Closed";
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            string msg = "Closed";
+            else
+            {
+                msg = "Invalid Loan Date Supplied";
+            }
             return (msg);
         }
         public Loan_Master getdetailsbyloandate(string branch_id, string ac_hd, string emp_id, string loan_dt)

@@ -322,6 +322,8 @@
     <Content Include="Views\Account\DayBookReport.cshtml" />
     <Content Include="Views\Account\GeneralLedgerReport.cshtml" />
     <Content Include="Views\Account\TrialBalanceReport.cshtml" />
+    <Content Include="Views\Admin\ShareLedgerModify.cshtml" />
+    <Content Include="Views\Admin\Tf_Gf_Ledger.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
