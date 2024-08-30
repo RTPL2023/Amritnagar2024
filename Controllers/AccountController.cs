@@ -279,10 +279,8 @@ namespace Amritnagar.Controllers
         public ActionResult OnLineCashPayment(OnLineCashPaymentViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
             model.TypeDesc = u.getTypeMastDetails();
-
             return View(model);
         }
         [HttpGet]
