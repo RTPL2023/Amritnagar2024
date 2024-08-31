@@ -1093,7 +1093,6 @@ namespace Amritnagar.Models.Database
                     foreach(DataRow dr in config.dt.Rows)
                     {
                         Ledger ld = new Ledger();
-
                         ld.dr_cr = dr["dr_cr"].ToString();
                         ld.vch_type = dr["VCH_TYPE"].ToString();                       
                         ld.vch_date = Convert.ToDateTime(dr["vch_date"]);                        
@@ -1128,7 +1127,7 @@ namespace Amritnagar.Models.Database
                         {
                             XTR_TYPE = XTR_TYPE + "Journal";
                         }
-                        if (ld.prin_amount > 0)
+                        if (ld.prin_amount != 0)
                         {
                             XTR_TYPE = XTR_TYPE + " @Principal";
                         }
@@ -1203,7 +1202,7 @@ namespace Amritnagar.Models.Database
                         {
                             XTR_TYPE = XTR_TYPE + "Journal";
                         }
-                        if (ld.prin_amount > 0)
+                        if (ld.prin_amount != 0)
                         {
                             XTR_TYPE = XTR_TYPE + " @Principal";
                         }
@@ -1411,9 +1410,9 @@ namespace Amritnagar.Models.Database
                             {
                                 xcramt = ld.prin_amount;
                             }
-                            else if (ld.int_amt > 0)
+                            else if (ld.int_amount > 0)
                             {
-                                xcramt = ld.int_amt;
+                                xcramt = ld.int_amount;
                             }
                             else if (ld.aint_amt > 0)
                             {
@@ -1431,9 +1430,9 @@ namespace Amritnagar.Models.Database
                             {
                                 xdramt = ld.prin_amount;
                             }
-                            else if (ld.int_amt > 0)
+                            else if (ld.int_amount > 0)
                             {
-                                xdramt = ld.int_amt;
+                                xdramt = ld.int_amount;
                             }
                             else if (ld.aint_amt > 0)
                             {
@@ -1496,7 +1495,7 @@ namespace Amritnagar.Models.Database
                         {
                             XTR_TYPE = XTR_TYPE + " @Principal";
                         }
-                        if (ld.int_amt > 0)
+                        if (ld.int_amount > 0)
                         {
                             XTR_TYPE = XTR_TYPE + " @Interest";
                         }

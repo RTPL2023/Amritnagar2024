@@ -218,7 +218,7 @@ namespace Amritnagar.Models.Database
                     config.Update("LOAN_MASTER", new Dictionary<String, object>()
                     {
                         { "CLOS_FLAG",  lm.clos_flag },
-                        { "CLOS_DATE",  DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/") },
+                        { "CLOS_DATE",  Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/")) },
                     }, new Dictionary<string, object>()
                     {
                         { "BRANCH_ID",  lm.branch_id },
@@ -354,7 +354,7 @@ namespace Amritnagar.Models.Database
             }
             else
             {
-                sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103) AND clos_flag = 'C'" +
+                sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, CLOS_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) AND clos_flag = 'C'" +
                     "ORDER BY ac_hd,EMPLOYEE_id,clos_date";
                 config.singleResult(sql);
                 if (config.dt.Rows.Count > 0)
