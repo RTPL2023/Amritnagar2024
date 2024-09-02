@@ -404,13 +404,25 @@ namespace Amritnagar.Controllers
             {
                 foreach (var a in ldl)
                 {
+                    string tagColor = "style='color: black;'";
+                    string condition = "";
+                    string condition1 = "";
+                    condition = a.trns_particular.Substring((a.trns_particular).Length - 10);
+                    if (a.trns_particular.Length >= 28)
+                    {
+                        condition1 = a.trns_particular.Substring(0, 27);
+                    }
                     if (a.dr_amt > 0)
                     {
                         model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td>" + a.dr_amt.ToString("0.00") + "</td><td></td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
                     }
                     if (a.cr_amt > 0)
-                    {                      
-                        model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                    {
+                        if (condition == "@Principal" && condition1 == "ByTransfer SALARY DEDUCTION")
+                        {
+                            tagColor = "style='color: Green;'";
+                        }
+                        model.tableelement = model.tableelement + "<tr><td>" + a.vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td style='width: 100%'>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td " + tagColor + ">" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
                     }
                     i = i + 1;
                 }
@@ -676,154 +688,279 @@ namespace Amritnagar.Controllers
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             if (model.searchtype == "New Loan")
             {
-                using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
+                if(model.ac_hd == "" || model.ac_hd == null)
                 {
-                    int Pg = 1;
-                    int Ln = 0;
-                    int i = 1;
-                    string serial = string.Empty;
-                    sw.WriteLine("                       " + lc.lic_name);
-                    sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
-                    sw.WriteLine("");
-                    sw.WriteLine("                        LOAN OPENING LIST " + model.fr_dt + " TO " + model.to_dt);
-                    sw.WriteLine("===========================================================================================================");
-                    sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|No of Inst|Inst Amount");
-                    sw.WriteLine("===========================================================================================================");                   
-                    foreach (var am in lml)
+                    using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
                     {
-                        if (Convert.ToString(i).Length == 1)
+                        int Pg = 1;
+                        int Ln = 0;
+                        int i = 1;
+                        string serial = string.Empty;
+                        sw.WriteLine("                       " + lc.lic_name);
+                        sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                        sw.WriteLine("");
+                        sw.WriteLine("                        LOAN OPENING LIST " + model.fr_dt + " TO " + model.to_dt);
+                        sw.WriteLine("===========================================================================================================");
+                        sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|No of Inst|Inst Amount");
+                        sw.WriteLine("===========================================================================================================");
+                        foreach (var am in lml)
                         {
-                            serial = "000" + Convert.ToString(i);
-                        }
-                        else if(Convert.ToString(i).Length == 2)
-                        {
-                            serial = "00" + Convert.ToString(i);
-                        }
-                        else if (Convert.ToString(i).Length == 3)
-                        {
-                            serial = "0" + Convert.ToString(i);
-                        }
-                        else
-                        {
-                            Convert.ToString(i);
-                        }
-                        if (am.inst_amt.ToString().Length > 11)
-                        {
-                            inst_amt = Convert.ToDecimal(Convert.ToString(am.inst_amt).Substring(0, 10));
-                        }
-                        else
-                        {
-                            inst_amt = am.inst_amt;
-                        }
-                        if (am.loan_amt.ToString().Length > 11)
-                        {
-                            loan_amt = Convert.ToDecimal(Convert.ToString(am.loan_amt).Substring(0, 10));
-                        }
-                        else
-                        {
-                            loan_amt = am.loan_amt;
-                        }
-                        if (Ln > Pg * 65)
-                        {
-                            Pg = Pg + 1;
-                            Ln = Ln + 7;
-                            sw.WriteLine("");
-                            sw.WriteLine("                       " + lc.lic_name);
-                            sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
-                            sw.WriteLine("");
-                            sw.WriteLine("                        LOAN OPENING LIST " + model.fr_dt + " TO " + model.to_dt);
-                            sw.WriteLine("===========================================================================================================");
-                            sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|No of Inst|Inst Amount");
-                            sw.WriteLine("===========================================================================================================");                         
-                        }
-                       // sw.WriteLine(serial + model.ac_hd.ToString().PadLeft(6) + "|" + am.emp_id.ToString().PadLeft(13) + "|" + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/").ToString().PadLeft(12) + "|" + am.loanee_name.ToString().PadLeft(21) + "|" + am.loan_amt.ToString("0.00").ToString().PadLeft(23) + "|" + am.inst_no.ToString().PadLeft(7) + "|" + am.inst_amt.ToString("0.00").PadLeft(12));
+                            if (Convert.ToString(i).Length > 5)
+                            {
+                                serial = Convert.ToString(i).Substring(0, 4);
+                            }
+                            else
+                            {
+                                serial = Convert.ToString(i);
+                            }
+                            if (am.inst_amt.ToString().Length > 11)
+                            {
+                                inst_amt = Convert.ToDecimal(Convert.ToString(am.inst_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                inst_amt = am.inst_amt;
+                            }
+                            if (am.loan_amt.ToString().Length > 11)
+                            {
+                                loan_amt = Convert.ToDecimal(Convert.ToString(am.loan_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                loan_amt = am.loan_amt;
+                            }
+                            if (Ln > Pg * 65)
+                            {
+                                Pg = Pg + 1;
+                                Ln = Ln + 7;
+                                sw.WriteLine("");
+                                sw.WriteLine("                       " + lc.lic_name);
+                                sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                                sw.WriteLine("");
+                                sw.WriteLine("                        LOAN OPENING LIST " + model.fr_dt + " TO " + model.to_dt);
+                                sw.WriteLine("===========================================================================================================");
+                                sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|No of Inst|Inst Amount");
+                                sw.WriteLine("===========================================================================================================");
+                            }
+                            // sw.WriteLine(serial + model.ac_hd.ToString().PadLeft(6) + "|" + am.emp_id.ToString().PadLeft(13) + "|" + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/").ToString().PadLeft(12) + "|" + am.loanee_name.ToString().PadLeft(21) + "|" + am.loan_amt.ToString("0.00").ToString().PadLeft(23) + "|" + am.inst_no.ToString().PadLeft(7) + "|" + am.inst_amt.ToString("0.00").PadLeft(12));
 
-                        sw.WriteLine(serial + "".ToString().PadLeft(9 - (model.ac_hd).ToString().Length) + model.ac_hd + "|"
-                            + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + am.emp_id + "|"
-                            + "".ToString().PadLeft(13 - (am.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
-                            + "".ToString().PadLeft(32 - (am.loanee_name).ToString().Length) + am.loanee_name + "|"
-                            + "".ToString().PadLeft(13 - (loan_amt).ToString().Length) + loan_amt.ToString("0.00") + "|"
-                            + "".ToString().PadLeft(10 - (am.inst_no).ToString().Length) + am.inst_no + "|"
-                            + "".ToString().PadLeft(11 - (inst_amt).ToString().Length) + inst_amt.ToString("0.00") + "|");
-                        Ln = Ln + 1;
-                        i = i + 1;
+                            sw.WriteLine("".ToString().PadLeft(5 - (serial).ToString().Length) + serial + "|" + "".ToString().PadLeft(9 - ("").ToString().Length) + "" + "|"
+                                + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + am.emp_id + "|"
+                                + "".ToString().PadLeft(11 - (am.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
+                                + "".ToString().PadLeft(32 - (am.loanee_name).ToString().Length) + am.loanee_name + "|"
+                                + "".ToString().PadLeft(8 - (loan_amt).ToString().Length) + loan_amt.ToString("0.00") + "|"
+                                + "".ToString().PadLeft(10 - (am.inst_no).ToString().Length) + am.inst_no + "|"
+                                + "".ToString().PadLeft(14 - (inst_amt).ToString().Length) + inst_amt.ToString("0.00") + "|");
+                            Ln = Ln + 1;
+                            i = i + 1;
+                        }
                     }
                 }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
+                    {
+                        int Pg = 1;
+                        int Ln = 0;
+                        int i = 1;
+                        string serial = string.Empty;
+                        sw.WriteLine("                       " + lc.lic_name);
+                        sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                        sw.WriteLine("");
+                        sw.WriteLine("                        LOAN OPENING LIST " + model.fr_dt + " TO " + model.to_dt);
+                        sw.WriteLine("===========================================================================================================");
+                        sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|No of Inst|Inst Amount");
+                        sw.WriteLine("===========================================================================================================");
+                        foreach (var am in lml)
+                        {
+                            if (Convert.ToString(i).Length > 5)
+                            {
+                                serial = Convert.ToString(i).Substring(0, 4);
+                            }
+                            else
+                            {
+                                serial = Convert.ToString(i);
+                            }
+                            if (am.inst_amt.ToString().Length > 11)
+                            {
+                                inst_amt = Convert.ToDecimal(Convert.ToString(am.inst_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                inst_amt = am.inst_amt;
+                            }
+                            if (am.loan_amt.ToString().Length > 11)
+                            {
+                                loan_amt = Convert.ToDecimal(Convert.ToString(am.loan_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                loan_amt = am.loan_amt;
+                            }
+                            if (Ln > Pg * 65)
+                            {
+                                Pg = Pg + 1;
+                                Ln = Ln + 7;
+                                sw.WriteLine("");
+                                sw.WriteLine("                       " + lc.lic_name);
+                                sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                                sw.WriteLine("");
+                                sw.WriteLine("                        LOAN OPENING LIST " + model.fr_dt + " TO " + model.to_dt);
+                                sw.WriteLine("===========================================================================================================");
+                                sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|No of Inst|Inst Amount");
+                                sw.WriteLine("===========================================================================================================");
+                            }
+                            // sw.WriteLine(serial + model.ac_hd.ToString().PadLeft(6) + "|" + am.emp_id.ToString().PadLeft(13) + "|" + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/").ToString().PadLeft(12) + "|" + am.loanee_name.ToString().PadLeft(21) + "|" + am.loan_amt.ToString("0.00").ToString().PadLeft(23) + "|" + am.inst_no.ToString().PadLeft(7) + "|" + am.inst_amt.ToString("0.00").PadLeft(12));
+
+                            sw.WriteLine("".ToString().PadLeft(5 - (serial).ToString().Length) + serial + "|" + "".ToString().PadLeft(9 - (model.ac_hd).ToString().Length) + model.ac_hd + "|"
+                                + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + am.emp_id + "|"
+                                + "".ToString().PadLeft(11 - (am.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
+                                + "".ToString().PadLeft(32 - (am.loanee_name).ToString().Length) + am.loanee_name + "|"
+                                + "".ToString().PadLeft(8 - (loan_amt).ToString().Length) + loan_amt.ToString("0.00") + "|"
+                                + "".ToString().PadLeft(10 - (am.inst_no).ToString().Length) + am.inst_no + "|"
+                                + "".ToString().PadLeft(14 - (inst_amt).ToString().Length) + inst_amt.ToString("0.00") + "|");
+                            Ln = Ln + 1;
+                            i = i + 1;
+                        }
+                    }
+                }               
             }
             else
             {
-                using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
+                if(model.ac_hd == "" || model.ac_hd == null)
                 {
-                    int Pg = 1;
-                    int Ln = 0;
-                    int i = 1;
-                    string serial = string.Empty;
-                    sw.WriteLine("                       " + lc.lic_name);
-                    sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
-                    sw.WriteLine("");
-                    sw.WriteLine("                        LOAN CLOSING LIST " +model.fr_dt+ " TO " + model.to_dt );
-                    sw.WriteLine("================================================================================================");
-                    sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|Close Date");
-                    sw.WriteLine("================================================================================================");                  
-                    foreach (var am in lml)
+                    using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
                     {
-                        if (Convert.ToString(i).Length == 1)
+                        int Pg = 1;
+                        int Ln = 0;
+                        int i = 1;
+                        string serial = string.Empty;
+                        sw.WriteLine("                       " + lc.lic_name);
+                        sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                        sw.WriteLine("");
+                        sw.WriteLine("                        LOAN CLOSING LIST " + model.fr_dt + " TO " + model.to_dt);
+                        sw.WriteLine("================================================================================================");
+                        sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|Close Date");
+                        sw.WriteLine("================================================================================================");
+                        foreach (var am in lml)
                         {
-                            serial = "000" + Convert.ToString(i);
+                            if (Convert.ToString(i).Length > 5)
+                            {
+                                serial = Convert.ToString(i).Substring(0, 4);
+                            }
+                            else
+                            {
+                                serial = Convert.ToString(i);
+                            }
+                            if (am.inst_amt.ToString().Length > 11)
+                            {
+                                inst_amt = Convert.ToDecimal(Convert.ToString(am.inst_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                inst_amt = am.inst_amt;
+                            }
+                            if (am.loan_amt.ToString().Length > 11)
+                            {
+                                loan_amt = Convert.ToDecimal(Convert.ToString(am.loan_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                loan_amt = am.loan_amt;
+                            }
+                            if (Ln > Pg * 65)
+                            {
+                                Pg = Pg + 1;
+                                Ln = Ln + 7;
+                                sw.WriteLine("");
+                                sw.WriteLine("                       " + lc.lic_name);
+                                sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                                sw.WriteLine("");
+                                sw.WriteLine("                        LOAN CLOSING LIST " + model.fr_dt + " TO " + model.to_dt);
+                                sw.WriteLine("================================================================================================");
+                                sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|Close Date");
+                                sw.WriteLine("================================================================================================");
+                            }
+                            //sw.WriteLine(serial + model.ac_hd.ToString().PadLeft(6) + "|" + am.emp_id.ToString().PadLeft(13) + "|" + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/").ToString().PadLeft(14) + "|" + am.loanee_name.ToString().PadLeft(21) + "|" + am.loan_amt.ToString("0.00").ToString().PadLeft(21) + "|" + am.clos_dt.ToString("dd-MM-yyyy").Replace("-", "/").PadLeft(12));
+                            sw.WriteLine("".ToString().PadLeft(5 - (serial).ToString().Length) + serial + "|" + "".ToString().PadLeft(9 - ("").ToString().Length) + "" + "|"
+                                + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + am.emp_id + "|"
+                                + "".ToString().PadLeft(11 - (am.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
+                                + "".ToString().PadLeft(32 - (am.loanee_name).ToString().Length) + am.loanee_name + "|"
+                                + "".ToString().PadLeft(8 - (loan_amt).ToString().Length) + loan_amt.ToString("0.00") + "|"
+                                + "".ToString().PadLeft(11 - (am.clos_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.clos_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|");
+                            //+ "".ToString().PadLeft(11 - (inst_amt).ToString().Length) + inst_amt.ToString("0.00") + "|");
+                            Ln = Ln + 1;
+                            i = i + 1;
                         }
-                        else if (Convert.ToString(i).Length == 2)
-                        {
-                            serial = "00" + Convert.ToString(i);
-                        }
-                        else if (Convert.ToString(i).Length == 3)
-                        {
-                            serial = "0" + Convert.ToString(i);
-                        }
-                        else
-                        {
-                           serial = Convert.ToString(i);
-                        }
-                        if (am.inst_amt.ToString().Length > 11)
-                        {
-                            inst_amt = Convert.ToDecimal(Convert.ToString(am.inst_amt).Substring(0, 10));
-                        }
-                        else
-                        {
-                            inst_amt = am.inst_amt;
-                        }
-                        if (am.loan_amt.ToString().Length > 11)
-                        {
-                            loan_amt = Convert.ToDecimal(Convert.ToString(am.loan_amt).Substring(0, 10));
-                        }
-                        else
-                        {
-                            loan_amt = am.loan_amt;
-                        }
-                        if (Ln > Pg * 65)
-                        {
-                            Pg = Pg + 1;
-                            Ln = Ln + 7;
-                            sw.WriteLine("");
-                            sw.WriteLine("                       " + lc.lic_name);
-                            sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
-                            sw.WriteLine("");
-                            sw.WriteLine("                        LOAN CLOSING LIST " + model.fr_dt + " TO " + model.to_dt);
-                            sw.WriteLine("================================================================================================");
-                            sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|Close Date");
-                            sw.WriteLine("================================================================================================");                        
-                        }
-                        //sw.WriteLine(serial + model.ac_hd.ToString().PadLeft(6) + "|" + am.emp_id.ToString().PadLeft(13) + "|" + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/").ToString().PadLeft(14) + "|" + am.loanee_name.ToString().PadLeft(21) + "|" + am.loan_amt.ToString("0.00").ToString().PadLeft(21) + "|" + am.clos_dt.ToString("dd-MM-yyyy").Replace("-", "/").PadLeft(12));
-                        sw.WriteLine(serial + "".ToString().PadLeft(9 - (model.ac_hd).ToString().Length) + model.ac_hd + "|"
-                            + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + am.emp_id + "|"
-                            + "".ToString().PadLeft(13 - (am.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
-                            + "".ToString().PadLeft(32 - (am.loanee_name).ToString().Length) + am.loanee_name + "|"
-                            + "".ToString().PadLeft(13 - (loan_amt).ToString().Length) + loan_amt.ToString("0.00") + "|"
-                            + "".ToString().PadLeft(10 - (am.inst_no).ToString().Length) + am.inst_no + "|"
-                            + "".ToString().PadLeft(11 - (inst_amt).ToString().Length) + inst_amt.ToString("0.00") + "|");
-                        Ln = Ln + 1;
-                        i = i + 1;
                     }
                 }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
+                    {
+                        int Pg = 1;
+                        int Ln = 0;
+                        int i = 1;
+                        string serial = string.Empty;
+                        sw.WriteLine("                       " + lc.lic_name);
+                        sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                        sw.WriteLine("");
+                        sw.WriteLine("                        LOAN CLOSING LIST " + model.fr_dt + " TO " + model.to_dt);
+                        sw.WriteLine("================================================================================================");
+                        sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|Close Date");
+                        sw.WriteLine("================================================================================================");
+                        foreach (var am in lml)
+                        {
+                            if (Convert.ToString(i).Length > 5)
+                            {
+                                serial = Convert.ToString(i).Substring(0, 4);
+                            }
+                            else
+                            {
+                                serial = Convert.ToString(i);
+                            }
+                            if (am.inst_amt.ToString().Length > 11)
+                            {
+                                inst_amt = Convert.ToDecimal(Convert.ToString(am.inst_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                inst_amt = am.inst_amt;
+                            }
+                            if (am.loan_amt.ToString().Length > 11)
+                            {
+                                loan_amt = Convert.ToDecimal(Convert.ToString(am.loan_amt).Substring(0, 10));
+                            }
+                            else
+                            {
+                                loan_amt = am.loan_amt;
+                            }
+                            if (Ln > Pg * 65)
+                            {
+                                Pg = Pg + 1;
+                                Ln = Ln + 7;
+                                sw.WriteLine("");
+                                sw.WriteLine("                       " + lc.lic_name);
+                                sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                                sw.WriteLine("");
+                                sw.WriteLine("                        LOAN CLOSING LIST " + model.fr_dt + " TO " + model.to_dt);
+                                sw.WriteLine("================================================================================================");
+                                sw.WriteLine("Srl. |Loan Type|Employee Id| Loan Date |Loanee Name                     |Loan Amount|Close Date");
+                                sw.WriteLine("================================================================================================");
+                            }
+                            //sw.WriteLine(serial + model.ac_hd.ToString().PadLeft(6) + "|" + am.emp_id.ToString().PadLeft(13) + "|" + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/").ToString().PadLeft(14) + "|" + am.loanee_name.ToString().PadLeft(21) + "|" + am.loan_amt.ToString("0.00").ToString().PadLeft(21) + "|" + am.clos_dt.ToString("dd-MM-yyyy").Replace("-", "/").PadLeft(12));
+                            sw.WriteLine("".ToString().PadLeft(5 - (serial).ToString().Length) + serial + "|" + "".ToString().PadLeft(9 - (model.ac_hd).ToString().Length) + model.ac_hd + "|"
+                                + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + am.emp_id + "|"
+                                + "".ToString().PadLeft(11 - (am.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
+                                + "".ToString().PadLeft(32 - (am.loanee_name).ToString().Length) + am.loanee_name + "|"
+                                + "".ToString().PadLeft(8 - (loan_amt).ToString().Length) + loan_amt.ToString("0.00") + "|"
+                                + "".ToString().PadLeft(11 - (am.clos_dt).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.clos_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "|");
+                            //+ "".ToString().PadLeft(11 - (inst_amt).ToString().Length) + inst_amt.ToString("0.00") + "|");
+                            Ln = Ln + 1;
+                            i = i + 1;
+                        }
+                    }
+                }                
             }            
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Loan_Opening_Closing_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));

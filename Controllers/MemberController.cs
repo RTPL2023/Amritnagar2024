@@ -1902,6 +1902,14 @@ namespace Amritnagar.Controllers
                     }
                     else if(table == "LOAN_LEDGER")
                     {
+                        string tagColor= "style='color: black;'";
+                        string condition = "";
+                        string condition1 = "";
+                        condition = a.trns_particular.Substring((a.trns_particular).Length - 10);
+                        if (a.trns_particular.Length >= 28)
+                        {
+                            condition1 = a.trns_particular.Substring(0, 27);
+                        }                        
                         if (a.dr_amt > 0)
                         {
                             if (i == 1)
@@ -1916,14 +1924,18 @@ namespace Amritnagar.Controllers
                         }
                         if (a.cr_amt > 0)
                         {
+                            if (condition == "@Principal" && condition1 == "ByTransfer SALARY DEDUCTION")
+                            {
+                               tagColor = "style='color: Green;'";
+                            }                    
                             if (i == 1)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Transaction Particulars</th><th>Cheque No.</th><th>Dr Amount</th><th>Cr Amount</th><th>Prin/Balance</th><th>Int/Balance</th><th>Aint/Bal</th><th>Oth/Chrgs</th></tr>";
-                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td " + tagColor + ">" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
                             }
                             else
                             {
-                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td>" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
+                                model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.chq_no + "</td><td></td><td " + tagColor + ">" + a.cr_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.aint_due.ToString("0.00") + "</td><td>" + a.ichrg_due.ToString("0.00") + "</td></tr>";
                             }
                         }
                         i = i + 1;
