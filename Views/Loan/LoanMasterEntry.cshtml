@@ -131,7 +131,7 @@
                 <div class="row mt-2">
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Branch:<br />
-                        @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "sizebig" })
+                        @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "sizebig" })
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Account Head:<br />

@@ -132,7 +132,7 @@
                             </div>
                             <div class="col-lg-2  col-sm-12 col-12">
                                 Branch:<br />
-                                @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "sizeM" })
+                                @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "sizeM" })
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
                                 Member Type:<br />

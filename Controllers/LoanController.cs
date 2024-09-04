@@ -554,9 +554,9 @@ namespace Amritnagar.Controllers
                           + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
                            + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
                             + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
-                             + "".ToString().PadLeft(12 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
-                              + "".ToString().PadLeft(9 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
-                              + "".ToString().PadLeft(9 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                                                                                    
+                             + "".ToString().PadLeft(14 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(11 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(11 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                                                                                    
                     }
                     else
                     {
@@ -567,9 +567,9 @@ namespace Amritnagar.Controllers
                                 + "".ToString().PadLeft(10 - (am.chq_no).ToString().Length) + am.chq_no.ToString() + "|"
                                + "".ToString().PadLeft(10 - (dr_amt).ToString().Length) + dr_amt.ToString("0.00") + "|"
                                + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
-                                 + "".ToString().PadLeft(12 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
-                                  + "".ToString().PadLeft(9 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
-                                  + "".ToString().PadLeft(9 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                               
+                                 + "".ToString().PadLeft(14 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
+                                  + "".ToString().PadLeft(11 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
+                                  + "".ToString().PadLeft(11 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                               
                         }
                         if (am.cr_amt > 0)
                         {
@@ -578,9 +578,9 @@ namespace Amritnagar.Controllers
                                  + "".ToString().PadLeft(10 - (am.chq_no).ToString().Length) + am.chq_no.ToString() + "|"
                                  + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
                                 + "".ToString().PadLeft(10 - (cr_amt).ToString().Length) + cr_amt.ToString("0.00") + "|"
-                                  + "".ToString().PadLeft(12 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
-                                   + "".ToString().PadLeft(9 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
-                                   + "".ToString().PadLeft(9 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                                
+                                  + "".ToString().PadLeft(14 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
+                                   + "".ToString().PadLeft(11 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
+                                   + "".ToString().PadLeft(11 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                                
                         }
                     }
                     Ln = Ln + 1;

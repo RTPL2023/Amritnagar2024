@@ -120,7 +120,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Branch<br />
-                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size", @onchange = "changefocus()" })
+                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size", @onchange = "changefocus()" })
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Account Head<br />

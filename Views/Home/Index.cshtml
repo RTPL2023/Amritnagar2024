@@ -12,8 +12,6 @@
         font-size: 40px;
         text-align: center;
     }
-
- 
 </style>
 
 <form asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
@@ -23,5 +21,23 @@
     <div class="heading mt-4">
         Welcome To Amritnagar CCS2.
     </div>
+    <input id="btndashBoard" type="button" value="DashBoard" name="btndashBoard" class="btn btn-primary pull-right" onclick="ShowDashBoard()" />
 
 </form>
+
+@section scripts
+{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+    <script src="~/Content/js/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="~/js/jquery-3.6.1.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+
+        function ShowDashBoard() {
+            window.location.href = "@Url.Action("DashBoard", "Home")";
+            }
+    </script>
+}

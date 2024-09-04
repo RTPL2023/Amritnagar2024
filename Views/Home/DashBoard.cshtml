@@ -1,0 +1,493 @@
+﻿@model Amritnagar.Models.ViewModel.DashboardViewModel
+
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/datepicker.css" />
+
+<style>
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 50px;
+        margin-top: 30px
+    }
+
+    .itemtab {
+        font-family: Arial, Helvetica, sans-serif;
+        /*font-size: 15px;*/
+        border-collapse: collapse;
+        width: 200px;
+    }
+
+        .itemtab tbody {
+            display: block;
+            width: 200px;
+            overflow: auto;
+            height: 180px;
+        }
+
+        .itemtab td {
+            border: 2px solid #ddd;
+            padding: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            text-align: center;
+            font-size: 12px
+        }
+        .itemtab td, th {
+            width: 200px;
+        }
+        .itemtab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .itemtab tr:hover {
+            background-color: #ddd;
+        }
+
+        .itemtab th {
+            border: 2px solid white;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            text-align: center;
+            font-size: 13px;
+            /*background-color: #04AA6D;*/
+            background-color: indigo;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+</style>
+
+<div id="1" class=" mt-5  justify-content-center"  style="width:1000px" >
+    <div class="row mt-4">
+        <div class="col-lg-6 col-12 mt-1">
+            <div id="row1" class="row justify-content-center">
+                <div class="col-md-12 col-sm-12 col-12 text-center">
+                    @Html.DropDownListFor(p => p.Month, new SelectList(new string[] { "1Month", "3Month", "6Month", "12Month" }), new { @class = "btn btn-danger dropdown-toggle", @onchange = "getLoandata()" })
+                </div>
+            </div>
+            <div id="row2">
+                <div class="row mt-1 justify-content-center">
+                    <div class="col-lg-11 border border-1 rounded border-primary" style="height:250px">
+                        <div>
+                            <canvas id="myChart5" style="padding: 0; margin: auto; display: block; width: 60%; height: 60%; width: 60%; height: 60% "> </canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-2">
+
+                </div>
+                <div class="col-md-11 col-sm-12 col-12  text-center">
+                    <div class="row">
+                        <div class="col-6">
+                            @Html.TextBoxFor(p => p.fdate, new { @class = "datepicker", @id = "datepicker1", style="width:130px;height:30px" })
+                        </div>
+                        <div class="col-6">
+                            @Html.TextBoxFor(p => p.tdate, new { @class = "datepicker", @id = "datepicker2", style = "width:130px;height:30px" })
+                        </div>
+                        @*<div class="col-3">
+                                @Html.DropDownListFor(p => p.type, new SelectList(new string[] { "Cash", "Loan" }), new { @class = "btn btn-danger dropdown-toggle", @onchange = "TypeOpenOnchange()" })
+
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+
+            <div id="row4">
+
+                <div class="row mt-1 justify-content-center mb-2" id="hiid">
+                    <div class="col-md-11 col-sm-12 col-12  text-center border border-1 rounded border-primary" style="height:250px">
+                        <div class="row">
+                            <div class="col-5" style="width: 250px; height: 250px">
+                                <canvas id="myChart3" style="padding: 0;margin: auto;display: block; "> </canvas>
+
+                            </div>
+                            <div class="col-5">
+                                <table id="tab" align="center" class="itemtab mt-4">
+                                    <tbody id="List">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-6 col-12 mt-1">
+
+
+            <div id="row3">
+                <div class="row">
+                    <div class="col-11 text-center">
+                        @Html.DropDownListFor(p => p.Month_acOpen, new SelectList(new string[] { "1Month", "3Month", "6Month", "12Month" }), new { @class = "btn btn-danger dropdown-toggle", @onchange = "getPiechartOfMemberopen()" })
+                    </div>
+                </div>
+
+
+                <div class="row mt-1" id="hiid">
+                    <div class="col-lg-11 col-12  text-center border border-1 rounded border-primary" style="height:250px">
+                        <div>
+                            <canvas id="myChart2" style="padding: 0; margin: auto; display: block; width: 60%; height: 60%; width: 60%; height: 60% "> </canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="row4">
+                <div class="row mt-1">
+                    <div class="col-12 text-center">
+                        @Html.DropDownListFor(p => p.Month_acclose, new SelectList(new string[] { "1Month", "3Month", "6Month", "12Month" }), new { @class = "btn btn-danger dropdown-toggle", @onchange = "getPiechartOfMemberClosed()" })
+                    </div>
+                </div>
+
+
+                <div class="row mt-1 mb-2" id="hiid">
+                    <div class="col-lg-11 col-12  text-center border border-1 rounded border-primary" style="height:250px">
+                        <div>
+                            <canvas id="myChart6" style="padding: 0; margin: auto; display: block; width: 60%; height: 60%; width: 60%; height: 60% "> </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+@section scripts
+{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="~/Content/bootstrap-datepicker.js"></script>
+
+
+    <script type="text/javascript">
+        var myNewChartPie;
+        var myNewChartDonut;
+        var myNewChartpieclose;
+        var myNewChartbar;
+
+
+        $(document).ready(function () {
+            $('#datepicker1').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr",
+                autoclose: true
+            });
+
+            $('#datepicker2').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr",
+                autoclose: true
+            });
+
+            $("#datepicker1").datepicker({ dateFormat: "dd/mm/yyyy" }).datepicker("setDate", new Date());
+            $("#datepicker2").datepicker({ dateFormat: "dd/mm/yyyy" }).datepicker("setDate", new Date());
+            getLoandata();
+            getPiechartOfMemberopen();           
+            getPiechartOfMemberClosed();
+            GetLoanTrasactionsDetailsIsbarChart();
+            GetList();
+        });
+
+        $('#datepicker1').blur(function () {
+            GetLoanTrasactionsDetailsIsbarChart();
+            GetList();
+        });
+
+        $('#datepicker2').blur(function () {
+            GetLoanTrasactionsDetailsIsbarChart();
+            GetList();
+        });
+
+        function TypeOpenOnchange() {
+            GetTrasactionsDetailsIsbarChart();
+            GetList();
+
+        }
+
+        function LoanOnchange() {
+            getLoandata();
+        }
+     
+        function getLoandata() {
+            if (myNewChartDonut) {
+                myNewChartDonut.destroy();
+            }
+            let ModelObject = { Month: $('#Month').val() };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetNumberOfLoans", "Home")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (chData) {
+                    var aData = chData;
+                    var aLabels = aData[0];
+                    var aDatasets1 = aData[1];
+                    var dataT = {
+                        labels: aLabels,
+                        datasets: [{
+                            label: 'Numbers Of Loan Passed In Last ' + $('#Month').val(),
+                            data: aDatasets1,
+                            fill: false,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgba(0,0,255,0.6)',
+                                'rgba(50,205,50)',
+                            ],
+                            labels: [
+                                'Red',
+                                'Blue',
+                                'Yellow',
+                                'Violet'
+                            ],
+                        }]
+                    };
+                    var ctx = $("#myChart5").get(0).getContext("2d");
+                    myNewChartDonut = new Chart(ctx, {
+                        type: 'bar',
+                        data: dataT,
+                        options: {
+                            responsive: true,
+                           // title: { display: true, text: 'Numbers Of Loan Pass' + $('#Month').val() },
+                            legend: { position: 'bottom' },
+                            scales: {
+                                xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
+                                yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 70, beginAtZero: true } }]
+                            },
+                        }
+                    });
+                }
+            });
+        }
+
+        function getPiechartOfMemberopen() {
+            if (myNewChartPie) {
+                myNewChartPie.destroy();
+            }
+            let ModelObject = { Month: $('#Month_acOpen').val() };
+             $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetNumberOfMemberOpening", "Home")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (chData) {
+                    var aData = chData;
+                    var aLabels = aData[0];
+                    var aDatasets1 = aData[1];                    
+                    var dataT = {
+                        labels: aLabels,
+                        datasets: [{
+                            data: aDatasets1,
+                            fill: false,
+                            backgroundColor: [
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgba(60,0,210)',
+                                'rgba(80,0,100)',
+                                'rgba(255,0,300)'
+                            ],
+                            labels: [                               
+                                'Red',
+                                'Blue',
+                                'Yellow', 'Violet',
+                                'Green',
+                                'Pink'
+                            ],
+                        }]
+                    };
+                    var ctx = $("#myChart2").get(0).getContext("2d");
+                    myNewChartPie = new Chart(ctx, {
+                        type: 'pie',
+                        data: dataT,
+                        options: {
+                            responsive: true,
+                            title: { display: true, text: 'Number Of Membership Opening In Last ' + $('#Month_acOpen').val() + ' Against Book No' },
+                            legend: { position: 'bottom' },
+                            //scales: {
+                            //    xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
+                            //    yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 100, beginAtZero: true } }]
+                            //},
+                        }
+                    });
+                    //myNewChart.update();
+                }
+            });
+        }
+
+        function getPiechartOfMemberClosed() {
+            if (myNewChartpieclose) {
+                myNewChartpieclose.destroy();
+            }
+            let ModelObject = { Month: $('#Month_acclose').val() };
+             $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetNumberOfMemberClosing", "Home")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (chData) {
+                    var aData = chData;
+                    var aLabels = aData[0];
+                    var aDatasets1 = aData[1];
+                  //  alert(chData);
+                    var dataT = {
+                        labels: aLabels,
+                        datasets: [{
+                            data: aDatasets1,
+                            fill: false,
+                            backgroundColor: [
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgba(60,0,210)',
+                                'rgba(80,0,100)',
+                                'rgba(255,0,300)'
+                            ],
+                            labels: [
+                                'Red',
+                                'Blue',
+                                'Yellow', 'Violet',
+                                'Green',
+                                'Pink'
+                            ],
+                        }]
+                    };
+                    var ctx = $("#myChart6").get(0).getContext("2d");
+                    myNewChartpieclose = new Chart(ctx, {
+                        type: 'pie',
+                        data: dataT,
+                        options: {
+                            responsive: true,
+                            title: { display: true, text: 'Number Of Membership Closing In Last ' + $('#Month_acclose').val() + ' Against Book No'},
+                            legend: { position: 'bottom' },
+                            //scales: {
+                            //    xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
+                            //    yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 100, beginAtZero: true } }]
+                            //},
+                        }
+                    });
+                    //myNewChart.update();
+                }
+            });
+        }
+
+        function GetLoanTrasactionsDetailsIsbarChart() {
+            if (myNewChartbar) {
+                myNewChartbar.destroy();
+            }
+            let ModelObject = {fdate: $('#datepicker1').val(), tdate: $('#datepicker2').val()};
+            $.ajax({
+                 type: "POST",
+                url: '@Url.Action("GetLoanTrasactionsDetails", "Home")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (chData) {
+                    var aData = chData;
+                    var aLabels = aData[0];
+                    var aDatasets1 = aData[1];
+                    var dataT = {
+                        labels: aLabels,
+                        datasets: [{
+                          //  label: 'Cash Counter Transaction Within ' + $('#datepicker1').val() + ' To ' + $('#datepicker2').val(),
+                            data: aDatasets1,
+                            fill: false,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 90)',
+                                'rgba(30,144,255)',
+                                'rgba(50,205,50)',
+                                'rgb(255, 205, 86)',
+                                'rgba(153, 102, 255)',
+                                'rgb(255, 99, 132)',
+                                'rgb(50, 162, 238)',
+                                'rgb(255, 205, 88)',
+                                'rgb(255, 205, 450)',
+                                'rgb(255, 205, 350)'
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 90)',
+                                'rgba(30,144,255)',
+                                'rgba(50,205,50)',
+                                'rgb(255, 205, 86)',
+                                'rgba(153, 102, 255)',
+                                'rgb(255, 99, 132)',
+                                'rgb(50, 162, 238)',
+                                'rgb(255, 205, 88)',
+                                 'rgb(255, 205, 450)',
+                                'rgb(255, 205, 350)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+                    var ctx = $("#myChart3").get(0).getContext("2d");
+                    myNewChartbar = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: dataT,
+                        options: {
+                            responsive: true,
+                            title: { display: true, text: 'Loan Transaction Within ' + $('#datepicker1').val() + ' To ' + $('#datepicker2').val() },
+                            legend: { position: 'bottom' },
+                            //scales: {
+                            //    xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
+                            //    yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 70, beginAtZero: true } }]
+                            //},
+                        }
+                    });
+                }
+            });
+        }
+
+        function GetList() {
+            let ModelObject = {
+                fdate: $('#datepicker1').val(), tdate: $('#datepicker2').val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetlistOftrasactionAmt", "Home")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    document.getElementById("List").innerHTML = data.tableelement;
+                },
+                error: function (err) {
+                    alert("No Details Found");
+                }
+            });
+        }
+
+    </script>
+}
+

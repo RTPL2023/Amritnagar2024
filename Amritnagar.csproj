@@ -191,6 +191,7 @@
     <Compile Include="Models\ViewModel\CashBankPositionReportViewModel.cs" />
     <Compile Include="Models\ViewModel\CashBookReportViewModel.cs" />
     <Compile Include="Models\ViewModel\CasteMasterViewModel.cs" />
+    <Compile Include="Models\ViewModel\DashboardViewModel.cs" />
     <Compile Include="Models\ViewModel\DayBookReportViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\DesignationMasterViewModel.cs" />
@@ -237,10 +238,12 @@
     <Compile Include="Session.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datepicker.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\datepicker.css" />
     <Content Include="Content\Images\icon.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -324,6 +327,7 @@
     <Content Include="Views\Account\TrialBalanceReport.cshtml" />
     <Content Include="Views\Admin\ShareLedgerModify.cshtml" />
     <Content Include="Views\Admin\Tf_Gf_Ledger.cshtml" />
+    <Content Include="Views\Home\DashBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
