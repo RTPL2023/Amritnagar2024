@@ -1535,8 +1535,9 @@ namespace Amritnagar.Controllers
                     i = i + 1;
                     fnd_dep = fnd_dep + dep;
                 }
+                string share_cap_tot = model.share_cap_tot;
                 model.tot_fund = fnd_dep.ToString("0.00");
-                model.tot_assets = Convert.ToDecimal(model.share_cap_tot + model.tot_fund).ToString("0.00");
+                model.tot_assets = (Convert.ToDecimal(share_cap_tot) + Convert.ToDecimal(model.tot_fund)).ToString("0.00");                
             }
             else
             {
@@ -1569,8 +1570,7 @@ namespace Amritnagar.Controllers
                     i = i + 1;
                     xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
                 }
-                model.tot_Loan = xtotpayb.ToString("0.00");
-                model.tot_liabilities = Convert.ToDecimal(model.tot_Oth_Loan + model.tot_Loan).ToString("0.00");                
+                model.tot_Loan = xtotpayb.ToString("0.00");                             
             }
             else
             {
@@ -1585,6 +1585,8 @@ namespace Amritnagar.Controllers
             List<Loan_Master> lml = new List<Loan_Master>();
             lml = lm.getmemberotherloandetails(model.BranchID, model.member_no);
             int i = 1;
+            string tot_Loan = "";
+            tot_Loan = model.tot_Loan;
             if (lml.Count > 0)
             {
                 foreach (var a in lml)
@@ -1602,13 +1604,14 @@ namespace Amritnagar.Controllers
                     }
                     i = i + 1;
                     xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
-                }
+                }               
                 model.tot_Oth_Loan = xtotpayb.ToString("0.00");
-                
+                model.tot_liabilities = (Convert.ToDecimal(tot_Loan) + Convert.ToDecimal(model.tot_Oth_Loan)).ToString("0.00");
             }
             else
             {
                 model.tableelement = null;
+                model.tot_liabilities = tot_Loan;
             }
             return Json(model);
         }             

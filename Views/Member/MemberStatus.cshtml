@@ -581,7 +581,7 @@
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
                         @Html.DropDownListFor(p => p.BranchID, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
-                    </div>
+                    </div>                    
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Member NO.<br />
                         @Html.TextBoxFor(p => p.member_no, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtmember_no(event);" })
@@ -732,7 +732,7 @@
                                             <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                                                 Branch<br />
                                                 @Html.TextBoxFor(p => p.Branch_sh, new { @class = "size", @type = "text", @readonly = "true" })
-                                            </div>
+                                            </div>                                           
                                             <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                                                 Member NO.<br />
                                                 @Html.TextBoxFor(p => p.mem_no_sh, new { @class = "size", @type = "text", @readonly = "true" })
@@ -934,7 +934,7 @@
             $("#capital").show();
             $("#emp_id").hide();
             $("#table").hide();
-            $("#ac_hd").hide();
+            $("#ac_hd").hide();            
             $("#member_no").focus();
         });
 
@@ -1018,15 +1018,17 @@
                     success: function (data) {
                         document.getElementById("sharecapital").innerHTML = data.tableelement;
                         $('#share_cap_tot').val(data.share_cap_tot);
+                        ShowTableForMembersFund();
                     },
                      error: function (err) {
                     //alert("Error Occured");
                      }
                     });
-        }
+         }
 
-         function ShowTableForMembersFund() {
-              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+        function ShowTableForMembersFund() {
+            //alert($('#share_cap_tot').val());
+             let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val(), share_cap_tot: $('#share_cap_tot').val()};
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("GetMemberFund", "Member")',
@@ -1053,7 +1055,7 @@
                     success: function (data) {
                         document.getElementById("ExistingMembersLoan").innerHTML = data.tableelement;
                         $('#tot_Loan').val(data.tot_Loan);
-                        $('#tot_liabilities').val(data.tot_liabilities);
+                        ShowTableForMembersOtherLoanInfo();
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -1062,15 +1064,21 @@
         }
 
         function ShowTableForMembersOtherLoanInfo() {
-              let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val()};
+            let ModelObject = { BranchID: $('#BranchID').val(), member_no: $('#member_no').val(), tot_Loan: $('#tot_Loan').val()};
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("GETOTHLOANINFO", "Member")',
                         data: ModelObject,
                         dataType: "json",
-                    success: function (data) {
-                        document.getElementById("OtherExistingLoan").innerHTML = data.tableelement;
-                        $('#tot_Oth_Loan').val(data.tot_Oth_Loan);
+                        success: function (data) {
+                            if(data.tableelement != null) {
+                                document.getElementById("OtherExistingLoan").innerHTML = data.tableelement;
+                                $('#tot_Oth_Loan').val(data.tot_Oth_Loan);
+                                $('#tot_liabilities').val(data.tot_liabilities);
+                            }
+                            else {
+                                $('#tot_liabilities').val(data.tot_liabilities);
+                            }                       
                     },
                      error: function (err) {
                     //alert("Error Occured");
@@ -1086,14 +1094,8 @@
                 ShowTableForMembershipHolders();
                 ShowTableForMemberNominee();
                 ShowTableForLoanSurity();
-                ShowTableForShareCapital();
-                ShowTableForMembersFund();
-                ShowTableForMembersLoanInfo();
-                ShowTableForMembersOtherLoanInfo();
-                //$('#Branch').val($('#BranchID').val());               
-                //$('#mem_no').val($('#member_no').val());
-                //$('#ln_type').val($('#ac_hd').val());
-                //$('#tot_liabilities').val(data.tot_Oth_Loan)+;
+                ShowTableForShareCapital();             
+                ShowTableForMembersLoanInfo();                           
             }
         }
 
@@ -1151,11 +1153,14 @@
                                 $('#ln_Branch').val(data.Branch);
                                 $('#ln_type').val(data.ln_type);                               
                                 $('#loanee_emp_id').val(data.loanee_emp_id);
+                                //document.getElementById("ledgerdetails_loan").onclick = function () {
+                                //    this.style.backgroundColor = "Red";
+                                //}
                             }
                         },
                      error: function (err) {
                         //alert("Error Occured");
-                     }
+                    }
                     });
         }
 
@@ -1253,7 +1258,7 @@
                 };
             }
         })();
-
+    
     </script>
 }
 
