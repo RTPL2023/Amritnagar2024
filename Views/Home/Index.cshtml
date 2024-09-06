@@ -15,13 +15,29 @@
 </style>
 
 <form asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
-    <div class="container" style="height:200px">
+    <div class="container justify-content-center" style="width:1000px">
+        <div class="container" style="height:100px">
 
+        </div>
+        <div class="row mt-2">
+            <div class="col-11">
+
+            </div>
+            <div class="col-1">
+                <input id="btndashBoard" type="button" value="DashBoard" name="btndashBoard" class="btn btn-danger pull-right" onclick="ShowDashBoard()" />
+            </div>
+
+        </div>
+        <div class="container" style="height:100px">
+
+        </div>
+        <div class=" row heading mt-4">
+            <div class="col-lg-12 text-center">
+                Welcome To Amritnagar CCS2.
+            </div>
+
+        </div>
     </div>
-    <div class="heading mt-4">
-        Welcome To Amritnagar CCS2.
-    </div>
-    <input id="btndashBoard" type="button" value="DashBoard" name="btndashBoard" class="btn btn-primary pull-right" onclick="ShowDashBoard()" />
 
 </form>
 

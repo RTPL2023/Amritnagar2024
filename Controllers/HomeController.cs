@@ -20,14 +20,12 @@ namespace Amritnagar.Controllers
         {
             return View();
         }
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
-
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -40,7 +38,6 @@ namespace Amritnagar.Controllers
         {
             return View(model);
         }
-
         public string getfromdate(DashboardViewModel model)
         {
             string fdate = "";
@@ -67,7 +64,6 @@ namespace Amritnagar.Controllers
             }
             return fdate;
         }
-
         public JsonResult GetNumberOfLoans(DashboardViewModel model)
         {
             List<object> iData = new List<object>();
@@ -89,52 +85,75 @@ namespace Amritnagar.Controllers
             }
             return Json(iData);
         }
-
         public JsonResult GetNumberOfMemberOpening(DashboardViewModel model)
         {
             List<object> iData = new List<object>();
-            string sql = "";
             string fdate = "";
             fdate = getfromdate(model);
             string todate = DateTime.Now.Date.ToString("dd-MM-yyyy").Replace("-", "/");
-            sql = "select book_no, COUNT(*) AS TotalRows from MEMBER_MAST where convert(datetime, MEMBER_DATE, 103) >= convert(datetime, '" + fdate + "', 103) and convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + todate + "', 103) group by book_no";
+            DataTable dt = new DataTable();
+            dt.Columns.Add("book_no", System.Type.GetType("System.String"));
+            dt.Columns.Add("TotalRows", System.Type.GetType("System.Int32"));
+            DataRow dr = dt.NewRow();
+            string sql = "select book_no, COUNT(*) AS TotalRows from MEMBER_MAST where convert(datetime, MEMBER_DATE, 103) >= convert(datetime, '" + fdate + "', 103) and convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + todate + "', 103) group by book_no";
             config.singleResult(sql);
-            int I = 0;
+            string book_no = "";
+            int count = 0;
             if (config.dt.Rows.Count > 0)
             {
-                foreach (DataColumn dc in config.dt.Columns)
+                foreach (DataRow dc in config.dt.Rows)
                 {
-                    List<object> x = new List<object>();
-                    x = (from DataRow drr in config.dt.Rows select drr[dc.ColumnName]).ToList();
-                    iData.Add(x);
+                    book_no = Convert.ToString(dc["book_no"]);
+                    count = Convert.ToInt32(dc["TotalRows"]);
+                    dr = dt.NewRow();
+                    dr["book_no"] = "Book No: " + book_no;
+                    dr["TotalRows"] = count;
+                    dt.Rows.Add(dr);
                 }
+            }
+            foreach (DataColumn dc in dt.Columns)
+            {
+                List<object> x = new List<object>();
+                x = (from DataRow drr in dt.Rows select drr[dc.ColumnName]).ToList();
+                iData.Add(x);
             }
             return Json(iData);
         }
-
         public JsonResult GetNumberOfMemberClosing(DashboardViewModel model)
         {
             List<object> iData = new List<object>();
-            string sql = "";
             string fdate = "";
-            //fdate = getfromdate(model);
-            fdate = "01/09/2017";
+            fdate = getfromdate(model);
+            //fdate = "01/09/2017";
             string todate = DateTime.Now.Date.ToString("dd-MM-yyyy").Replace("-", "/");
-            sql = "select book_no, COUNT(*) AS TotalRows from MEMBER_MAST where convert(datetime, MEMBER_CLOSDT, 103) >= convert(datetime, '" + fdate + "', 103) and convert(datetime, MEMBER_CLOSDT, 103) <= convert(datetime, '" + todate + "', 103) group by book_no";
+            DataTable dt = new DataTable();
+            dt.Columns.Add("book_no", System.Type.GetType("System.String"));
+            dt.Columns.Add("TotalRows", System.Type.GetType("System.Int32"));
+            DataRow dr = dt.NewRow();
+            string sql = "select book_no, COUNT(*) AS TotalRows from MEMBER_MAST where convert(datetime, MEMBER_CLOSDT, 103) >= convert(datetime, '" + fdate + "', 103) and convert(datetime, MEMBER_CLOSDT, 103) <= convert(datetime, '" + todate + "', 103) group by book_no";
             config.singleResult(sql);
-            int I = 0;
+            string book_no = "";
+            int count = 0;
             if (config.dt.Rows.Count > 0)
             {
-                foreach (DataColumn dc in config.dt.Columns)
+                foreach (DataRow dc in config.dt.Rows)
                 {
-                    List<object> x = new List<object>();
-                    x = (from DataRow drr in config.dt.Rows select drr[dc.ColumnName]).ToList();
-                    iData.Add(x);
+                    book_no = Convert.ToString(dc["book_no"]);
+                    count = Convert.ToInt32(dc["TotalRows"]);
+                    dr = dt.NewRow();
+                    dr["book_no"] = "Book No: " + book_no;
+                    dr["TotalRows"] = count;
+                    dt.Rows.Add(dr);
                 }
+            }
+            foreach (DataColumn dc in dt.Columns)
+            {
+                List<object> x = new List<object>();
+                x = (from DataRow drr in dt.Rows select drr[dc.ColumnName]).ToList();
+                iData.Add(x);
             }
             return Json(iData);
         }
-
         public JsonResult GetLoanTrasactionsDetails(DashboardViewModel model)
         {
             List<object> iData = new List<object>();
@@ -153,7 +172,6 @@ namespace Amritnagar.Controllers
             }
             return Json(iData);
         }
-
         public JsonResult GetlistOftrasactionAmt(DashboardViewModel model)
         {
             string sql = "";           
@@ -171,5 +189,7 @@ namespace Amritnagar.Controllers
             }          
            return Json(model);
         }
+     
+
     }
 }
