@@ -457,6 +457,7 @@ namespace Amritnagar.Models.Database
                     //    { "VCH_NO",        ld.vch_no },
                     //    { "VCH_SRL",        ld.vch_srl},
                     //    });
+                    
                 }
                 catch (Exception ex)
                 {
@@ -484,7 +485,7 @@ namespace Amritnagar.Models.Database
                         { "BANKCD",       ld.bank_cd},
                         { "CHQ_NO",       ld.chq_no},
                         { "CHQ_DT",       ld.chq_dt},
-                    });
+                    });                   
                 }
                 catch (Exception x)
                 {
