@@ -126,6 +126,7 @@
         Loan Master Entry
     </div>
     <div class="container mt-2" style="margin-bottom:15px">
+         @*<img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />*@
         <div class="row justify-content-md-center">
             <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:900px">
                 <div class="row mt-2">
@@ -150,6 +151,11 @@
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Loan Status:<br />
                         @Html.DropDownListFor(model => model.status_cd, new SelectList(Model.lnstatusdesc, "Value", "Text"), "Select Loan Status", new { @class = "sizebig", @onchange= "changefocus()" })
+                    </div>
+                </div>
+                <div class="row mt-3 mb-2">
+                    <div class="col-12 text-center">
+                        <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -324,7 +330,7 @@
                             <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                                 <input id="BtnCloseFlag" type="button" name="BtnCloseFlag" Height="40" Width="100" class="btn btn-primary btn-sm" value="Close Flag" onclick="Close()" />
                             </div>
-                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-12">                               
                                 <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="Save()" />
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-12 col-12">
@@ -356,9 +362,10 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('#loading').hide();
         });
 
-        function Save() {
+        function Save() {           
             if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {
                 alert("Input Proper Loan Date");
             }
@@ -375,6 +382,7 @@
                 alert("Loan Purpose Cannot Be Blank");
             }
             else {
+                    $('#loading').show();
                     let ModelObject = {
                     branch_id: $('#branch_id').val(),
                     ac_hd: $('#ac_hd').val(),
@@ -405,10 +413,12 @@
                         dataType: "json",
                         success: function (data) {
                             alert(data);
+                            $('#loading').hide();
                             if (data == "Saved Successfully") {
                                 $('#vch_date').val("");
                                 $('#vch_no').val("");
                                 $('#prin_amt').val("");
+                                ShowTable();
                             }
                         },
                         error: function (err) {

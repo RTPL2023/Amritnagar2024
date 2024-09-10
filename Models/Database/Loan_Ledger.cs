@@ -395,6 +395,7 @@ namespace Amritnagar.Models.Database
                     ld.vch_srl = Convert.ToDecimal(dr["vch_srl"]);
                     ld.vch_type = Convert.ToString(dr["VCH_TYPE"]);
                     ld.dr_cr = Convert.ToString(dr["DR_CR"]);
+                    ld.prin_bal = !Convert.IsDBNull(dr["PRIN_BAL"]) ? Convert.ToDecimal(dr["PRIN_BAL"]) : Convert.ToDecimal("0.00");
                     ld.prin_amt = !Convert.IsDBNull(dr["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr["PRIN_AMOUNT"]) : Convert.ToDecimal("0.00");
                     ld.int_amt = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
                     ld.int_due = !Convert.IsDBNull(dr["INT_DUE"]) ? Convert.ToDecimal(dr["INT_DUE"]) : Convert.ToDecimal("0.00");
