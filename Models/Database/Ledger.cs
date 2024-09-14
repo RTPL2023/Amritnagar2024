@@ -278,7 +278,7 @@ namespace Amritnagar.Models.Database
                     config.Insert(ah.ledger_tab, new Dictionary<String, object>()
                     {
                         {"branch_id",   dlsb.branch_id },
-                        {"ac_hd",       dlsb.ac_hd },
+                        //{"ac_hd",       dlsb.ac_hd },
                         {"MEMBER_ID",   dlsb.member_id },
                         {"vch_date",    dlsb.vch_date },
                         {"vch_no",      dlsb.vch_no },

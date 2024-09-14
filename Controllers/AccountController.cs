@@ -274,6 +274,8 @@ namespace Amritnagar.Controllers
             return Json("Record Deleted");
         }
 
+       
+
         /********************************************Online Cash Recieve End*******************************************/
         [HttpGet]
         public ActionResult OnLineCashPayment(OnLineCashPaymentViewModel model)
@@ -453,6 +455,22 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
+        public JsonResult GetamountForvchModify(string amount1, string drcr1)
+        {
+            Temp_Vch_Entry tve = new Temp_Vch_Entry();        
+            VoucherEntryViewModel model = new VoucherEntryViewModel();
+            model.debt_amt = "0";
+            model.crdt_amt = "0";
+            if(drcr1 == "D")
+            {
+                model.debt_amt = amount1;
+            }
+            else
+            {
+                model.crdt_amt = amount1;
+            }
+            return Json(model);
+        }
         public JsonResult SaveVoucherData(string vch_date, string txtvch_No, string vch_Type, string Vch_narr, string branch_id)
         {
             Vch_header vh = new Vch_header();
@@ -470,10 +488,30 @@ namespace Amritnagar.Controllers
             tve.DeleteTempDatabyvchno(vch_no);
             return Json("OVER");
         }
+        public JsonResult DeleteAndAddNewRowInTempTable(string vch_date, string drcr, string vch_achd, string vchpacno, string particular, string amount, string ref_ac_hd, string refacno, string refParticular, string vch_no, int srl)
+        {
+            Temp_Vch_Entry tve = new Temp_Vch_Entry();
+            tve.srl = srl;
+            tve.drcr = drcr;
+            tve.ac_hd = vch_achd;
+            tve.vch_pacno = vchpacno;
+            tve.vch_no = vch_no;
+            tve.paid_to_rcv_frm = particular;
+            //tve.vch_dt = Convert.ToDateTime(vch_date);
+            tve.str_vchdt = vch_date.Replace("-", "/");
+            tve.amount = Convert.ToDecimal(amount);
+            tve.ref_achd = ref_ac_hd;
+            tve.ref_acno = refacno;
+            tve.ref_ac_particulars = refParticular;
+            tve.created_by = Convert.ToString(Session["Uid"]);
+            tve.created_on = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/"));
+            tve.computer_name = Environment.MachineName;
+            tve.UpdateTempVchData(tve);
+            return Json("Over");
+        }
 
         /********************************************Vouchar Entry End*******************************************/
         //********************************Cash Account Report Start******************************************
-
         [HttpGet]
         public ActionResult CashAccountReport(CashAccountReportViewModel model)
         {
@@ -487,12 +525,10 @@ namespace Amritnagar.Controllers
             au.CashAccountSave(model);
             return Json("Saved");
         }
-
         public JsonResult getcashaccountlist(DayBookReportViewModel model)
         {
             List<AccountsUtility> aulst = new List<AccountsUtility>();
             AccountsUtility au = new AccountsUtility();
-
             aulst = au.getCashAccountlistbydaywise();
             if (aulst.Count > 0)
             {
@@ -504,19 +540,242 @@ namespace Amritnagar.Controllers
                 foreach (var a in aulst)
                 {
                     model.tableele = model.tableele + "<tr><td>" + a.ac_majgr_cr + "</td><td>" + a.ac_majgrdesc_cr + "</td><td>" + a.ac_hd_cr + "</td><td>"
-                        + a.ac_desc_cr + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.trans_cr + "</td><td>" + a.total_cr.ToString("0.00") + "</td>" +
-                        "<td>" + a.ac_majgr_dr + "</td><td>" + a.ac_majgrdesc_dr + "</td><td>" + a.ac_hd_dr + "</td><td>" + a.ac_desc_dr + "</td><td>" + a.cash_dr + "</td><td>" + a.trans_dr + "</td><td>" + a.total_dr + "</td><td>" + a.majgr_cash_cr + "</td><td>" + a.majgr_trans_cr + "</td><td>" + a.majgr_tot_cr + "</td><td>" + a.majgr_cash_dr + "</td><td>" + a.majgr_trans_dr + "</td><td>" + a.majgr_tot_dr + "</td></tr>";
-
+                        + a.ac_desc_cr + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.total_cr.ToString("0.00") + "</td>" +
+                        "<td>" + a.ac_majgr_dr + "</td><td>" + a.ac_majgrdesc_dr + "</td><td>" + a.ac_hd_dr + "</td><td>" + a.ac_desc_dr + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.total_dr.ToString("0.00") + "</td><td>" + a.majgr_cash_cr.ToString("0.00") + "</td><td>" + a.majgr_trans_cr.ToString("0.00") + "</td><td>" + a.majgr_tot_cr.ToString("0.00") + "</td><td>" + a.majgr_cash_dr.ToString("0.00") + "</td><td>" + a.majgr_trans_dr.ToString("0.00") + "</td><td>" + a.majgr_tot_dr.ToString("0.00") + "</td></tr>";
                 }
-
             }
-
             return Json(model);
         }
+        public ActionResult CashAccountPrintFiles(string fr_dt, string to_dt, string branch)
+        {
+            List<AccountsUtility> aulst = new List<AccountsUtility>();
+            AccountsUtility au = new AccountsUtility();
+            GL_BALNCE gl = new GL_BALNCE();
+            string opdtstr = "";
+            gl = gl.getopeningbalance(branch, fr_dt);
+            if(gl.gl_date!= null)
+            {
+                opdtstr = "(Cl/Balance of " + gl.gl_date.ToString("dd/MM/yyyy").Replace("-","/") + ")";
+            }
+            else
+            {
+                opdtstr = "";
+            }
+            aulst = au.getCashAccountlistbydaywise();           
+            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));                   
+            using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Account_Details.txt")))
+            {
+                int Pg = 1;
+                int Ln = 0;
+                int i = 1;
+                string cr_cash = "";
+                decimal tot_cash_cr = 0;
+                decimal tot_cash_dr = 0;
+                decimal tot_transfer_cr = 0;
+                decimal tot_transfer_dr = 0;
+                string cr_transfer = "";
+                string dr_cash = "";
+                string dr_transfer = "";
+                string tot_cr = "";
+                string tot_dr = "";
+                string cr_particulars = "";
+                string dr_particulars = "";
+                sw.WriteLine("                                                             AMRIT NAGAR COL. EMP.CO.CR.SO.LTD.                                          ");
+                sw.WriteLine("                                                                RANIGANJ,BURDWAN WEST BENGAL");
+                sw.WriteLine("______________________________________________________________________________________________________________________________________________________________________________");
+                sw.WriteLine("");
+                sw.WriteLine("                                                      CASH ACCOUNT FOR THE PERIOD FROM " + fr_dt + " TO " + to_dt + "                        Run Date: " + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + "   Page: " + Pg);
+                sw.WriteLine("R E C E I P T S                                                                                                                                              P A Y M E N T S");
+                sw.WriteLine("____________________________________________________________________________________________________________________________________________________________________________");
+                sw.WriteLine("ACCOUNT PARTICULARS                              CASH        TRANSFER         TOTAL |ACCOUNT PARTICULARS                              CASH        TRANSFER         TOTAL");
+                sw.WriteLine("____________________________________________________________________________________________________________________________________________________________________________");
+                foreach (var am in aulst)
+                {
+                    if (am.ac_desc_cr.ToString().Length > 25)
+                    {
+                        cr_particulars = (am.ac_desc_cr).Substring(0, 24);
+                    }
+                    else
+                    {
+                        cr_particulars = am.ac_desc_cr;
+                    }
+                    if (am.ac_desc_dr.ToString().Length > 23)
+                    {
+                        dr_particulars = (am.ac_desc_dr).Substring(0, 22);
+                    }
+                    else
+                    {
+                        dr_particulars = am.ac_desc_dr;
+                    }
+                    if (am.cash_cr.ToString().Length > 20)
+                    {
+                        cr_cash = Convert.ToString(am.cash_cr).Substring(0, 19);
+                    }
+                    else if (am.cash_cr == Convert.ToDecimal(0.0000))
+                    {
+                        cr_cash = "";
+                    }
+                    else
+                    {                        
+                        cr_cash = am.cash_cr.ToString("0.00");
+                    }
+                    if (am.trans_cr.ToString().Length > 16)
+                    {
+                        cr_transfer = Convert.ToString(am.trans_cr).Substring(0, 15);
+                    }
+                    else if (am.trans_cr == Convert.ToDecimal(0.0000))
+                    {
+                        cr_transfer = "";
+                    }
+                    else
+                    {
+                        cr_transfer = am.trans_cr.ToString("0.00");
+                    }
+                    if (am.cash_dr.ToString().Length > 20)
+                    {
+                        dr_cash = Convert.ToString(am.cash_dr).Substring(0, 19);
+                    }
+                    else if (am.cash_dr == Convert.ToDecimal(0.0000))
+                    {
+                        dr_cash = "";
+                    }
+                    else
+                    {
+                        dr_cash = am.cash_dr.ToString("0.00");
+                    }
+                    if (am.trans_dr.ToString().Length > 14)
+                    {
+                        dr_transfer = Convert.ToString(am.trans_dr).Substring(0, 13);
+                    }
+                    else if (am.trans_dr == Convert.ToDecimal(0.0000))
+                    {
+                        dr_transfer = "";
+                    }
+                    else
+                    {
+                        dr_transfer = am.trans_dr.ToString("0.00");
+                    }
+                    if (am.total_cr.ToString().Length > 13)
+                    {
+                        tot_cr = Convert.ToString(am.total_cr).Substring(0, 12);
+                    }
+                    else if (am.total_cr == Convert.ToDecimal(0.0000))
+                    {
+                        tot_cr = "";
+                    }
+                    else
+                    {
+                        tot_cr = am.total_cr.ToString("0.00");
+                    }
+                    if (am.total_dr.ToString().Length > 16)
+                    {
+                        tot_dr = Convert.ToString(am.total_dr).Substring(0, 15);
+                    }
+                    else if (am.total_dr == Convert.ToDecimal(0.0000))
+                    {
+                        tot_dr = "";
+                    }
+                    else
+                    {
+                        tot_dr = am.total_dr.ToString("0.00");
+                    }                   
+                    if (Ln > Pg * 65)
+                    {
+                        Pg = Pg + 1;
+                        Ln = Ln + 7;
+                        sw.WriteLine("                                                             AMRIT NAGAR COL. EMP.CO.CR.SO.LTD.                                          ");
+                        sw.WriteLine("                                                                RANIGANJ,BURDWAN WEST BENGAL");
+                        sw.WriteLine("________________________________________________________________________________________________________________________________________________________________________");
+                        sw.WriteLine("");
+                        sw.WriteLine("                                                      CASH ACCOUNT FOR THE PERIOD FROM " + fr_dt + " TO " + to_dt + "                        Run Date: " + DateTime.Now.ToString("dd/MM/yyyy").Replace("-","/") + "   Page: " + Pg);
+                        sw.WriteLine("R E C E I P T S                                                                                                                                              P A Y M E N T S");
+                        sw.WriteLine("____________________________________________________________________________________________________________________________________________________________________________");
+                        sw.WriteLine("ACCOUNT PARTICULARS                              CASH        TRANSFER         TOTAL |ACCOUNT PARTICULARS                              CASH        TRANSFER         TOTAL");
+                        sw.WriteLine("____________________________________________________________________________________________________________________________________________________________________________");
+                    }
+                    sw.WriteLine("".ToString().PadLeft(25 - (cr_particulars).Length) + cr_particulars
+                    + "".ToString().PadLeft(30 - (cr_cash).Length) + cr_cash
+                    + "".ToString().PadLeft(16 - (cr_transfer).Length) + cr_transfer
+                    + "".ToString().PadLeft(13 - (tot_cr).Length) + tot_cr + "|"
+                    + "".ToString().PadLeft(23 - (dr_particulars).Length) + dr_particulars
+                    + "".ToString().PadLeft(32 - (dr_cash).Length) + dr_cash
+                    + "".ToString().PadLeft(14 - (dr_transfer).Length) + dr_transfer
+                    + "".ToString().PadLeft(16 - (tot_dr).Length) + tot_dr);                          
+                    Ln = Ln + 1;
+                    i = i + 1;
+                    tot_cash_cr = tot_cash_cr + am.cash_cr;
+                    tot_cash_dr = tot_cash_dr + am.cash_dr;
+                    tot_transfer_cr = tot_transfer_cr + am.trans_cr;
+                    tot_transfer_dr = tot_transfer_dr + am.trans_dr;
+                }
+                decimal cr_cash_tot = 0;
+                decimal dr_cash_tot = 0;
+                decimal cr_transfer_tot = 0;
+                decimal dr_transfer_tot = 0;
+                if (tot_cash_cr.ToString().Length > 13)
+                {
+                    cr_cash_tot = Convert.ToDecimal((tot_cash_cr).ToString().Substring(0, 12));
+                }
+                else
+                {
+                    cr_cash_tot = tot_cash_cr;
+                }
+                if (tot_cash_dr.ToString().Length > 13)
+                {
+                    dr_cash_tot = Convert.ToDecimal((tot_cash_dr).ToString().Substring(0, 12));
+                }
+                else
+                {
+                    dr_cash_tot = tot_cash_dr;
+                }
+                if (tot_transfer_cr.ToString().Length > 17)
+                {
+                    cr_transfer_tot = Convert.ToDecimal((tot_transfer_cr).ToString().Substring(0, 16));
+                }
+                else
+                {
+                    cr_transfer_tot = tot_transfer_cr;
+                }
+                if (tot_transfer_dr.ToString().Length > 17)
+                {
+                    dr_transfer_tot = Convert.ToDecimal((tot_transfer_dr).ToString().Substring(0, 16));
+                }
+                else
+                {
+                    dr_transfer_tot = tot_transfer_dr;
+                }
+                sw.WriteLine("______________________________________________________________________________________________________________________________________________________________________________");
+                sw.WriteLine("TOTAL RECIEPTS                              " + "".ToString().PadLeft(13 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00") 
+                    + "".ToString().PadLeft(17 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00") 
+                    + "".ToString().PadLeft(16 - (cr_cash_tot + cr_transfer_tot).ToString().Length) + (cr_cash_tot + cr_transfer_tot).ToString("0.00") 
+                    + "|" + "TOTAL PAYMENTS                               " + "".ToString().PadLeft(13 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00") 
+                    + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(16 - (tot_cash_dr + tot_transfer_dr).ToString().Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));
+                sw.WriteLine("CASH OPENING BALAN" + opdtstr +  "   " + gl.gl_bal.ToString("0.00")  +"                             " +"|CASH CLOSING BALANCE         ");
+                sw.WriteLine("_______________________________________________________________________________________________________________________________________________________________________________");              
+                sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(29 - (cr_cash_tot + gl.gl_bal).ToString().Length) + (cr_cash_tot + gl.gl_bal).ToString("0.00")
+                    + "".ToString().PadLeft(18 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(15 - (cr_cash_tot + gl.gl_bal + cr_transfer_tot).ToString().Length) + (cr_cash_tot + gl.gl_bal + cr_transfer_tot).ToString("0.00")
+                    + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
+                    + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(16 - (dr_cash_tot + dr_transfer_tot).ToString().Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));               
+                sw.WriteLine("________________________________________________________________________________________________________________________________________________________________________________");
+                sw.WriteLine("");
+                sw.WriteLine("Cash Account Approved On:                              Prepared By            Signature Of Accountant            Signature Of E.O./Manager/Secretary      Signature Of Treasurer");
+            }            
+            UtilityController u = new UtilityController();
+            var memory = u.DownloadTextFiles("Cash_Account_Details.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+            if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Account_Details.txt")))
+            {
+                System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Account_Details.txt"));
+            }
+            return File(memory.ToArray(), "text/plain", "Cash_Account_Details_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+        }
+
+
         //********************************Cash Account Report End******************************************
 
-        //--------------------------------Day Book Report start-------------------------------------------
-
+        //********************************Day Book Report start********************************
         [HttpGet]
         public ActionResult DayBookReport(DayBookReportViewModel model)
         {
@@ -533,6 +792,7 @@ namespace Amritnagar.Controllers
             var achdname = mi.getac_hhdName(ac_hd);
             return Json(achdname, JsonRequestBehavior.AllowGet);
         }
+
         //public JsonResult getaccountheadparticulars(string ac_hd)
         //{
         //    ACC_HEAD mi = new ACC_HEAD();
@@ -574,9 +834,7 @@ namespace Amritnagar.Controllers
 
         //********************************Day Book Report End******************************************
 
-
         //********************************Cash Book Report Start******************************************
-
         [HttpGet]
         public ActionResult CashBookReport(CashBookReportViewModel model)
         {
@@ -623,7 +881,6 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-
         public JsonResult UpdateGenaralLedger(CashBookReportViewModel model)
         {
 
@@ -634,11 +891,9 @@ namespace Amritnagar.Controllers
             return Json(msg);
         }
 
-
         //********************************Cash Book Report End******************************************
 
         //********************************Cash Bank Position Report Start******************************************
-
         [HttpGet]
         public ActionResult CashBankPositionReport(CashBankPositionReportViewModel model)
         {
@@ -653,14 +908,13 @@ namespace Amritnagar.Controllers
             model = au.getCashBankPositionReport(model);
             return Json(model);
         }
+
+        //********************************Trial Balance Report Start******************************************
         [HttpGet]
         public ActionResult TrialBalanceReport(TrialBalanceReportViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
-
-
             return View(model);
         }
         public JsonResult getdataforTrialBlance(TrialBalanceReportViewModel model)
@@ -681,15 +935,12 @@ namespace Amritnagar.Controllers
             return Json(model);
         }
         public JsonResult SaveDataoftrialblance(TrialBalanceReportViewModel model)
-        {
-           
+        {         
             GL_BALNCE gl = new GL_BALNCE();
-
-         string msg= gl.SaveInDividentLedger(model);
-
+            string msg= gl.SaveInDividentLedger(model);
             return Json(msg);
         }
-
+        //********************************Trial Balance Report End******************************************
         [HttpGet]
         public ActionResult GeneralLedgerReport(GeneralLedgerReportViewModel model)
         {
@@ -747,8 +998,6 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-
-
 
         /********************************************General Ledger End*******************************************/
     }

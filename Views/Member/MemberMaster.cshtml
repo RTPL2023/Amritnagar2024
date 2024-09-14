@@ -407,7 +407,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                             Guardian's Name:<br />
-                            @Html.TextBoxFor(model => model.guardian_name, new { @class = "sizeL", @type = "text", @onkeypress = "javascript: return evtguardian_name(event);" })
+                            @Html.TextBoxFor(model => model.guardian_name, new { @class = "sizeL", @type = "text", @*@onkeypress = "javascript: return evtguardian_name(event);"*@ })
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-12 col-12">
                             Relationship with Member:<br />
@@ -1447,12 +1447,20 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-
-                $("#nominee_add1").val("AMRITNAGAR - COLLIERY");
-                $("#nominee_city").val("RANIGANJ");
-                $("#nominee_dist").val("BURDWAN");
-                $("#nominee_state").val("WB");
+               
+                $('#nominee_add1').val($('#mailAdd_add1').val());
+                $('#nominee_add2').val($('#mailAdd_add2').val());
+                $('#nominee_city').val($('#mailAdd_city').val());
+                $('#nominee_dist').val($('#mailAdd_dist').val());
+                $('#nominee_state').val($('#mailAdd_state').val());
+                $('#nominee_pin').val($('#mailAdd_pin').val());
                 $('#nominee_pin').focus();
+
+                //$("#nominee_add1").val("AMRITNAGAR - COLLIERY");
+                //$("#nominee_city").val("RANIGANJ");
+                //$("#nominee_dist").val("BURDWAN");
+                //$("#nominee_state").val("WB");
+                //$('#nominee_pin').focus();
             }
         }
 

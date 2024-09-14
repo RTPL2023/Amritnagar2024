@@ -92,7 +92,6 @@ namespace Amritnagar.Models.Database
             }
             return glblst;
         }
-
         public string SaveInDividentLedger(TrialBalanceReportViewModel model)
         {
             string sql = string.Empty;
@@ -109,7 +108,6 @@ namespace Amritnagar.Models.Database
             sql = sql + "ORDER BY B.AC_MAJGR,B.AC_SUBGR,A.AC_HD";
             config.singleResult(sql);
             GL_BALNCE gl1 = new GL_BALNCE();
-
             List<GL_BALNCE> glblst = new List<GL_BALNCE>();
             if (config.dt.Rows.Count > 0)
             {
@@ -157,6 +155,24 @@ namespace Amritnagar.Models.Database
             }
             string msg = "Saved Successfully";
             return (msg);
+        }
+        public GL_BALNCE getopeningbalance(string branch, string fr_dt)
+        {
+            string qry;
+            qry = "select * from gl_balnce where branch_id='" + branch + "'";
+            qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            qry = qry + " and  (ac_hd ='CASH')  order by gl_date desc";
+            config.singleResult(qry);
+            GL_BALNCE gl = new GL_BALNCE();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    gl.gl_bal = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                    gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                }
+            }
+            return gl;
         }
 
     }

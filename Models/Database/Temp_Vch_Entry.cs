@@ -107,5 +107,15 @@ namespace Amritnagar.Models.Database
             string sql = "delete from temp_vch_entry where vch_no='" + vchno + "'";
             config.Execute_Query(sql);
         }
+        public void UpdateTempVchData(Temp_Vch_Entry tve)
+        {            
+            string qry = string.Empty;        
+            qry = "delete from temp_vch_entry where vch_no='" + tve.vch_no + "' and srl = '"+ tve.srl +"'";
+            config.Execute_Query(qry);
+            qry = "Insert into temp_vch_entry (srl,drcr,ac_hd,vch_dt,vch_pacno,vch_no,paid_to_rcv_frm,amount,ref_achd,ref_acno,ref_ac_particulars,created_by,created_on,computer_name) values('" + Convert.ToInt32(tve.srl) + "',";
+            qry = qry + "'" + Convert.ToString(tve.drcr) + "','" + Convert.ToString(tve.ac_hd) + "'," + "convert(datetime, '" + tve.str_vchdt + "', 103),'" + Convert.ToString(tve.vch_pacno) + "','" + Convert.ToString(tve.vch_no) + "',";
+            qry = qry + "'" + Convert.ToString(tve.paid_to_rcv_frm) + "','" + Convert.ToDecimal(tve.amount) + "','" + Convert.ToString(tve.ref_achd) + "','" + Convert.ToString(tve.ref_acno) + "','" + Convert.ToString(tve.ref_ac_particulars) + "','" + Convert.ToString(tve.created_by) + "',convert(datetime, '" + tve.created_on + "', 103)" + ",'" + Convert.ToString(tve.computer_name) + "')";
+            config.Execute_Query(qry);
+        }
     }
 }
