@@ -311,9 +311,9 @@
                                 <td>@Html.TextBoxFor(model => model.vchpacno1, new { @class = "sizeM1", @type = "text"})</td>
                                 <td>@Html.TextBoxFor(model => model.particular1, new { @class = "size", @type = "text"})</td>
                                 <td>@Html.TextBoxFor(model => model.amount1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtamountformodification(event);" })</td>
-                                <td>@Html.TextBoxFor(model => model.ref_ac_hd1, new { @class = "sizeM1", @type = "text"})</td>
-                                <td>@Html.TextBoxFor(model => model.refacno1, new { @class = "sizeM1", @type = "text"})</td>
-                                <td>@Html.TextBoxFor(model => model.refParticular1, new { @class = "sizeM1", @type = "text"})</td>
+                                <td>@Html.TextBoxFor(model => model.ref_ac_hd1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evt_ref_ac_hd1(event);" })</td>
+                                <td>@Html.TextBoxFor(model => model.refacno1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtrefacno1(event);" })</td>
+                                <td>@Html.TextBoxFor(model => model.refParticular1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtrefParticular1(event);" })</td>
                                 <td><input id="ButtonInsert" type="button" value="INSERT" name="ButtonInsert" class="btn btn-primary btn-sm" onclick="voucherModify()" /></td>
                             </tr>
                         </table>
@@ -655,7 +655,7 @@
                         $("#crdt_amt").val(parseFloat(data.crdt_amt));
                     }
                     $("#net_amt").val(parseFloat($('#crdt_amt').val()) - parseFloat($('#debt_amt').val()));
-                      $("#ButtonInsert").focus();
+                      $("#ref_ac_hd1").focus();
                   },
                 error: function (err) {
                     alert(err);
@@ -676,7 +676,7 @@
                 refacno: $('#refacno1').val(),
                 refParticular: $('#refParticular1').val(),
                 vch_no: $('#txtvch_No').val(),
-                srl: $('#srl').val()
+                srl: $('#srl').val(),
             };
             //alert(JSON.stringify(ModelObject));
             $.ajax({
@@ -956,10 +956,37 @@
                     f8.value = cells[7].innerHTML;
                     f9.value = cells[8].innerHTML;
                     $('#rowmodify').show();
+                    $('#amount1').focus();
                 };
             }
-
         })();
+
+        function evt_ref_ac_hd1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#refacno1").focus();
+            }
+        }
+
+        function evtrefacno1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#refParticular1").focus();
+            }
+        }
+
+        function evtrefParticular1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#ButtonInsert").focus();
+            }
+        }
 
     </script>
 }
