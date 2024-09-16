@@ -488,14 +488,14 @@ namespace Amritnagar.Controllers
             tve.DeleteTempDatabyvchno(vch_no);
             return Json("OVER");
         }
-        public JsonResult DeleteAndAddNewRowInTempTable(string vch_date, string drcr, string vch_achd, string vchpacno, string particular, string amount, string ref_ac_hd, string refacno, string refParticular, string vch_no, int srl)
+        public JsonResult DeleteAndAddNewRowInTempTable(string vch_date, string drcr, string vch_achd, string vchpacno, string particular, string amount, string ref_ac_hd, string refacno, string refParticular, string txtvch_No, int srl)
         {
             Temp_Vch_Entry tve = new Temp_Vch_Entry();
             tve.srl = srl;
             tve.drcr = drcr;
             tve.ac_hd = vch_achd;
             tve.vch_pacno = vchpacno;
-            tve.vch_no = vch_no;
+            tve.vch_no = txtvch_No;
             tve.paid_to_rcv_frm = particular;
             //tve.vch_dt = Convert.ToDateTime(vch_date);
             tve.str_vchdt = vch_date.Replace("-", "/");
