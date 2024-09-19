@@ -751,14 +751,14 @@ namespace Amritnagar.Controllers
                     + "|" + "TOTAL PAYMENTS                               " + "".ToString().PadLeft(13 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00") 
                     + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
                     + "".ToString().PadLeft(16 - (tot_cash_dr + tot_transfer_dr).ToString().Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));
-                sw.WriteLine("CASH OPENING BALAN" + opdtstr +  "   " + gl.gl_bal.ToString("0.00")  +"                             " +"|CASH CLOSING BALANCE         ");
+                sw.WriteLine("CASH OPENING BALAN" + opdtstr +  "   " + gl.gl_bal.ToString("0.00")  +"                             " +"|CASH CLOSING BALANCE         " +"                    "+ gl.clbal.ToString("0.00"));
                 sw.WriteLine("_______________________________________________________________________________________________________________________________________________________________________________");              
                 sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(29 - (cr_cash_tot + gl.gl_bal).ToString().Length) + (cr_cash_tot + gl.gl_bal).ToString("0.00")
                     + "".ToString().PadLeft(18 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
                     + "".ToString().PadLeft(15 - (cr_cash_tot + gl.gl_bal + cr_transfer_tot).ToString().Length) + (cr_cash_tot + gl.gl_bal + cr_transfer_tot).ToString("0.00")
-                    + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
+                    + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_cash_tot + gl.clbal).ToString().Length) + (dr_cash_tot + gl.clbal).ToString("0.00")
                     + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
-                    + "".ToString().PadLeft(16 - (dr_cash_tot + dr_transfer_tot).ToString().Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));               
+                    + "".ToString().PadLeft(16 - (dr_cash_tot + gl.clbal + dr_transfer_tot).ToString().Length) + (dr_cash_tot + gl.clbal + dr_transfer_tot).ToString("0.00"));               
                 sw.WriteLine("________________________________________________________________________________________________________________________________________________________________________________");
                 sw.WriteLine("");
                 sw.WriteLine("Cash Account Approved On:                              Prepared By            Signature Of Accountant            Signature Of E.O./Manager/Secretary      Signature Of Treasurer");
@@ -771,7 +771,6 @@ namespace Amritnagar.Controllers
             }
             return File(memory.ToArray(), "text/plain", "Cash_Account_Details_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
         }
-
 
         //********************************Cash Account Report End******************************************
 
@@ -847,7 +846,6 @@ namespace Amritnagar.Controllers
         }
         public JsonResult populateCashBook(CashBookReportViewModel model)
         {
-
             AccountsUtility au = new AccountsUtility();
             List<AccountsUtility> aulst = new List<AccountsUtility>();
             if (model.book_type == "Journal Book")
@@ -858,14 +856,12 @@ namespace Amritnagar.Controllers
             {
                 if (model.book_type == "Cash Book")
                 {
-                    model.tablee = "<tr><th> ac hd dr</th><th> ac desc dr </th><th>ac majgr dr</th><th>ac subgr dr</th><th>cash dr</th><th>bank dr</th><th>trans dr</th><th>tot dr</th><th> ac hd cr</th><th> ac desc cr </th><th>ac majgr cr</th><th>ac subgr cr</th><th>cash cr</th><th>bank cr</th><th>trans cr</th><th>tot cr</th></tr>";
+                    model.tablee = "<tr><th>ac hd dr</th><th> ac desc dr </th><th>ac majgr dr</th><th>ac subgr dr</th><th>cash dr</th><th>bank dr</th><th>trans dr</th><th>tot dr</th><th> ac hd cr</th><th> ac desc cr </th><th>ac majgr cr</th><th>ac subgr cr</th><th>cash cr</th><th>bank cr</th><th>trans cr</th><th>tot cr</th></tr>";
                 }
                 else
                 {
-                    model.tablee = "<tr><th> vch date</th><th> vch no </th><th>vch srl</th><th>ac hd</th><th>AC DESC</th><th>VCH DRCR</th><th>vch pacno</th><th>vch acname</th><th>VCH NARR</th><th>DEBIT AMT</th><th>CREDIT AMT</th></tr>";
+                    model.tablee = "<tr><th>vch date</th><th> vch no </th><th>vch srl</th><th>ac hd</th><th>AC DESC</th><th>VCH DRCR</th><th>vch pacno</th><th>vch acname</th><th>VCH NARR</th><th>DEBIT AMT</th><th>CREDIT AMT</th></tr>";
                 }
-
-
                 foreach (var a in aulst)
                 {
                     if (model.book_type == "Cash Book")
@@ -876,29 +872,309 @@ namespace Amritnagar.Controllers
                     {
                         model.tablee = model.tablee+ "<tr><td>" + a.vch_date + "</td><td>" + a.vch_no + "</td><td>" + a.vch_srl + "</td><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.vch_drcr + "</td><td>" + a.vch_pacno + "</td><td>" + a.vch_acname + "</td><td> " + a.vch_narr + "</td><td>" + a.debit_amt.ToString("0.00") + "</td><td>" + a.credit_amt.ToString("0.00") + "</td></tr>";
                     }
-                }
-                
+                }               
             }
             return Json(model);
         }
         public JsonResult UpdateGenaralLedger(CashBookReportViewModel model)
         {
-
             AccountsUtility au = new AccountsUtility();
-
             string msg = au.updateGenaralLedger(model);
-
             return Json(msg);
         }
+        public ActionResult getcashbookprintfile(CashBookReportViewModel model)
+        {
+            AccountsUtility au = new AccountsUtility();
+            List<AccountsUtility> aulst = new List<AccountsUtility>();
+            if (model.book_type == "Journal Book")
+            {
+                aulst = au.populate_journalBook(model);
+            }              
+            if (model.book_type == "Cash Book")
+            {
+                aulst = au.PopulateCashbook(model);
+                using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Book_Details.txt")))
+                {
+                    int Pg = 1;
+                    int Ln = 0;
+                    int i = 1;
+                    string cr_cash = "";
+                    string cr_bank = "";
+                    string dr_bank = "";
+                    decimal tot_cash_cr = 0;
+                    decimal tot_cash_dr = 0;
+                    decimal tot_transfer_cr = 0;
+                    decimal tot_transfer_dr = 0;
+                    decimal tot_bank_dr = 0;
+                    decimal tot_bank_cr = 0;
+                    string cr_transfer = "";
+                    string dr_cash = "";
+                    string dr_transfer = "";
+                    string tot_cr = "";
+                    string tot_dr = "";
+                    string cr_particulars = "";
+                    string dr_particulars = "";
+                    sw.WriteLine("                                          AMRIT NAGAR COL. EMP.CO.CR.SO.LTD.(MAIN BRANCH)                                          ");
+                    sw.WriteLine("                                           GENERAL CASH BOOK FOR  " + model.fr_dt);
+                    sw.WriteLine("                                                                                                                                    Run Date: " + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + "   Page: " + Pg);
+                    sw.WriteLine("");
+                    sw.WriteLine("R E C E I P T S                                                                                                                                              P A Y M E N T S");
+                    sw.WriteLine("---------------------------------------------+------------+------------+------------+--------------++----------------------------------------------+------------+------------+------------+--------------");
+                    sw.WriteLine("ACCOUNT PARTICULARS                          |  TRANSFER  |    CASH    |    BANK    |    TOTAL     || ACCOUNT PARTICULARS                          |  TRANSFER  |    CASH    |    BANK    |    TOTAL");
+                    sw.WriteLine("---------------------------------------------+------------+------------+------------+--------------++----------------------------------------------+------------+------------+------------+--------------");
+                    foreach (var am in aulst)
+                    {
+                        if (am.ac_desc_cr.ToString().Length > 25)
+                        {
+                            cr_particulars = (am.ac_desc_cr).Substring(0, 24);
+                        }
+                        else
+                        {
+                            cr_particulars = am.ac_desc_cr;
+                        }
+                        if (am.ac_desc_dr.ToString().Length > 23)
+                        {
+                            dr_particulars = (am.ac_desc_dr).Substring(0, 22);
+                        }
+                        else
+                        {
+                            dr_particulars = am.ac_desc_dr;
+                        }
+                        if (am.cash_cr.ToString().Length > 13)
+                        {
+                            cr_cash = Convert.ToString(am.cash_cr).Substring(0, 12);
+                        }
+                        else if (am.cash_cr == Convert.ToDecimal(0.0000))
+                        {
+                            cr_cash = "";
+                        }
+                        else
+                        {
+                            cr_cash = am.cash_cr.ToString("0.00");
+                        }
+                        if (am.trans_cr.ToString().Length > 16)
+                        {
+                            cr_transfer = Convert.ToString(am.trans_cr).Substring(0, 15);
+                        }
+                        else if (am.trans_cr == Convert.ToDecimal(0.0000))
+                        {
+                            cr_transfer = "";
+                        }
+                        else
+                        {
+                            cr_transfer = am.trans_cr.ToString("0.00");
+                        }
+                        if (am.bank_cr.ToString().Length > 16)
+                        {
+                            cr_bank = Convert.ToString(am.bank_cr).Substring(0, 15);
+                        }
+                        else if (am.bank_cr == Convert.ToDecimal(0.0000))
+                        {
+                            cr_bank = "";
+                        }
+                        else
+                        {
+                            cr_bank = am.bank_cr.ToString("0.00");
+                        }
+                        if (am.bank_dr.ToString().Length > 13)
+                        {
+                            dr_bank = Convert.ToString(am.bank_cr).Substring(0, 12);
+                        }
+                        else if (am.bank_dr == Convert.ToDecimal(0.0000))
+                        {
+                            dr_bank = "";
+                        }
+                        else
+                        {
+                            dr_bank = am.bank_dr.ToString("0.00");
+                        }
+                        if (am.cash_dr.ToString().Length > 17)
+                        {
+                            dr_cash = Convert.ToString(am.cash_dr).Substring(0, 16);
+                        }
+                        else if (am.cash_dr == Convert.ToDecimal(0.0000))
+                        {
+                            dr_cash = "";
+                        }
+                        else
+                        {
+                            dr_cash = am.cash_dr.ToString("0.00");
+                        }
+                        if (am.trans_dr.ToString().Length > 14)
+                        {
+                            dr_transfer = Convert.ToString(am.trans_dr).Substring(0, 13);
+                        }
+                        else if (am.trans_dr == Convert.ToDecimal(0.0000))
+                        {
+                            dr_transfer = "";
+                        }
+                        else
+                        {
+                            dr_transfer = am.trans_dr.ToString("0.00");
+                        }
+                        if (am.tot_cr.ToString().Length > 12)
+                        {
+                            tot_cr = Convert.ToString(am.tot_cr).Substring(0, 11);
+                        }
+                        else if (am.tot_cr == Convert.ToDecimal(0.0000))
+                        {
+                            tot_cr = "";
+                        }
+                        else
+                        {
+                            tot_cr = am.tot_cr.ToString("0.00");
+                        }
+                        if (am.tot_dr.ToString().Length > 15)
+                        {
+                            tot_dr = Convert.ToString(am.tot_dr).Substring(0, 14);
+                        }
+                        else if (am.tot_dr == Convert.ToDecimal(0.0000))
+                        {
+                            tot_dr = "";
+                        }
+                        else
+                        {
+                            tot_dr = am.tot_dr.ToString("0.00");
+                        }
+                        if (Ln > Pg * 65)
+                        {
+                            Pg = Pg + 1;
+                            Ln = Ln + 7;
+                            sw.WriteLine("                                          AMRIT NAGAR COL. EMP.CO.CR.SO.LTD.(MAIN BRANCH)                                          ");
+                            sw.WriteLine("                                           GENERAL CASH BOOK FOR  " + model.fr_dt);
+                            sw.WriteLine("                                                                                                                                    Run Date: " + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + "   Page: " + Pg);
+                            sw.WriteLine("");
+                            sw.WriteLine("R E C E I P T S                                                                                                                                              P A Y M E N T S");
+                            sw.WriteLine("---------------------------------------------+------------+------------+------------+--------------++----------------------------------------------+------------+------------+------------+--------------");
+                            sw.WriteLine("ACCOUNT PARTICULARS                          |  TRANSFER  |    CASH    |    BANK    |    TOTAL     || ACCOUNT PARTICULARS                          |  TRANSFER  |    CASH    |    BANK    |    TOTAL");
+                            sw.WriteLine("---------------------------------------------+------------+------------+------------+--------------++----------------------------------------------+------------+------------+------------+--------------");
+                        }
+                        sw.WriteLine("".ToString().PadLeft(25 - (cr_particulars).Length) + cr_particulars
+                        + "".ToString().PadLeft(33 - (cr_transfer).Length) + cr_transfer
+                        + "".ToString().PadLeft(13 - (cr_cash).Length) + cr_cash
+                        + "".ToString().PadLeft(16 - (cr_bank).Length) + cr_bank
+                        + "".ToString().PadLeft(12 - (tot_cr).Length) + tot_cr + "|"+ "|"
+                        + "".ToString().PadLeft(23 - (dr_particulars).Length) + dr_particulars
+                        + "".ToString().PadLeft(32 - (dr_transfer).Length) + dr_transfer
+                        + "".ToString().PadLeft(17 - (dr_cash).Length) + dr_cash
+                        + "".ToString().PadLeft(13 - (dr_bank).Length) + dr_bank
+                        + "".ToString().PadLeft(15 - (tot_dr).Length) + tot_dr);
+                        Ln = Ln + 1;
+                        i = i + 1;
+                        tot_cash_cr = tot_cash_cr + am.cash_cr;
+                        tot_cash_dr = tot_cash_dr + am.cash_dr;
+                        tot_transfer_cr = tot_transfer_cr + am.trans_cr;
+                        tot_transfer_dr = tot_transfer_dr + am.trans_dr;
+                        tot_bank_cr = tot_bank_cr + am.bank_cr;
+                        tot_bank_dr = tot_bank_dr + am.bank_dr;
+                    }
+                    decimal cr_cash_tot = 0;
+                    decimal dr_cash_tot = 0;
+                    decimal cr_transfer_tot = 0;
+                    decimal dr_transfer_tot = 0;
+                    decimal cr_bank_tot = 0;
+                    decimal dr_bank_tot = 0;
+                    if (tot_cash_cr.ToString().Length > 13)
+                    {
+                        cr_cash_tot = Convert.ToDecimal((tot_cash_cr).ToString().Substring(0, 12));
+                    }
+                    else
+                    {
+                        cr_cash_tot = tot_cash_cr;
+                    }
+                    if (tot_bank_cr.ToString().Length > 13)
+                    {
+                        cr_bank_tot = Convert.ToDecimal((tot_bank_cr).ToString().Substring(0, 12));
+                    }
+                    else
+                    {
+                        cr_bank_tot = tot_bank_cr;
+                    }
+                    if (tot_cash_dr.ToString().Length > 13)
+                    {
+                        dr_cash_tot = Convert.ToDecimal((tot_cash_dr).ToString().Substring(0, 12));
+                    }
+                    else
+                    {
+                        dr_cash_tot = tot_cash_dr;
+                    }
+                    if (tot_bank_dr.ToString().Length > 13)
+                    {
+                        dr_bank_tot = Convert.ToDecimal((tot_bank_dr).ToString().Substring(0, 12));
+                    }
+                    else
+                    {
+                        dr_bank_tot = tot_bank_dr;
+                    }
+                    if (tot_transfer_cr.ToString().Length > 29)
+                    {
+                        cr_transfer_tot = Convert.ToDecimal((tot_transfer_cr).ToString().Substring(0, 28));
+                    }
+                    else
+                    {
+                        cr_transfer_tot = tot_transfer_cr;
+                    }
+                    if (tot_transfer_dr.ToString().Length > 30)
+                    {
+                        dr_transfer_tot = Convert.ToDecimal((tot_transfer_dr).ToString().Substring(0, 29));
+                    }
+                    else
+                    {
+                        dr_transfer_tot = tot_transfer_dr;
+                    }
+                    sw.WriteLine("---------------------------------------------------------------------------------------------------++----------------------------------------------------------------------------------------------------");
+                    sw.WriteLine("TOTAL RECIEPTS                              " + "".ToString().PadLeft(13 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
+                        + "".ToString().PadLeft(19 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00")
+                        + "".ToString().PadLeft(13 - (cr_bank_tot).ToString().Length) + cr_bank_tot.ToString("0.00")
+                        + "".ToString().PadLeft(19 - (cr_cash_tot + cr_transfer_tot + cr_bank_tot).ToString().Length) + (cr_cash_tot + cr_transfer_tot + cr_bank_tot).ToString("0.00")
+                        + "|" + "TOTAL PAYMENTS                               " + "".ToString().PadLeft(13 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00") + "|"
+                        + "".ToString().PadLeft(19 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
+                        + "".ToString().PadLeft(17 - (dr_bank_tot).ToString().Length) + dr_bank_tot.ToString("0.00")
+                        + "".ToString().PadLeft(15 - (tot_cash_dr + tot_transfer_dr + dr_bank_tot).ToString().Length) + (dr_cash_tot + dr_transfer_tot + dr_bank_tot).ToString("0.00"));
+                    sw.WriteLine("                                                                                                   ||                                                                                               ");
+                    //sw.WriteLine("CASH OPENING BALAN" + opdtstr + "   " + gl.gl_bal.ToString("0.00") + "                             " + "|CASH CLOSING BALANCE         " + "                    " + gl.clbal.ToString("0.00"));
+                    sw.WriteLine("===================================================================================================++====================================================================================================");
+                    sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(29 - (cr_transfer_tot).ToString().Length) + (cr_transfer_tot).ToString("0.00")
+                        + "".ToString().PadLeft(18 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00")
+                        + "".ToString().PadLeft(14 - (cr_bank_tot).ToString().Length) + cr_bank_tot.ToString("0.00")
+                        + "".ToString().PadLeft(18 - (cr_transfer_tot + cr_cash_tot + cr_bank_tot).ToString().Length) + (cr_transfer_tot + cr_cash_tot + cr_bank_tot).ToString("0.00") + "|"
+                        + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_transfer_tot).ToString().Length) + (dr_transfer_tot).ToString("0.00")
+                        + "".ToString().PadLeft(17 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
+                        + "".ToString().PadLeft(17 - (dr_bank_tot).ToString().Length) + dr_bank_tot.ToString("0.00")
+                        + "".ToString().PadLeft(17 - (dr_transfer_tot + dr_cash_tot + dr_bank_tot).ToString().Length) + (dr_transfer_tot + dr_cash_tot + dr_bank_tot).ToString("0.00"));
+                    sw.WriteLine("===================================================================================================++====================================================================================================");
+                    sw.WriteLine("Opening Cash :                                                                                        Closing Cash :                                                                                     ");
+                    sw.WriteLine("");
+                    sw.WriteLine("=========================================================================================================================================================================================================");
+                    sw.WriteLine("                                                                                                                                                                                            End of Report");
+                    sw.WriteLine("");
+                    sw.WriteLine("Checked & Verified :                                                Authenticated :");
+                    sw.WriteLine("");
+                    sw.WriteLine("");
+                    sw.WriteLine("Signature of Accountant                                             Signature of Manager");
+                    sw.WriteLine("                                            Bank Seal");
+                }
+            }                            
+            UtilityController u = new UtilityController();
+            var memory = u.DownloadTextFiles("Cash_Book_Details.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+            if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Book_Details.txt")))
+            {
+                System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Book_Details.txt"));
+            }
+            return File(memory.ToArray(), "text/plain", "Cash_Book_Details_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");            
+        }
 
-        //********************************Cash Book Report End******************************************
+
+
+
+        //********************************Cash Book Report End****************************************************
 
         //********************************Cash Bank Position Report Start******************************************
         [HttpGet]
         public ActionResult CashBankPositionReport(CashBankPositionReportViewModel model)
         {
             UtilityController u = new UtilityController();
-
+            model.as_on_dt = DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/");
             model.BranchDesc = u.getBranchMastDetails();
             return View(model);
         }

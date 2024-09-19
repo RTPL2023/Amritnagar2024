@@ -18,10 +18,13 @@ namespace Amritnagar.Models.Database
         public string ac_hd { get; set; }
         public string ac_desc { get; set; }
         public decimal gl_bal { get; set; }
+        public decimal clbal { get; set; }
 
         public decimal dbalance { get; set; }
         public decimal cbalance { get; set; }
         public decimal grouptotal { get; set; }
+        public decimal tot_dr { get; set; }
+        public decimal tot_cr { get; set; }
         public string majorgroup { get; set; }
         public string acchd { get; set; }
         public string ac_majgr { get; set; }
@@ -172,6 +175,19 @@ namespace Amritnagar.Models.Database
                     gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
                 }
             }
+            qry = "SELECT SUM(IIF(A.VCH_DRCR='D',A.VCH_AMT,0)) AS TOT_CR,";
+            qry = qry + "SUM(IIF(A.VCH_DRCR='C',A.VCH_AMT,0)) AS TOT_DR FROM VCH_DETAIL A,VCH_HEADER B WHERE ";
+            qry = qry + "(A.BRANCH_ID=B.BRANCH_ID AND A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) AND ";
+            qry = qry + "B.BRANCH_ID='" + branch + "' AND B.VCH_TYPE='C' AND ";
+            qry = qry + "convert(varchar,B.VCH_DATE, 103) = convert(varchar, '" + fr_dt + "', 103)";
+            config.singleResult(qry);
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                gl.tot_dr = !Convert.IsDBNull(dr1["tot_dr"]) ? Convert.ToDecimal(dr1["tot_dr"]) : Convert.ToDecimal("0");
+                gl.tot_cr = !Convert.IsDBNull(dr1["tot_cr"]) ? Convert.ToDecimal(dr1["tot_cr"]) : Convert.ToDecimal("0");
+            }
+            gl.clbal = gl.gl_bal + gl.tot_cr - gl.tot_dr;
             return gl;
         }
 
