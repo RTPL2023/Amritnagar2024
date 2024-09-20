@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 
 
+
 namespace Amritnagar.Models.Database
 {
     public class GL_BALNCE
@@ -19,7 +20,8 @@ namespace Amritnagar.Models.Database
         public string ac_desc { get; set; }
         public decimal gl_bal { get; set; }
         public decimal clbal { get; set; }
-
+        public decimal op_cash { get; set; }
+        public decimal op_bank { get; set; }
         public decimal dbalance { get; set; }
         public decimal cbalance { get; set; }
         public decimal grouptotal { get; set; }
@@ -159,7 +161,7 @@ namespace Amritnagar.Models.Database
             string msg = "Saved Successfully";
             return (msg);
         }
-        public GL_BALNCE getopeningbalance(string branch, string fr_dt)
+        public GL_BALNCE getopeningbalanceforcashaccount(string branch, string fr_dt)
         {
             string qry;
             qry = "select * from gl_balnce where branch_id='" + branch + "'";
@@ -174,22 +176,38 @@ namespace Amritnagar.Models.Database
                     gl.gl_bal = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
                     gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
                 }
+            }            
+            return gl;
+        }
+        public GL_BALNCE getopeningbalanceforcashbook(string branch, string fr_dt)
+        {
+            string qry;
+            GL_BALNCE gl = new GL_BALNCE();
+            qry = "select * from gl_balnce where branch_id='" + branch + "'";
+            qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            qry = qry + " and (ac_hd in ('CASH'))  order by gl_date desc";
+            config.singleResult(qry);
+            
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr = (DataRow)config.dt.Rows[0];
+                                   
+                  gl.op_cash = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                  gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                  gl.op_cash = Math.Abs(gl.op_cash);                                   
             }
-            qry = "SELECT SUM(IIF(A.VCH_DRCR='D',A.VCH_AMT,0)) AS TOT_CR,";
-            qry = qry + "SUM(IIF(A.VCH_DRCR='C',A.VCH_AMT,0)) AS TOT_DR FROM VCH_DETAIL A,VCH_HEADER B WHERE ";
-            qry = qry + "(A.BRANCH_ID=B.BRANCH_ID AND A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) AND ";
-            qry = qry + "B.BRANCH_ID='" + branch + "' AND B.VCH_TYPE='C' AND ";
-            qry = qry + "convert(varchar,B.VCH_DATE, 103) = convert(varchar, '" + fr_dt + "', 103)";
+            qry = "select * from gl_balnce where branch_id='" + branch + "'";
+            qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            qry = qry + " and (ac_hd in ('BANK'))  order by gl_date desc";
             config.singleResult(qry);
             if (config.dt.Rows.Count > 0)
             {
-                DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                gl.tot_dr = !Convert.IsDBNull(dr1["tot_dr"]) ? Convert.ToDecimal(dr1["tot_dr"]) : Convert.ToDecimal("0");
-                gl.tot_cr = !Convert.IsDBNull(dr1["tot_cr"]) ? Convert.ToDecimal(dr1["tot_cr"]) : Convert.ToDecimal("0");
+                DataRow dr = (DataRow)config.dt.Rows[0];              
+                gl.op_bank = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                gl.op_bank = Math.Abs(gl.op_bank);
             }
-            gl.clbal = gl.gl_bal + gl.tot_cr - gl.tot_dr;
             return gl;
         }
-
     }
 }

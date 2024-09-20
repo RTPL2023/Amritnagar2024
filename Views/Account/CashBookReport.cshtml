@@ -228,7 +228,6 @@
 
         });
 
-
         function evtachd(evt) {
 
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -260,6 +259,7 @@
                 }
              });
         }
+
         function evtdaybook_dt(evt) {
 
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -277,7 +277,6 @@
                 book_type: $('#book_type').val(),
                 fr_dt: $('#fr_dt').val(),
                 to_dt: $('#to_dt').val(),
-
             };
             $.ajax({
                 type: "POST",
@@ -324,12 +323,7 @@
 
          function DownloadTextFiles() {
              window.location.href = "@Url.Action("getcashbookprintfile", "Account")" + "?ac_hd=" + $('#ac_hd').val() + "&branch=" + $('#branch').val() + "&book_type=" + $('#book_type').val() + "&fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val();
-        }
-
-
-
-
-
+         }
 
     </script>
 }

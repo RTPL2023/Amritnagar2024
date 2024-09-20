@@ -252,8 +252,6 @@ namespace Amritnagar.Models.Database
             }
             return aulst;
         }
-
-
         public string CashAccountSave(CashAccountReportViewModel model)
         {
             decimal TOT_MGCASH_DR = 0;
@@ -365,7 +363,6 @@ namespace Amritnagar.Models.Database
             }
             return ac_desc;
         }
-
         public void saveinrep_acc_cashacc(AccountsUtility au)
         {
             try
@@ -400,7 +397,6 @@ namespace Amritnagar.Models.Database
             }
 
         }
-
         public List<AccountsUtility> getCashAccountlistbydaywise()
         {
             string sql = "SELECT * FROM rep_acc_cashacc";
@@ -436,8 +432,6 @@ namespace Amritnagar.Models.Database
             }
             return aulst;
         }
-
-
         public CashBankPositionReportViewModel getCashBankPositionReport(CashBankPositionReportViewModel model)
         {
             decimal GD_OPBAL = 0;
@@ -612,7 +606,6 @@ namespace Amritnagar.Models.Database
             saveinbank_inv_balnce(au1);
             return model;
         }
-
         public void saveinbank_inv_balnce(AccountsUtility au)
         {
             try
@@ -875,7 +868,6 @@ namespace Amritnagar.Models.Database
             }
 
         }
-
         public List<AccountsUtility> populate_journalBook(CashBookReportViewModel model)
         {
             string sql = string.Empty;
@@ -978,7 +970,6 @@ namespace Amritnagar.Models.Database
             }
             return aulst;
         }
-
         public string updateGenaralLedger(CashBookReportViewModel model)
         {
             decimal xcr_amt = 0;

@@ -275,7 +275,6 @@ namespace Amritnagar.Controllers
         }
 
        
-
         /********************************************Online Cash Recieve End*******************************************/
         [HttpGet]
         public ActionResult OnLineCashPayment(OnLineCashPaymentViewModel model)
@@ -552,7 +551,7 @@ namespace Amritnagar.Controllers
             AccountsUtility au = new AccountsUtility();
             GL_BALNCE gl = new GL_BALNCE();
             string opdtstr = "";
-            gl = gl.getopeningbalance(branch, fr_dt);
+            gl = gl.getopeningbalanceforcashaccount(branch, fr_dt);
             if(gl.gl_date!= null)
             {
                 opdtstr = "(Cl/Balance of " + gl.gl_date.ToString("dd/MM/yyyy").Replace("-","/") + ")";
@@ -573,6 +572,7 @@ namespace Amritnagar.Controllers
                 decimal tot_cash_dr = 0;
                 decimal tot_transfer_cr = 0;
                 decimal tot_transfer_dr = 0;
+                decimal cl_bal = 0;
                 string cr_transfer = "";
                 string dr_cash = "";
                 string dr_transfer = "";
@@ -590,7 +590,7 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("ACCOUNT PARTICULARS                              CASH        TRANSFER         TOTAL |ACCOUNT PARTICULARS                              CASH        TRANSFER         TOTAL");
                 sw.WriteLine("____________________________________________________________________________________________________________________________________________________________________________");
                 foreach (var am in aulst)
-                {
+                {                    
                     if (am.ac_desc_cr.ToString().Length > 25)
                     {
                         cr_particulars = (am.ac_desc_cr).Substring(0, 24);
@@ -744,6 +744,7 @@ namespace Amritnagar.Controllers
                 {
                     dr_transfer_tot = tot_transfer_dr;
                 }
+                cl_bal = gl.gl_bal + ((cr_cash_tot + cr_transfer_tot) - (tot_cash_dr + tot_transfer_dr));
                 sw.WriteLine("______________________________________________________________________________________________________________________________________________________________________________");
                 sw.WriteLine("TOTAL RECIEPTS                              " + "".ToString().PadLeft(13 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00") 
                     + "".ToString().PadLeft(17 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00") 
@@ -751,14 +752,15 @@ namespace Amritnagar.Controllers
                     + "|" + "TOTAL PAYMENTS                               " + "".ToString().PadLeft(13 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00") 
                     + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
                     + "".ToString().PadLeft(16 - (tot_cash_dr + tot_transfer_dr).ToString().Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));
-                sw.WriteLine("CASH OPENING BALAN" + opdtstr +  "   " + gl.gl_bal.ToString("0.00")  +"                             " +"|CASH CLOSING BALANCE         " +"                    "+ gl.clbal.ToString("0.00"));
+                sw.WriteLine("CASH OPENING BALAN" + opdtstr + "".ToString().PadLeft(13 - (gl.gl_bal).ToString().Length) + gl.gl_bal.ToString("0.00")
+                    + "".ToString().PadLeft(29 - ("").ToString().Length) + "" + "|CASH CLOSING BALANCE" + "".ToString().PadLeft(38 - (cl_bal).ToString().Length) + cl_bal.ToString("0.00"));
                 sw.WriteLine("_______________________________________________________________________________________________________________________________________________________________________________");              
                 sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(29 - (cr_cash_tot + gl.gl_bal).ToString().Length) + (cr_cash_tot + gl.gl_bal).ToString("0.00")
                     + "".ToString().PadLeft(18 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
                     + "".ToString().PadLeft(15 - (cr_cash_tot + gl.gl_bal + cr_transfer_tot).ToString().Length) + (cr_cash_tot + gl.gl_bal + cr_transfer_tot).ToString("0.00")
-                    + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_cash_tot + gl.clbal).ToString().Length) + (dr_cash_tot + gl.clbal).ToString("0.00")
+                    + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_cash_tot + cl_bal).ToString().Length) + (dr_cash_tot + cl_bal).ToString("0.00")
                     + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
-                    + "".ToString().PadLeft(16 - (dr_cash_tot + gl.clbal + dr_transfer_tot).ToString().Length) + (dr_cash_tot + gl.clbal + dr_transfer_tot).ToString("0.00"));               
+                    + "".ToString().PadLeft(16 - (dr_cash_tot + cl_bal + dr_transfer_tot).ToString().Length) + (dr_cash_tot + cl_bal + dr_transfer_tot).ToString("0.00"));               
                 sw.WriteLine("________________________________________________________________________________________________________________________________________________________________________________");
                 sw.WriteLine("");
                 sw.WriteLine("Cash Account Approved On:                              Prepared By            Signature Of Accountant            Signature Of E.O./Manager/Secretary      Signature Of Treasurer");
@@ -774,7 +776,7 @@ namespace Amritnagar.Controllers
 
         //********************************Cash Account Report End******************************************
 
-        //********************************Day Book Report start********************************
+        //********************************Day Book Report start**********************************************
         [HttpGet]
         public ActionResult DayBookReport(DayBookReportViewModel model)
         {
@@ -892,6 +894,21 @@ namespace Amritnagar.Controllers
             }              
             if (model.book_type == "Cash Book")
             {
+                GL_BALNCE gl = new GL_BALNCE();
+                string opdtstr = "";
+                string cldtstr = "";
+                decimal closed_cash = 0;
+                decimal closed_bank = 0;
+                gl = gl.getopeningbalanceforcashbook(model.branch, model.fr_dt);                               
+                if (gl.gl_date != null)
+                {
+                    opdtstr = "(Cl/Bal of " + gl.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + ")";
+                }
+                else
+                {
+                    opdtstr = "";
+                }
+                cldtstr = "(As On " + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + ")";              
                 aulst = au.PopulateCashbook(model);
                 using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Book_Details.txt")))
                 {
@@ -912,6 +929,8 @@ namespace Amritnagar.Controllers
                     string dr_transfer = "";
                     string tot_cr = "";
                     string tot_dr = "";
+                    decimal totcr = 0;
+                    decimal totdr = 0;
                     string cr_particulars = "";
                     string dr_particulars = "";
                     sw.WriteLine("                                          AMRIT NAGAR COL. EMP.CO.CR.SO.LTD.(MAIN BRANCH)                                          ");
@@ -924,6 +943,7 @@ namespace Amritnagar.Controllers
                     sw.WriteLine("---------------------------------------------+------------+------------+------------+--------------++----------------------------------------------+------------+------------+------------+--------------");
                     foreach (var am in aulst)
                     {
+                        
                         if (am.ac_desc_cr.ToString().Length > 25)
                         {
                             cr_particulars = (am.ac_desc_cr).Substring(0, 24);
@@ -1067,6 +1087,16 @@ namespace Amritnagar.Controllers
                         tot_transfer_dr = tot_transfer_dr + am.trans_dr;
                         tot_bank_cr = tot_bank_cr + am.bank_cr;
                         tot_bank_dr = tot_bank_dr + am.bank_dr;
+                        //if (tot_cr != null && tot_cr!="")
+                        //{
+                        //    totcr = Convert.ToDecimal(tot_cr);
+                        //}                      
+                        //if (tot_dr != null && tot_dr != "")
+                        //{
+                        //    totdr = Convert.ToDecimal(tot_dr);
+                        //}
+                        //closed_cash = gl.op_cash + Convert.ToDecimal(totcr) - Convert.ToDecimal(totdr);
+                        //closed_bank = gl.op_bank + Convert.ToDecimal(totcr) - Convert.ToDecimal(totdr);                        
                     }
                     decimal cr_cash_tot = 0;
                     decimal dr_cash_tot = 0;
@@ -1074,6 +1104,9 @@ namespace Amritnagar.Controllers
                     decimal dr_transfer_tot = 0;
                     decimal cr_bank_tot = 0;
                     decimal dr_bank_tot = 0;
+                    decimal op_cash = 0;
+                    decimal op_bank = 0;
+                    decimal cl_bank = 0;                   
                     if (tot_cash_cr.ToString().Length > 13)
                     {
                         cr_cash_tot = Convert.ToDecimal((tot_cash_cr).ToString().Substring(0, 12));
@@ -1098,9 +1131,9 @@ namespace Amritnagar.Controllers
                     {
                         dr_cash_tot = tot_cash_dr;
                     }
-                    if (tot_bank_dr.ToString().Length > 13)
+                    if (tot_bank_dr.ToString().Length > 14)
                     {
-                        dr_bank_tot = Convert.ToDecimal((tot_bank_dr).ToString().Substring(0, 12));
+                        dr_bank_tot = Convert.ToDecimal((tot_bank_dr).ToString().Substring(0, 13));
                     }
                     else
                     {
@@ -1122,26 +1155,57 @@ namespace Amritnagar.Controllers
                     {
                         dr_transfer_tot = tot_transfer_dr;
                     }
+                    if (gl.op_cash.ToString().Length > 34)
+                    {
+                        op_cash = Convert.ToDecimal((gl.op_cash).ToString().Substring(0, 33));
+                    }
+                    else
+                    {
+                        op_cash = gl.op_cash;
+                    }
+                    if (gl.op_bank.ToString().Length > 14)
+                    {
+                        op_bank = Convert.ToDecimal((gl.op_bank).ToString().Substring(0, 13));
+                    }
+                    else
+                    {
+                        op_bank = gl.op_bank;
+                    }
+                    closed_cash = gl.op_cash + ((cr_cash_tot + cr_transfer_tot + cr_bank_tot) - (dr_cash_tot + dr_bank_tot + dr_transfer_tot));
+                    closed_bank = gl.op_bank + ((cr_cash_tot + cr_transfer_tot + cr_bank_tot) - (dr_cash_tot + dr_bank_tot + dr_transfer_tot));
+                    if (closed_bank.ToString().Length > 14)
+                    {
+                        cl_bank = Convert.ToDecimal((closed_bank).ToString().Substring(0, 13));
+                    }
+                    else
+                    {
+                        cl_bank = closed_bank;
+                    }
                     sw.WriteLine("---------------------------------------------------------------------------------------------------++----------------------------------------------------------------------------------------------------");
                     sw.WriteLine("TOTAL RECIEPTS                              " + "".ToString().PadLeft(13 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
                         + "".ToString().PadLeft(19 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00")
                         + "".ToString().PadLeft(13 - (cr_bank_tot).ToString().Length) + cr_bank_tot.ToString("0.00")
-                        + "".ToString().PadLeft(19 - (cr_cash_tot + cr_transfer_tot + cr_bank_tot).ToString().Length) + (cr_cash_tot + cr_transfer_tot + cr_bank_tot).ToString("0.00")
-                        + "|" + "TOTAL PAYMENTS                               " + "".ToString().PadLeft(13 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00") + "|"
+                        + "".ToString().PadLeft(18 - (cr_cash_tot + cr_transfer_tot + cr_bank_tot).ToString().Length) + (cr_cash_tot + cr_transfer_tot + cr_bank_tot).ToString("0.00") + "|"
+                        + "|" + "TOTAL PAYMENTS                               " + "".ToString().PadLeft(13 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00") 
                         + "".ToString().PadLeft(19 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
-                        + "".ToString().PadLeft(17 - (dr_bank_tot).ToString().Length) + dr_bank_tot.ToString("0.00")
-                        + "".ToString().PadLeft(15 - (tot_cash_dr + tot_transfer_dr + dr_bank_tot).ToString().Length) + (dr_cash_tot + dr_transfer_tot + dr_bank_tot).ToString("0.00"));
+                        + "".ToString().PadLeft(14 - (dr_bank_tot).ToString().Length) + dr_bank_tot.ToString("0.00")
+                        + "".ToString().PadLeft(17 - (tot_cash_dr + tot_transfer_dr + dr_bank_tot).ToString().Length) + (dr_cash_tot + dr_transfer_tot + dr_bank_tot).ToString("0.00"));
                     sw.WriteLine("                                                                                                   ||                                                                                               ");
-                    //sw.WriteLine("CASH OPENING BALAN" + opdtstr + "   " + gl.gl_bal.ToString("0.00") + "                             " + "|CASH CLOSING BALANCE         " + "                    " + gl.clbal.ToString("0.00"));
+                    sw.WriteLine("CASH OPENING BALAN" + opdtstr + "".ToString().PadLeft(34 - (op_cash).ToString().Length) + op_cash.ToString("0.00") 
+                        + "".ToString().PadLeft(14 - (op_bank).ToString().Length) + op_bank.ToString("0.00") 
+                        + "".ToString().PadLeft(17 - (op_cash + op_bank).ToString().Length) + (op_cash + op_bank).ToString("0.00") 
+                        + "||CASH CLOSING BALANCE" + cldtstr + "".ToString().PadLeft(37 - (closed_cash).ToString().Length) + closed_cash.ToString("0.00") 
+                        + "".ToString().PadLeft(14 - (cl_bank).ToString().Length) + cl_bank.ToString("0.00") 
+                        + "".ToString().PadLeft(17 - (closed_cash + cl_bank).ToString().Length) + (closed_cash + cl_bank).ToString("0.00"));
                     sw.WriteLine("===================================================================================================++====================================================================================================");
                     sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(29 - (cr_transfer_tot).ToString().Length) + (cr_transfer_tot).ToString("0.00")
-                        + "".ToString().PadLeft(18 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00")
-                        + "".ToString().PadLeft(14 - (cr_bank_tot).ToString().Length) + cr_bank_tot.ToString("0.00")
-                        + "".ToString().PadLeft(18 - (cr_transfer_tot + cr_cash_tot + cr_bank_tot).ToString().Length) + (cr_transfer_tot + cr_cash_tot + cr_bank_tot).ToString("0.00") + "|"
+                        + "".ToString().PadLeft(18 - (cr_cash_tot + op_cash).ToString().Length) + (cr_cash_tot + op_cash).ToString("0.00")
+                        + "".ToString().PadLeft(14 - (cr_bank_tot + op_bank).ToString().Length) + (cr_bank_tot + op_bank).ToString("0.00")
+                        + "".ToString().PadLeft(18 - (cr_transfer_tot + cr_cash_tot + op_cash + cr_bank_tot + op_bank).ToString().Length) + (cr_transfer_tot + cr_cash_tot + op_cash + cr_bank_tot + op_bank).ToString("0.00") + "|"
                         + "|" + "<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(30 - (dr_transfer_tot).ToString().Length) + (dr_transfer_tot).ToString("0.00")
-                        + "".ToString().PadLeft(17 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
-                        + "".ToString().PadLeft(17 - (dr_bank_tot).ToString().Length) + dr_bank_tot.ToString("0.00")
-                        + "".ToString().PadLeft(17 - (dr_transfer_tot + dr_cash_tot + dr_bank_tot).ToString().Length) + (dr_transfer_tot + dr_cash_tot + dr_bank_tot).ToString("0.00"));
+                        + "".ToString().PadLeft(17 - (dr_cash_tot + closed_cash).ToString().Length) + (dr_cash_tot + closed_cash).ToString("0.00")
+                        + "".ToString().PadLeft(17 - (dr_bank_tot + cl_bank).ToString().Length) + (dr_bank_tot + cl_bank).ToString("0.00")
+                        + "".ToString().PadLeft(16 - (dr_transfer_tot + dr_cash_tot + closed_cash + dr_bank_tot + cl_bank).ToString().Length) + (dr_transfer_tot + dr_cash_tot + closed_cash + dr_bank_tot + cl_bank).ToString("0.00"));
                     sw.WriteLine("===================================================================================================++====================================================================================================");
                     sw.WriteLine("Opening Cash :                                                                                        Closing Cash :                                                                                     ");
                     sw.WriteLine("");
@@ -1163,9 +1227,6 @@ namespace Amritnagar.Controllers
             }
             return File(memory.ToArray(), "text/plain", "Cash_Book_Details_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");            
         }
-
-
-
 
         //********************************Cash Book Report End****************************************************
 
