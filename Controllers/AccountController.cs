@@ -510,7 +510,7 @@ namespace Amritnagar.Controllers
         }
 
         /********************************************Vouchar Entry End*******************************************/
-        //********************************Cash Account Report Start******************************************
+        //********************************Cash Account Report Start*********************************************/
         [HttpGet]
         public ActionResult CashAccountReport(CashAccountReportViewModel model)
         {
@@ -897,6 +897,8 @@ namespace Amritnagar.Controllers
                 GL_BALNCE gl = new GL_BALNCE();
                 string opdtstr = "";
                 string cldtstr = "";
+                string op_cash_in_word = "";
+                string cl_cash_in_word = "";
                 decimal closed_cash = 0;
                 decimal closed_bank = 0;
                 gl = gl.getopeningbalanceforcashbook(model.branch, model.fr_dt);                               
@@ -1173,6 +1175,8 @@ namespace Amritnagar.Controllers
                     }
                     closed_cash = gl.op_cash + ((cr_cash_tot + cr_transfer_tot + cr_bank_tot) - (dr_cash_tot + dr_bank_tot + dr_transfer_tot));
                     closed_bank = gl.op_bank + ((cr_cash_tot + cr_transfer_tot + cr_bank_tot) - (dr_cash_tot + dr_bank_tot + dr_transfer_tot));
+                    op_cash_in_word = wordtonumber(Convert.ToInt32(Math.Abs(gl.op_cash))) + " Only";
+                    cl_cash_in_word = wordtonumber(Convert.ToInt32(Math.Abs(closed_cash))) + " Only";
                     if (closed_bank.ToString().Length > 14)
                     {
                         cl_bank = Convert.ToDecimal((closed_bank).ToString().Substring(0, 13));
@@ -1208,7 +1212,8 @@ namespace Amritnagar.Controllers
                         + "".ToString().PadLeft(16 - (dr_transfer_tot + dr_cash_tot + closed_cash + dr_bank_tot + cl_bank).ToString().Length) + (dr_transfer_tot + dr_cash_tot + closed_cash + dr_bank_tot + cl_bank).ToString("0.00"));
                     sw.WriteLine("===================================================================================================++====================================================================================================");
                     sw.WriteLine("Opening Cash :                                                                                        Closing Cash :                                                                                     ");
-                    sw.WriteLine("");
+                    sw.WriteLine("Rupees".ToString().PadLeft(48 - (op_cash_in_word).ToString().Length) + (op_cash_in_word)
+                        + "Rupees".ToString().PadLeft(107 - (cl_cash_in_word).ToString().Length) + (cl_cash_in_word));
                     sw.WriteLine("=========================================================================================================================================================================================================");
                     sw.WriteLine("                                                                                                                                                                                            End of Report");
                     sw.WriteLine("");
@@ -1226,6 +1231,47 @@ namespace Amritnagar.Controllers
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Cash_Book_Details.txt"));
             }
             return File(memory.ToArray(), "text/plain", "Cash_Book_Details_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");            
+        }      
+        public string wordtonumber(long number)
+        {
+            string word = "";
+            if (number == 0)
+            {
+                word += "Zero";
+            }
+            if ((number / 100000) > 0)
+            {
+                word += wordtonumber(number / 100000) + " Lakh ";
+                number %= 100000;
+            }
+            if ((number / 1000) > 0)
+            {
+                word += wordtonumber((number / 1000)) + " Thousand ";
+                number %= 1000;
+            }
+            if ((number / 100) > 0)
+            {
+                word += wordtonumber((number / 100)) + " Hundred ";
+                number %= 100;
+            }
+            if (number > 0)
+            {
+                var unitmap = new[] {"One", "Two", "Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen",
+                    "Nineteen" };
+                var tensMap = new[] { "Ten", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+                if (number < 20)
+                {
+                    word += " " + unitmap[number - 1];
+                }
+                else
+                {
+                    word += tensMap[(number / 10) - 1];
+                    if ((number % 10) > 0)
+                        word += " " + unitmap[(number % 10) - 1];
+
+                }
+            }
+            return word;
         }
 
         //********************************Cash Book Report End****************************************************
