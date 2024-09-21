@@ -171,11 +171,10 @@ namespace Amritnagar.Models.Database
             GL_BALNCE gl = new GL_BALNCE();
             if (config.dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in config.dt.Rows)
-                {
-                    gl.gl_bal = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
-                    gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
-                }
+                DataRow dr = (DataRow)config.dt.Rows[0];             
+                gl.gl_bal = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                gl.gl_bal = Math.Abs(gl.gl_bal);               
             }            
             return gl;
         }
