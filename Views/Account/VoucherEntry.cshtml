@@ -305,11 +305,11 @@
                             </tr>
                             <tr>
                                 <td>@Html.TextBoxFor(model => model.srl, new { @class = "sizeS", @type = "text" })</td>
-                                <td>@Html.TextBoxFor(model => model.drcr1, new { @class = "sizeS", @type = "text"})</td>
-                                <td>@Html.TextBoxFor(model => model.vch_achd1, new { @class = "sizeM1", @type = "text"})</td>
+                                <td>@Html.TextBoxFor(model => model.drcr1, new { @class = "sizeS", @type = "text", onkeypress = "javascript:return evtdrcr1(event);" })</td>
+                                <td>@Html.TextBoxFor(model => model.vch_achd1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evt_vch_achd1(event);" })</td>
                                 @*<td><input id="vch_achd" name="vch_achd" type="text" size="20" value="" width="100" onkeypress="javascript:return evt_vch_achd(event);" /></td>*@
-                                <td>@Html.TextBoxFor(model => model.vchpacno1, new { @class = "sizeM1", @type = "text"})</td>
-                                <td>@Html.TextBoxFor(model => model.particular1, new { @class = "size", @type = "text"})</td>
+                                <td>@Html.TextBoxFor(model => model.vchpacno1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtvchpacno1(event);" })</td>
+                                <td>@Html.TextBoxFor(model => model.particular1, new { @class = "size", @type = "text", onkeypress = "javascript:return evtparticular1(event);" })</td>
                                 <td>@Html.TextBoxFor(model => model.amount1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtamountformodification(event);" })</td>
                                 <td>@Html.TextBoxFor(model => model.ref_ac_hd1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evt_ref_ac_hd1(event);" })</td>
                                 <td>@Html.TextBoxFor(model => model.refacno1, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtrefacno1(event);" })</td>
@@ -523,6 +523,7 @@
                     $("#debt_amt").val(data.debt_amt);
                     $("#crdt_amt").val(data.crdt_amt);
                     $("#net_amt").val(data.net_amt);
+                    $("#vch_type").val(data.vch_type);
                     /*$("#vch_DrCr").val(data.vch_DrCr);*/
                     $('#ButtonSave').prop('disabled', true);
                     $('#vch_type').focus();
@@ -956,10 +957,46 @@
                     f8.value = cells[7].innerHTML;
                     f9.value = cells[8].innerHTML;
                     $('#rowmodify').show();
-                    $('#amount1').focus();
+                    $('#drcr1').focus();
                 };
             }
         })();
+
+        function evtdrcr1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#vch_achd1").focus();
+            }
+        }
+
+        function evt_vch_achd1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#vchpacno1").focus();
+            }
+        }
+
+        function evtvchpacno1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#particular1").focus();
+            }
+        }
+
+        function evtparticular1(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#amount1").focus();
+            }
+        }
 
         function evt_ref_ac_hd1(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -987,6 +1024,8 @@
                 $("#ButtonInsert").focus();
             }
         }
+
+        
 
     </script>
 }

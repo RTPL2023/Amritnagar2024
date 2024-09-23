@@ -350,6 +350,7 @@ namespace Amritnagar.Controllers
                         model.crdt_amt = (Convert.ToDecimal(model.crdt_amt) + a.vch_amt).ToString("0.00");
                         model.net_amt = (Convert.ToDecimal(model.net_amt) + a.vch_amt).ToString("0.00");
                     }
+                    model.vch_type = a.vch_type;
                     i = i + 1;
                 }
             }
