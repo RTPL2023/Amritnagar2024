@@ -252,8 +252,6 @@ namespace Amritnagar.Models.Database
             }
             return aulst;
         }
-
-
         public string CashAccountSave(CashAccountReportViewModel model)
         {
             decimal TOT_MGCASH_DR = 0;
@@ -365,7 +363,6 @@ namespace Amritnagar.Models.Database
             }
             return ac_desc;
         }
-
         public void saveinrep_acc_cashacc(AccountsUtility au)
         {
             try
@@ -400,7 +397,6 @@ namespace Amritnagar.Models.Database
             }
 
         }
-
         public List<AccountsUtility> getCashAccountlistbydaywise()
         {
             string sql = "SELECT * FROM rep_acc_cashacc";
@@ -431,17 +427,13 @@ namespace Amritnagar.Models.Database
                     au.majgr_cash_dr = Convert.ToDecimal(dr["majgr_cash_dr"]);
                     au.majgr_trans_dr = Convert.ToDecimal(dr["majgr_trans_dr"]);
                     au.majgr_tot_dr = Convert.ToDecimal(dr["majgr_tot_dr"]);
-
                     aulst.Add(au);
                 }
             }
             return aulst;
         }
-
-
         public CashBankPositionReportViewModel getCashBankPositionReport(CashBankPositionReportViewModel model)
         {
-
             decimal GD_OPBAL = 0;
             decimal GD_CREDIT = 0;
             decimal GD_DEBIT = 0;
@@ -614,7 +606,6 @@ namespace Amritnagar.Models.Database
             saveinbank_inv_balnce(au1);
             return model;
         }
-
         public void saveinbank_inv_balnce(AccountsUtility au)
         {
             try
@@ -707,15 +698,18 @@ namespace Amritnagar.Models.Database
             List<AccountsUtility> aulst = new List<AccountsUtility>();
             if (config.dt.Rows.Count > 0)
             {
-                DataRow dr1 = (DataRow)config.dt.Rows[0];
-                pac = Convert.ToString(dr1["ac_hd"]);
-                xmgroup = Convert.ToString(dr1["ac_majgr"]);
-                xsgroup = Convert.ToString(dr1["AC_SUBGR"]);
-                xpart = Convert.ToString(dr1["AC_DESC"]);
+                //DataRow dr1 = (DataRow)config.dt.Rows[0];
+                //pac = Convert.ToString(dr1["ac_hd"]);
+                //xmgroup = Convert.ToString(dr1["ac_majgr"]);
+                //xsgroup = Convert.ToString(dr1["AC_SUBGR"]);
+                //xpart = Convert.ToString(dr1["AC_DESC"]);
                 foreach (DataRow dr in config.dt.Rows)
                 {
+                    pac = Convert.ToString(dr["ac_hd"]);
+                    xmgroup = Convert.ToString(dr["ac_majgr"]);
+                    xsgroup = Convert.ToString(dr["AC_SUBGR"]);
+                    xpart = Convert.ToString(dr["AC_DESC"]);
                     AccountsUtility au = new AccountsUtility();
-
                     if (Convert.ToString(dr["VCH_DRCR"]) == "C")
                     {
                         if (Convert.ToString(dr["VCH_TYPE"]) == "C")
@@ -724,11 +718,17 @@ namespace Amritnagar.Models.Database
                             totcash_cr = totcash_cr + Convert.ToDecimal(dr["vch_amt"]);
                         }
                         if (Convert.ToString(dr["VCH_TYPE"]) == "B")
+                        {
                             cr_bank = cr_bank + Convert.ToDecimal(dr["vch_amt"]);
+                        }                           
                         if (Convert.ToString(dr["VCH_TYPE"]) == "T")
+                        {
                             cr_trans = cr_trans + Convert.ToDecimal(dr["vch_amt"]);
+                        }                            
                         if (Convert.ToString(dr["IS_CONTRA"]) == "Y")
+                        {
                             cont_dr = cont_dr + Convert.ToDecimal(dr["vch_amt"]);
+                        }                          
                         cr_total = cr_total + Convert.ToDecimal(dr["vch_amt"]);
                     }
                     else
@@ -739,14 +739,19 @@ namespace Amritnagar.Models.Database
                             totcash_dr = totcash_dr + Convert.ToDecimal(dr["vch_amt"]);
                         }
                         if (Convert.ToString(dr["VCH_TYPE"]) == "B")
+                        {
                             dr_bank = dr_bank + Convert.ToDecimal(dr["vch_amt"]);
+                        }                         
                         if (Convert.ToString(dr["VCH_TYPE"]) == "T")
+                        {
                             dr_trans = dr_trans + Convert.ToDecimal(dr["vch_amt"]);
+                        }                          
                         if (Convert.ToString(dr["IS_CONTRA"]) == "Y")
+                        {
                             cont_cr = cont_cr + Convert.ToDecimal(dr["vch_amt"]);
+                        }                          
                         dr_total = dr_total + Convert.ToDecimal(dr["vch_amt"]);
                     }
-
                     if (cr_total > 0)
                     {
                         au.ac_hd_cr = pac;
@@ -791,10 +796,18 @@ namespace Amritnagar.Models.Database
                         au.trans_cr = 0;
                         au.tot_cr = cont_cr;
                     }
-
                     saveinrep_acc_cashbook(au);
+                    cr_total = 0;
+                    dr_total = 0;
+                    cont_dr = 0;
+                    cont_cr = 0;
+                    cr_trans = 0;
+                    cr_bank = 0;
+                    cr_cash = 0;
+                    dr_bank = 0;
+                    dr_cash = 0;
+                    dr_trans = 0;
                 }
-
             }
             sql = "Select * from rep_acc_cashbook";
             config.singleResult(sql);
@@ -822,7 +835,6 @@ namespace Amritnagar.Models.Database
                     aulst.Add(au);
                 }
             }
-
             return (aulst);
         }
         public void saveinrep_acc_cashbook(AccountsUtility au)
@@ -856,7 +868,6 @@ namespace Amritnagar.Models.Database
             }
 
         }
-
         public List<AccountsUtility> populate_journalBook(CashBookReportViewModel model)
         {
             string sql = string.Empty;
@@ -959,7 +970,6 @@ namespace Amritnagar.Models.Database
             }
             return aulst;
         }
-
         public string updateGenaralLedger(CashBookReportViewModel model)
         {
             decimal xcr_amt = 0;

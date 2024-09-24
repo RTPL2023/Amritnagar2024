@@ -30,6 +30,16 @@ namespace Amritnagar.Models.ViewModel
         public string tableElement { get; set; }
         public string clos_flag { get; set; }
 
+       
+        public string drcr1 { get; set; }
+        public string vch_achd1 { get; set; }
+        public string vchpacno1 { get; set; }
+        public string particular1 { get; set; }
+        public string amount1 { get; set; }
+        public string ref_ac_hd1 { get; set; }
+        public string refacno1 { get; set; }
+        public string refParticular1 { get; set; }
+
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
     }
 }

@@ -108,7 +108,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 Branch<br />
-                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 Date From<br />
@@ -136,7 +136,7 @@
                                 <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Refresh" onclick="BtnRefreshOnclick()" />
 
                             </div><div class="col-md-6 col-sm-6 col-12 text-center">
-                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Print" />
+                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Print" onclick="DownloadTextFiles()" />
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -175,7 +175,6 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
             $("#ac_hd").autocomplete({
                 source: function (request, response) {
                     let ModelObject = { ac_hd: $('#ac_hd').val() };
@@ -198,12 +197,9 @@
                     }
                 }
             });
-
         });
 
-
         function evtachd(evt) {
-
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
@@ -215,7 +211,6 @@
         function getparticulars() {
              let ModelObject = {
                  ac_hd: $('#ac_hd').val(),
-
              };
               $.ajax({
                 type: "POST",
@@ -233,8 +228,8 @@
                 }
              });
         }
-        function evtdaybook_dt(evt) {
 
+        function evtdaybook_dt(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
@@ -249,7 +244,6 @@
                 branch: $('#branch').val(),
                 fr_dt: $('#fr_dt').val(),
                 to_dt: $('#to_dt').val(),
-
             };
             $.ajax({
                 type: "POST",
@@ -266,14 +260,9 @@
             });
         }
 
-
-
-          function ShowTabel() {
+        function ShowTabel() {
             let ModelObject = {
-               
                 branch: $('#branch').val(),
-                
-
             };
               $.ajax({
                 type: "POST",
@@ -283,15 +272,15 @@
                 success: function (data)
                 {
                     document.getElementById("list").innerHTML = data.tableele;
-                  
-
                 },
                 error: function (err) {
                     alert(err);
                 }
-            });
+              });
+        } 
+
+        function DownloadTextFiles() {
+            window.location.href = "@Url.Action("CashAccountPrintFiles", "Account")" + "?fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val() + "&branch=" + $('#branch').val();
         }
-
-
     </script>
 }

@@ -23,6 +23,8 @@ namespace Amritnagar.Models.Database
         public string chq_no { get; set; }
         public Nullable<DateTime> chq_dt { get; set; }
         public Nullable<DateTime> loan_dt { get; set; }
+        public Nullable<DateTime> eff_date { get; set; }
+        public DateTime XPDUPTO { get; set; }
         public DateTime open_dt { get; set; }
         public string bank_cd { get; set; }
         public decimal prin_amt { get; set; }
@@ -98,10 +100,13 @@ namespace Amritnagar.Models.Database
         public decimal xirate { get; set; }
         public decimal xinstl { get; set; }
         public decimal xless_int { get; set; }
+        public decimal tf_rate { get; set; }
         public decimal xamt { get; set; }
         public decimal int_bal { get; set; }
         public decimal tr_amt { get; set; }
         public decimal bal_amt { get; set; }
+        public decimal due { get; set; }
+        public decimal tf_buffer { get; set; }
         public string ln_spcl { get; set; }
         public string xpart { get; set; }
         public string ac_closed { get; set; }
@@ -390,6 +395,7 @@ namespace Amritnagar.Models.Database
                     ld.vch_srl = Convert.ToDecimal(dr["vch_srl"]);
                     ld.vch_type = Convert.ToString(dr["VCH_TYPE"]);
                     ld.dr_cr = Convert.ToString(dr["DR_CR"]);
+                    ld.prin_bal = !Convert.IsDBNull(dr["PRIN_BAL"]) ? Convert.ToDecimal(dr["PRIN_BAL"]) : Convert.ToDecimal("0.00");
                     ld.prin_amt = !Convert.IsDBNull(dr["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr["PRIN_AMOUNT"]) : Convert.ToDecimal("0.00");
                     ld.int_amt = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
                     ld.int_due = !Convert.IsDBNull(dr["INT_DUE"]) ? Convert.ToDecimal(dr["INT_DUE"]) : Convert.ToDecimal("0.00");
@@ -451,6 +457,7 @@ namespace Amritnagar.Models.Database
                     //    { "VCH_NO",        ld.vch_no },
                     //    { "VCH_SRL",        ld.vch_srl},
                     //    });
+                    
                 }
                 catch (Exception ex)
                 {
@@ -478,7 +485,7 @@ namespace Amritnagar.Models.Database
                         { "BANKCD",       ld.bank_cd},
                         { "CHQ_NO",       ld.chq_no},
                         { "CHQ_DT",       ld.chq_dt},
-                    });
+                    });                   
                 }
                 catch (Exception x)
                 {
@@ -496,7 +503,7 @@ namespace Amritnagar.Models.Database
             string sql = "Delete from loan_ledger where branch_id='" + model.branch_id + "' and ac_hd='" + model.ac_hd + "' and employee_id='" + model.emp_id + "'AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND VCH_NO='" + model.vch_no + "' AND VCH_SRL='" + model.vch_srl + "'";
             config.Execute_Query(sql);
         }
-        public List<Loan_Ledger> gepesonalandledgerdetails(string branch, string acc_no, string achd)
+        public List<Loan_Ledger> gepesonalandledgerdetails(string branch, string acc_no, string achd, string op_dt, string date)
         {
             List<Loan_Ledger> ldl = new List<Loan_Ledger>();
             Loan_Ledger ld = new Loan_Ledger();
@@ -632,6 +639,7 @@ namespace Amritnagar.Models.Database
                                 ld.occp = Convert.ToString(dr1["OCCUP_ID"]);
                                 ld.if_lti = !Convert.IsDBNull(dr1["IF_LTI"]) ? Convert.ToInt32(dr1["IF_LTI"]) : Convert.ToInt32("0.00");
                                 ld.pan_no = !Convert.IsDBNull(dr1["PAN_NO"]) ? Convert.ToString(dr1["PAN_NO"]) : Convert.ToString("");
+                                ld.tf_buffer = !Convert.IsDBNull(dr1["TF_BUFFER"]) ? Convert.ToDecimal(dr1["TF_BUFFER"]) : Convert.ToDecimal("0.00");
                             }
                         }                
                         if (ld.ledger_tab != "")
@@ -702,12 +710,100 @@ namespace Amritnagar.Models.Database
                     if(ld.xmast == "C")
                     {
 
-                    }
+                    }                   
+                    //ld = PROCESS_DUE(prin_amt, Convert.ToDateTime(op_dt), Convert.ToDateTime(date), ld.ledger_tab, ld.tf_buffer);                                  
                     ld.xpart = xpart;                    
                 }
             }
             ldl.Add(ld);
             return ldl;
+        }
+        public Loan_Ledger PROCESS_DUE(decimal XPAID, DateTime XFROM, DateTime XTO, string ledger_tab, decimal tf_buffer)
+        {
+            Loan_Ledger ld = new Loan_Ledger();
+            decimal XBUFFER = 0;           
+            decimal XAMT = 0;
+            decimal XPAYBL = 0;
+            decimal XNETPAYBL = 0;
+            decimal XRATE = 0;
+            decimal XDUE = 0;
+            int XPRD = 0;
+            DateTime xfrdt = new DateTime();
+            DateTime XTODT = new DateTime();
+            DateTime XPDUPTO = new DateTime();
+            if (ledger_tab == "TF_LEDGER")
+            {
+                XBUFFER = tf_buffer;
+                string sql = "SELECT * FROM TF_RATE ORDER BY EFF_DATE";
+                config.singleResult(sql);
+                if(config.dt.Rows.Count > 0)
+                {
+                    foreach(DataRow dr in config.dt.Rows)
+                    {                       
+                        ld.eff_date = !Convert.IsDBNull(dr["EFF_DATE"]) ? Convert.ToDateTime(dr["EFF_DATE"]) : Convert.ToDateTime(null);
+                        ld.tf_rate = !Convert.IsDBNull(dr["TF_RATE"]) ? Convert.ToDecimal(dr["TF_RATE"]) : Convert.ToDecimal("0.00");
+                        XPAID = XPAID + XBUFFER;
+                        XAMT = XPAID;
+                        xfrdt = XFROM;
+                        XPAYBL = 0;
+                        XNETPAYBL = 0;
+                        XTODT = XFROM;
+                        XPDUPTO = xfrdt;
+                        if(XTODT >= XTO)
+                        {
+                            break;
+                        }
+                        if (ld.eff_date <= xfrdt)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            ld.eff_date = !Convert.IsDBNull(dr1["EFF_DATE"]) ? Convert.ToDateTime(dr1["EFF_DATE"]) : Convert.ToDateTime(null);
+                            if (ld.eff_date > xfrdt)
+                            {
+                                DataRow dr2 = (DataRow)config.dt.Rows[0];
+                                ld.eff_date = !Convert.IsDBNull(dr2["EFF_DATE"]) ? Convert.ToDateTime(dr2["EFF_DATE"]) : Convert.ToDateTime(null);
+                                xfrdt = Convert.ToDateTime(ld.eff_date);
+                            }
+                            XRATE = ld.tf_rate;
+                            if (ld.eff_date > xfrdt)
+                            {
+                                DataRow dr3 = (DataRow)config.dt.Rows[0];
+                                XTODT = XTO;
+                            }
+                            else
+                            {
+                                if(ld.eff_date > XTO)
+                                {
+                                    XTODT = XTO;
+                                }
+                                else
+                                {
+                                    XTODT= Convert.ToDateTime(ld.eff_date).AddDays(-1);
+                                }
+                            }
+                            XPRD = Convert.ToInt32(XTODT.Subtract(xfrdt).Days / (365.25 / 12)) + 1;
+                            XPAYBL = (XPRD * XRATE);
+                            decimal cal = (XAMT / XRATE) - 1;
+                            if (XAMT >= XRATE)
+                            {
+                                XPDUPTO =  Convert.ToDateTime(xfrdt.Subtract(Convert.ToDateTime(cal)).Days / (365.25 / 12));
+                                XAMT = XAMT - XPAYBL;
+                            }
+                            XNETPAYBL = XNETPAYBL + XPAYBL;
+                            xfrdt = Convert.ToDateTime(XTODT).AddDays(1);
+                        }
+                    }
+                    XDUE = XNETPAYBL - XPAID;
+                    if(XDUE > 0)
+                    {
+                        ld.due = XDUE;
+                    }
+                    if(XPDUPTO > XFROM)
+                    {
+                        ld.XPDUPTO = XPDUPTO;
+                    }
+                }
+            }
+            return ld;
         }
 
         //public List<Loan_Ledger> getallexistingloandetails(string branch_id, string ac_hd, string on_date)

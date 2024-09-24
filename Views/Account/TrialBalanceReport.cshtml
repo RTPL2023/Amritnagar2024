@@ -113,7 +113,7 @@
 
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Balance As On<br />
@@ -178,11 +178,11 @@
             //$("#net_amt").val("0");
             $('#loading').hide();
         });
+
         function BtnRefreshOnClick() {
             let ModelObject = {
                 branch: $('#branch').val(),
                 gl_date: $('#gl_date').val(),
-
             };
               $.ajax({
                 type: "POST",
@@ -194,18 +194,17 @@
                     document.getElementById("list").innerHTML = data.tableele;
                     $("#label1").val(data.label1);
                     $("#label2").val(data.label2);
-
                 },
                 error: function (err) {
                     alert(err);
                 }
             });
         }
+
         function BtnprintOnClick() {
             let ModelObject = {
                 branch: $('#branch').val(),
                 gl_date: $('#gl_date').val(),
-
             };
             $.ajax({
                 type: "POST",
@@ -214,15 +213,12 @@
                 dataType: "json",
                 success: function (data) {
                     alert(data);
-
                 },
                 error: function (err) {
                     alert(err);
                 }
             });
         }
-
-
 
     </script>
 }

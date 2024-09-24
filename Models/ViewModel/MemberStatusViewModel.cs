@@ -9,6 +9,9 @@ namespace Amritnagar.Models.ViewModel
     public class MemberStatusViewModel
     {
         public String BranchID { get; set; }
+        public String Branch { get; set; }
+        public String mem_no { get; set; }
+        public String mem_name { get; set; }
         public String AcHd { get; set; }
         public String PfNo { get; set; }
         public String FrDt { get; set; }
@@ -24,7 +27,14 @@ namespace Amritnagar.Models.ViewModel
         public string CR { get; set; }
         public string cont_no { get; set; }
         public string member_no { get; set; }
+        public string lonee_name { get; set; }
+        public string loanee_emp_id { get; set; }
         public string member_date { get; set; }
+        public string ac_hd { get; set; }
+        public string Branch_sh { get; set; }
+        public string ln_Branch { get; set; }
+        public string mem_no_sh { get; set; }
+        public string mem_name_sh { get; set; }
         public IEnumerable<SelectListItem> TypeDesc { get; set; }
         public string mem_type { get; set; }
         public IEnumerable<SelectListItem> CategoryDesc { get; set; }
@@ -72,6 +82,9 @@ namespace Amritnagar.Models.ViewModel
         public string tot_Oth_Loan { get; set; }
         public string tot_liabilities { get; set; }
         public string tot_assets { get; set; }
+        public string emp_id { get; set; }
+        public string table { get; set; }
+        public string ln_type { get; set; }
 
         public dynamic[,] int_array = new dynamic[3, 13];
     }

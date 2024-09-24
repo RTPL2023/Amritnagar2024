@@ -171,7 +171,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                 Branch<br />
-                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                 GL Account Head<br />

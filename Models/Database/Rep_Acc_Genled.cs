@@ -52,8 +52,9 @@ namespace Amritnagar.Models.Database
             {                
                 XOPDT = Convert.ToDateTime(Convert.ToDateTime(fr_dt).AddDays(-1).ToString("dd-MM-yyyy").Replace("-", "/"));
                 xcldt = Convert.ToDateTime(Convert.ToDateTime(to_dt).AddDays(1).ToString("dd-MM-yyyy").Replace("-", "/"));
-                foreach(DataRow dr in config.dt.Rows)
+                foreach (DataRow dr in config.dt.Rows)
                 {
+                    //DataRow dr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                     rag.ac_hd = Convert.ToString(dr["ac_hd"]);
                     rag.ac_desc = Convert.ToString(dr["ac_desc"]);
                     rag.ac_majgr = Convert.ToString(dr["ac_majgr"]);
@@ -151,7 +152,7 @@ namespace Amritnagar.Models.Database
                                     rag.trans_dr = !Convert.IsDBNull(dr3["TRANS_DR"]) ? Convert.ToDecimal(dr3["TRANS_DR"]) : Convert.ToDecimal(00);
                                     rag.journal_dr = !Convert.IsDBNull(dr3["JOURNAL_DR"]) ? Convert.ToDecimal(dr3["JOURNAL_DR"]) : Convert.ToDecimal(00);
                                     rag.total_dr = rag.cash_dr + rag.bank_dr + rag.trans_dr + rag.journal_dr;
-                                    rag.XACBAL = (rag.XACBAL + rag.total_cr) - rag.total_dr;                                   
+                                    rag.XACBAL = rag.XACBAL + rag.total_cr - rag.total_dr;                                   
                                     config.Insert("rep_acc_genled", new Dictionary<String, object>()
                                     {
                                         {"GL_TYPE",   "T" },
@@ -344,7 +345,7 @@ namespace Amritnagar.Models.Database
                                     {"gl_bal",    XCASHBAL}
                                 });
                             }
-                            XCASHBAL = XCASHBAL + (rag.cash_cr - rag.cash_dr);
+                            XCASHBAL = XCASHBAL + rag.cash_cr - rag.cash_dr;
                             config.Insert("rep_acc_genled", new Dictionary<String, object>()
                             {
                                 {"GL_TYPE",   "T" },

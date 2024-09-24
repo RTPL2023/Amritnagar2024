@@ -215,7 +215,7 @@
                 <div class="row mt-2">
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Membership No.<br />

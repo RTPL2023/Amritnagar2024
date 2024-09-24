@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 
 
+
 namespace Amritnagar.Models.Database
 {
     public class GL_BALNCE
@@ -18,10 +19,14 @@ namespace Amritnagar.Models.Database
         public string ac_hd { get; set; }
         public string ac_desc { get; set; }
         public decimal gl_bal { get; set; }
-
+        public decimal clbal { get; set; }
+        public decimal op_cash { get; set; }
+        public decimal op_bank { get; set; }
         public decimal dbalance { get; set; }
         public decimal cbalance { get; set; }
         public decimal grouptotal { get; set; }
+        public decimal tot_dr { get; set; }
+        public decimal tot_cr { get; set; }
         public string majorgroup { get; set; }
         public string acchd { get; set; }
         public string ac_majgr { get; set; }
@@ -92,7 +97,6 @@ namespace Amritnagar.Models.Database
             }
             return glblst;
         }
-
         public string SaveInDividentLedger(TrialBalanceReportViewModel model)
         {
             string sql = string.Empty;
@@ -109,7 +113,6 @@ namespace Amritnagar.Models.Database
             sql = sql + "ORDER BY B.AC_MAJGR,B.AC_SUBGR,A.AC_HD";
             config.singleResult(sql);
             GL_BALNCE gl1 = new GL_BALNCE();
-
             List<GL_BALNCE> glblst = new List<GL_BALNCE>();
             if (config.dt.Rows.Count > 0)
             {
@@ -158,6 +161,52 @@ namespace Amritnagar.Models.Database
             string msg = "Saved Successfully";
             return (msg);
         }
-
+        public GL_BALNCE getopeningbalanceforcashaccount(string branch, string fr_dt)
+        {
+            string qry;
+            qry = "select * from gl_balnce where branch_id='" + branch + "'";
+            qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            qry = qry + " and  (ac_hd ='CASH')  order by gl_date desc";
+            config.singleResult(qry);
+            GL_BALNCE gl = new GL_BALNCE();
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr = (DataRow)config.dt.Rows[0];             
+                gl.gl_bal = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                gl.gl_bal = Math.Abs(gl.gl_bal);               
+            }            
+            return gl;
+        }
+        public GL_BALNCE getopeningbalanceforcashbook(string branch, string fr_dt)
+        {
+            string qry;
+            GL_BALNCE gl = new GL_BALNCE();
+            qry = "select * from gl_balnce where branch_id='" + branch + "'";
+            qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            qry = qry + " and (ac_hd in ('CASH'))  order by gl_date desc";
+            config.singleResult(qry);
+            
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr = (DataRow)config.dt.Rows[0];
+                                   
+                  gl.op_cash = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                  gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                  gl.op_cash = Math.Abs(gl.op_cash);                                   
+            }
+            qry = "select * from gl_balnce where branch_id='" + branch + "'";
+            qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            qry = qry + " and (ac_hd in ('BANK'))  order by gl_date desc";
+            config.singleResult(qry);
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr = (DataRow)config.dt.Rows[0];              
+                gl.op_bank = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                gl.op_bank = Math.Abs(gl.op_bank);
+            }
+            return gl;
+        }
     }
 }

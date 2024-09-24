@@ -28,7 +28,7 @@ namespace Amritnagar.Models.Database
         public List<Vch_Details> put_vch_detail(string branch, string Voucher_date, string Voucher_No)
         {
             string sql;
-            sql = "select * from vch_detail where BRANCH_ID='" + branch + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + Voucher_date + "', 103) and insert_mode='D' and vch_no='" + Voucher_No + "' order by vch_srl";
+            sql = "select vd.*, vh.VCH_TYPE from vch_detail vd, VCH_HEADER vh where vd.vch_no = vh.vch_no AND vd.BRANCH_ID='" + branch + "' AND convert(varchar, vd.VCH_DATE, 103) = convert(varchar, '" + Voucher_date + "', 103) and vd.insert_mode='D' and vd.vch_no='" + Voucher_No + "' order by vd.vch_srl";
             config.singleResult(sql);
             List<Vch_Details> vdlist = new List<Vch_Details>();
             if (config.dt.Rows.Count > 0)
@@ -45,7 +45,8 @@ namespace Amritnagar.Models.Database
                     vd.ref_ac_hd = dr["ref_ac_hd"].ToString();
                     vd.ref_pacno = dr["ref_pacno"].ToString();
                     vd.ref_oth = dr["ref_oth"].ToString();
-                    // vd.vch_date = Convert.ToDateTime(dr["vch_date"]);
+                    vd.vch_type = dr["VCH_TYPE"].ToString();
+                    // vd.vch_date = Convert.ToDateTime(dr["vch_date"]);                  
                     vdlist.Add(vd);
                 }
             }

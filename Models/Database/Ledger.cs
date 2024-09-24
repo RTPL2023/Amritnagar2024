@@ -21,6 +21,7 @@ namespace Amritnagar.Models.Database
         public string ac_hd { get; set; }
         public string vch_achd { get; set; }
         public DateTime vch_date { get; set; }
+        public int div_post_year_to { get; set; }
         public string ref_ac_hd { get; set; }
         public string ref_pacno { get; set; }
         public string ref_oth { get; set; }
@@ -33,9 +34,23 @@ namespace Amritnagar.Models.Database
         public decimal tran_amount { get; set; }
         public decimal bal_amount { get; set; }
         public decimal face_val { get; set; }
+        public decimal units { get; set; }
         public decimal int_due { get; set; }
         public decimal aint_due { get; set; }
         public decimal ichrg_due { get; set; }
+        public decimal ichrg_amt { get; set; }
+        public decimal aint_amt { get; set; }
+        public decimal int_amt { get; set; }
+        public decimal cr_amt { get; set; }
+        public decimal dr_amt { get; set; }
+        public string chq_no { get; set; }
+        public string trns_particular { get; set; }
+        public string certificate_no { get; set; }
+        public DateTime certificate_date { get; set; }
+
+        public decimal dist_no_from { get; set; }
+        public decimal dist_no_to { get; set; }
+        public string dist_range { get; set; }
 
 
         public Ledger GET_GEN_LEDGER(string XACHD, string xacno, string vch_date, string branchid, int vch_srl)
@@ -263,7 +278,7 @@ namespace Amritnagar.Models.Database
                     config.Insert(ah.ledger_tab, new Dictionary<String, object>()
                     {
                         {"branch_id",   dlsb.branch_id },
-                        {"ac_hd",       dlsb.ac_hd },
+                        //{"ac_hd",       dlsb.ac_hd },
                         {"MEMBER_ID",   dlsb.member_id },
                         {"vch_date",    dlsb.vch_date },
                         {"vch_no",      dlsb.vch_no },
@@ -775,8 +790,7 @@ namespace Amritnagar.Models.Database
                     }
                     config.Insert(ah.ledger_tab, new Dictionary<String, object>()
                     {
-                        {"branch_id",   dlsb.branch_id },
-                        {"ac_hd",       dlsb.ac_hd },
+                        {"branch_id",   dlsb.branch_id },                   
                         {"MEMBER_ID",   dlsb.member_id },
                         {"vch_date",    dlsb.vch_date },
                         {"vch_no",      dlsb.vch_no },
@@ -1063,6 +1077,453 @@ namespace Amritnagar.Models.Database
                     config.Execute_Query(qry);
                 }
             }
+        }
+        public List<Ledger> getledgerdetails(string BranchID, string member_id, string table, string emp_id, string ac_hd)
+        {
+            List<Ledger> ldl = new List<Ledger>();
+            string sql = string.Empty;
+            string XTR_TYPE = "";
+            string xref = "";
+            if (table == "GF_LEDGER")
+            {               
+                sql = "SELECT * FROM GF_LEDGER WHERE BRANCH_ID='" + BranchID + "' AND MEMBER_ID='" + member_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                config.singleResult(sql);
+                if(config.dt.Rows.Count > 0)
+                {
+                    foreach(DataRow dr in config.dt.Rows)
+                    {
+                        Ledger ld = new Ledger();
+                        ld.dr_cr = dr["dr_cr"].ToString();
+                        ld.vch_type = dr["VCH_TYPE"].ToString();                       
+                        ld.vch_date = Convert.ToDateTime(dr["vch_date"]);                        
+                        ld.prin_amount = !Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal("00");
+                        ld.int_amount = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal("00");
+                        ld.prin_bal = !Convert.IsDBNull(dr["prin_bal"]) ? Convert.ToDecimal(dr["prin_bal"]) : Convert.ToDecimal("00");
+                        ld.int_bal = !Convert.IsDBNull(dr["int_bal"]) ? Convert.ToDecimal(dr["int_bal"]) : Convert.ToDecimal("00");
+                        ld.ref_ac_hd = Convert.ToString(dr["ref_ac_hd"]);
+                        ld.insert_mode = dr["insert_mode"].ToString();
+                        ld.ref_pacno = Convert.ToString(dr["ref_pacno"]);
+                        if (ld.dr_cr == "D")
+                        {
+                            XTR_TYPE = "To ";
+                        }
+                        else
+                        {
+                            XTR_TYPE = "By ";
+                        }
+                        if (ld.vch_type == "C")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Cash";
+                        }
+                        if (ld.vch_type == "T")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Transfer";
+                        }
+                        if (ld.vch_type == "B")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Bank";
+                        }
+                        if (ld.vch_type == "J")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Journal";
+                        }
+                        if (ld.prin_amount != 0)
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Principal";
+                        }
+                        else
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Interest";
+                        }
+                        if(ld.vch_type == "T")
+                        {
+                            if (ld.ref_ac_hd != "")
+                            {
+                                xref = xref + "/" + ld.ref_pacno;
+                            }
+                            if(xref != "")
+                            {
+                                XTR_TYPE = XTR_TYPE + " (" + xref + ")";
+                            }
+                        }
+                        if(ld.insert_mode == "SD")
+                        {
+                            XTR_TYPE = XTR_TYPE + " (" + ld.insert_mode + ")";
+                        }
+                        if (ld.insert_mode == "BF")
+                        {
+                            XTR_TYPE = XTR_TYPE + " (Balance From Ledger)";
+                        }
+                        ld.trns_particular = XTR_TYPE;
+                        ldl.Add(ld);
+                    }
+                }
+            }
+            else if(table == "TF_LEDGER")
+            {
+                sql = "SELECT * FROM TF_LEDGER WHERE BRANCH_ID='" + BranchID + "' AND MEMBER_ID='" + member_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                config.singleResult(sql);
+                if (config.dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in config.dt.Rows)
+                    {
+                        Ledger ld = new Ledger();
+                        ld.dr_cr = dr["dr_cr"].ToString();
+                        ld.vch_type = dr["VCH_TYPE"].ToString();
+                        ld.vch_date = Convert.ToDateTime(dr["vch_date"]);
+                        ld.prin_amount = !Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal("00");
+                        ld.int_amount = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal("00");
+                        ld.prin_bal = !Convert.IsDBNull(dr["prin_bal"]) ? Convert.ToDecimal(dr["prin_bal"]) : Convert.ToDecimal("00");
+                        ld.int_bal = !Convert.IsDBNull(dr["int_bal"]) ? Convert.ToDecimal(dr["int_bal"]) : Convert.ToDecimal("00");
+                        ld.ref_ac_hd = Convert.ToString(dr["ref_ac_hd"]);
+                        ld.insert_mode = dr["insert_mode"].ToString();
+                        ld.ref_pacno = Convert.ToString(dr["ref_pacno"]);
+                        if (ld.dr_cr == "D")
+                        {
+                            XTR_TYPE = "To ";
+                        }
+                        else
+                        {
+                            XTR_TYPE = "By ";
+                        }
+                        if (ld.vch_type == "C")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Cash";
+                        }
+                        if (ld.vch_type == "T")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Transfer";
+                        }
+                        if (ld.vch_type == "B")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Bank";
+                        }
+                        if (ld.vch_type == "J")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Journal";
+                        }
+                        if (ld.prin_amount != 0)
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Principal";
+                        }
+                        else
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Interest";
+                        }
+                        if (ld.vch_type == "T")
+                        {
+                            if (ld.ref_ac_hd != "")
+                            {
+                                xref = xref + "/" + ld.ref_pacno;
+                            }
+                            if (xref != "")
+                            {
+                                XTR_TYPE = XTR_TYPE + " (" + xref + ")";
+                            }
+                        }
+                        if (ld.insert_mode == "SD")
+                        {
+                            XTR_TYPE = XTR_TYPE + " (" + ld.insert_mode + ")";
+                        }
+                        if (ld.insert_mode == "BF")
+                        {
+                            XTR_TYPE = XTR_TYPE + " (Balance From Ledger)";
+                        }
+                        ld.trns_particular = XTR_TYPE;
+                        ldl.Add(ld);
+                    }
+                }
+            }
+            else if(table == "DIVIDEND_LEDGER")
+            {
+                sql = "SELECT * FROM DIVIDEND_LEDGER WHERE BRANCH_ID='" + BranchID + "' AND MEMBER_ID='" + member_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                config.singleResult(sql);
+                if (config.dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in config.dt.Rows)
+                    {
+                        Ledger ld = new Ledger();
+                        ld.dr_cr = dr["dr_cr"].ToString();
+                        ld.vch_type = dr["VCH_TYPE"].ToString();
+                        ld.vch_date = Convert.ToDateTime(dr["vch_date"]);
+                        ld.div_post_year_to = !Convert.IsDBNull(dr["DIV_POST_YEAR_TO"]) ? Convert.ToInt32(dr["DIV_POST_YEAR_TO"]) : Convert.ToInt32("0.00");
+                        ld.prin_amount = !Convert.IsDBNull(dr["TR_AMOUNT"]) ? Convert.ToDecimal(dr["TR_AMOUNT"]) : Convert.ToDecimal("00");
+                        ld.prin_bal = !Convert.IsDBNull(dr["BAL_AMOUNT"]) ? Convert.ToDecimal(dr["BAL_AMOUNT"]) : Convert.ToDecimal("00");
+                        ld.ref_ac_hd = Convert.ToString(dr["ref_ac_hd"]);
+                        ld.insert_mode = dr["insert_mode"].ToString();
+                        ld.ref_pacno = Convert.ToString(dr["ref_pacno"]);
+                        ld.ref_oth = Convert.ToString(dr["REF_OTH"]);
+                        if (ld.dr_cr == "C")
+                        {
+                            XTR_TYPE = "By Dividend Posting ";
+                            if(ld.div_post_year_to != 0)
+                            {
+                                XTR_TYPE = XTR_TYPE + "(" + (ld.div_post_year_to - 1) + " - " + ld.div_post_year_to + ")";
+                            }
+                            else
+                            {
+                                XTR_TYPE = "To ";
+                            }
+                        }
+                        if (ld.vch_type == "C")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Cash";
+                        }
+                        if (ld.vch_type == "T")
+                        {
+                            if(ld.dr_cr == "D")
+                            {
+                                XTR_TYPE = XTR_TYPE + "Transfer";
+                            }                            
+                        }
+                        if (ld.vch_type == "B")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Bank";
+                        }
+                        if (ld.vch_type == "J")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Journal";
+                        }                        
+                        if(ld.ref_ac_hd != "")
+                        {                            
+                            if (ld.ref_pacno != "")
+                            {
+                                XTR_TYPE = XTR_TYPE + "(" + ld.ref_ac_hd + "/" + ld.ref_pacno;
+                                if (ld.ref_oth != "")
+                                {
+                                    XTR_TYPE = XTR_TYPE + "/" + ld.ref_oth + ")";
+                                }
+                                else
+                                {
+                                    XTR_TYPE = XTR_TYPE + ")";
+                                }
+                            }
+                           
+                            XTR_TYPE = XTR_TYPE + ")";
+                        }
+                        ld.trns_particular = XTR_TYPE;
+                        ldl.Add(ld);
+                    }
+                }
+            }
+            else if(ac_hd == "SHARE CAPITAL")
+            {
+                sql = "SELECT * FROM share_ledger WHERE BRANCH_ID='" + BranchID + "' AND MEMBER_ID='" + member_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                config.singleResult(sql);
+                if (config.dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in config.dt.Rows)
+                    {
+                        Ledger ld = new Ledger();
+                        ld.vch_type = Convert.ToString(dr["VCH_TYPE"]);
+                        ld.dr_cr = Convert.ToString(dr["DR_CR"]);
+                        ld.ref_ac_hd = !Convert.IsDBNull(dr["REF_AC_HD"]) ? Convert.ToString(dr["REF_AC_HD"]) : Convert.ToString("");
+                        ld.ref_pacno = !Convert.IsDBNull(dr["ref_pacno"]) ? Convert.ToString(dr["ref_pacno"]) : Convert.ToString("");
+                        ld.ref_oth = !Convert.IsDBNull(dr["ref_oth"]) ? Convert.ToString(dr["ref_oth"]) : Convert.ToString("");
+                        ld.insert_mode = !Convert.IsDBNull(dr["INSERT_MODE"]) ? Convert.ToString(dr["INSERT_MODE"]) : Convert.ToString("");
+                        ld.units = !Convert.IsDBNull(dr["UNITS"]) ? Convert.ToDecimal(dr["UNITS"]) : Convert.ToDecimal(00);
+                        ld.vch_date = !Convert.IsDBNull(dr["vch_date"]) ? Convert.ToDateTime(dr["vch_date"]) : Convert.ToDateTime(null);
+                        ld.face_val = !Convert.IsDBNull(dr["face_val"]) ? Convert.ToDecimal(dr["face_val"]) : Convert.ToDecimal(00);
+                        ld.bal_amount = !Convert.IsDBNull(dr["BAL_AMOUNT"]) ? Convert.ToDecimal(dr["BAL_AMOUNT"]) : Convert.ToDecimal(00);
+                        ld.prin_amount = !Convert.IsDBNull(dr["TR_AMOUNT"]) ? Convert.ToDecimal(dr["TR_AMOUNT"]) : Convert.ToDecimal(00);
+                        ld.certificate_no = !Convert.IsDBNull(dr["CERTIFICATE_NO"]) ? Convert.ToString(dr["CERTIFICATE_NO"]) : Convert.ToString("");
+                        ld.certificate_date = !Convert.IsDBNull(dr["CERTIFICATE_DATE"]) ? Convert.ToDateTime(dr["CERTIFICATE_DATE"]) : Convert.ToDateTime(null);
+                        ld.dist_no_from = !Convert.IsDBNull(dr["dist_no_from"]) ? Convert.ToDecimal(dr["dist_no_from"]) : Convert.ToDecimal(00);
+                        ld.dist_no_to = !Convert.IsDBNull(dr["dist_no_to"]) ? Convert.ToDecimal(dr["dist_no_to"]) : Convert.ToDecimal(00);
+                        ld.dist_range = ld.dist_no_from.ToString() + "-" + ld.dist_no_to.ToString();
+                        if (ld.dr_cr == "D")
+                        {
+                            XTR_TYPE = "To ";
+                        }
+                        else
+                        {
+                            XTR_TYPE = "By ";
+                        }
+                        if (ld.vch_type == "C")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Cash";
+                        }
+                        if (ld.vch_type == "B")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Bank";
+                        }
+                        if (ld.vch_type == "T")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Transfer";
+                        }
+                        if (ld.vch_type == "J")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Journal";
+                        }
+                        if (ld.ref_ac_hd != "")
+                        {
+                            if (ld.ref_pacno != "")
+                            {
+                                XTR_TYPE = XTR_TYPE + "(" + ld.ref_ac_hd + "/" + ld.ref_pacno;
+                                if (ld.ref_oth != "")
+                                {
+                                    XTR_TYPE = XTR_TYPE + "/" + ld.ref_oth + ")";
+                                }
+                                else
+                                {
+                                    XTR_TYPE = XTR_TYPE + ")";
+                                }
+                            }
+                        }
+                        ld.trns_particular = XTR_TYPE;
+                        ldl.Add(ld);
+                    }
+                }
+            }
+            else if(table == "LOAN_LEDGER")
+            {
+                sql = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + BranchID + "' AND AC_HD='" + ac_hd + "' AND employee_ID='" + emp_id + "' order by vch_date,vch_no,vch_srl";                
+                decimal xdramt = 0;
+                decimal xcramt = 0;
+                config.singleResult(sql);               
+                if (config.dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in config.dt.Rows)
+                    {
+                        xdramt = 0;
+                        xcramt = 0;
+                        Ledger ld = new Ledger();
+                        ld.dr_cr = Convert.ToString(dr["DR_CR"]);
+                        ld.vch_type = Convert.ToString(dr["VCH_TYPE"]);
+                        ld.insert_mode = Convert.ToString(dr["INSERT_MODE"]);
+                        ld.chq_no = Convert.ToString(dr["CHQ_NO"]);
+                        ld.prin_amount = !Convert.IsDBNull(dr["PRIN_AMOUNT"]) ? Convert.ToDecimal(dr["PRIN_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        ld.int_amount = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        ld.aint_amt = !Convert.IsDBNull(dr["AINT_AMOUNT"]) ? Convert.ToDecimal(dr["AINT_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        ld.ichrg_amt = !Convert.IsDBNull(dr["ICHRG_AMOUNT"]) ? Convert.ToDecimal(dr["ICHRG_AMOUNT"]) : Convert.ToDecimal("0.00");
+                        ld.ichrg_due = !Convert.IsDBNull(dr["ICHRG_DUE"]) ? Convert.ToDecimal(dr["ICHRG_DUE"]) : Convert.ToDecimal("0.00");
+                        ld.prin_bal = !Convert.IsDBNull(dr["PRIN_BAL"]) ? Convert.ToDecimal(dr["PRIN_BAL"]) : Convert.ToDecimal("0.00");
+                        ld.int_due = !Convert.IsDBNull(dr["INT_DUE"]) ? Convert.ToDecimal(dr["INT_DUE"]) : Convert.ToDecimal("0.00");
+                        ld.aint_due = !Convert.IsDBNull(dr["AINT_DUE"]) ? Convert.ToDecimal(dr["AINT_DUE"]) : Convert.ToDecimal("0.00");
+                        ld.ref_ac_hd = !Convert.IsDBNull(dr["REF_AC_HD"]) ? Convert.ToString(dr["REF_AC_HD"]) : Convert.ToString("");
+                        ld.ref_pacno = !Convert.IsDBNull(dr["REF_PACNO"]) ? Convert.ToString(dr["REF_PACNO"]) : Convert.ToString("");
+                        ld.vch_date = !Convert.IsDBNull(dr["VCH_DATE"]) ? Convert.ToDateTime(dr["VCH_DATE"]) : Convert.ToDateTime("");
+                        if (ld.dr_cr == "C")
+                        {
+                            XTR_TYPE = "By";
+                            if (ld.prin_amount > 0)
+                            {
+                                xcramt = ld.prin_amount;
+                            }
+                            else if (ld.int_amount > 0)
+                            {
+                                xcramt = ld.int_amount;
+                            }
+                            else if (ld.aint_amt > 0)
+                            {
+                                xcramt = ld.aint_amt;
+                            }
+                            else if (ld.ichrg_amt > 0)
+                            {
+                                xcramt = ld.ichrg_amt;
+                            }
+                        }
+                        if (ld.dr_cr == "D")
+                        {
+                            XTR_TYPE = "To ";
+                            if (ld.prin_amount > 0)
+                            {
+                                xdramt = ld.prin_amount;
+                            }
+                            else if (ld.int_amount > 0)
+                            {
+                                xdramt = ld.int_amount;
+                            }
+                            else if (ld.aint_amt > 0)
+                            {
+                                xdramt = ld.aint_amt;
+                            }
+                            else if (ld.ichrg_amt > 0)
+                            {
+                                xdramt = ld.ichrg_amt;
+                            }
+                        }
+                        if (ld.vch_type == "C")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Cash";
+                        }
+                        if (ld.vch_type == "T")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Transfer";
+                        }
+                        if (ld.vch_type == "B")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Bank";
+                        }
+                        if (ld.vch_type == "J")
+                        {
+                            XTR_TYPE = XTR_TYPE + "Journal";
+                        }
+                        if (ld.insert_mode == "BF")
+                        {
+                            XTR_TYPE = XTR_TYPE + " (Balance From Ledger)";
+                        }
+                        if (ld.insert_mode == "BF")
+                        {
+                            XTR_TYPE = XTR_TYPE + " -Balance B/F";
+                        }
+                        if (ld.insert_mode == "LR")
+                        {
+                            XTR_TYPE = XTR_TYPE + "-Receipt";
+                        }
+                        if (ld.insert_mode == "II")
+                        {
+                            XTR_TYPE = "By Calculation";
+                        }
+                        if (ld.insert_mode == "LC")
+                        {
+                            XTR_TYPE = XTR_TYPE + "-Closure";
+                        }
+                        if (ld.insert_mode == "LI")
+                        {
+                            XTR_TYPE = XTR_TYPE + "-Schedule";
+                        }
+                        if (ld.insert_mode == "QI")
+                        {
+                            XTR_TYPE = XTR_TYPE + "-Qtrly Schedule";
+                        }
+                        if (ld.insert_mode == "SD")
+                        {
+                            XTR_TYPE = XTR_TYPE + " " + Convert.ToString(dr["REF_OTH"]);
+                        }
+                        if (ld.prin_amount > 0)
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Principal";
+                        }
+                        if (ld.int_amount > 0)
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Interest";
+                        }
+                        if (ld.aint_amt > 0)
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Addl.Interest";
+                        }
+                        if (ld.ichrg_amt > 0)
+                        {
+                            XTR_TYPE = XTR_TYPE + " @Misc.Charges";
+                        }
+                        if (ld.ref_ac_hd != "")
+                        {
+                            XTR_TYPE = XTR_TYPE + "(" + ld.ref_ac_hd;
+                            if (ld.ref_pacno != "")
+                            {
+                                XTR_TYPE = XTR_TYPE + "/" + ld.ref_pacno;
+                            }
+                            XTR_TYPE = XTR_TYPE + ")";
+                        }
+                        ld.trns_particular = XTR_TYPE;
+                        ld.cr_amt = xcramt;
+                        ld.dr_amt = xdramt;
+                        ldl.Add(ld);
+                    }
+                }
+            }            
+            return ldl;
         }
     }
 }

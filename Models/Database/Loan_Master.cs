@@ -208,6 +208,7 @@ namespace Amritnagar.Models.Database
         public string CloseFlag(Loan_Master lm)
         {
             string sql = string.Empty;
+            string msg = "";
             sql = "SELECT * FROM LOAN_MASTER WHERE BRANCH_ID='" + lm.branch_id + "' AND AC_HD='" + lm.ac_hd + "' AND EMPLOYEE_ID='" + lm.emp_id + "'AND convert(datetime, LOAN_DATE, 103) = convert(datetime, '" + lm.loan_dt + "', 103)";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
@@ -217,7 +218,7 @@ namespace Amritnagar.Models.Database
                     config.Update("LOAN_MASTER", new Dictionary<String, object>()
                     {
                         { "CLOS_FLAG",  lm.clos_flag },
-                        { "CLOS_DATE",  DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/") },
+                        { "CLOS_DATE",  Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/")) },
                     }, new Dictionary<string, object>()
                     {
                         { "BRANCH_ID",  lm.branch_id },
@@ -225,13 +226,17 @@ namespace Amritnagar.Models.Database
                         { "EMPLOYEE_ID",lm.emp_id },
                         { "AC_HD",lm.ac_hd },
                     });
+                    msg = "Closed";
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            string msg = "Closed";
+            else
+            {
+                msg = "Invalid Loan Date Supplied";
+            }
             return (msg);
         }
         public Loan_Master getdetailsbyloandate(string branch_id, string ac_hd, string emp_id, string loan_dt)
@@ -329,9 +334,19 @@ namespace Amritnagar.Models.Database
             string sql = string.Empty;
             if (searchtype == "New Loan")
             {
-                sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)" +
+                if(ac_hd == "" || ac_hd == null)
+                {
+                    sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
+                    sql = sql + "convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)";
+                    sql = sql + "ORDER BY ac_hd,EMPLOYEE_id,loan_date";
+                    config.singleResult(sql);
+                }
+                else
+                {
+                    sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)" +
                     "ORDER BY ac_hd,EMPLOYEE_id,loan_date";
-                config.singleResult(sql);
+                    config.singleResult(sql);
+                }             
                 if (config.dt.Rows.Count > 0)
                 {
                     foreach (DataRow dr in config.dt.Rows)
@@ -349,8 +364,22 @@ namespace Amritnagar.Models.Database
             }
             else
             {
-                sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103) AND clos_flag = 'C'" +
-                    "ORDER BY ac_hd,EMPLOYEE_id,clos_date";
+                if(ac_hd == "" || ac_hd == null)
+                {
+                    sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
+                    sql = sql + "iif(clos_date is null,convert(datetime, '31/03/2099', 103),convert(datetime, CLOS_DATE, 103)) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) ";
+                    sql = sql + "AND clos_flag is not null ORDER BY ac_hd,EMPLOYEE_id,clos_date";                    
+                    config.singleResult(sql);
+                }
+                else
+                {
+                    sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
+                    sql = sql + "AC_HD = '" + ac_hd + "' and iif(clos_date is null,convert(datetime, '31/03/2099', 103),convert(datetime, CLOS_DATE, 103)) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) ";
+                    sql = sql + "AND clos_flag is not null ORDER BY ac_hd,EMPLOYEE_id,clos_date";
+                    config.singleResult(sql);
+                }
+                //sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, CLOS_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) AND clos_flag = 'C'" +
+                //    "ORDER BY ac_hd,EMPLOYEE_id,clos_date";
                 config.singleResult(sql);
                 if (config.dt.Rows.Count > 0)
                 {

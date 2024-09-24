@@ -301,18 +301,19 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Counter:<br />
-                        @Html.DropDownListFor(p => p.counter, new SelectList(Model.CounterDesc, "Value", "Text"), new { @class = "size" })
-
+                        @Html.DropDownListFor(p => p.counter, new SelectList(Model.CounterDesc, "Value", "Text"), new { @class = "size", @onchange = "PopulateRecieptAndSummary()" })
                     </div>
                    <div class="col-md-2 col-sm-2 col-12 mt-3">
                        <input id="BtnDelete" type="button" name="BtnDelete" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Delete" onclick="DeleteReciept()" />
-                   </div>
-                   
+                   </div>   
+                   @*<div class="col-lg-3 col-md-3 col-sm-12 col-12">                       
+                       @Html.TextBoxFor(model => model.prin_amt, new { @class = "size", @type = "text" })
+                   </div>*@
                 </div>
                 <div class="row mt-1">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                         Account Head:<br />
-                        @Html.DropDownListFor(p => p.achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "sizeL" })
+                        @Html.DropDownListFor(p => p.achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "sizeL", @onchange= "changevch_noforac_hd()" })
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                         Voucher No.: <br />
@@ -412,7 +413,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row mt-1" id="recpt">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                                     <div class="table-responsive mt-1">
                                         <table id="recieptdetails" class="tab_rd">
@@ -428,7 +429,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row mt-1" id="smmry">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                                     <div class="table-responsive mt-1">
                                         <table id="recieptsummary" class="tab_rs">
@@ -463,6 +464,7 @@
 
         $(document).ready(function () {
             $('#loading').hide();
+            /*$('#prin_amt').hide();*/
         });
 
         function GetpersonalAccountinformation() {
@@ -505,11 +507,19 @@
                 success: function (data)
                 {
                     document.getElementById("personalledgerinfo").innerHTML = data.tableelement;
+                    $('#clrd_upto').val(data.clrd_upto);
+                    $('#amt_due').val(data.amt_due);
+                    $('#amt').val(data.amt);
                 },
                 error: function (err) {
                     alert(err);
                 }
             });
+        }
+
+        function PopulateRecieptAndSummary() {
+            ShowTableForRecieptDetails();
+            ShowTableForRecieptSummary();
         }
 
         function evt_acc_no(evt) {
@@ -520,6 +530,8 @@
                 getvch_no();
                 GetpersonalAccountinformation();
                 Getpersonalledgerformation();
+                //$('#recpt').hide();
+                //$('#smmry').hide();
                 $("#amt").focus();
             }
         }
@@ -599,7 +611,12 @@
                         alert("Unable To Calculate");
                     }
                 });
-         }
+        }
+
+        function changevch_noforac_hd() {
+            getvch_no();
+            $('#acc_no').focus();
+        }
 
         function getvch_no() {
              let ModelObject = { branch: $('#branch').val(), shift: $('#shift').val(), date: $('#date').val(), counter: $('#counter').val() };
@@ -627,7 +644,7 @@
             }
         }
 
-         function DeleteReciept() {
+       function DeleteReciept() {
             $('#loading').show();
              let ModelObject = { achd: $('#achd').val(), vch_no: $('#vch_no').val(), date: $('#date').val(), acc_no: $('#acc_no').val()};
             //alert(JSON.stringify(ModelObject));
@@ -638,11 +655,12 @@
                     dataType: "json",
                 success: function (data) {
                     alert(data);
-                    howTableForRecieptDetails();
+                    ShowTableForRecieptDetails();
                     ShowTableForRecieptSummary();
                     $('#personalaccountinfo').hide();
                     $('#personalledgerinfo').hide();
-                    $('#loading').hide();                   
+                    //$('#gt_head').val("");
+                    //$('#gt_amt').val("");                   
                 },
                 error: function (err) {
                     alert("Error Occured");

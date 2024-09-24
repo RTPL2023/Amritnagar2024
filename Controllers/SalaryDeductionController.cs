@@ -901,7 +901,6 @@ namespace Amritnagar.Controllers
         {
             Recovery_Schedule rs = new Recovery_Schedule();
             string msg = rs.updatloanblances(model);
-
             return Json(msg);
         }
         public JsonResult getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
@@ -965,7 +964,6 @@ namespace Amritnagar.Controllers
         /********************************************Prep Of Deduction Schedule Start*******************************************/
 
         /********************************************Recovery From Salary Deduction End*******************************************/
-
         [HttpGet]
         public ActionResult RecoveryFrmSalaryDeduction(RecoveryFrmSalaryDeductionViewModel model)
         {
@@ -973,6 +971,8 @@ namespace Amritnagar.Controllers
             model.BranchDesc = u.getBranchMastDetails();
             model.EmpDesc = u.getEmployerMastDetails();
             model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            model.sch_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
+            model.rec_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
             return View(model);
         }
         public ActionResult getdeductlist(string emplyer_name, string emp_unit)

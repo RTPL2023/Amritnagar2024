@@ -114,7 +114,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                                 Branch
-                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), "Select", new { @class = "size" })
+                                @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
                             </div>
                             <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                                 As On Date

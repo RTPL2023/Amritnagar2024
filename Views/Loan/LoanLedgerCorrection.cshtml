@@ -111,7 +111,7 @@
                 <div class="row mt-2">
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Branch:<br />
-                        @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), "Select Branch", new { @class = "sizebig" })
+                        @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "sizebig" })
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Loan Type:<br />
@@ -179,6 +179,11 @@
                     </div>
                 </div>
                 <div class="row mt-2">
+                    <div class="row mt-3 mb-2">
+                        <div class="col-12 text-center">
+                            <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
+                        </div>
+                    </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" style="background-color:lightblue;color:darkblue;text-transform:uppercase">
                         L o a n &nbsp;&nbsp; T r a n s a c t i o n &nbsp;&nbsp; D e t a i l s
                     </div>
@@ -221,7 +226,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
+            $('#loading').hide();
         });
 
         function ShowTable() {
@@ -290,7 +295,7 @@
             }
         })();
 
-         function Save() {
+        function Save() {          
                     let ModelObject = {
                         date: $('#date').val(),
                         vch_no: $('#vch_no').val(),
@@ -315,7 +320,7 @@
                         data: ModelObject,
                         dataType: "json",
                         success: function (data) {
-                            alert(data);
+                            alert(data);                            
                             Rebalance();
                             ShowTable();
                         },
@@ -323,9 +328,10 @@
                             alert("Error Occured");
                         }
                     });
-         }
+        }
 
-         function Rebalance() {
+        function Rebalance() {
+            $('#loading').show();
                     let ModelObject = {
                         branch_id: $('#branch_id').val(),
                         ac_hd: $('#ac_hd').val(),
@@ -339,6 +345,7 @@
                         dataType: "json",
                         success: function (data) {
                             alert(data);
+                            $('#loading').hide();
                             ShowTable();
                         },
                         error: function (err) {
