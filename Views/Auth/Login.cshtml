@@ -137,7 +137,7 @@
 
 
     body {
-        /* background-color:aqua;*/
+         background-color:aqua;
         font-family: "Roboto", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -165,7 +165,7 @@
 
 <form asp-controller="Auth" asp-action="Login" method="post" enctype="multipart/form-data">
     <div>
-        <div class="form">
+          <div class="form">
             <img src="~/Content/Images/icon.png">
             <div>
                 <h2>LOGIN</h2>
@@ -200,7 +200,7 @@
 
 
                 <!--<div class="form-group">
-                @Html.LabelFor(p => p.Branch)<span class="text-danger">*</span><br />-->
+            @Html.LabelFor(p => p.Branch)<span class="text-danger">*</span><br />-->
                 @*@Html.DropDownListFor(p => p.BranchId, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "form-control" })*@
                 @*@Html.PasswordFor(p => p.Password, new { @class = "form-control" })*@
                 @*<div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>*@
@@ -222,8 +222,8 @@
                 </table>
             </div>
             @*<input type="text" placeholder="username" />
-                <input type="password" placeholder="password" />
-                <button type="submit">login</button>*@
+            <input type="password" placeholder="password" />
+            <button type="submit">login</button>*@
         </div>
     </div>
     <div class="container text-center" style="text-align:center;margin-top:35px; color:gray;font-size:14px">
