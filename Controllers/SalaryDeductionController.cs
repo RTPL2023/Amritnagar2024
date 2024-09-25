@@ -1090,7 +1090,71 @@ namespace Amritnagar.Controllers
             return Json("Updated");
         }
         /********************************************Recovery From Salary Deduction End*******************************************/
-
+        [HttpGet]
+        public ActionResult GeneralDeductionschedule(GeneralDedscheduleViewModel model)
+        {
+            UtilityController u = new UtilityController();         
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            model.CategoryDesc = u.getCategoryMastDetails();
+            model.BranchDesc = u.getBranchMastDetails();
+            return View(model);
+        }
+        public JsonResult PopulateDeductionScheduleList(GeneralDedscheduleViewModel model)
+        {
+            Recovery_Schedule rs = new Recovery_Schedule();
+            List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
+            rslst = rs.getdecschlist(model.branch, model.mem_cat, model.sending_dt, model.unit);
+            int i = 1;
+            decimal xprin = 0;
+            decimal xint = 0;
+            string emp = "";
+            decimal tot_mem = 0;
+            decimal tot_prin_amt = 0;
+            decimal tot_int_amt = 0;
+            decimal tot_tf_amt = 0;
+            decimal tot_amt = 0;
+            if (rslst.Count > 0)
+            {
+                model.tableelement = "<tr><th>Srl</th><th>EmpId</th><th>Member Name</th><th>AC/Hd</th><th>Prin Amt</th><th>Int Amt</th><th>Employer Branch</th><th>Book No</th><th>Tf Amount</th><th>Total Amount</th></tr>";
+                foreach (var a in rslst)
+                {
+                    int j = rslst.Where(b => b != null && b.emp_id == a.emp_id).Count();
+                    if(a.ac_hd != "TF")
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + "" + "</td></tr>";
+                        tot_prin_amt = tot_prin_amt + a.prin_amt;
+                        tot_int_amt = tot_int_amt + a.int_amt;
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + a.prin_amt.ToString("0.00") + "</td></tr>";
+                        tot_tf_amt = tot_tf_amt + a.prin_amt;
+                    }
+                    emp = a.emp_id;
+                    xprin = xprin + a.prin_amt;
+                    xint = xint + a.int_amt;                                  
+                    if (i == j)
+                    {
+                        j = 0;
+                        model.tableelement = model.tableelement + "<tr style =\"background-color:pink\"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
+                        tot_amt = tot_amt + xprin + xint;
+                        i = 0;
+                        xprin = 0;
+                        xint = 0;
+                        tot_mem = tot_mem + 1;                      
+                    }
+                    i = i + 1;
+                }
+                model.tableelement1 = "<tr><th>Total Member</th><th>Total Principal Amount</th><th>Total Interest Amount</th><th>Total Tf Amount</th><th>Total Amt</th></tr>";
+                model.tableelement1 = model.tableelement1 + "<tr><td>" + tot_mem + "</td><td>" + tot_prin_amt.ToString("0.00") + "</td><td>" + tot_int_amt.ToString("0.00") + "</td><td>" + tot_tf_amt.ToString("0.00") + "</td><td>" + tot_amt.ToString("0.00") + "</td></tr>";
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+       
     }
 }
 

@@ -1,0 +1,305 @@
+﻿@model Amritnagar.Models.ViewModel.GeneralDedscheduleViewModel
+
+@{
+    ViewBag.Title = "GeneralDeductionschedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .size {
+        width: 180px;
+        height: 25px;
+    }
+
+    .size1 {
+        width: 150px;
+        height: 25px;
+    }
+
+    .sizeM {
+        width: 100px;
+        height: 25px;
+    }
+
+    .sizeS {
+        width: 80px;
+        height: 25px;
+    }
+
+    .sizeL {
+        width: 220px;
+        height: 25px;
+    }
+
+    .sizebig {
+        width: 300px;
+        height: 25px;
+    }
+
+    .heading {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color: saddlebrown;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .tab {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab tbody {
+            display: block;
+            width: 900px;
+            overflow: auto;
+            height: 250px;
+            text-align: center;
+        }
+
+        .tab td, .tab th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 900px;
+        }
+
+        .tab tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    .tab1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .tab1 tbody {
+            display: block;
+            width: 600px;
+            overflow: auto;
+            height: 120px;
+            text-align: center;
+        }
+
+        .tab1 td, .tab1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        .tab1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+    input {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    select {
+        background-color: rgb(226,148,91,0.2)
+    }
+
+    input:focus {
+        background-color: rgba( 226,148,91, 0.6);
+    }
+
+    select:focus {
+        background-color: rgba(226,148,91, 0.6);
+    }
+
+    .size2 {
+        width: 150px;
+        height: 25px;
+        background-color: white
+    }
+</style>
+
+<form asp-controller="SalaryDeduction" asp-action="GeneralDeductionschedule" method="post">
+    <div class="container" style="height:70px">
+
+    </div>
+    <div class="heading mt-4">
+        General Deduction Schedule In Text Format For Sending in Removable Media
+    </div>
+
+    <div class="container mt-2">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
+                <div class="row mt-2">
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                        Branch<br />
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                        Sending Date<br />
+                        @Html.TextBoxFor(p => p.sending_dt, new { @class = "size", @type = "text" })
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                        Member Category <br />
+                        @Html.DropDownListFor(p => p.mem_cat, new SelectList(Model.CategoryDesc, "Value", "Text"), new { @class = "size" })
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+                        Unit<br />
+                        @Html.DropDownListFor(p => p.unit, new SelectList(Model.EmpBranchDesc, "Value", "Text"), new { @class = "size" })
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color:indianred;color:white;font-size:15px;font-weight:bold;text-align:center;text-transform:uppercase">
+                            D I S P L A Y  &nbsp;&nbsp; S E N D I N G  &nbsp;&nbsp; L I S T
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <div class="table-responsive mt-1">
+                                @*<img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />*@
+
+                                <table id="SendingList" class="tab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="container mt-2">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-12 text-center p-1" style="background-color:cornflowerblue;color:white;font-size:14px;font-weight:bold;text-align:center;text-transform:uppercase;height:40px">
+                            Summary
+                        </div>
+                    
+                        <div class="col-lg-9 col-md-9 col-sm-12 col-12 text-center">
+                            <div class="table-responsive mt-1">
+                                <table id="TotalSending" class="tab1">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-12">
+
+                                </div>
+                                <div class="col-lg-2 col-12">
+                                    Year
+
+                                </div>
+                                <div class="col-lg-3 col-12">
+
+                                    @Html.TextBoxFor(p => p.year, new { @class = "size", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-12">
+                                    <input id="BtnPopulate" type="button" name="BtnPopulate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Populate" onclick="ShowTable()"/>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-lg-4 col-12" style="font-weight:bold;color:firebrick;font-size:15px">
+                                    Process...
+                                </div>
+                                <div class="col-lg-2 col-12">
+                                    Month Code
+
+                                </div>
+                                <div class="col-lg-3 col-12">
+
+                                    @Html.TextBoxFor(p => p.month_code, new { @class = "size", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-12">
+                                    <input id="BtnXlFormat" type="button" name="BtnXlFormat" Height="40" Width="100" class="btn btn-primary btn-sm" value="Excel Format" />
+                                </div>
+                            </div>
+                            <div class="row mt-1 mb-1">
+                                <div class="col-lg-4 col-12">
+
+                                </div>
+                                <div class="col-lg-2 col-12">
+                                    Code
+
+                                </div>
+                                <div class="col-lg-3 col-12">
+
+                                    @Html.TextBoxFor(p => p.code, new { @class = "size", @type = "text" })
+                                </div>
+                                <div class="col-lg-3 col-12">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+
+
+         function ShowTable() {
+             let ModelObject = { branch: $('#branch').val(), mem_cat: $('#mem_cat').val(), sending_dt: $('#sending_dt').val(), unit: $('#unit').val()};
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("PopulateDeductionScheduleList", "SalaryDeduction")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        document.getElementById("SendingList").innerHTML = data.tableelement;
+                        document.getElementById("TotalSending").innerHTML = data.tableelement1;
+                        //ShowTableForTotalPosition();
+                    },
+                     error: function (err) {
+                    //alert("Error Occured");
+                     }
+                    });
+         }
+
+       
+    </script>
+}

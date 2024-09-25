@@ -277,7 +277,7 @@
                             </div>
                         </div>
                         <div class="col-md-2 col-sm-12 col-12 mt-1">
-                            <input id="BtnSchSend" type="button" name="BtnSchSend" Height="40" Width="100" class="btn btn-primary btn-sm" value="Schedule Sending" />
+                            <input id="BtnSchSend" type="button" name="BtnSchSend" Height="40" Width="100" class="btn btn-primary btn-sm" value="Schedule Sending" onclick="ReturnToGeneralDeductionPage()" />
                         </div>
                     </div>
                 </div>
@@ -477,7 +477,7 @@
                 }
             });
 
-        }; 
+        };
 
          function afterUpdateList() {
             $("#loading").show();
@@ -514,5 +514,9 @@
             });
 
         };
+
+        function ReturnToGeneralDeductionPage() {
+            window.location.href = "@Url.Action("GeneralDeductionschedule", "SalaryDeduction")";
+        }
     </script>
 }

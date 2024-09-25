@@ -443,7 +443,7 @@ namespace Amritnagar.Controllers
             {
                 foreach (var a in tvel)
                 {
-                    if (a.drcr == "D")
+                    if (a.drcr == "D" || a.drcr == "d")
                     {
                         model.debt_amt = Convert.ToString(Convert.ToDecimal(model.debt_amt) + a.amount);
                     }
@@ -461,7 +461,7 @@ namespace Amritnagar.Controllers
             VoucherEntryViewModel model = new VoucherEntryViewModel();
             model.debt_amt = "0";
             model.crdt_amt = "0";
-            if(drcr1 == "D")
+            if(drcr1 == "D" || drcr1 == "d")
             {
                 model.debt_amt = amount1;
             }

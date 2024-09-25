@@ -11,9 +11,9 @@ namespace Amritnagar.Models.Database
     public class Recovery_Schedule
     {
         SQLConfig config = new SQLConfig();
-        public string branch_id { get; set; }
-        
+        public string branch_id { get; set; }      
         public string employer_cd { get; set; }
+        public string unit { get; set; }
         public int employer_branch { get; set; }
         public string sch_date { get; set; }
         public string book_no { get; set; }
@@ -1308,7 +1308,6 @@ namespace Amritnagar.Models.Database
                                                 totalR7 = totalR7 + xirate;
                                             }
                                             break;
-
                                     }
                                 }
                             }
@@ -1386,7 +1385,41 @@ namespace Amritnagar.Models.Database
             return "Updated";
         }
 
-
+        public List<Recovery_Schedule> getdecschlist(string branch, string mem_cat, string sending_dt, string unit)
+        {
+            string XAC_NO = "";
+            string YAC_NO = "";
+            string xac_hd = "";
+            string YAC_HD = "";
+            string RO_COUNT = "";
+            decimal xprin = 0;
+            decimal xint = 0;
+            decimal XTF = 0;
+            List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
+            string qryMEM = string.Empty;            
+            qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' AND ";
+            qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sending_dt + "', 103) AND ";
+            qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "'";
+            qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";                        
+            config.singleResult(qryMEM);          
+            if (config.dt.Rows.Count > 0)
+            {
+                //decimal NHD = 0;               
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Recovery_Schedule rs = new Recovery_Schedule();
+                    rs.emp_id = Convert.ToString(dr["EMPLOYEE_ID"]);
+                    rs.ac_hd = Convert.ToString(dr["ac_hd"]);
+                    rs.mem_name = Convert.ToString(dr["member_name"]);
+                    rs.unit = Convert.ToString(dr["EMPLOYER_BRANCH"]);
+                    rs.prin_amt = Convert.ToDecimal(dr["PRIN_AMT"]);
+                    rs.int_amt = Convert.ToDecimal(dr["INT_AMT"]);
+                    rs.book_no = Convert.ToString(dr["book_no"]);
+                    rslst.Add(rs);
+                }              
+            }                                 
+            return rslst;
+        }
     }
 
 }

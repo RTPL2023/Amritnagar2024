@@ -447,6 +447,29 @@
                 }
             });
 
+            $("#vch_achd1").autocomplete({
+                source: function (request, response) {
+                    let ModelObject = { vch_achd: $('#vch_achd1').val() };
+                    $.ajax({
+                        url: "/Account/AchdListForVoucherEntry",
+                        type: "POST",
+                        dataType: "json",
+                        data: ModelObject,
+                        success: function (data) {
+                            response($.map(data, function (achd) {
+                                return { label: achd.ac_parti, value: achd.ac_hd };
+                            }))
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "",
+                    results: function (count) {
+                        return count + (count > 1 ? 'results' : 'result ') + 'found';
+                    }
+                }
+            });
+
             GetVoucherType();
         });
 
@@ -599,7 +622,7 @@
             }
         }
 
-        function GetAmount() {
+       function GetAmount() {
              let ModelObject = {
                  vch_date: $('#datepicker1').val(),
                  vch_no: $('#txtvch_No').val()
@@ -612,7 +635,7 @@
                   success: function (data)
                   {
                     //alert(data);
-                    if ($('#drcr').val() == "D") {
+                      if ($('#drcr').val() == "D" || $('#drcr').val() == "d") {
                         $("#debt_amt").val(parseFloat(data.debt_amt) + parseFloat($('#amount').val()));
                     }
                     else {
@@ -625,7 +648,7 @@
                     alert(err);
                 }
              });
-        }
+       }
 
         function evtamountformodification(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -637,7 +660,7 @@
         }
 
         function GetAmountForModification() {
-             let ModelObject = {                 
+             let ModelObject = {
                  amount1: $('#amount1').val(),
                  drcr1: $('#drcr1').val(),
              };
@@ -649,12 +672,12 @@
                   success: function (data)
                   {
                     //alert(data);
-                    if ($('#drcr1').val() == "D") {
+                      if ($('#drcr1').val() == "D" || $('#drcr1').val() == "d") {
                         $("#debt_amt").val(parseFloat(data.debt_amt));
-                    }
-                    else {
+                      }
+                      else {
                         $("#crdt_amt").val(parseFloat(data.crdt_amt));
-                    }
+                      }
                     $("#net_amt").val(parseFloat($('#crdt_amt').val()) - parseFloat($('#debt_amt').val()));
                       $("#ref_ac_hd1").focus();
                   },
@@ -667,7 +690,7 @@
         function voucherModify() {
             //alert("OK")
             let ModelObject = {
-                vch_date: $('#datepicker1').val(),                
+                vch_date: $('#datepicker1').val(),
                 drcr: $('#drcr1').val(),
                 vch_achd: $('#vch_achd1').val(),
                 vchpacno: $('#vchpacno1').val(),
@@ -764,10 +787,10 @@
                     ShowTable();
                     $('#debt_amt').val("0");
                     $('#crdt_amt').val("0");
-                    $('#net_amt').val("0");                  
+                    $('#net_amt').val("0");
                     $('#txtvch_No').val("");
-                    $('#vch_type').val("");
-                    $('#Vch_narr').val("");                  
+                    //$('#vch_type').val("");
+                    $('#Vch_narr').val("");
                 },
                 error: function (err) {
                     alert("Error Occured");
@@ -1025,7 +1048,7 @@
             }
         }
 
-        
+
 
     </script>
 }

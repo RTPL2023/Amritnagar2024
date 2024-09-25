@@ -266,7 +266,7 @@ namespace Amritnagar.Controllers
                     }
                     else
                     {
-                        mm.mem_closed = "";
+                        mm.mem_closed = null;
                         mm.close_dt = null;
                     }
 
@@ -276,7 +276,7 @@ namespace Amritnagar.Controllers
                     }
                     else
                     {
-                        mm.ret = "";
+                        mm.ret = null;
                     }
                     if (model.trans == true)
                     {
@@ -284,7 +284,7 @@ namespace Amritnagar.Controllers
                     }
                     else
                     {
-                        mm.trans = "";
+                        mm.trans = null;
                     }
                     if (model.tf_double == true)
                     {
@@ -915,7 +915,7 @@ namespace Amritnagar.Controllers
             }
             else
             {
-                mm.mem_closed = "";
+                mm.mem_closed = null;
                 mm.close_dt = null;
             }
             if (model.ret == true)
@@ -924,7 +924,7 @@ namespace Amritnagar.Controllers
             }
             else
             {
-                mm.ret = "";
+                mm.ret = null;
             }
             if (model.trans == true)
             {
@@ -932,7 +932,7 @@ namespace Amritnagar.Controllers
             }
             else
             {
-                mm.trans = "";
+                mm.trans = null;
             }
             if (model.tf_double == true)
             {

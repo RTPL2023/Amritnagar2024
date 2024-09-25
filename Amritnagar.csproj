@@ -201,6 +201,7 @@
     <Compile Include="Models\ViewModel\EditUserViewModel.cs" />
     <Compile Include="Models\ViewModel\EmployerUnitMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\FreshListViewModel.cs" />
+    <Compile Include="Models\ViewModel\GeneralDedscheduleViewModel.cs" />
     <Compile Include="Models\ViewModel\GeneralLedgerReportViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanDetailListViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanLedgerCorrectionViewModel.cs" />
@@ -328,6 +329,7 @@
     <Content Include="Views\Admin\ShareLedgerModify.cshtml" />
     <Content Include="Views\Admin\Tf_Gf_Ledger.cshtml" />
     <Content Include="Views\Home\DashBoard.cshtml" />
+    <Content Include="Views\SalaryDeduction\GeneralDeductionschedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
