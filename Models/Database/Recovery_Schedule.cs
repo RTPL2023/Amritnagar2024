@@ -362,7 +362,6 @@ namespace Amritnagar.Models.Database
             }
             return rgl;
         }
-
         public List<Recovery_Schedule> getdetailsForDeductionSchedule(string emp_name, string branch, string mem_type, string mem_cat, string book_no, string sch_date)
         {
             string XBOOK_NO = "";
@@ -379,7 +378,6 @@ namespace Amritnagar.Models.Database
             sql = sql + " AND MEMBER_TRANSFERED IS NULL AND IS_DEAD='A' AND MEMBER_CLOSED IS NULL ";
             sql = sql + " ORDER BY EMPLOYER_CD,EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             sql = sql + "ORDER BY BOOK_NO,EMPLOYEE_ID,AC_HD,VCH_PACNO";
-
             if (book_no == "AL")
             {
                 sql = "SELECT * FROM MEMBER_MAST WHERE   EMPLOYER_CD='" + emp_name + "'";
@@ -392,7 +390,6 @@ namespace Amritnagar.Models.Database
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
-
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     Recovery_Schedule rs = new Recovery_Schedule();
@@ -420,16 +417,12 @@ namespace Amritnagar.Models.Database
                             }
                         }
                     }
-
                 }
-
             }
-
             return rgl;
         }
         public List<Recovery_Schedule> getdetailsForRecoveryFrmSalartDeduction(string deduc_achd, string branch, string empcd, string empbranch, string bookno, string sch_date)
         {
-
             string XMAN_NO = "";
             string YMAN_NO = "";
             List<Recovery_Schedule> rgl = new List<Recovery_Schedule>();
@@ -461,17 +454,13 @@ namespace Amritnagar.Models.Database
                     rs.book_no = Convert.ToString(dr["book_no"]);
                     rs.vch_pacno = Convert.ToString(dr["vch_pacno"]);
                     rs.prin_bal = !Convert.IsDBNull(dr["PRIN_BAL"]) ? Convert.ToDecimal(dr["PRIN_BAL"]) : Convert.ToDecimal("00");
-
                     rs.prin_amt = !Convert.IsDBNull(dr["PRIN_AMT"]) ? Convert.ToDecimal(dr["PRIN_AMT"]) : Convert.ToDecimal("00");
                     rs.int_amt = !Convert.IsDBNull(dr["INT_AMT"]) ? Convert.ToDecimal(dr["INT_AMT"]) : Convert.ToDecimal("00");
-
-
                     rgl.Add(rs);
                 }
             }
             return rgl;
         }
-
         public void SaveDataInRecoverySchedule(Recovery_Schedule rs, string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch ,string xemployee_ID)
         {
             string SDL_QRY = "";
@@ -480,7 +469,7 @@ namespace Amritnagar.Models.Database
             SDL_QRY = SDL_QRY + " and ac_hd='" + rs.r4 + "' and ";
             SDL_QRY = SDL_QRY + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103)";
             SDL_QRY = SDL_QRY + " AND MEMBER_TYPE='" + mem_type + "' ";
-            SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + book_no + "'";
+            SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + rs.r1 + "'";
             config.singleResult(SDL_QRY);
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             if (config.dt.Rows.Count > 0)
@@ -490,14 +479,11 @@ namespace Amritnagar.Models.Database
                 SDL_QRY = SDL_QRY + " and ac_hd='" + rs.r4 + "' and ";
                 SDL_QRY = SDL_QRY + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103)";
                 SDL_QRY = SDL_QRY + " AND MEMBER_TYPE='" + mem_type + "' ";
-                SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + book_no + "'";
-                config.Execute_Query(SDL_QRY);
-
-              
+                SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + rs.r1 + "'";
+                config.Execute_Query(SDL_QRY);            
             }
             SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT )";
-            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + book_no + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
-
+            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + rs.r1 + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
             config.Execute_Query(SDL_QRY);
             //else
             //{
@@ -509,14 +495,11 @@ namespace Amritnagar.Models.Database
             //        config.Execute_Query(SDL_QRY);
             //    }
             //}
-
         }
         public List<Recovery_Schedule> getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
         {
-
             decimal totalR7 = 0;
             decimal totalR8 = 0;
-
             string XBOOK_NO = "";
             string xemployee_ID = "";
             string XMEMBER_NM = "";
@@ -556,8 +539,6 @@ namespace Amritnagar.Models.Database
             sql = sql + " AND MEM_CATEGORY='" + mem_cat + "' and book_no='" + book_no + "' and  MEMBER_RETIRED IS NULL";
             sql = sql + " AND MEMBER_TRANSFERED IS NULL AND IS_DEAD='A' AND MEMBER_CLOSED IS NULL ";
             sql = sql + " ORDER BY EMPLOYER_CD,EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
-
-
             if (book_no == "AL")
             {
                 sql = "SELECT * FROM MEMBER_MAST WHERE   EMPLOYER_CD='" + emp_name + "'";
@@ -602,7 +583,6 @@ namespace Amritnagar.Models.Database
                                     if (config.dt.Rows.Count > 0)
                                     {
                                         DataRow drlm = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-
                                         string rSource = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + branch + "' AND ";
                                         rSource = rSource + "AC_HD='" + Acc_Head + "' and  EMPLOYEE_ID='" + xemployee_ID + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + sch_date + "', 103) ";
                                         rSource = rSource + "ORDER BY BRANCH_ID,AC_HD,employee_ID,VCH_DATE,VCH_NO,VCH_SRL";
@@ -645,9 +625,7 @@ namespace Amritnagar.Models.Database
                                                 }
                                                 XPRIN_AMOUNT = Math.Round(XPRIN_BAL - XPRIN_AMT);
                                                 XINT_CAL = (XPRIN_AMT * INT_RATE) / 36500 * xcal_date;
-
                                                 YPRIN_BAL = prin_bal - XPRIN_AMT;
-
                                                 YINT_CAL = YPRIN_BAL * INT_RATE / 100 / 12;
                                                 INT_CAL = Math.Round(XINT_CAL + YINT_CAL);
                                             }
@@ -679,11 +657,9 @@ namespace Amritnagar.Models.Database
                                                 rs.r12 = INT_DUE.ToString("0.00");
                                                 rs.r13 = INT_RATE.ToString("0.00") + "%";
                                                 rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch , xemployee_ID);
-
                                                 rslst.Add(rs);
                                                 CAL_LOAN_DUE = true;
                                             }
-
                                             if (CAL_LOAN_DUE == true)
                                             {
                                                 Tot_Due = Tot_Due + dd+ INT_CAL;
@@ -693,7 +669,6 @@ namespace Amritnagar.Models.Database
                                         }
                                         CAL_LOAN_DUE = false;
                                     }
-
                                 }
                                 if (MAST_FLAG == "M") //--------MEMBERSHIP MASTER FOR THRIFT FUND--------------
                                 {
@@ -731,7 +706,6 @@ namespace Amritnagar.Models.Database
                                                     XTF = 100;
                                                 }
                                             }
-
                                             ACT_DUE = 0;
                                             prin_bal = 0;
                                             sql = "SELECT* FROM TF_LEDGER WHERE BRANCH_ID = '" + branch + "' AND MEMBER_ID='" + MEMBER + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + sch_date + "', 103) ORDER BY BRANCH_ID,MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
@@ -739,7 +713,6 @@ namespace Amritnagar.Models.Database
                                             if (config.dt.Rows.Count > 0)
                                             {
                                                 DataRow drtl = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-
                                                 sql = "SELECT * FROM TF_RATE ORDER BY EFF_DATE";
                                                 config.singleResult(sql);
                                                 if (config.dt.Rows.Count > 0)
@@ -747,7 +720,6 @@ namespace Amritnagar.Models.Database
                                                     DataRow drtr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                                                     xirate = xirate = Convert.ToDecimal(drtr["TF_RATE"]);
                                                 }
-
                                                 prin_bal = !Convert.IsDBNull(drtl["prin_bal"]) ? Convert.ToDecimal(drtl["prin_bal"]) : Convert.ToDecimal("0");
                                                 ACT_DUE = xirate;
                                             }
@@ -762,19 +734,15 @@ namespace Amritnagar.Models.Database
                                             rs.r5 = MEMBER;
                                             rs.r6 = prin_bal.ToString("0.00");
                                             rs.r8 = XTF.ToString("0.00");
-
                                             rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID);
                                             rslst.Add(rs);
-
                                             CAL_TF_DUE = true;
-
                                             if (CAL_TF_DUE == true)
                                             {
                                                 Tot_Due = Tot_Due + XTF;
                                                 totalR7 = totalR7 + XTF;
                                             }
                                             break;
-
                                         case "LICP_LEDGER":
                                             string xmem = "";
                                             string XBK = "";
@@ -865,7 +833,6 @@ namespace Amritnagar.Models.Database
                                             if (config.dt.Rows.Count > 0)
                                             {
                                                 DataRow drrl = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-
                                                 sql = "SELECT * FROM RTB_RATE ORDER BY EFF_DATE";
                                                 config.singleResult(sql);
                                                 if (config.dt.Rows.Count > 0)
@@ -873,7 +840,6 @@ namespace Amritnagar.Models.Database
                                                     DataRow drrr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                                                     xirate = Convert.ToDecimal(drrr["RTB_RATE"]);
                                                 }
-
                                                 prin_bal = !Convert.IsDBNull(drrl["prin_bal"]) ? Convert.ToDecimal(drrl["prin_bal"]) : Convert.ToDecimal("0");
                                                 ACT_DUE = xirate;
                                             }
@@ -881,7 +847,6 @@ namespace Amritnagar.Models.Database
                                             {
                                                 ACT_DUE = xirate;
                                             }
-
                                             rs.r1 = XBOOK_NO;
                                             rs.r2 = xemployee_ID;
                                             rs.r3 = XMEMBER_NM;
@@ -889,11 +854,8 @@ namespace Amritnagar.Models.Database
                                             rs.r5 = MEMBER;
                                             rs.r6 = prin_bal.ToString("0.00");
                                             rs.r8 = xirate.ToString("0.00");
-
                                             rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID);
-
                                             rslst.Add(rs);
-
                                             CAL_RTB_DUE = true;
                                             if (CAL_RTB_DUE == true)
                                             {
@@ -901,21 +863,17 @@ namespace Amritnagar.Models.Database
                                                 totalR7 = totalR7 + xirate;
                                             }
                                             break;
-
                                     }
                                 }
                             }
                         }
                     }
-
                     rs1.r9 = "TOTAL";
                     rs1.r10 = Tot_Due.ToString("0.00");
                     rslst.Add(rs1);
                     Tot_Due = 0;
                 }
-
             }
-
             return rslst;
         }
         public List<Recovery_Schedule> getdetailsForDeductionScheduleAfterUpdate(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
@@ -1384,7 +1342,6 @@ namespace Amritnagar.Models.Database
             }
             return "Updated";
         }
-
         public List<Recovery_Schedule> getdecschlist(string branch, string mem_cat, string sending_dt, string unit)
         {
             string XAC_NO = "";

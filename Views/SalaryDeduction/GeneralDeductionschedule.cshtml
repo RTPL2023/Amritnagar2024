@@ -246,7 +246,7 @@
                                     @Html.TextBoxFor(p => p.month_code, new { @class = "size", @type = "text" })
                                 </div>
                                 <div class="col-lg-3 col-12">
-                                    <input id="BtnXlFormat" type="button" name="BtnXlFormat" Height="40" Width="100" class="btn btn-primary btn-sm" value="Excel Format" />
+                                    <input id="BtnXlFormat" type="button" name="BtnXlFormat" Height="40" Width="100" class="btn btn-primary btn-sm" value="Excel Format" onclick="DownloadExcel()" />
                                 </div>
                             </div>
                             <div class="row mt-1 mb-1">
@@ -281,15 +281,20 @@
     <script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script type="text/javascript">
 
+        $(document).ready(function () {
+            $("#loading").hide();            
+        });
 
-         function ShowTable() {
+        function ShowTable() {
+            $("#loading").show();
              let ModelObject = { branch: $('#branch').val(), mem_cat: $('#mem_cat').val(), sending_dt: $('#sending_dt').val(), unit: $('#unit').val()};
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("PopulateDeductionScheduleList", "SalaryDeduction")',
                         data: ModelObject,
                         dataType: "json",
-                    success: function (data) {
+                        success: function (data) {
+                        $("#loading").hide();
                         document.getElementById("SendingList").innerHTML = data.tableelement;
                         document.getElementById("TotalSending").innerHTML = data.tableelement1;
                         //ShowTableForTotalPosition();
@@ -300,6 +305,9 @@
                     });
          }
 
-       
+        function DownloadExcel() {
+            window.location.href = "@Url.Action("ExportExcelForDeductionScheduleList", "SalaryDeduction")" + "?branch=" + $('#branch').val() + "&mem_cat=" + $('#mem_cat').val() + "&sending_dt=" + $('#sending_dt').val() + "&unit=" + $('#unit').val() + "&year=" + $('#year').val() + "&month_code=" + $('#month_code').val() + "&code=" + $('#code').val();
+        }
+
     </script>
 }

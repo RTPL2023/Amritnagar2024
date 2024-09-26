@@ -8,7 +8,11 @@ using Amritnagar.Models.Database;
 using Amritnagar.Models.ViewModel;
 using System.Data;
 using System.IO;
+using OfficeOpenXml;
+using ClosedXML.Excel;
+using ExcelDataReader;
 using Amritnagar.Includes;
+using System.Drawing;
 
 namespace Amritnagar.Controllers
 {
@@ -1097,6 +1101,7 @@ namespace Amritnagar.Controllers
             model.EmpBranchDesc = u.getEmployerBranchMastDetails();
             model.CategoryDesc = u.getCategoryMastDetails();
             model.BranchDesc = u.getBranchMastDetails();
+            model.code = "35";
             return View(model);
         }
         public JsonResult PopulateDeductionScheduleList(GeneralDedscheduleViewModel model)
@@ -1105,6 +1110,7 @@ namespace Amritnagar.Controllers
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             rslst = rs.getdecschlist(model.branch, model.mem_cat, model.sending_dt, model.unit);
             int i = 1;
+            int k = 1;
             decimal xprin = 0;
             decimal xint = 0;
             string emp = "";
@@ -1121,13 +1127,13 @@ namespace Amritnagar.Controllers
                     int j = rslst.Where(b => b != null && b.emp_id == a.emp_id).Count();
                     if(a.ac_hd != "TF")
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + "" + "</td></tr>";
+                        //model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + "" + "</td></tr>";
                         tot_prin_amt = tot_prin_amt + a.prin_amt;
                         tot_int_amt = tot_int_amt + a.int_amt;
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + a.prin_amt.ToString("0.00") + "</td></tr>";
+                        //model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + a.prin_amt.ToString("0.00") + "</td></tr>";
                         tot_tf_amt = tot_tf_amt + a.prin_amt;
                     }
                     emp = a.emp_id;
@@ -1136,12 +1142,14 @@ namespace Amritnagar.Controllers
                     if (i == j)
                     {
                         j = 0;
-                        model.tableelement = model.tableelement + "<tr style =\"background-color:pink\"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(k) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + "" + "</td><td>" + a.unit + "</td><td>" + a.book_no + "</td><td>" + "" + "</td><td>" + (xprin + xint).ToString("0.00") + "</td></tr>";
+                        //model.tableelement = model.tableelement + "<tr style =\"background-color:pink\"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
                         tot_amt = tot_amt + xprin + xint;
                         i = 0;
                         xprin = 0;
                         xint = 0;
-                        tot_mem = tot_mem + 1;                      
+                        tot_mem = tot_mem + 1;
+                        k = k + 1;
                     }
                     i = i + 1;
                 }
@@ -1154,7 +1162,101 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-       
+        public ActionResult ExportExcelForDeductionScheduleList(GeneralDedscheduleViewModel model)
+        {
+            decimal total_amt = 0;
+            decimal tot_amt = 0;
+            decimal xprin = 0;
+            decimal xint = 0;
+            string emp = "";
+            Recovery_Schedule rs = new Recovery_Schedule();
+            List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
+            rslst = rs.getdecschlist(model.branch, model.mem_cat, model.sending_dt, model.unit);
+            using (var workbook = new XLWorkbook())
+            {
+                int k = 1;
+                int i = 1;
+                var worksheet = workbook.Worksheets.Add("LoanData");
+                worksheet.Style.Font.FontName = "Arial";
+                worksheet.Style.Font.FontSize = 10;
+                worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                worksheet.Style.Alignment.Vertical = XLAlignmentVerticalValues.Bottom;
+                worksheet.Style.NumberFormat.Format = "@";
+                var currentRow = 2;
+                            
+                foreach (var a in rslst)
+                {
+                    int j = rslst.Where(b => b != null && b.emp_id == a.emp_id).Count();
+                    emp = a.emp_id;
+                    xprin = xprin + a.prin_amt;
+                    xint = xint + a.int_amt;
+                    if (i == j)
+                    {
+                        j = 0;
+                        total_amt = total_amt + xprin + xint;
+                        //ws.Cells[string.Format("A{0}", rowstart)].Value = Convert.ToString(k);
+                        //ws.Cells[string.Format("B{0}", rowstart)].Value = a.unit;
+                        //ws.Cells[string.Format("C{0}", rowstart)].Value = a.emp_id;
+                        //ws.Cells[string.Format("D{0}", rowstart)].Value = total_amt;
+                        //ws.Cells[string.Format("E{0}", rowstart)].Value = model.year;
+                        //ws.Cells[string.Format("F{0}", rowstart)].Value = model.month_code;
+                        //ws.Cells[string.Format("G{0}", rowstart)].Value = model.code;
+                        worksheet.Cell(currentRow, 1).Value = Convert.ToString(k);
+                        worksheet.Cell(currentRow, 2).Value = a.unit;
+                        worksheet.Cell(currentRow, 3).Value = a.emp_id;
+                        worksheet.Cell(currentRow, 4).Value = total_amt.ToString("0.00");
+                        worksheet.Cell(currentRow, 5).Value = model.year;
+                        worksheet.Cell(currentRow, 5).Value = model.month_code;
+                        worksheet.Cell(currentRow, 5).Value = model.code;
+
+                        tot_amt = tot_amt + total_amt;
+                        currentRow++;
+                        i = 0;
+                        xprin = 0;
+                        xint = 0;
+                        total_amt = 0;
+                        k++;
+                    }
+                    i++;
+                }
+                worksheet.Cell((currentRow+2), 4).Value = tot_amt.ToString("0.00");
+                string fname = Convert.ToDateTime(model.sending_dt).ToString("MMMM").ToUpper();
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "" + model.unit + "_CO-OPERATIVE_FOR_" + fname + "-" + model.year + ".xls");
+                }
+            }
+         
+            //ExcelPackage pck = new ExcelPackage();
+            //ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Deduction_Schedule_List");
+           
+          
+            //Font font = new Font("Calibri",10);
+          
+          
+            ////int k = 1;
+            ////int i = 1;
+            //int rowstart = 2;
+           
+            //rowstart = rowstart + 2;
+            ////ws.Cells[string.Format("C{0}", rowstart)].Value = "Total";
+            //ws.Cells[string.Format("D{0}", rowstart)].Value = tot_amt;
+            //ws.Cells["A:AZ"].AutoFitColumns();
+            //Response.Clear();           
+            ////string fname = Convert.ToDateTime(model.sending_dt).ToString("MMMM").ToUpper();         
+            //Response.ContentType = "application/vnd.openxml formats-officedocument.spreadsheetml.sheet";
+            ////Response.AddHeader("content-disposition", "attachment; filename=Stock_Purchase_Report " + fname + ".xlsx");
+            //Response.AddHeader("content-disposition", "attachment; filename="+ model.unit +"_CO-OPERATIVE_FOR_"+ fname + "-"+ model.year +".xls");
+            //pck.SaveAs(Response.OutputStream);
+            //Response.Flush();
+            //Response.End();
+        }
     }
 }
 

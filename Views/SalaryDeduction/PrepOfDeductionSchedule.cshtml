@@ -182,6 +182,10 @@
                         <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="Btnupdateonclick()" />
 
                     </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="BtnUpdatefinal" type="button" name="BtnUpdatefinal" Height="40" Width="100" class="btn btn-primary btn-sm" value="Final Update" onclick="afterUpdateList()" />
+
+                    </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -198,7 +202,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Book No.
-                        @Html.TextBoxFor(p => p.book_no, new { @class = "sizeS", @type = "text" })
+                        @Html.TextBoxFor(p => p.book_no, new { @class = "sizeS", @type = "text", onkeypress = "javascript:return evtbook_no(event);" })
                     </div>
                 </div>
                 <div id="changesTbox">
@@ -320,10 +324,11 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
     <script type="text/javascript">
+
         $(document).ready(function () {
             $("#loading").hide();
             $("#changesTbox").hide();
-            //$("#frm_dt").hide();
+            $("#BtnUpdate").hide();
             //$("#to_dt").hide();
         });
 
@@ -363,7 +368,6 @@
 
         };
 
-
         function Filldeductachd() {
             var emplyer_name = $('#emplyer_name').val();
             var emp_unit = $('#emp_unit').val();
@@ -382,8 +386,6 @@
             });
 
         };
-
-
 
         (function () {
             if (window.addEventListener) {
@@ -425,11 +427,10 @@
                     f6.value = cells[6].innerHTML;
                     f7.value = cells[7].innerHTML;
                     f8.value = cells[8].innerHTML;
-
+                    $("#BtnUpdate").show();
                 };
             }
         })();
-
 
         function Btnupdateonclick() {
             $("#loading").show();
@@ -470,7 +471,7 @@
                     $('#member_name').val("");
                     $("#changesTbox").hide();
 
-                    afterUpdateList();
+                   /* afterUpdateList();*/
                 },
                 error: function (err) {
                     alert("Unable To Calculate");
@@ -517,6 +518,15 @@
 
         function ReturnToGeneralDeductionPage() {
             window.location.href = "@Url.Action("GeneralDeductionschedule", "SalaryDeduction")";
+        }
+
+        function evtbook_no(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                afterUpdateList();
+            }
         }
     </script>
 }
