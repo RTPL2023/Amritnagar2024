@@ -1206,8 +1206,8 @@ namespace Amritnagar.Controllers
                         worksheet.Cell(currentRow, 3).Value = a.emp_id;
                         worksheet.Cell(currentRow, 4).Value = total_amt.ToString("0.00");
                         worksheet.Cell(currentRow, 5).Value = model.year;
-                        worksheet.Cell(currentRow, 5).Value = model.month_code;
-                        worksheet.Cell(currentRow, 5).Value = model.code;
+                        worksheet.Cell(currentRow, 6).Value = model.month_code;
+                        worksheet.Cell(currentRow, 7).Value = model.code;
 
                         tot_amt = tot_amt + total_amt;
                         currentRow++;
