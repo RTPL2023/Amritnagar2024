@@ -388,12 +388,6 @@ namespace Amritnagar.Models.Database
             }
             return rgl;
         }
-
-
-
-
-
-
         public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model)
         {
             string sql = "";
@@ -412,11 +406,9 @@ namespace Amritnagar.Models.Database
             string vch_no = "";
             foreach (var a in rslst)
             {
-
                 if (i == 1)
                 {
                     vch_no = "SLDED" + "00001";
-
                 }
                 else
                 {
@@ -437,7 +429,6 @@ namespace Amritnagar.Models.Database
                 {
                     msg = "error " + ex;
                 }
-
                 i++;
             }
             return msg;
@@ -456,7 +447,6 @@ namespace Amritnagar.Models.Database
         public Recovery_Get getPrinBalIntBal(string achd, string branch, string empcd, string empId, string bookno, string sch_date, int empbranch)
         {
             Recovery_Get rg = new Recovery_Get();
-
             string sql = "Select * from RECOVERY_GET where BRANCH_ID='" + branch + "' and book_no='" + bookno + "' and EMPLOYEE_ID='" + empId + "'and EMPLOYER_CD='" + empcd + "' and EMPLOYER_BRANCH='" + empbranch + "' and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + sch_date + "', 103)  AND AC_HD='" + achd + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
@@ -469,7 +459,6 @@ namespace Amritnagar.Models.Database
             }
             return rg;
         }
-
         public string SaveInLedger(RecoveryFrmSalaryDeductionViewModel model)
         {
             string sql = "";
@@ -485,7 +474,6 @@ namespace Amritnagar.Models.Database
                     if (i == 1)
                     {
                         vch_no = "SLDED" + "00001";
-
                     }
                     else
                     {
@@ -509,11 +497,11 @@ namespace Amritnagar.Models.Database
                         ADD_LEDGER(rg.aC_hD, rg.vCH_pACNO, vch_no, 1, "C", rg.pRIN_aMT, "SD", model.branch, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
                     }
                     i++;
-
                 }
             }
             return msg;
         }
+
         //public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model)
         //{
         //    string sql = "";
@@ -591,8 +579,6 @@ namespace Amritnagar.Models.Database
                 xledtable = Convert.ToString(dr["LEDGER_TAB"]);
                 xledachd = Convert.ToString(dr["LED_ACHD"]);
                 XLEDGER_COL = Convert.ToString(dr["LEDGER_COL"]);
-
-
                 string QRY1 = "";
                 if (Convert.ToString(dr["IFCHARGE"]) != "")
                 {
@@ -617,12 +603,9 @@ namespace Amritnagar.Models.Database
                                 break;
                             case "LOAN_LEDGER":
                                 QRY1 = "SELECT * FROM " + xledtable + " WHERE branch_id='" + branch + "' AND AC_HD='" + xledachd + "' AND EMPLOYEE_ID='" + xacno + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
-
                                 break;
-
                         }
                     }
-
                 }
                 if (XLEDGER_COL == "")
                 {

@@ -1231,31 +1231,7 @@ namespace Amritnagar.Controllers
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         "" + model.unit + "_CO-OPERATIVE_FOR_" + fname + "-" + model.year + ".xls");
                 }
-            }
-         
-            //ExcelPackage pck = new ExcelPackage();
-            //ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Deduction_Schedule_List");
-           
-          
-            //Font font = new Font("Calibri",10);
-          
-          
-            ////int k = 1;
-            ////int i = 1;
-            //int rowstart = 2;
-           
-            //rowstart = rowstart + 2;
-            ////ws.Cells[string.Format("C{0}", rowstart)].Value = "Total";
-            //ws.Cells[string.Format("D{0}", rowstart)].Value = tot_amt;
-            //ws.Cells["A:AZ"].AutoFitColumns();
-            //Response.Clear();           
-            ////string fname = Convert.ToDateTime(model.sending_dt).ToString("MMMM").ToUpper();         
-            //Response.ContentType = "application/vnd.openxml formats-officedocument.spreadsheetml.sheet";
-            ////Response.AddHeader("content-disposition", "attachment; filename=Stock_Purchase_Report " + fname + ".xlsx");
-            //Response.AddHeader("content-disposition", "attachment; filename="+ model.unit +"_CO-OPERATIVE_FOR_"+ fname + "-"+ model.year +".xls");
-            //pck.SaveAs(Response.OutputStream);
-            //Response.Flush();
-            //Response.End();
+            }                    
         }
     }
 }
