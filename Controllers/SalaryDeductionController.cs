@@ -1094,7 +1094,9 @@ namespace Amritnagar.Controllers
             return Json("Updated");
         }
         /********************************************Recovery From Salary Deduction End*******************************************/
-        [HttpGet]
+
+        /********************************************General Deduction Schedule Start*******************************************/
+        [HttpGet] 
         public ActionResult GeneralDeductionschedule(GeneralDedscheduleViewModel model)
         {
             UtilityController u = new UtilityController();         
@@ -1233,6 +1235,7 @@ namespace Amritnagar.Controllers
                 }
             }                    
         }
+        /********************************************General Deduction Schedule End*******************************************/
     }
 }
 
