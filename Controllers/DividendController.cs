@@ -17,7 +17,6 @@ namespace Amritnagar.Controllers
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
             model.EmpBranchDesc = u.getEmployerBranchMastDetails();
-
             model.fr_dt = "01/04/" + Convert.ToString(DateTime.Now.Year - 1);
             model.to_dt = "31/03/" + Convert.ToString(DateTime.Now.Year);
             model.post_dt = model.to_dt;
@@ -56,15 +55,11 @@ namespace Amritnagar.Controllers
             // utility utl = new utility();
             decimal open_bal = 0;
             Double xtot_dividend = 0;
-
             decimal cls_bal = 0;
-
             decimal xtot_opn_bal = 0;
             decimal xtot_cls_bal = 0;
-
             double xtot_dividend_pay = 0;
             int i = 1;
-
             Member_Mast mm = new Member_Mast();
             List<Member_Mast> mmlst = new List<Member_Mast>();
             mmlst = mm.GetmemMastForDvidendCalculation(model);
@@ -74,11 +69,9 @@ namespace Amritnagar.Controllers
                 {
                     string xac = a.mem_id;
                     string xacnm = a.mem_name;
-
                     SHARE_LEDGER sl = new SHARE_LEDGER();
                     List<SHARE_LEDGER> sllst = new List<SHARE_LEDGER>();
                     sllst = sl.getShareLedherDetail(model.branch, xac);
-
                     if (sllst.Count > 0)
                     {
                         xtot_dividend = CAL_DIVIDEND(Convert.ToDateTime(model.fr_dt), Convert.ToDateTime(model.to_dt), sllst, model.xmonths, Convert.ToDecimal(model.inst), Convert.ToDecimal(0), model);
@@ -98,9 +91,6 @@ namespace Amritnagar.Controllers
                             open_bal = Convert.ToDecimal(result.bal_amount);
                         }
                         xtot_opn_bal = xtot_opn_bal + open_bal; //'--Total Opening Share Capital
-
-
-
                         var result2 = sllst.FindLast(delegate (SHARE_LEDGER sbl)
                         {
                             return sbl.vch_date <= Convert.ToDateTime(model.to_dt);
@@ -111,15 +101,10 @@ namespace Amritnagar.Controllers
                         }
                         else
                         {
-
                             cls_bal = Convert.ToDecimal(result2.bal_amount);
-
-
                         }
                         xtot_cls_bal = xtot_cls_bal + cls_bal; //'--Total Closing Share Capital
-
                     }
-
                     model.tableelement = model.tableelement + "<tr><td>" + i + "</td><td>" + xac + "</td><td>" + a.mem_date + "</td><td>" + xacnm + "</td><td>" + open_bal + "</td>";
                     for (int c = 1; c <= model.xmonths; c++)
                     {
@@ -130,8 +115,6 @@ namespace Amritnagar.Controllers
                     model.opsh_cap = xtot_opn_bal.ToString("0.00");
                     model.clsh_cap = xtot_cls_bal.ToString("0.00");
                     model.div_pay = xtot_dividend_pay.ToString("0.00");
-
-
                     if (model.forsave == "Savedata")
                     {
                         DIVIDEND_LEDGER dl = new DIVIDEND_LEDGER();
@@ -179,7 +162,6 @@ namespace Amritnagar.Controllers
                     open_bal = Convert.ToDouble(result.bal_amount);
                 }
                 //'----Fetch Minimum Monthly Balance----
-
                 xr_bal = open_bal;
                 int XMONTH = Convert.ToDateTime(model.int_array[1, xm]).Month; // int.Parse(int_array[1, xm].ToString("MM"));
                 int XYEAR = Convert.ToDateTime(model.int_array[1, xm]).Year; //int.Parse(int_array[1, xm].ToString("yyyy"));
@@ -242,14 +224,12 @@ namespace Amritnagar.Controllers
                 }
             }
             CAL_DIVIDEND = Convert.ToDouble(((xtot * Convert.ToDouble(XINT_RATE) / 1200) + 0.00000002));
-
             CAL_DIVIDEND = Math.Round(CAL_DIVIDEND, 0);
             return CAL_DIVIDEND;
         }
         public JsonResult getDividendLedgerBymember_id(DividendCalcAndPostViewModel model)
         {
-            DIVIDEND_LEDGER dl = new DIVIDEND_LEDGER();
-           
+            DIVIDEND_LEDGER dl = new DIVIDEND_LEDGER();          
             List<DIVIDEND_LEDGER>dllst = new List<DIVIDEND_LEDGER>();
             dllst = dl.getdetails(model.member_id,model.branch);
             int i = 1;
@@ -261,15 +241,11 @@ namespace Amritnagar.Controllers
                     {
                         
                             model.tableelement1 = "<tr><th>Srl</th></th><th>Vch Date</th><th>vchno</th><th>Div YEar</th><th>Tr amt</th><th>Bal amt</th></tr>";
-                            model.tableelement1 = model.tableelement1 + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.VCH_DATE + "</td><td>" + a.VCH_NO + "</td><td>" + a.DIV_POST_YEAR_TO + "</td><td>" + a.TR_AMOUNT + "</td><td>" + a.BAL_AMOUNT + "</td></tr>";
-                      
-                       
+                            model.tableelement1 = model.tableelement1 + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.VCH_DATE + "</td><td>" + a.VCH_NO + "</td><td>" + a.DIV_POST_YEAR_TO + "</td><td>" + a.TR_AMOUNT + "</td><td>" + a.BAL_AMOUNT + "</td></tr>";                                            
                     }
                     else
                     {
-
                         model.tableelement1 = model.tableelement1 + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.VCH_DATE + "</td><td>" + a.VCH_NO + "</td><td>" + a.DIV_POST_YEAR_TO + "</td><td>" + a.TR_AMOUNT + "</td><td>" + a.BAL_AMOUNT + "</td></tr>";
-
                     }
                     i = i + 1;
                 }
@@ -281,13 +257,11 @@ namespace Amritnagar.Controllers
             return Json(model);
         }
         //******************************** Dividend Calc And Posting End ********************************
-
         [HttpGet]
         public ActionResult UnpaidDividendDetailList(UnpaidDividendDetailListViewModel model)
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
-
             return View(model);
         }
         [HttpGet]
@@ -295,7 +269,6 @@ namespace Amritnagar.Controllers
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
-
             return View(model);
         }
     }
