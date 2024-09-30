@@ -77,8 +77,6 @@ namespace Amritnagar.Models.Database
         public string g2r3 { get; set; }
         public string ac_desc { get; set; }
 
-
-
         public List<Recovery_Schedule> getdetails(string emp_branch, string book_no, string sch_date)
         {
             decimal TOTTF = 0;
@@ -1264,8 +1262,7 @@ namespace Amritnagar.Models.Database
            string sql = "SELECT * FROM recovery_schedule WHERE  EMPLOYER_CD='" + empCd + "'";
             sql = sql + "  AND EMPLOYER_BRANCH='" + unit + "'  AND Branch_id='" + branch + "'";
             sql = sql + " AND  MEMBER_TYPE='" + mem_type + "' ";
-            sql = sql + " AND MEM_CATEGORY='" + mem_cat + "' and book_no='" + book_no + "'and EMPLOYEE_ID='" + Empid + "'and ac_hd='" + achd + "' and convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_dt + "', 103) ";
-           
+            sql = sql + " AND MEM_CATEGORY='" + mem_cat + "' and book_no='" + book_no + "'and EMPLOYEE_ID='" + Empid + "'and ac_hd='" + achd + "' and convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_dt + "', 103) ";          
             config.singleResult(sql);
             Recovery_Schedule rs = new Recovery_Schedule();
             if (config.dt.Rows.Count > 0)
@@ -1274,10 +1271,8 @@ namespace Amritnagar.Models.Database
                 {
                     rs.prin_bal = Convert.ToDecimal(dr["prin_bal"]);
                     rs.prin_amt = Convert.ToDecimal(dr["prin_amt"]);
-                    rs.int_amt = Convert.ToDecimal(dr["int_amt"]);
-                    
+                    rs.int_amt = Convert.ToDecimal(dr["int_amt"]);                   
                 }
-
             }
             return rs;
         }
@@ -1296,7 +1291,6 @@ namespace Amritnagar.Models.Database
                     rs.ac_desc = Convert.ToString(dr["AC_DESC"]);
                     rslst.Add(rs);
                 }
-
             }
             return rslst;
         }
@@ -1315,7 +1309,6 @@ namespace Amritnagar.Models.Database
             {
                 string qry = "Update recovery_schedule set prin_bal=" + Convert.ToDecimal(model.prin_bal) + ",OVER_DUE=" + Convert.ToDecimal(model.over_due) + ",PRIN_AMT=" + Convert.ToDecimal(model.prin_amt) + ",INT_AMT=" + Convert.ToDecimal(model.int_amt) + " where convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103) AND EMPLOYEE_ID='" + model.employee_id + "' and branch_id='" + model.branch + "' and employer_branch=" + model.unit + " and employer_cd='" + model.emp_name + "' and ac_hd='" + model.ac_hd + "' AND MEM_CATEGORY='" + model.mem_cat + "'and BOOK_NO='" + model.book_no + "'";
                 config.Execute_Query(qry);
-
             }
             return "Updated";
         }
