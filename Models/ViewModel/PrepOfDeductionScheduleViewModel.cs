@@ -14,6 +14,7 @@ namespace Amritnagar.Models.ViewModel
         public string unit { get; set; }
         public string mem_type { get; set; }
         public string mem_cat { get; set; }
+        public string rid { get; set; }
         public string book_no { get; set; }
         public string prnt_bal { get; set; }
         public string int_bal { get; set; }
