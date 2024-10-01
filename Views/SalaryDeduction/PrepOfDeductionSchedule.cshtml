@@ -410,6 +410,7 @@
                         return;
                     }
                     $("#changesTbox").show();
+                    var f0 = document.getElementById('book_no');
                     var f1 = document.getElementById('employee_id');
                     var f2 = document.getElementById('member_name');
                     var f3 = document.getElementById('ac_hd');
@@ -422,6 +423,7 @@
                     //var row = this.parentNode.rowIndex;
                     //alert(row);
                     //alert(JSON.stringify(t.row.id));
+                    f0.value = cells[0].innerHTML;
                     f1.value = cells[1].innerHTML;
                     f2.value = cells[2].innerHTML;
                     f3.value = cells[3].innerHTML;
