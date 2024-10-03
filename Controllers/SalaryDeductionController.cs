@@ -846,7 +846,7 @@ namespace Amritnagar.Controllers
             rslst = rs.getdetailsForDeductionScheduleAfterUpdate(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
             if (rslst.Count > 0)
             {
-                model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>O/Dues</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
+                model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
                 string emp = "";
                 int idd = 0;
                 decimal xprin = 0;
@@ -861,7 +861,7 @@ namespace Amritnagar.Controllers
                     model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd)+"><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
                     rs = rs.getPrinBalIntBalFromRecovery(emp_name, unit, mem_type, mem_cat, a.r1, sch_date, branch, a.r2, a.r4);
                     model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
-                       "<td>" + a.r5 + "</td><td>" + rs.prin_bal.ToString("0.00") + "</td><td>" + a.r7 + "</td>" +
+                       "<td>" + a.r5 + "</td><td>" + rs.prin_bal.ToString("0.00") + "</td>" +
                         "<td>" + rs.prin_amt.ToString("0.00") + "</td><td>" + rs.int_amt.ToString("0.00") + "</td></tr>";
                     xprin = xprin + rs.prin_amt;
                     xint = xint + rs.int_amt;
@@ -869,7 +869,7 @@ namespace Amritnagar.Controllers
                     if (l == k)
                     {
                         k = 0;
-                        model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd) + " style =\"background-color:pink\"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
+                        model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd) + " style =\"background-color:pink\"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>" + (xprin + xint).ToString("0.00") + " </td></tr>";
                         l = 0;
                         xprin = 0;
                         xint = 0;
@@ -927,7 +927,7 @@ namespace Amritnagar.Controllers
             rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
             if (rslst.Count > 0)
             {
-                model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>O/Dues</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
+                model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
                 string emp = "";
                 int rowsp = 0;
 
@@ -948,7 +948,7 @@ namespace Amritnagar.Controllers
                     }
                     model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
                     model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
-                       "<td>" + a.r5 + "</td><td>" + a.r6 + "</td><td>" + a.r7 + "</td>" +
+                       "<td>" + a.r5 + "</td><td>" + a.r6 + "</td>" +
                         "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
                 }
             }
