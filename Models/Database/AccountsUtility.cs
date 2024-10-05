@@ -468,7 +468,7 @@ namespace Amritnagar.Models.Database
                     XCREDIT = 0;
                     XCLBAL = 0;
 
-                    sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(varchar, GL_DATE, 103) < convert(varchar, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
+                    sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(datetime, GL_DATE, 103) < convert(datetime, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
                     config.singleResult(sql);
                     if (config.dt.Rows.Count > 0)
                     {
@@ -478,7 +478,7 @@ namespace Amritnagar.Models.Database
                     string QRY1 = "SELECT SUM(IIF(VCH_DRCR='D',VCH_AMT,0)) AS TOT_DR,";
                     QRY1 = QRY1 + "SUM(IIF(VCH_DRCR='C',VCH_AMT,0)) AS TOT_CR FROM VCH_DETAIL WHERE ";
                     QRY1 = QRY1 + "BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND ";
-                    QRY1 = QRY1 + "convert(varchar, VCH_DATE, 103) = convert(varchar, '" + model.as_on_dt + "', 103)";
+                    QRY1 = QRY1 + "convert(datetime, VCH_DATE, 103) = convert(datetime, '" + model.as_on_dt + "', 103)";
                     config.singleResult(QRY1);
                     if (config.dt.Rows.Count > 0)
                     {
@@ -525,7 +525,7 @@ namespace Amritnagar.Models.Database
                     XCREDIT = 0;
                     XCLBAL = 0;
 
-                    sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(varchar, GL_DATE, 103) < convert(varchar, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
+                    sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(datetime, GL_DATE, 103) < convert(datetime, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
                     config.singleResult(sql);
                     {
                         DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
@@ -534,7 +534,7 @@ namespace Amritnagar.Models.Database
                     string QRY1 = "SELECT SUM(IIF(VCH_DRCR='D',VCH_AMT,0)) AS TOT_DR,";
                     QRY1 = QRY1 + "SUM(IIF(VCH_DRCR='C',VCH_AMT,0)) AS TOT_CR FROM VCH_DETAIL WHERE ";
                     QRY1 = QRY1 + "BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND ";
-                    QRY1 = QRY1 + "convert(varchar, VCH_DATE, 103) = convert(varchar, '" + model.as_on_dt + "', 103)";
+                    QRY1 = QRY1 + "convert(datetime, VCH_DATE, 103) = convert(datetime, '" + model.as_on_dt + "', 103)";
                     config.singleResult(QRY1);
                     if (config.dt.Rows.Count > 0)
                     {
@@ -573,7 +573,7 @@ namespace Amritnagar.Models.Database
             XDEBIT = 0;
             XCREDIT = 0;
             XCLBAL = 0;
-            sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(varchar, GL_DATE, 103) < convert(varchar, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
+            sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(datetime, GL_DATE, 103) < convert(datetime, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
             config.singleResult(sql);
             {
                 DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
@@ -581,10 +581,11 @@ namespace Amritnagar.Models.Database
             }
             sql = "SELECT SUM(IIF(A.VCH_DRCR='D',A.VCH_AMT,0)) AS TOT_CR,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='C',A.VCH_AMT,0)) AS TOT_DR FROM VCH_DETAIL A,VCH_HEADER B WHERE ";
-            sql = sql + "(A.BRANCH_ID=B.BRANCH_ID AND A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) AND ";
+            sql = sql + "(A.BRANCH_ID=B.BRANCH_ID AND convert(date,A.VCH_DATE, 103)=convert(date,B.VCH_DATE, 103) AND A.VCH_NO=B.VCH_NO) AND ";
             sql = sql + "B.BRANCH_ID='" + model.branch + "' AND B.VCH_TYPE='C' AND ";
-            sql = sql + "convert(varchar,B.VCH_DATE, 103) = convert(varchar, '" + model.as_on_dt + "', 103)";
+            sql = sql + "convert(date,B.VCH_DATE, 103) = convert(date, '" + model.as_on_dt + "', 103)";
             config.singleResult(sql);
+
             if (config.dt.Rows.Count > 0)
             {
                 DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
