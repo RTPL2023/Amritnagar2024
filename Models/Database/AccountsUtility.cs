@@ -272,8 +272,8 @@ namespace Amritnagar.Models.Database
             sql = sql + "sum(iif(a.vch_drcr='D' and b.vch_type='C',vch_amt,0)) AS cash_dr,";
             sql = sql + "sum(iif(a.vch_drcr='D' and b.vch_type='T',vch_amt,0)) AS tran_dr ";
             sql = sql + "FROM vch_detail AS a, vch_header AS b, acc_head AS c ";
-            sql = sql + "WHERE ((a.branch_id=b.branch_id and a.vch_date=b.vch_date and a.vch_no=b.vch_no) and ";
-            sql = sql + "(a.ac_hd=c.ac_hd)) and convert(varchar, a.VCH_DATE, 103) BETWEEN  convert(varchar, '" + model.fr_dt + "', 103) AND  convert(varchar, '" + model.to_dt + "', 103) ";
+            sql = sql + "WHERE ((a.branch_id=b.branch_id and convert(date,a.VCH_DATE, 103)=convert(date,b.VCH_DATE, 103) and a.vch_no=b.vch_no) and ";
+            sql = sql + "(a.ac_hd=c.ac_hd)) and  convert(date, a.VCH_DATE, 103)>=  convert(date, '"+model.fr_dt+"', 103) AND convert(date, a.VCH_DATE, 103)<= convert(date, '"+model.to_dt+"', 103)  ";
             sql = sql + "and b.vch_type in ('C','T') GROUP BY c.ac_majgr, a.ac_hd";
             config.singleResult(sql); //convert(varchar, A.VCH_DATE, 103) = convert(varchar, '" + model.daybook_dt + "', 103)
             List<AccountsUtility> aulst = new List<AccountsUtility>();
