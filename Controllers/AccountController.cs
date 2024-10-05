@@ -1292,7 +1292,6 @@ namespace Amritnagar.Controllers
             model = au.getCashBankPositionReport(model);
             return Json(model);
         }
-
         //********************************Trial Balance Report Start******************************************
         [HttpGet]
         public ActionResult TrialBalanceReport(TrialBalanceReportViewModel model)
