@@ -852,13 +852,12 @@ namespace Amritnagar.Controllers
                 decimal xprin = 0;
                 decimal xint = 0;
                 int l = 0;
-
                 foreach (var a in rslst)
                 {
                     idd = idd + 1;
                     //int[] result = findIndex(arrachd, a.r4);
                     int k = rslst.Where(b => b != null && b.r2 == a.r2).Count();
-                    model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd) + "><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
+                    model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd)+"><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
                     rs = rs.getPrinBalIntBalFromRecovery(emp_name, unit, mem_type, mem_cat, a.r1, sch_date, branch, a.r2, a.r4);
                     model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
                        "<td>" + a.r5 + "</td><td>" + rs.prin_bal.ToString("0.00") + "</td>" +
@@ -880,12 +879,12 @@ namespace Amritnagar.Controllers
                         if (rs.prin_amt > 0)
                         {
                             arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(rs.prin_amt));
-                        }
-                        if (rs.int_amt > 0)
-                        {
+                         }
+                         if (rs.int_amt > 0)
+                         {
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(rs.int_amt));
-                        }
-                    }
+                         }
+                     }                                      
                 }
             }
             model.grid2 = "";
@@ -950,12 +949,10 @@ namespace Amritnagar.Controllers
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
                         }
                     }
-                    //}
                     model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
                     model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
                        "<td>" + a.r5 + "</td><td>" + a.r6 + "</td>" +
                         "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
-
                 }
             }
             //if (book_no == "AL")
