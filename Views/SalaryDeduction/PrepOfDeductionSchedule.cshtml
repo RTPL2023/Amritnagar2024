@@ -418,7 +418,7 @@
                     var f5 = document.getElementById('prin_bal');
                     //var f6 = document.getElementById('over_due');
                     var f6 = document.getElementById('prin_amt');
-                    var f7 = document.getElementById('int_amt');                    
+                    var f7 = document.getElementById('int_amt');
                     //var row = t.rows[index];
                     //var row = this.parentNode.rowIndex;
                     //alert(row);
@@ -473,8 +473,8 @@
                     $('#int_amt').val("");
                     //$('#employee_id').val("");
                     $('#member_name').val("");
-                    $("#changesTbox").hide();                
-                    afterUpdateList();
+                    $("#changesTbox").hide();
+                    GetAllcoliarylist();
                     document.body.innerHTML.search($('#employee_id').val());
                 },
                 error: function (err) {
@@ -524,9 +524,40 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                afterUpdateList();
+                GetAllcoliarylist();
             }
         }
 
+        function GetAllcoliarylist() {
+            $("#loading").show();
+            /*alert("ok");*/
+            let ModelObject = {
+                emp_name: $('#emp_name').val(),
+                branch: $('#branch').val(),
+                mem_type: $('#mem_type').val(),
+                mem_cat: $('#mem_cat').val(),
+                book_no: $('#book_no').val(),
+                sch_date: $('#sch_dt').val(),
+                unit: $('#unit').val(),
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetBothcoliarylist", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    document.getElementById("list").innerHTML = data.grid1;
+                    document.getElementById("list2").innerHTML = data.grid2;
+                    $('#prnt_bal').val(data.prnt_bal);
+                    $('#int_bal').val(data.int_bal);
+                    $('#tot_bal').val(data.tot_bal);
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
+         };
     </script>
 }
