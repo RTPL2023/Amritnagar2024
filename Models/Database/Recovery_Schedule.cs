@@ -1337,7 +1337,7 @@ namespace Amritnagar.Models.Database
             string qryMEM = string.Empty;
             qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' AND ";
             qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sending_dt + "', 103) AND ";
-            qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "'";
+            qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' AND EMPLOYER_BRANCH = '"+ unit + "'";
             qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             config.singleResult(qryMEM);
             if (config.dt.Rows.Count > 0)

@@ -992,7 +992,6 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
-
         public JsonResult GetBothcoliarylist(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
         {
             PrepOfDeductionScheduleViewModel model = new PrepOfDeductionScheduleViewModel();
