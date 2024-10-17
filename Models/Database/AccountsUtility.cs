@@ -467,7 +467,6 @@ namespace Amritnagar.Models.Database
                     XDEBIT = 0;
                     XCREDIT = 0;
                     XCLBAL = 0;
-
                     sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(datetime, GL_DATE, 103) < convert(datetime, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
                     config.singleResult(sql);
                     if (config.dt.Rows.Count > 0)
@@ -489,7 +488,7 @@ namespace Amritnagar.Models.Database
                     XCLBAL = XOPBAL + XCREDIT - XDEBIT;
                     if (XOPBAL != 0 || XCLBAL != 0 || XCREDIT != 0 || XDEBIT != 0)
                     {
-                        model.table1 = model.table1 + "<tr><td>" + Convert.ToString(dr["AC_DESC"]) + "</td><td>" + Math.Abs(XOPBAL).ToString("0.00") + "</td><td>" + XCREDIT.ToString("0.00") + "</td><td>" + XDEBIT.ToString("0.00") + "</td><td>" + Math.Abs(XCLBAL).ToString("0.00") + "</td></tr>";
+                        model.table1 = model.table1 + "<tr><td>" + Convert.ToString(dr["AC_DESC"]) + "</td><td>" + Math.Abs(XOPBAL).ToString("0.00") + "</td><td>" + XCREDIT.ToString("0.00") + "</td><td>" + XDEBIT.ToString("0.00") + "</td><td>" + Math.Abs(XCLBAL).ToString("0.00") + "</td></tr>";                       
                         au.ac_hd = XACHD;
                         au.branch_id = model.branch;
                         au.gl_date = Convert.ToDateTime(model.as_on_dt);
@@ -513,7 +512,6 @@ namespace Amritnagar.Models.Database
             model.td_clbal = Math.Abs(GD_CLBAL).ToString("0.00");
             sql = "SELECT AC_HD,AC_DESC,'I' AS BNK_INV FROM ACC_HEAD WHERE AC_LF_MAST_FL='I' AND LEDGER_COL='P' ORDER BY AC_DESC";
             config.singleResult(sql);
-
             if (config.dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in config.dt.Rows)
@@ -524,7 +522,6 @@ namespace Amritnagar.Models.Database
                     XDEBIT = 0;
                     XCREDIT = 0;
                     XCLBAL = 0;
-
                     sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND AC_HD='" + XACHD + "' AND convert(datetime, GL_DATE, 103) < convert(datetime, '" + model.as_on_dt + "', 103) ORDER BY GL_DATE";
                     config.singleResult(sql);
                     {
@@ -562,7 +559,6 @@ namespace Amritnagar.Models.Database
                     GL_CLBAL = GL_CLBAL + XCLBAL;
                 }
             }
-
             model.tl_opbal = Math.Abs(GL_OPBAL).ToString("0.00");
             model.tl_credit = GL_CREDIT.ToString("0.00");
             model.tl_debit = GL_DEBIT.ToString("0.00");
@@ -687,7 +683,7 @@ namespace Amritnagar.Models.Database
             acstr = "B.AC_HD IN (" + xacstr + ")";
             sql = "SELECT A.BRANCH_ID,A.VCH_DATE,B.AC_HD,B.VCH_NO,A.VCH_TYPE,B.VCH_SRL,B.VCH_DRCR,C.AC_MAJGR,C.AC_SUBGR,C.AC_DESC,C.IS_CONTRA,";
             sql = sql + " B.VCH_PACNO,B.VCH_ACNAME,B.VCH_AMT FROM VCH_HEADER A,VCH_DETAIL B,ACC_HEAD C";
-            sql = sql + " WHERE (A.BRANCH_ID=B.BRANCH_ID AND A.VCH_DATE=B.VCH_DATE AND";
+            sql = sql + " WHERE (A.BRANCH_ID=B.BRANCH_ID AND convert(datetime, A.VCH_DATE, 103)=convert(datetime, B.VCH_DATE,103) AND";
             sql = sql + " A.VCH_NO=B.VCH_NO) AND B.AC_HD=C.AC_HD AND (";
             sql = sql + acstr + ") ";
             sql = sql + "AND convert(varchar, A.VCH_DATE, 103) = convert(varchar, '" + model.fr_dt + "', 103) AND";
@@ -963,6 +959,7 @@ namespace Amritnagar.Models.Database
         }
         public string updateGenaralLedger(CashBookReportViewModel model)
         {
+            DateTime cdt = new DateTime();
             decimal xcr_amt = 0;
             decimal xdr_amt = 0;
             decimal xcash = 0;
@@ -972,22 +969,43 @@ namespace Amritnagar.Models.Database
             string XACHD = "";
             string sql = string.Empty;
 
+            //sql = "delete  FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
+            //sql = sql + "convert(varchar,GL_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103)";
+            //sql = sql + "ORDER BY BRANCH_ID,GL_DATE,AC_HD";           
+            //config.Execute_Query(sql);
+
+            //sql = "Select * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
+            //sql = sql + "convert(varchar,GL_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103)";
+            //sql = sql + "ORDER BY BRANCH_ID,GL_DATE,AC_HD";
+            //config.singleResult(sql);
             sql = "delete  FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
-            sql = sql + "convert(varchar,GL_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103)";
-            sql = sql + "ORDER BY BRANCH_ID,GL_DATE,AC_HD";
+            sql = sql + "convert(varchar,GL_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103)";                     
             config.Execute_Query(sql);
             int i = 1;
-            sql = "SELECT DATEVALUE(A.VCH_DATE) AS TR_DATE,A.AC_HD,";
+            //sql = "SELECT DATEVALUE(A.VCH_DATE) AS TR_DATE,A.AC_HD,";            
+            //sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
+            //sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_CR,";
+            //sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_CR,";
+            //sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='C',A.VCH_AMT,0)) AS CASH_DR,";
+            //sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_DR,";
+            //sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_DR ";
+            //sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) ";
+            //sql = sql + "convert(varchar, a.VCH_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103) And";
+            //sql = sql + "A.BRANCH_ID='" + model.branch + "' ";
+            //sql = sql + "GROUP BY DATEVALUE(A.VCH_DATE),A.AC_HD";
+
+            
+            sql = "SELECT convert(datetime, A.VCH_DATE, 103) AS TR_DATE,A.AC_HD,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_CR,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_CR,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='C',A.VCH_AMT,0)) AS CASH_DR,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_DR,";
             sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_DR ";
-            sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) ";
-            sql = sql + "convert(varchar, a.VCH_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103) And";
+            sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (convert(datetime, A.VCH_DATE, 103)=convert(datetime, B.VCH_DATE, 103) AND A.VCH_NO=B.VCH_NO) ";
+            sql = sql + "And convert(datetime, A.VCH_DATE, 103) >= convert(datetime, '" + model.fr_dt + "', 103) And ";
             sql = sql + "A.BRANCH_ID='" + model.branch + "' ";
-            sql = sql + "GROUP BY DATEVALUE(A.VCH_DATE),A.AC_HD";
+            sql = sql + "GROUP BY convert(datetime, A.VCH_DATE, 103),A.AC_HD";
             config.singleResult(sql); //convert(varchar, A.VCH_DATE, 103) = convert(varchar, '" + model.daybook_dt + "', 103)
             List<AccountsUtility> aulst = new List<AccountsUtility>();
             if (config.dt.Rows.Count > 0)
@@ -996,12 +1014,14 @@ namespace Amritnagar.Models.Database
                 {
                     AccountsUtility au = new AccountsUtility();
                     XACHD = Convert.ToString(dr["ac_hd"]);
+                    cdt = Convert.ToDateTime(dr["tr_date"]);
                     xcr_amt = Convert.ToDecimal(dr["CASH_CR"]) + Convert.ToDecimal(dr["BANK_CR"]) + Convert.ToDecimal(dr["TRANS_CR"]);
                     xdr_amt = Convert.ToDecimal(dr["CASH_DR"]) + Convert.ToDecimal(dr["BANK_DR"]) + Convert.ToDecimal(dr["TRANS_DR"]);
                     xnetamt = xcr_amt - xdr_amt;
                     xcash = xcash - Convert.ToDecimal(dr["CASH_CR"]) + Convert.ToDecimal(dr["CASH_DR"]);
                     xbank = xbank - Convert.ToDecimal(dr["BANK_CR"]) + Convert.ToDecimal(dr["BANK_DR"]);
-                    sql = "selct * from acc_head where AC_HD='" + XACHD + "'";
+                    sql = "select * from acc_head where AC_HD='" + XACHD + "'";
+                    config.singleResult(sql);
                     if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr1 = (DataRow)config.dt.Rows[0];
@@ -1013,19 +1033,22 @@ namespace Amritnagar.Models.Database
                     sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
                     sql = sql + "AC_HD='" + XACHD + "' ";
                     sql = sql + "ORDER BY GL_DATE";
+                    config.singleResult(sql);
                     xglbal = 0;
                     if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                        if (Convert.ToDateTime(dr1["gl_date"]) < Convert.ToDateTime(dr1["tr_date"]))
+                        //if (Convert.ToDateTime(dr1["gl_date"]) < Convert.ToDateTime(dr1["tr_date"]))
+                        if (Convert.ToDateTime(dr1["gl_date"]) < cdt)
                         {
-                            xglbal = Convert.ToDecimal(dr["gl_bal"]);
+                            xglbal = Convert.ToDecimal(dr1["gl_bal"]);
                         }
                         config.Insert("GL_BALNCE", new Dictionary<String, object>()
                         {
                             { "branch_id",     model.branch },
                             { "ac_hd",      XACHD},
-                            { "GL_DATE",   Convert.ToDateTime(dr1["tr_date"])},
+                            //{ "GL_DATE",   Convert.ToDateTime(dr1["tr_date"])},
+                            { "GL_DATE",   cdt},
                             { "gl_bal",     xglbal + xnetamt },
                         });
                     }                  
@@ -1034,19 +1057,22 @@ namespace Amritnagar.Models.Database
                         sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
                         sql = sql + "AC_HD='CASH' ";
                         sql = sql + "ORDER BY GL_DATE";
+                        config.singleResult(sql);
                         xglbal = 0;
                         if (config.dt.Rows.Count > 0)
                         {
                             DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            if (Convert.ToDateTime(dr1["gl_date"]) < Convert.ToDateTime(dr1["tr_date"]))
+                            //if (Convert.ToDateTime(dr1["gl_date"]) < Convert.ToDateTime(dr1["tr_date"]))
+                            if (Convert.ToDateTime(dr1["gl_date"]) < cdt)
                             {
-                                xglbal = Convert.ToDecimal(dr["gl_bal"]);
+                                xglbal = Convert.ToDecimal(dr1["gl_bal"]);
                             }
                             config.Insert("GL_BALNCE", new Dictionary<String, object>()
                             {
                                 { "branch_id",      model.branch},
                                 { "ac_hd",     "CASH" },
-                                { "GL_DATE",   Convert.ToDateTime(dr1["tr_date"])},
+                                //{ "GL_DATE",   Convert.ToDateTime(dr1["tr_date"])},
+                                { "GL_DATE",   cdt},
                                 { "gl_bal",    xglbal + xcash },
                             });
                         }
@@ -1056,19 +1082,22 @@ namespace Amritnagar.Models.Database
                         sql = "SELECT * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
                         sql = sql + "AC_HD='BANK' ";
                         sql = sql + "ORDER BY GL_DATE";
+                        config.singleResult(sql);
                         xglbal = 0;
                         if (config.dt.Rows.Count > 0)
                         {
                             DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            if (Convert.ToDateTime(dr1["gl_date"]) < Convert.ToDateTime(dr1["tr_date"]))
+                            //if (Convert.ToDateTime(dr1["gl_date"]) < Convert.ToDateTime(dr1["tr_date"]))
+                            if (Convert.ToDateTime(dr1["gl_date"]) < cdt)
                             {
-                                xglbal = Convert.ToDecimal(dr["gl_bal"]);
+                                xglbal = Convert.ToDecimal(dr1["gl_bal"]);
                             }
                             config.Insert("GL_BALNCE", new Dictionary<String, object>()
                             {
                                 { "branch_id",    model.branch },
                                 { "ac_hd",    "BANK" },
-                                { "GL_DATE",     Convert.ToDateTime(dr1["tr_date"]) },
+                                //{ "GL_DATE",     Convert.ToDateTime(dr1["tr_date"])},
+                                { "GL_DATE",     cdt},
                                 { "gl_bal",    xglbal + xbank },
                             });
                         }

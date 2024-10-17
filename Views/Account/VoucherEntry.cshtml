@@ -934,7 +934,12 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                $("#vch_type").focus();
+                if ($('#txtvch_No').val() == "") {
+                    alert("Voucher No Can't Be Empty");
+                }
+                else {
+                    $("#vch_type").focus();
+                }                
             }
         }
 

@@ -1158,9 +1158,9 @@ namespace Amritnagar.Controllers
                     {
                         dr_transfer_tot = tot_transfer_dr;
                     }
-                    if (gl.op_cash.ToString().Length > 34)
+                    if (gl.op_cash.ToString().Length > 25)
                     {
-                        op_cash = Convert.ToDecimal((gl.op_cash).ToString().Substring(0, 33));
+                        op_cash = Convert.ToDecimal((gl.op_cash).ToString().Substring(0, 24));
                     }
                     else
                     {
@@ -1196,7 +1196,7 @@ namespace Amritnagar.Controllers
                         + "".ToString().PadLeft(14 - (dr_bank_tot).ToString().Length) + dr_bank_tot.ToString("0.00")
                         + "".ToString().PadLeft(17 - (tot_cash_dr + tot_transfer_dr + dr_bank_tot).ToString().Length) + (dr_cash_tot + dr_transfer_tot + dr_bank_tot).ToString("0.00"));
                     sw.WriteLine("                                                                                                   ||                                                                                               ");
-                    sw.WriteLine("CASH OPENING BALAN" + opdtstr + "".ToString().PadLeft(34 - (op_cash).ToString().Length) + op_cash.ToString("0.00") 
+                    sw.WriteLine("CASH OPENING BALAN" + opdtstr + "".ToString().PadLeft(25 - (op_cash).ToString().Length) + op_cash.ToString("0.00") 
                         + "".ToString().PadLeft(14 - (op_bank).ToString().Length) + op_bank.ToString("0.00") 
                         + "".ToString().PadLeft(17 - (op_cash + op_bank).ToString().Length) + (op_cash + op_bank).ToString("0.00") 
                         + "||CASH CLOSING BALANCE" + cldtstr + "".ToString().PadLeft(37 - (closed_cash).ToString().Length) + closed_cash.ToString("0.00") 
@@ -1214,7 +1214,7 @@ namespace Amritnagar.Controllers
                     sw.WriteLine("===================================================================================================++====================================================================================================");
                     sw.WriteLine("Opening Cash :                                                                                        Closing Cash :                                                                                     ");
                     sw.WriteLine("Rupees".ToString().PadLeft(48 - (op_cash_in_word).ToString().Length) + (op_cash_in_word)
-                        + "Rupees".ToString().PadLeft(107 - (cl_cash_in_word).ToString().Length) + (cl_cash_in_word));
+                        + "Rupees".ToString().PadLeft(118 - (cl_cash_in_word).ToString().Length) + (cl_cash_in_word));
                     sw.WriteLine("=========================================================================================================================================================================================================");
                     sw.WriteLine("                                                                                                                                                                                            End of Report");
                     sw.WriteLine("");
