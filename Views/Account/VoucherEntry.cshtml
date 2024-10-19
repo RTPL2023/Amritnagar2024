@@ -558,8 +558,12 @@
         }
 
         function addvoucher() {
-            //alert("OK")
-            let ModelObject = {
+             //alert("OK")
+            if ($('#txtvch_No').val() == null && $('#txtvch_No').val() == "") {
+                alert("Voucher No Can't Be Empty");
+            }
+            else {
+                let ModelObject = {
                 vch_date: $('#datepicker1').val(),
                 drcr: $('#drcr').val(),
                 vch_achd: $('#vch_achd').val(),
@@ -570,9 +574,9 @@
                 refacno: $('#refacno').val(),
                 refParticular: $('#refParticular').val(),
                 vch_no: $('#txtvch_No').val()
-            };
+                };
             //alert(JSON.stringify(ModelObject));
-            $.ajax({
+                $.ajax({
                 type: "POST",
                 url: '@Url.Action("Add_Vch_In_Temp_table", "Account")',
                 data: ModelObject,
@@ -593,7 +597,8 @@
                 error: function (err) {
                     alert(err);
                 }
-            });
+                });
+            }          
         }
 
         function ShowTable() {
@@ -622,7 +627,7 @@
             }
         }
 
-       function GetAmount() {
+        function GetAmount() {
              let ModelObject = {
                  vch_date: $('#datepicker1').val(),
                  vch_no: $('#txtvch_No').val()
@@ -939,7 +944,7 @@
                 }
                 else {
                     $("#vch_type").focus();
-                }                
+                }
             }
         }
 
