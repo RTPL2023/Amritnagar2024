@@ -896,7 +896,7 @@ namespace Amritnagar.Models.Database
             lm.lbal_aint = Convert.ToDecimal(lm.arr_3_3);
             lm.lbal_ch = Convert.ToDecimal(lm.arr_3_4);
             int xoddue = 0;
-            int xodfrom = 0;
+            string  xodfrom = "";
             lm.xodprin = 0;
             lm.xodprin = Convert.ToDecimal(lm.arr_2_1);
             if(lm.xodprin > 0 && lm.is_addint != "Y")
@@ -904,18 +904,21 @@ namespace Amritnagar.Models.Database
                 int add_month = Convert.ToInt32(((loan_amt - lm.prin_bal) / xinstl) + 1);
                 DateTime XCLRUPTO = loan_dt.AddMonths(add_month);
                 xoddue = Convert.ToInt32(DateTime.Now.Subtract(XCLRUPTO).Days / (365.25 / 12));
-                xodfrom = Convert.ToInt32(XCLRUPTO);
+                xodfrom = XCLRUPTO.ToString("dd/MM/yyyy");
             }
             else
             {
                 lm.xodprin = 0;
                 xoddue = 0;
-                xodfrom = 0;
+                xodfrom = "";
             }
             if(lm.od_month_upto > xoddue)
             {
-                DataRow dr8 = (DataRow)config.dt.Rows[0];
-                lm.status_snm = !Convert.IsDBNull(dr8["STATUS_SNM"]) ? Convert.ToString(dr8["STATUS_SNM"]) : Convert.ToString("");
+                if(config.dt.Rows.Count > 0)
+                {
+                    DataRow dr8 = (DataRow)config.dt.Rows[0];
+                    lm.status_snm = !Convert.IsDBNull(dr8["STATUS_SNM"]) ? Convert.ToString(dr8["STATUS_SNM"]) : Convert.ToString("");
+                }              
             }
             //lml.Add(lm);
             return lm;

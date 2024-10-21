@@ -494,7 +494,7 @@ namespace Amritnagar.Models.Database
                     }
                     if (rg.pRIN_aMT > 0)
                     {
-                        ADD_LEDGER(rg.aC_hD, rg.vCH_pACNO, vch_no, 1, "C", rg.pRIN_aMT, "SD", model.branch, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
+                        ADD_LEDGER(rg.aC_hD, rg.vCH_pACNO, vch_no, 2, "C", rg.pRIN_aMT, "SD", model.branch, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
                     }
                     i++;
                 }
@@ -938,7 +938,7 @@ namespace Amritnagar.Models.Database
                         break;
                     case "LOAN_LEDGER":
                         config.singleResult(QRY1);
-                        string dr_cr = "";
+                        //string dr_cr = "";
 
                         if (config.dt.Rows.Count > 0)
                         {
@@ -951,7 +951,7 @@ namespace Amritnagar.Models.Database
                                 LBAL_INT = !Convert.IsDBNull(dr1["INT_DUE"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["INT_DUE"]).ToString("0.00")) : Convert.ToDecimal("0");
                                 LBAL_AINT = !Convert.IsDBNull(dr1["AINT_DUE"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["AINT_DUE"]).ToString("0.00")) : Convert.ToDecimal("0");
                                 LBAL_CH = !Convert.IsDBNull(dr1["ichrg_due"]) ? Convert.ToDecimal(Convert.ToDecimal(dr1["ichrg_due"]).ToString("0.00")) : Convert.ToDecimal("0");
-                                dr_cr = Convert.ToString(dr1["dr_cr"]);
+                                //dr_cr = Convert.ToString(dr1["dr_cr"]);
                             }
                             else
                             {
@@ -985,7 +985,8 @@ namespace Amritnagar.Models.Database
                             { "INSERT_MODE",  XINSERT_MODE},
                             { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
                             { "PRIN_AMOUNT",      TR_AMT },
-                            { "prin_bal",    LBAL_PRIN + (dr_cr=="D"?TR_AMT:-TR_AMT) },
+                            //{ "prin_bal",    LBAL_PRIN + (dr_cr=="D"?TR_AMT: -TR_AMT) },
+                            { "prin_bal",    LBAL_PRIN + (VCH_DRCR=="D"?TR_AMT: -TR_AMT) },
                             { "INT_DUE",  LBAL_INT },
                             { "AINT_DUE",  LBAL_AINT },
                             { "ichrg_due",  LBAL_CH },
@@ -1010,7 +1011,8 @@ namespace Amritnagar.Models.Database
                                 { "ref_oth",    "SALARY DEDUCTION (" +Convert.ToDateTime(sch_dt).ToString("MMM")+ "-" +Convert.ToDateTime(sch_dt).Year+ ")" },
                                 { "INT_AMOUNT", Convert.ToDecimal(TR_AMT )},
                                 { "prin_bal", Convert.ToDecimal(LBAL_PRIN )},
-                                { "INT_DUE", Convert.ToDecimal(LBAL_INT  + (dr_cr=="D"?TR_AMT:-TR_AMT)) },
+                                //{ "INT_DUE", Convert.ToDecimal(LBAL_INT  + (dr_cr=="D"?TR_AMT:-TR_AMT)) },
+                                { "INT_DUE", Convert.ToDecimal(LBAL_INT  + (VCH_DRCR=="D"?TR_AMT:-TR_AMT)) },
                                 { "AINT_DUE",Convert.ToDecimal(LBAL_AINT) },
                                 { "ichrg_due",Convert.ToDecimal(LBAL_CH )},
                                 });
@@ -1039,7 +1041,8 @@ namespace Amritnagar.Models.Database
                             { "aint_amount",      TR_AMT },
                             { "prin_bal",    LBAL_PRIN },
                             { "INT_DUE",  LBAL_INT },
-                            { "AINT_DUE",  LBAL_AINT + (dr_cr=="D"?TR_AMT:-TR_AMT)},
+                            //{ "AINT_DUE",  LBAL_AINT + (dr_cr=="D"?TR_AMT: -TR_AMT)},
+                            { "AINT_DUE",  LBAL_AINT + (VCH_DRCR=="D"?TR_AMT: -TR_AMT)},
                             { "ichrg_due",  LBAL_CH },
                             });
                         }
@@ -1062,7 +1065,8 @@ namespace Amritnagar.Models.Database
                             { "prin_bal",    LBAL_PRIN  },
                             { "INT_DUE",  LBAL_INT },
                             { "AINT_DUE",  LBAL_AINT },
-                            { "ichrg_due",  LBAL_CH + (dr_cr=="D"?TR_AMT:-TR_AMT)},
+                            //{ "ichrg_due",  LBAL_CH + (dr_cr=="D"?TR_AMT: -TR_AMT)},
+                            { "ichrg_due",  LBAL_CH + (VCH_DRCR=="D"?TR_AMT: -TR_AMT)},
                             });
                         }
 

@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 select Bank<br />
-                                @Html.DropDownListFor(p => p.book_type, new SelectList(new string[] { "Journal Book", "Cash Book" }), "Select Book", new { @class = "sizebig", @onchange = "onchangeNeftOrOtherBank()" })
+                                @Html.DropDownListFor(p => p.book_type, new SelectList(new string[] { "Journal Book", "Cash Book" }), "Select Book", new { @class = "sizebig"@*, @onchange = "onchangeNeftOrOtherBank()"*@ })
 
                             </div>
                         </div>
