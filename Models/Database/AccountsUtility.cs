@@ -504,7 +504,6 @@ namespace Amritnagar.Models.Database
                     GD_DEBIT = GD_DEBIT + XDEBIT;
                     GD_CLBAL = GD_CLBAL + XCLBAL;
                 }
-
             }
             model.td_opbal = Math.Abs(GD_OPBAL).ToString("0.00");
             model.td_credit = GD_CREDIT.ToString("0.00");
@@ -591,7 +590,6 @@ namespace Amritnagar.Models.Database
             XCLBAL = XOPBAL + XCREDIT - XDEBIT;
             model.table3 = model.table3 + "<tr><td>CASH IN HAND</td><td>" + Math.Abs(XOPBAL).ToString("0.00") + "</td><td>" + XCREDIT.ToString("0.00") + "</td><td>" + XDEBIT.ToString("0.00") + "</td><td>" + Math.Abs(XCLBAL).ToString("0.00") + "</td></tr>";
             AccountsUtility au1 = new AccountsUtility();
-
             au1.ac_hd = XACHD;
             au1.branch_id = model.branch;
             au1.gl_date = Convert.ToDateTime(model.as_on_dt);
@@ -978,13 +976,16 @@ namespace Amritnagar.Models.Database
                 //sql = sql + "ORDER BY BRANCH_ID,GL_DATE,AC_HD";           
                 //config.Execute_Query(sql);
 
-                //sql = "Select * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
-                //sql = sql + "convert(varchar,GL_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103)";
-                //sql = sql + "ORDER BY BRANCH_ID,GL_DATE,AC_HD";
-                //config.singleResult(sql);
-                sql = "delete  FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
+                sql = "Select * FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
                 sql = sql + "convert(varchar,GL_DATE, 103) >= convert(varchar, '" + model.fr_dt + "', 103)";
-                config.Execute_Query(sql);
+                sql = sql + "ORDER BY BRANCH_ID,GL_DATE,AC_HD";
+                config.singleResult(sql);
+                if(config.dt.Rows.Count > 0)
+                {
+                    sql = "delete  FROM GL_BALNCE WHERE BRANCH_ID='" + model.branch + "' AND ";
+                    sql = sql + "convert(date,GL_DATE, 103) >= convert(date, '" + model.fr_dt + "', 103)";
+                    config.Execute_Query(sql);
+                }                
                 //int i = 1;
                 //sql = "SELECT DATEVALUE(A.VCH_DATE) AS TR_DATE,A.AC_HD,";            
                 //sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
@@ -999,17 +1000,17 @@ namespace Amritnagar.Models.Database
                 //sql = sql + "GROUP BY DATEVALUE(A.VCH_DATE),A.AC_HD";
 
 
-                sql = "SELECT convert(datetime, A.VCH_DATE, 103) AS TR_DATE,A.AC_HD,";
+                sql = "SELECT convert(date, A.VCH_DATE, 103) AS TR_DATE,A.AC_HD,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_CR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_CR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='C',A.VCH_AMT,0)) AS CASH_DR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_DR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_DR ";
-                sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (convert(datetime, A.VCH_DATE, 103)=convert(datetime, B.VCH_DATE, 103) AND A.VCH_NO=B.VCH_NO) ";
-                sql = sql + "And convert(datetime, A.VCH_DATE, 103) >= convert(datetime, '" + model.fr_dt + "', 103) And ";
+                sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (convert(date, A.VCH_DATE, 103)=convert(date, B.VCH_DATE, 103) AND A.VCH_NO=B.VCH_NO) ";
+                sql = sql + "And convert(date, A.VCH_DATE, 103) >= convert(date, '" + model.fr_dt + "', 103) And ";
                 sql = sql + "A.BRANCH_ID='" + model.branch + "' ";
-                sql = sql + "GROUP BY convert(datetime, A.VCH_DATE, 103),A.AC_HD";
+                sql = sql + "GROUP BY convert(date, A.VCH_DATE, 103),A.AC_HD";
                 config.singleResult(sql); //convert(varchar, A.VCH_DATE, 103) = convert(varchar, '" + model.daybook_dt + "', 103)
                 List<AccountsUtility> aulst = new List<AccountsUtility>();
                 DataTable dt1 = config.dt;
@@ -1275,8 +1276,8 @@ namespace Amritnagar.Models.Database
                             { "gl_bal",    xglbal + xbank },
                         });
                     }
-                }
-                msg = "Updated Successfully";
+                    msg = "Updated Successfully";
+                }              
             }
             catch(Exception ex)
             {
