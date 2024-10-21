@@ -214,9 +214,9 @@
                         @Html.TextBoxFor(p => p.book_no, new { @class = "sizeS", @type = "text", onkeypress = "javascript:return evtbook_no(event);" })
                     </div>
                 </div>
-                <div id="loading" style=" text-align:center" >
+                <div id="loading" style=" text-align:center">
                     <img style="height:30%;width:30%; text-align:center" src="~/wwwroot/Images/LoadingGif.gif" />
-                  
+
                 </div>
                 <div id="changesTbox">
                     <div class="row mt-2">
@@ -252,11 +252,11 @@
                             @Html.TextBoxFor(p => p.over_due, new { @class = "size", @type = "text" })
 
                         </div>
-                        
+
                         <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                             Interest Amt.<br />
                             @Html.TextBoxFor(p => p.int_amt, new { @class = "size", @type = "text" })
-                        </div> 
+                        </div>
                         <div class="col-lg-3 col-md-3 col-sm-12 col-12 mt-3">
                             <input id="BtnUpdateRow" type="button" name="BtnUpdateRow" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update Row" onclick="btnUpdateRowonclick()" />
 
@@ -273,12 +273,15 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
                                 <table class="tab">
-                                    <tbody id="list" >
-
+                                    <tbody id="list">
+                                        <tr>
+                                            <td>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 @*<table id="list" class="tab">
-                                </table>*@
+                                    </table>*@
                             </div>
                         </div>
                     </div>
@@ -298,7 +301,7 @@
                                     </tbody>
                                 </table>
                                 @*<table id="list2" class="tab">
-                                </table>*@
+                                    </table>*@
                             </div>
                         </div>
                     </div>
@@ -506,7 +509,7 @@
                 };
             }
         })();
-   
+
         function btnUpdateRowonclick() {
             /*alert("ok");*/
             $("#loading").show();
