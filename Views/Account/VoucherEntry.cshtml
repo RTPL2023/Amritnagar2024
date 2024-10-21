@@ -559,8 +559,11 @@
 
         function addvoucher() {
              //alert("OK")
-            if ($('#txtvch_No').val() == null && $('#txtvch_No').val() == "") {
+            if ($('#txtvch_No').val() == null || $('#txtvch_No').val() == "" ) {
                 alert("Voucher No Can't Be Empty");
+            }
+            else if ($('#vch_type').val() == "Select Voucher Type") {
+                alert("Please Choose Voucher Type");
             }
             else {
                 let ModelObject = {
