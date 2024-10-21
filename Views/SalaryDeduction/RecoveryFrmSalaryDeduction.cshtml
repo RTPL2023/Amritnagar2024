@@ -211,7 +211,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Book No
-                        @Html.TextBoxFor(p => p.book_no, new { @class = "sizeS", @type = "text" })
+                        @Html.TextBoxFor(p => p.book_no, new { @class = "sizeS", @type = "text", onkeypress = "javascript:return evtbook_no(event);" })
                     </div>
                 </div>
                 <div id="loading" style=" text-align:center" >
@@ -272,7 +272,10 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id="list" class="tab">
+                                <table class="tab">
+                                    <tbody id="list">
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -288,7 +291,9 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive mt-1">
-                                <table id="list2" class="tab">
+                                <table class="tab">
+                                    <tbody id="list2">
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -340,7 +345,14 @@
             $("#changesTbox").hide();
             //$("#to_dt").hide();
         });
-
+        function evtbook_no(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                getList();
+            }
+        }
         function Btnrefreshonclick() {
             $("#loading").show();
             /*alert("ok");*/

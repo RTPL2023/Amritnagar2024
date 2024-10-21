@@ -1186,19 +1186,20 @@ namespace Amritnagar.Controllers
                     //    model.grid1 = model.grid1 + "<td rowspan=\"" + j + "\">" + a.emp_id + " </td><td rowspan=\"" + j + "\">" + a.mem_name + " </td>";
                     //    rowsp++;
                     //}
+                    rg = rg.getPrinBalIntBal(a.ac_hd, a.branch_id, a.employer_cd, a.emp_id, a.book_no, a.sch_date, a.employer_branch);
                     if (a.ac_hd != null)
                     {
                         var index = Array.FindIndex(arrachd, row => row.Contains(a.ac_hd));
-                        if (a.prin_amt != 00 && a.prin_amt != 0)
+                        if (rg.pRIN_aMT != 00 && rg.pRIN_aMT != 0)
                         {
-                            arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(a.prin_amt));
+                            arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(rg.pRIN_aMT));
                         }
-                        if (a.int_amt != 00 && a.int_amt != 0)
+                        if (rg.iNT_aMT != 00 && rg.iNT_aMT != 0)
                         {
-                            arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.int_amt));
+                            arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(rg.iNT_aMT));
                         }
                     }
-                    rg = rg.getPrinBalIntBal(a.ac_hd, a.branch_id, a.employer_cd, a.emp_id, a.book_no, a.sch_date, a.employer_branch);
+                    
                     model.grid1 = model.grid1 + "<td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + rg.pRIN_aMT.ToString("0.00") + "</td><td>" + rg.iNT_aMT.ToString("0.00") + "</td></tr>";
                     emp = a.emp_id;
                     xprin = xprin + rg.pRIN_aMT;

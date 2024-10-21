@@ -428,7 +428,7 @@ namespace Amritnagar.Models.Database
             sql = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' ";
             sql = sql + "AND EMPLOYER_CD='" + empcd + "' AND EMPLOYER_BRANCH='" + empbranch + "'AND BOOK_NO='" + bookno + "'";
             sql = sql + " AND convert(varchar, SCH_DATE, 103) = convert(varchar, '" + sch_date + "', 103) ";
-            if (deduc_achd != "Select")
+            if (deduc_achd != "Select" && deduc_achd!=null)
             {
                 sql = sql + "AND AC_HD='" + deduc_achd + "' ";
             }

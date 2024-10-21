@@ -392,7 +392,7 @@ namespace Amritnagar.Models.Database
         {
             string sql = "";
             string msg = "";
-            sql = "SELECT * FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_dt + "', 103)";
+            sql = "SELECT * FROM RECOVERY_GET WHERE EMPLOYER_CD='" + model.emplyer_name + "' AND EMPLOYER_BRANCH='" + model.emp_unit + "' and book_no='" + model.book_no + "'  AND convert(date, SCH_DATE, 103) = convert(date, '" + model.sch_dt + "', 103)";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
