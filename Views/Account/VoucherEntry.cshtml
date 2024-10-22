@@ -566,42 +566,42 @@
                 alert("Please Choose Voucher Type");
             }
             else {
-                let ModelObject = {
-                vch_date: $('#datepicker1').val(),
-                drcr: $('#drcr').val(),
-                vch_achd: $('#vch_achd').val(),
-                vchpacno: $('#vchpacno').val(),
-                particular: $('#particular').val(),
-                amount: $('#amount').val(),
-                ref_ac_hd: $('#ref_ac_hd').val(),
-                refacno: $('#refacno').val(),
-                refParticular: $('#refParticular').val(),
-                vch_no: $('#txtvch_No').val()
-                };
-            //alert(JSON.stringify(ModelObject));
-                $.ajax({
-                type: "POST",
-                url: '@Url.Action("Add_Vch_In_Temp_table", "Account")',
-                data: ModelObject,
-                dataType: "json",
-                success: function (data)
-                {
-                    ShowTable();
-                    $('#vchpacno').val("");
-                    $('#drcr').val("");
-                    $('#particular').val("");
-                    $('#amount').val("");
-                    $('#refacno').val("");
-                    $('#refParticular').val("");
-                    $('#ref_ac_hd').val("");
-                    $('#vch_achd').val("");
-                    $('#drcr').focus();
-                },
-                error: function (err) {
-                    alert(err);
-                }
-                });
-            }          
+                    let ModelObject = {
+                    vch_date: $('#datepicker1').val(),
+                    drcr: $('#drcr').val(),
+                    vch_achd: $('#vch_achd').val(),
+                    vchpacno: $('#vchpacno').val(),
+                    particular: $('#particular').val(),
+                    amount: $('#amount').val(),
+                    ref_ac_hd: $('#ref_ac_hd').val(),
+                    refacno: $('#refacno').val(),
+                    refParticular: $('#refParticular').val(),
+                    vch_no: $('#txtvch_No').val()
+                    };
+                    //alert(JSON.stringify(ModelObject));
+                    $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Add_Vch_In_Temp_table", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data)
+                    {
+                        ShowTable();
+                        $('#vchpacno').val("");
+                        $('#drcr').val("");
+                        $('#particular').val("");
+                        $('#amount').val("");
+                        $('#refacno').val("");
+                        $('#refParticular').val("");
+                        $('#ref_ac_hd').val("");
+                        $('#vch_achd').val("");
+                        $('#drcr').focus();
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                    });
+                 }          
         }
 
         function ShowTable() {
