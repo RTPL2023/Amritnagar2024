@@ -225,9 +225,7 @@ namespace Amritnagar.Models.Database
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
-
                     ah.ac_desc = Convert.ToString(dr["AC_DESC"]);
-
                 }
             }
             if (ac_hd.ToUpper() == "ALL")

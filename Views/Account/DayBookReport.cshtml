@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="col-md-2 col-sm-12 col-12 text-center">
-                            <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn_size btn-sm btn-primary" value="Exit" />
+                            <input id="BtnExit" type="button" name="BtnExit" Height="40" Width="100" class="btn btn_size btn-sm btn-primary" value="Exit" onclick="ReloadPage()" />
                         </div>
 
                     </div>
@@ -271,6 +271,7 @@
                 }
              });
         }
+
         function evtdaybook_dt(evt) {
 
             var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -286,7 +287,6 @@
                 ac_hd: $('#ac_hd').val(),
                 branch: $('#branch').val(),
                 daybook_dt: $('#daybook_dt').val(),
-
             };
             $.ajax({
                 type: "POST",
@@ -303,14 +303,11 @@
             });
         }
 
-
-
-          function ShowTabel() {
+        function ShowTabel() {
             let ModelObject = {
                 ac_hd: $('#ac_hd').val(),
                 branch: $('#branch').val(),
                 daybook_dt: $('#daybook_dt').val(),
-
             };
               $.ajax({
                 type: "POST",
@@ -332,6 +329,10 @@
                     alert(err);
                 }
             });
+        }
+
+        function ReloadPage() {
+            window.location.href = "@Url.Action("DayBookReport", "Account")"
         }
 
 

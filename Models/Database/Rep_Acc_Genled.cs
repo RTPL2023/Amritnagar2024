@@ -101,13 +101,13 @@ namespace Amritnagar.Models.Database
                                 {
                                     config.Insert("rep_acc_genled", new Dictionary<String, object>()
                                     {
-                                    {"GL_TYPE",   "O" },
-                                    {"ac_hd", rag.ac_hd },
-                                    {"ac_majgr",    rag.ac_majgr},
-                                    {"AC_DESC",   rag.ac_desc},
-                                    {"ac_majgrdesc", rag.xmgrdesc },
-                                    {"GL_DATE",    XOPDT},
-                                    {"gl_bal",    rag.XACBAL}
+                                        {"GL_TYPE",   "O" },
+                                        {"ac_hd", rag.ac_hd },
+                                        {"ac_majgr",    rag.ac_majgr},
+                                        {"AC_DESC",   rag.ac_desc},
+                                        {"ac_majgrdesc", rag.xmgrdesc },
+                                        {"GL_DATE",    XOPDT},
+                                        {"gl_bal",    rag.XACBAL}
                                     });
                                     config.Insert("rep_acc_genled", new Dictionary<String, object>()
                                     {

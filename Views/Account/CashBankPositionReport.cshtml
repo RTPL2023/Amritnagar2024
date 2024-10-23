@@ -118,7 +118,7 @@
                             </div>
                             <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                                 As On Date
-                                @Html.TextBoxFor(model => model.as_on_dt, new { @class = "size", @type = "text" })
+                                @Html.TextBoxFor(model => model.as_on_dt, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtas_on_dt(event);" })
                             </div> 
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                                 <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn_size btn-primary btn-sm" value="Refresh" onclick="BtnRefreshOnclick()" />
@@ -262,6 +262,15 @@
                     alert(err);
                 }
             });
+        }
+
+        function evtas_on_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                BtnRefreshOnclick();
+            }
         }
 
     </script>

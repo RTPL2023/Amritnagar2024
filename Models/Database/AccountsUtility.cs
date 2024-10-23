@@ -99,8 +99,6 @@ namespace Amritnagar.Models.Database
             {
                 xacstr = "'" + model.ac_hd + "'";
             }
-
-
             string acstr = "B.AC_HD IN (" + xacstr + ")";
             sql = "SELECT A.BRANCH_ID,A.VCH_DATE,B.AC_HD,B.VCH_NO,A.VCH_TYPE,B.VCH_SRL,B.VCH_DRCR,C.AC_MAJGR,C.AC_SUBGR,C.AC_DESC,";
             sql = sql + " B.VCH_PACNO,B.VCH_ACNAME,B.VCH_AMT FROM VCH_HEADER A,VCH_DETAIL B,ACC_HEAD C";
@@ -117,7 +115,6 @@ namespace Amritnagar.Models.Database
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     AccountsUtility au = new AccountsUtility();
-
                     if (dr["VCH_DRCR"].ToString() == "D")
                     {
                         au.ac_hd = Convert.ToString(dr["ac_hd"]);
@@ -147,7 +144,6 @@ namespace Amritnagar.Models.Database
                         au.ac_majgrdesc = "";
                         au.ac_subgr = Convert.ToString(dr["AC_SUBGR"]);
                         au.ac_subgrdesc = "";
-
                         au.vch_no_cr = Convert.ToString(dr["vch_no"]);
                         au.vch_pacno_cr = Convert.ToString(dr["vch_pacno"]);
                         au.vch_acname_cr = Convert.ToString(dr["vch_acname"]);
@@ -160,13 +156,9 @@ namespace Amritnagar.Models.Database
                         if (Convert.ToString(dr["VCH_TYPE"]) == "J")
                             au.trans_cr = Convert.ToDecimal(dr["vch_amt"]);
                         au.saveinREP_ACC_DAYBOOK(au);
-
                     }
-
                 }
-
             }
-
             string msg = "Saved Successfully";
             return (msg);
         }
@@ -176,32 +168,30 @@ namespace Amritnagar.Models.Database
             {
                 config.Insert("REP_ACC_DAYBOOK", new Dictionary<String, object>()
                 {
-                        { "AC_HD",      au.ac_hd },
-                        { "AC_DESC",      au.ac_desc },
-                        { "AC_MAJGR",    au.ac_majgr },
-                        { "AC_MAJGRDESC",      au.ac_majgrdesc },
-                        { "AC_SUBGR",     au.ac_subgr },
-                        { "AC_SUBGRDESC",        au.ac_subgrdesc},
-                        { "VCH_NO_DR",    au.vch_no_dr },
-                        { "VCH_PACNO_DR",      au.vch_pacno_dr },
-                        { "VCH_ACNAME_DR",       au.vch_acname_dr },
-                        { "CASH_DR",       au.cash_dr},
-                        { "BANK_DR",       au.bank_dr},
-                        { "TRANS_DR",      au.trans_dr },
-                        { "VCH_NO_CR",      au.vch_no_cr },
-                        { "VCH_PACNO_CR",      au.vch_pacno_cr },
-                        { "VCH_ACNAME_CR",      au.vch_acname_cr },
-                        { "CASH_CR",      au.cash_cr },
-                        { "BANK_CR",      au.bank_cr },
-                        { "TRANS_CR",      au.trans_cr },
-
+                    { "AC_HD",      au.ac_hd },
+                    { "AC_DESC",      au.ac_desc },
+                    { "AC_MAJGR",    au.ac_majgr },
+                    { "AC_MAJGRDESC",      au.ac_majgrdesc },
+                    { "AC_SUBGR",     au.ac_subgr },
+                    { "AC_SUBGRDESC",        au.ac_subgrdesc},
+                    { "VCH_NO_DR",    au.vch_no_dr },
+                    { "VCH_PACNO_DR",      au.vch_pacno_dr },
+                    { "VCH_ACNAME_DR",       au.vch_acname_dr },
+                    { "CASH_DR",       au.cash_dr},
+                    { "BANK_DR",       au.bank_dr},
+                    { "TRANS_DR",      au.trans_dr },
+                    { "VCH_NO_CR",      au.vch_no_cr },
+                    { "VCH_PACNO_CR",      au.vch_pacno_cr },
+                    { "VCH_ACNAME_CR",      au.vch_acname_cr },
+                    { "CASH_CR",      au.cash_cr },
+                    { "BANK_CR",      au.bank_cr },
+                    { "TRANS_CR",      au.trans_cr },
                 });
             }
             catch (Exception x)
             {
 
             }
-
         }
         public List<AccountsUtility> getdaybooklistbydaywise(DayBookReportViewModel model)
         {
@@ -212,16 +202,12 @@ namespace Amritnagar.Models.Database
             int xstart = 0;
             string xpmgrp = "";
             string sql = "SELECT * FROM REP_ACC_DAYBOOK";
-
             config.singleResult(sql);
-
-
             List<AccountsUtility> aulst = new List<AccountsUtility>();
             if (config.dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
-
                     AccountsUtility au = new AccountsUtility();
                     au.ac_hd = Convert.ToString(dr["ac_hd"]);
                     au.ac_desc = Convert.ToString(dr["AC_DESC"]);
@@ -245,8 +231,6 @@ namespace Amritnagar.Models.Database
                     au.trans_cr = Convert.ToDecimal(dr["trans_cr"]);
                     aulst.Add(au);
                 }
-
-
             }
             return aulst;
         }
@@ -331,9 +315,7 @@ namespace Amritnagar.Models.Database
                     TOT_MGTRAN_CR = 0;
                     TOT_MGTOT_CR = 0;
                 }
-
             }
-
             string msg = "Saved Successfully";
             return (msg);
         }
@@ -367,26 +349,26 @@ namespace Amritnagar.Models.Database
             {
                 config.Insert("rep_acc_cashacc", new Dictionary<String, object>()
                 {
-                      { "ac_majgr_cr ",au. ac_majgr_cr },
-                      { "AC_MAJGRDESC_CR ",au. ac_majgrdesc_cr },
-                      { "ac_hd_cr ", au.ac_hd_cr },
-                      { "ac_desc_cr ", au. ac_desc_cr},
-                      { "CASH_CR ", au.cash_cr },
-                      { "TRANS_CR ",  au.trans_cr},
-                      { "TOTAL_CR ", au.total_cr },
-                      { "ac_majgr_dr ", au.ac_majgr_dr },
-                      { "AC_MAJGRDESC_DR ",  au.ac_majgrdesc_dr},
-                      { "ac_hd_dr ", au. ac_hd_dr},
-                      { "ac_desc_dr ", au.ac_desc_dr },
-                      { "CASH_DR ", au. cash_dr},
-                      { "TRANS_DR ", au. trans_dr},
-                      { "TOTAL_DR ", au.total_dr },
-                      { "MAJGR_CASH_CR ", au.majgr_cash_cr },
-                      { "MAJGR_TRANS_CR ", au. majgr_trans_cr},
-                      { "MAJGR_TOT_CR ", au.majgr_tot_cr },
-                      { "MAJGR_CASH_DR ", au.majgr_cash_dr },
-                      { "MAJGR_TRANS_DR ",au. majgr_trans_dr },
-                      { "MAJGR_TOT_DR ", au.majgr_tot_dr },
+                    { "ac_majgr_cr ",au. ac_majgr_cr },
+                    { "AC_MAJGRDESC_CR ",au. ac_majgrdesc_cr },
+                    { "ac_hd_cr ", au.ac_hd_cr },
+                    { "ac_desc_cr ", au. ac_desc_cr},
+                    { "CASH_CR ", au.cash_cr },
+                    { "TRANS_CR ",  au.trans_cr},
+                    { "TOTAL_CR ", au.total_cr },
+                    { "ac_majgr_dr ", au.ac_majgr_dr },
+                    { "AC_MAJGRDESC_DR ",  au.ac_majgrdesc_dr},
+                    { "ac_hd_dr ", au. ac_hd_dr},
+                    { "ac_desc_dr ", au.ac_desc_dr },
+                    { "CASH_DR ", au. cash_dr},
+                    { "TRANS_DR ", au. trans_dr},
+                    { "TOTAL_DR ", au.total_dr },
+                    { "MAJGR_CASH_CR ", au.majgr_cash_cr },
+                    { "MAJGR_TRANS_CR ", au. majgr_trans_cr},
+                    { "MAJGR_TOT_CR ", au.majgr_tot_cr },
+                    { "MAJGR_CASH_DR ", au.majgr_cash_dr },
+                    { "MAJGR_TRANS_DR ",au. majgr_trans_dr },
+                    { "MAJGR_TOT_DR ", au.majgr_tot_dr },
                 });
             }
             catch (Exception x)
