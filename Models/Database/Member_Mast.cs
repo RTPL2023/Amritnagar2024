@@ -553,9 +553,9 @@ namespace Amritnagar.Models.Database
                     mm.prmntAdd_dist = dr["PERM_DIST"].ToString();
                     mm.prmntAdd_state = dr["PERM_STATE"].ToString();
                     mm.prmntAdd_pin = !Convert.IsDBNull(dr["PERM_PIN"]) ? Convert.ToString(dr["PERM_PIN"]) : Convert.ToString("");
-                    mm.phn =!Convert.IsDBNull(dr["PHONE_NO"]) ? Convert.ToString(dr["PHONE_NO"]) : Convert.ToString("");
+                    mm.phn = !Convert.IsDBNull(dr["PHONE_NO"]) ? Convert.ToString(dr["PHONE_NO"]) : Convert.ToString("");
                     mm.th_f_amt = !Convert.IsDBNull(dr["BLOOD_GROUP"]) ? Convert.ToDecimal(dr["BLOOD_GROUP"]) : Convert.ToDecimal("0");
-                    mm.birth_date =!Convert.IsDBNull(dr["BIRTH_DATE"]) ? Convert.ToDateTime(dr["BIRTH_DATE"]) : Convert.ToDateTime(null);
+                    mm.birth_date = !Convert.IsDBNull(dr["BIRTH_DATE"]) ? Convert.ToDateTime(dr["BIRTH_DATE"]) : Convert.ToDateTime(null);
                     mm.caste = dr["CASTE_ID"].ToString();
                     mm.sex = dr["SEX"].ToString();
                     mm.relgn = dr["RELGN_ID"].ToString();
@@ -953,12 +953,12 @@ namespace Amritnagar.Models.Database
             return mm.mem_id;
         }
         public List<Member_Mast> GetmemMastForDemandInterestCalculation(MemDepositeFundIntPaySchViewModel model)
-        {       
+        {
             List<Member_Mast> mmlst = new List<Member_Mast>();
             string sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + model.branch + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' AND ";
             sql = sql + "BOOK_NO= '" + model.book_no + "' AND MEM_CATEGORY='" + model.ex_gen + "' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + model.to_dt + "', 103) AND ";
             sql = sql + "IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + model.to_dt + "', 103) ORDER BY MEMBER_ID";
-          
+
             config.singleResult(sql);
 
             if (config.dt.Rows.Count > 0)
@@ -1033,7 +1033,7 @@ namespace Amritnagar.Models.Database
         {
             List<Member_Mast> mml = new List<Member_Mast>();
             string sql = string.Empty;
-            if(book_no != "")
+            if (book_no != "")
             {
                 sql = "Select * from member_mast where   EMPLOYER_BRANCH='" + unit + "' AND  BOOK_NO='" + book_no + "'";
                 sql = sql + "AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_date + "', 103) and IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + on_date + "', 103) ORDER BY MEMBER_ID";
@@ -1049,15 +1049,15 @@ namespace Amritnagar.Models.Database
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     Member_Mast mm = new Member_Mast();
-                    mm.mem_id = dr["MEMBER_ID"].ToString();                
-                    mm.emp_id = dr["EMPLOYEE_ID"].ToString();                   
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.emp_id = dr["EMPLOYEE_ID"].ToString();
                     mm.mem_name = dr["MEMBER_NAME"].ToString();
                     //Share calculation portion
                     sql = "select * from share_ledger where member_id='" + mm.mem_id + "'and  convert(datetime, vch_date, 103) <= convert(datetime, '" + on_date + "', 103)  order by VCH_DATE,vch_no,vch_srl";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
-                        foreach(DataRow dr1 in config.dt.Rows)
+                        foreach (DataRow dr1 in config.dt.Rows)
                         {
                             mm.XSHARE = !Convert.IsDBNull(dr1["BAL_AMOUNT"]) ? Convert.ToDecimal(dr1["BAL_AMOUNT"]) : Convert.ToDecimal("0.00");
                         }
@@ -1065,7 +1065,7 @@ namespace Amritnagar.Models.Database
                     //Thrift fund calculation
                     sql = "select * from tf_ledger where member_id='" + mm.mem_id + "'and convert(datetime, vch_date, 103) <= convert(datetime, '" + on_date + "', 103) order by VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr2 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.XTF = !Convert.IsDBNull(dr2["prin_bal"]) ? Convert.ToDecimal(dr2["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1073,7 +1073,7 @@ namespace Amritnagar.Models.Database
                         dr2 = (DataRow)config.dt.Rows[0];
                         mm.vch_date = !Convert.IsDBNull(dr2["vch_datE"]) ? Convert.ToDateTime(dr2["vch_datE"]) : Convert.ToDateTime(null);
                         mm.insert_mode = !Convert.IsDBNull(dr2["insert_mode"]) ? Convert.ToString(dr2["insert_mode"]) : Convert.ToString("");
-                        if(mm.vch_date == Convert.ToDateTime(on_date) && mm.insert_mode == "SI")
+                        if (mm.vch_date == Convert.ToDateTime(on_date) && mm.insert_mode == "SI")
                         {
                             mm.xint_tf = !Convert.IsDBNull(dr2["INT_AMOUNT"]) ? Convert.ToDecimal(dr2["INT_AMOUNT"]) : Convert.ToDecimal("0.00");
                         }
@@ -1107,7 +1107,7 @@ namespace Amritnagar.Models.Database
                     //LOAN 16.5 CALCULATION 
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SFL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr4 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xsfl = !Convert.IsDBNull(dr4["prin_bal"]) ? Convert.ToDecimal(dr4["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1121,7 +1121,7 @@ namespace Amritnagar.Models.Database
                     //LOAN 14.5 CALCULATION 
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SJL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr5 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xsjl = !Convert.IsDBNull(dr5["prin_bal"]) ? Convert.ToDecimal(dr5["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1135,7 +1135,7 @@ namespace Amritnagar.Models.Database
                     //SL3 13
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL3' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr6 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.XSL3 = !Convert.IsDBNull(dr6["prin_bal"]) ? Convert.ToDecimal(dr6["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1149,7 +1149,7 @@ namespace Amritnagar.Models.Database
                     //PSL 10
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='PSL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr7 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xpsl = !Convert.IsDBNull(dr7["prin_bal"]) ? Convert.ToDecimal(dr7["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1163,7 +1163,7 @@ namespace Amritnagar.Models.Database
                     //DLL 1
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='DLL' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr8 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xdll = !Convert.IsDBNull(dr8["prin_bal"]) ? Convert.ToDecimal(dr8["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1177,7 +1177,7 @@ namespace Amritnagar.Models.Database
                     //SJL1
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SJL1' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr9 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xsjl1 = !Convert.IsDBNull(dr9["prin_bal"]) ? Convert.ToDecimal(dr9["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1191,7 +1191,7 @@ namespace Amritnagar.Models.Database
                     //M14
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='M14' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr10 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xM14 = !Convert.IsDBNull(dr10["prin_bal"]) ? Convert.ToDecimal(dr10["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1205,7 +1205,7 @@ namespace Amritnagar.Models.Database
                     //M12
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='M12' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr11 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xM12 = !Convert.IsDBNull(dr11["prin_bal"]) ? Convert.ToDecimal(dr11["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1219,7 +1219,7 @@ namespace Amritnagar.Models.Database
                     //SFL1
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SFL1' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr12 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xSFL1 = !Convert.IsDBNull(dr12["prin_bal"]) ? Convert.ToDecimal(dr12["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1233,7 +1233,7 @@ namespace Amritnagar.Models.Database
                     //PSL1
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='PSL1' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr13 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xPSL1 = !Convert.IsDBNull(dr13["prin_bal"]) ? Convert.ToDecimal(dr13["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1247,7 +1247,7 @@ namespace Amritnagar.Models.Database
                     //SL4
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL4' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr14 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xSL4 = !Convert.IsDBNull(dr14["prin_bal"]) ? Convert.ToDecimal(dr14["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1261,7 +1261,7 @@ namespace Amritnagar.Models.Database
                     //SL6
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL6' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr15 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xSL6 = !Convert.IsDBNull(dr15["prin_bal"]) ? Convert.ToDecimal(dr15["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1275,7 +1275,7 @@ namespace Amritnagar.Models.Database
                     //SL7
                     sql = "SELECT * FROM LOAN_LEDGER WHERE AC_HD='SL7' AND EMPLOYEE_ID='" + mm.emp_id + "'  AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_date + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
                     config.singleResult(sql);
-                    if(config.dt.Rows.Count > 0)
+                    if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr16 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                         mm.xSL7 = !Convert.IsDBNull(dr16["prin_bal"]) ? Convert.ToDecimal(dr16["prin_bal"]) : Convert.ToDecimal("0.00");
@@ -1290,6 +1290,53 @@ namespace Amritnagar.Models.Database
                 }
             }
             return mml;
+        }
+
+        public void updatebooknumber()
+        {
+            string xemployee_ID = "";
+            string xbkno = "";
+            string xempl = "";
+            string sql = "select * from member_mast order by employee_id";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    xemployee_ID = Convert.ToString(dr["employee_id"]);
+                    if(xemployee_ID== "444578")
+                    {
+
+                    }
+                    xbkno = Convert.ToString(dr["book_no"]);
+                    xempl = Convert.ToString(dr["EMPLOYER_BRANCH"]);
+                    sql = "select * from loan_master where employee_id='" + xemployee_ID + "' ";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        sql = "update loan_master set book_no='" + xbkno + "',EMPLOYER_BRANCH='" + xempl + "' where employee_id='" + xemployee_ID + "'";
+                        config.Execute_Query(sql);
+
+                        //try
+                        //{
+                        //    config.Update("loan_master", new Dictionary<String, object>()
+                        //    {
+                        //       { "book_no",xbkno },
+                        //        { "EMPLOYER_BRANCH", xempl},
+                        //    }, new Dictionary<string, object>()
+                        //    {
+                               
+                        //        { "employee_id",  xemployee_ID },
+                        //    });
+                        //}
+                        //catch (Exception ex)
+                        //{
+
+                        //}
+                    }
+                }
+            }
         }
     }
 }

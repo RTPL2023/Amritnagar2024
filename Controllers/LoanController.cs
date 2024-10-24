@@ -1127,6 +1127,8 @@ namespace Amritnagar.Controllers
             model.fr_dt = new DateTime(now.Year, now.Month, 1).ToString("dd-MM-yyyy").Replace("-", "/");
             model.to_dt = model.sch_date;
             model.vch_dt = model.sch_date;
+            Member_Mast mm = new Member_Mast();
+            mm.updatebooknumber();
             return View(model);
         }
         public JsonResult populateDataMonthlyInterestScheduleForLoan(MonthlyInterestScheduleForLoanViewModel model)
@@ -1134,36 +1136,13 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             List<Loan_Master> lmlst = new List<Loan_Master>();
             lmlst = lm.getmonthlyIntrestList(model);
-            //if (System.IO.File.Exists("wwwroot\\TextFiles\\LoanInterest.xlsx"))
-            //{
-            //    System.IO.File.Delete("wwwroot\\TextFiles\\LoanInterest.xlsx");
-            //}
-
-            //ExcelPackage pck = new ExcelPackage();
-            //ExcelWorksheet ws = pck.Workbook.Worksheets.Add("LoanInterest");
-            //ws.Cells["A1"].Value = "Sl";
-            //ws.Cells["B1"].Value = "Emp_ID";
-            //ws.Cells["C1"].Value = "Name_Of_Lonee";
-            //ws.Cells["D1"].Value = "Loan_Date";
-            //ws.Cells["E1"].Value = "Loan_Amount";
-            //ws.Cells["F1"].Value = "Instl";
-            //ws.Cells["G1"].Value = "Principal_Balance";
-            //ws.Cells["H1"].Value = "Int_Debitable";
-            //ws.Cells["I1"].Value = "Int_Due_Balance";
-            //int rowstart = 2;
+       
             int i = 1;
             if (lmlst.Count > 0)
             {
                 foreach (var a in lmlst)
                 {
-                    //if (Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
-                    //{
-                    //    vch_date = "";
-                    //}
-                    //else
-                    //{
-                    //    vch_date = Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/");
-                    //}
+                 
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Sl</th><th>Emp.ID</th><th>Name Of Lonee</th><th>Loan Date</th><th>Loan Amount</th><th>Instl</th><th>Principal Balance</th><th>Int.Debitable</th><th>Int.Due Balance</th></tr>";
