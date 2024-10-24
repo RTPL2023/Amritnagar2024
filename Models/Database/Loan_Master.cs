@@ -115,7 +115,7 @@ namespace Amritnagar.Models.Database
                         { "LOAN_AMT",       lm.loan_amt },
                         { "NO_INSTL",   lm.inst_no},
                         { "INT_RATE",   lm.inst_rate},
-                        { "INSTL_AMOUNT",   lm.inst_amt},
+                        { "INSTL_AMOUNT",   lm.inst_amt},                        
                     }, new Dictionary<string, object>()
                     {
                         { "BRANCH_ID",  lm.branch_id },

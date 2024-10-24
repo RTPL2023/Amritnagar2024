@@ -810,7 +810,7 @@ namespace Amritnagar.Models.Database
                     mm.member_type = dr["MEMBER_TYPE"].ToString();
                     mm.member_category = dr["MEM_CATEGORY"].ToString();
                     mm.guardian_name = dr["GRDN_NAME"].ToString();
-                    mm.mem_name = dr["MEMBER_NAME"].ToString();
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();                    
                 }
             }
             return mm;
@@ -824,7 +824,7 @@ namespace Amritnagar.Models.Database
             {
                 foreach (DataRow dr in config.dt.Rows)
                 {
-                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.mem_id = dr["MEMBER_ID"].ToString();                
                 }
             }
             else

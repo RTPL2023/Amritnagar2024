@@ -141,7 +141,7 @@
                     <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                         Employee-Id:<br />
                         @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtemp_id(event);" })
-                    </div>
+                    </div>                   
                 </div>
                 <div class="row mt-1">
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -362,7 +362,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#loading').hide();
+            $('#loading').hide();          
         });
 
         function Save() {           
@@ -555,7 +555,7 @@
                     $('#mem_type').val(data.mem_type);
                     $('#mem_cat').val(data.mem_cat);
                     $('#gurdian_name').val(data.gurdian_name);
-                    $('#loanee_name').val(data.loanee_name);
+                    $('#loanee_name').val(data.loanee_name);                   
                     $('#mem_dt').prop('disabled', true);
                     $('#book_no').prop('disabled', true);
                     $('#mem_type').prop('disabled', true);
@@ -600,7 +600,7 @@
                         alert("First create membership master ... next input Man number")
                     }
                     else {
-                        $('#mem_id').val(data.mem_id);
+                        $('#mem_id').val(data.mem_id);                       
                         GetDetailsByMemberId();
                     }
                     ShowTable();
