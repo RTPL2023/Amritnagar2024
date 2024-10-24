@@ -811,12 +811,10 @@ namespace Amritnagar.Controllers
         {
             List<AccountsUtility> aulst = new List<AccountsUtility>();
             AccountsUtility au = new AccountsUtility();
-
             aulst = au.getdaybooklistbydaywise(model);
             if (aulst.Count > 0)
             {
                 model.tableele = "<tr><th> AC_HD</th><th> Account Head </th><th>CASH DR Balance</th><th>BANK DR Balance</th><th>TRANS DR Balance</th><th>CASH CR Balance</th><th>BANK CR Balance</th><th>TRANS CR Balance</th></tr>";
-
                 foreach (var a in aulst)
                 {
                     model.tableele = model.tableele + "<tr><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>"
@@ -828,9 +826,7 @@ namespace Amritnagar.Controllers
                     model.label5 = (Convert.ToDecimal(model.label5) + a.bank_cr).ToString("0.00");
                     model.label6 = (Convert.ToDecimal(model.label6) + a.trans_cr).ToString("0.00");
                 }
-
             }
-
             return Json(model);
         }
 

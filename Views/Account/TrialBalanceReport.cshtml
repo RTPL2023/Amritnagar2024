@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Balance As On<br />
-                        @Html.TextBoxFor(model => model.gl_date, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.gl_date, new { @class = "size", @type = "text", @onkeypress = "javascript: return evtgl_date(event);" })
                     </div>
                     <div class="col-md-2 col-lg-2 col-12 mt-3">
                         <input id="BtnRefreshList" type="button" name="BtnRefreshList" Height="40" Width="100" class="btn btn-primary btn-sm pull-right" value="Refresh List" onclick="BtnRefreshOnClick()" />
@@ -127,7 +127,7 @@
                         <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-sm btn-primary" value="Print" onclick="BtnprintOnClick()"/>
                     </div>
                     <div class="col-md-3 col-lg-3 col-12 mt-3">
-                        <input id="BtnExitWindow" type="button" name="BtnExitWindow" Height="40" Width="100" class="btn btn-primary btn-sm" value="Exit Window" />
+                        <input id="BtnExitWindow" type="button" name="BtnExitWindow" Height="40" Width="100" class="btn btn-primary btn-sm" value="Exit Window" onclick=" ReloadPage()" />
 
                     </div>
                 </div>
@@ -218,6 +218,19 @@
                     alert(err);
                 }
             });
+        }
+
+        function evtgl_date(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                BtnRefreshOnClick();
+            }
+        }
+
+        function ReloadPage() {
+            window.location.href = "@Url.Action("TrialBalanceReport", "Account")"
         }
 
     </script>
