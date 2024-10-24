@@ -482,7 +482,7 @@ namespace Amritnagar.Models.Database
             decimal YINT_CAL = 0;
             decimal YPRIN_BAL = 0;
             int cal_date = 0;
-            List<Loan_Master> lml = new List<Loan_Master>();
+             List<Loan_Master> lml = new List<Loan_Master>();
             string sql = string.Empty;
             sql = "select * from loan_master where branch_id='" + model.branch_id + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' and ";
             sql = sql + "ac_hd='" + model.ln_achd + "' and BOOK_NO='" + model.book_no + "' and convert(datetime, loan_date, 103) <= convert(datetime, '" + model.sch_date + "', 103) and ";

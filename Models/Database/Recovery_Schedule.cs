@@ -564,6 +564,10 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs1 = new Recovery_Schedule();
                     XBOOK_NO = Convert.ToString(dr["book_no"]);
                     xemployee_ID = Convert.ToString(dr["EMPLOYEE_ID"]);
+                    if(xemployee_ID== "104957")
+                    {
+
+                    }
                     XMEMBER_NM = Convert.ToString(dr["MEMBER_NAME"]);
                     MEMBER = Convert.ToString(dr["member_id"]);
                     unit = Convert.ToString(dr["EMPLOYER_BRANCH"]);
@@ -824,7 +828,7 @@ namespace Amritnagar.Models.Database
                                         //    }
                                         //    break;
                                         case "RTB_LEDGER":
-                                            sql = "SELECT * FROM TF_RATE ORDER BY EFF_DATE";
+                                            sql = "SELECT * FROM RTB_RATE ORDER BY EFF_DATE";
                                             config.singleResult(sql);
                                             if (config.dt.Rows.Count > 0)
                                             {
@@ -832,7 +836,7 @@ namespace Amritnagar.Models.Database
                                                 if (Convert.ToDateTime(drtr["Eff_date"]) <= Convert.ToDateTime(sch_date))
                                                 {
                                                     tf_eff_date = Convert.ToDateTime(drtr["Eff_date"]);
-                                                    xirate = Convert.ToDecimal(drtr["TF_RATE"]);
+                                                    xirate = Convert.ToDecimal(drtr["RTB_RATE"]);
                                                 }
                                             }
                                             ACT_DUE = 0;
