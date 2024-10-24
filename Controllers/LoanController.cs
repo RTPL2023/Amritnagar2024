@@ -28,7 +28,7 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             lm.branch_id = model.branch_id.ToUpper();
             lm.ac_hd = model.ac_hd;
-            lm.emp_id = model.emp_id;
+            lm.emp_id = model.emp_id;           
             lm.loan_dt = Convert.ToDateTime(Convert.ToDateTime(model.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/"));
             lm.mem_id = model.mem_id;
             lm.ln_spcl = model.status_cd;
@@ -67,7 +67,8 @@ namespace Amritnagar.Controllers
             model.book_no = mm.book_no;
             model.mem_type = mm.member_type.ToUpper(); 
             model.mem_cat = mm.member_category.ToUpper(); 
-            model.gurdian_name = mm.guardian_name.ToUpper(); 
+            model.gurdian_name = mm.guardian_name.ToUpper();
+            
             return Json(model);           
         }
         public JsonResult getdetailsbyEmpId(string branch_id, string ac_hd, string emp_id)
@@ -75,7 +76,7 @@ namespace Amritnagar.Controllers
             Member_Mast mm = new Member_Mast();
             LoanMasterEntryViewModel model = new LoanMasterEntryViewModel();
             mm = mm.getmemidbyempid(emp_id);
-            model.mem_id = mm.mem_id;
+            model.mem_id = mm.mem_id;          
             model.msg = mm.msg;
             Loan_Master lm = new Loan_Master();
             List<Loan_Master> lml = new List<Loan_Master>();         

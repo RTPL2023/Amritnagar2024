@@ -9,6 +9,7 @@ namespace Amritnagar.Models.ViewModel
     public class LoanMasterEntryViewModel
     {
         public string branch_id { get; set; }
+        public string emp_brnch { get; set; }
         public string ac_hd { get; set; }
         public string emp_id { get; set; }
         public string loan_dt { get; set; }

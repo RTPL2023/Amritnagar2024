@@ -846,6 +846,9 @@
            else if ($('#birth_date').val() == null || $('#birth_date').val() == "") {
                alert("Birth Date Cannot be Blank");
            }
+           else if ($('#join_dt').val() == null || $('#join_dt').val() == "") {
+               alert("Joining Date Cannot be Blank");
+           }
            else if ($('#guardian_name').val() == null || $('#guardian_name').val() == "") {
                alert("Gurdian Name Cannot be Blank");
            }
@@ -856,7 +859,7 @@
                alert("Last Name Cannot be Blank");
            }
            else {
-               $("#loading").show();
+                    $("#loading").show();
                     let ModelObject = {
                     emp_cd: $('#emp_cd').val(),
                     emp_branch: $('#emp_branch').val(),
@@ -944,7 +947,17 @@
                         }
                     });
                 }
-       }
+        }
+
+        $("#birth_date").blur(function () {
+            if ($('#birth_date').val() == null && $('#emp_id').val() != null || $('#birth_date').val() == "" && $('#emp_id').val() != "") {
+                alert("Please enter Birth date");
+                $("#birth_date").focus();
+            }
+            else {
+                getRetirementDate();
+            }          
+        });
 
        function getRetirementDate() {
              if ($("#birth_date").val() !=null) {
@@ -1113,25 +1126,25 @@
                         $('#intr_mem_name').val(data.intr_mem_name);
                         $('#intr_mem_no').val(data.intr_mem_no);
                         // $('#MemberRetired').val(data.memberRetired);
-                        if (data.trans == "Y") {
+                        if (data.trans == true) {
                             $("#trans").prop('checked', true);
                         } else {
                             $("#trans").prop('checked', false);
                         }
                         // $('#MemberTransfered').val(data.memberTransfered);
-                        if (data.ret == "Y") {
+                        if (data.ret == true) {
                             $("#ret").prop('checked', true);
                         }
                         else {
                             $("#ret").prop('checked', false);
                         }
-                        if (data.exp == "D") {
+                        if (data.exp == true) {
                             $("#exp").prop('checked', true);
                         }
                         else {
                             $("#exp").prop('checked', false);
                         }
-                        if (data.tf_double == "D") {
+                        if (data.tf_double == true) {
                             $("#tf_double").prop('checked', true);
                         }
                         else {
@@ -1253,25 +1266,25 @@
                         $('#intr_mem_name').val(data.intr_mem_name);
                         $('#intr_mem_no').val(data.intr_mem_no);
                         // $('#MemberRetired').val(data.memberRetired);
-                        if (data.trans == "Y") {
+                        if (data.trans == true) {
                             $("#trans").prop('checked', true);
                         } else {
                             $("#trans").prop('checked', false);
                         }
                         // $('#MemberTransfered').val(data.memberTransfered);
-                        if (data.ret == "Y") {
+                        if (data.ret == true) {
                             $("#ret").prop('checked', true);
                         }
                         else {
                             $("#ret").prop('checked', false);
                         }
-                        if (data.exp == "D") {
+                        if (data.exp == true) {
                             $("#exp").prop('checked', true);
                         }
                         else {
                             $("#exp").prop('checked', false);
                         }
-                        if (data.tf_double == "D") {
+                        if (data.tf_double == true) {
                             $("#tf_double").prop('checked', true);
                         }
                         else {
