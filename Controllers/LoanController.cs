@@ -49,6 +49,7 @@ namespace Amritnagar.Controllers
             ld.dr_cr = "D";
             ld.vch_type = "B";
             ld.vch_achd = model.ac_hd;
+            //if(ld.vch_dt)
             ld.vch_dt = Convert.ToDateTime(Convert.ToDateTime(model.vch_date).ToString("dd/MM/yyyy").Replace("-", "/"));
             ld.prin_amt = Convert.ToDecimal(model.prin_amt);
             ld.prin_bal = Convert.ToDecimal(model.prin_amt);
