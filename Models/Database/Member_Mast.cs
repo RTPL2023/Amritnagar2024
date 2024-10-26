@@ -1305,10 +1305,9 @@ namespace Amritnagar.Models.Database
                 {
                     Member_Mast mm = new Member_Mast();
                     xemployee_ID = Convert.ToString(dr["employee_id"]);
-                    if(xemployee_ID== "444578")
-                    {
-
-                    }
+                    //if(xemployee_ID== "444578")
+                    //{
+                    //}
                     xbkno = Convert.ToString(dr["book_no"]);
                     xempl = Convert.ToString(dr["EMPLOYER_BRANCH"]);
                     sql = "select * from loan_master where employee_id='" + xemployee_ID + "' ";
@@ -1318,22 +1317,6 @@ namespace Amritnagar.Models.Database
                         sql = "update loan_master set book_no='" + xbkno + "',EMPLOYER_BRANCH='" + xempl + "' where employee_id='" + xemployee_ID + "'";
                         config.Execute_Query(sql);
 
-                        //try
-                        //{
-                        //    config.Update("loan_master", new Dictionary<String, object>()
-                        //    {
-                        //       { "book_no",xbkno },
-                        //        { "EMPLOYER_BRANCH", xempl},
-                        //    }, new Dictionary<string, object>()
-                        //    {
-                               
-                        //        { "employee_id",  xemployee_ID },
-                        //    });
-                        //}
-                        //catch (Exception ex)
-                        //{
-
-                        //}
                     }
                 }
             }

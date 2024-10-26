@@ -428,7 +428,7 @@ namespace Amritnagar.Models.Database
             sql = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' ";
             sql = sql + "AND EMPLOYER_CD='" + empcd + "' AND EMPLOYER_BRANCH='" + empbranch + "'AND BOOK_NO='" + bookno + "'";
             sql = sql + " AND convert(varchar, SCH_DATE, 103) = convert(varchar, '" + sch_date + "', 103) ";
-            if (deduc_achd != "Select" && deduc_achd!=null)
+            if (deduc_achd != "Select" && deduc_achd != null)
             {
                 sql = sql + "AND AC_HD='" + deduc_achd + "' ";
             }
@@ -564,7 +564,7 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs1 = new Recovery_Schedule();
                     XBOOK_NO = Convert.ToString(dr["book_no"]);
                     xemployee_ID = Convert.ToString(dr["EMPLOYEE_ID"]);
-                    if(xemployee_ID== "104957")
+                    if (xemployee_ID == "104957")
                     {
 
                     }
@@ -582,6 +582,10 @@ namespace Amritnagar.Models.Database
                             string Acc_Head = Convert.ToString(dr1["ac_hd"]);
                             sql = "Select * from acc_head where ac_hd='" + Acc_Head + "'";
                             config.singleResult(sql);
+                            if (Acc_Head == "M14")
+                            {
+
+                            }
                             if (config.dt.Rows.Count > 0)
                             {
                                 DataRow drac = (DataRow)config.dt.Rows[0];
@@ -655,14 +659,22 @@ namespace Amritnagar.Models.Database
                                                 dd = prin_bal;
                                             }
                                             dd = prin_bal > Convert.ToDecimal(drlm["INSTL_AMOUNT"]) ? Convert.ToDecimal(drlm["INSTL_AMOUNT"]) : prin_bal;
-                                            if (Convert.ToDecimal(drl["prin_bal"]) != 0 && dd != 0)
+                                            decimal aa = Convert.ToDecimal(drl["prin_bal"]);
+                                            if (Convert.ToDecimal(drl["prin_bal"]) != 0 || XPRIN_BAL != 0 && dd != 0)
                                             {
                                                 rs.r1 = XBOOK_NO;
                                                 rs.r2 = xemployee_ID;
                                                 rs.r3 = XMEMBER_NM;
                                                 rs.r4 = Acc_Head;
                                                 rs.r5 = Convert.ToString(drl["EMPLOYEE_ID"]);
-                                                rs.r6 = Convert.ToDecimal(drl["prin_bal"]).ToString("0.00");
+                                                if (XPRIN_BAL > 0)
+                                                {
+                                                    rs.r6 = XPRIN_BAL.ToString("0.00");
+                                                }
+                                                else
+                                                {
+                                                    rs.r6 = Convert.ToDecimal(drl["prin_bal"]).ToString("0.00");
+                                                }
                                                 rs.r7 = NO_OF_OD.ToString("0.00");
                                                 rs.r8 = dd.ToString("0.00");
                                                 rs.r9 = INT_CAL.ToString("0.00");
@@ -1341,7 +1353,7 @@ namespace Amritnagar.Models.Database
             string qryMEM = string.Empty;
             qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' AND ";
             qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sending_dt + "', 103) AND ";
-            qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' AND EMPLOYER_BRANCH = '"+ unit + "'";
+            qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' AND EMPLOYER_BRANCH = '" + unit + "'";
             qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             config.singleResult(qryMEM);
             if (config.dt.Rows.Count > 0)
@@ -1362,7 +1374,7 @@ namespace Amritnagar.Models.Database
             }
             return rslst;
         }
-        public List<Recovery_Schedule> getaLLCOLIARYData(string emp_name, string mem_type, string mem_cat, string sch_date, string branch, string book_no,string unit)
+        public List<Recovery_Schedule> getaLLCOLIARYData(string emp_name, string mem_type, string mem_cat, string sch_date, string branch, string book_no, string unit)
         {
 
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
@@ -1378,7 +1390,7 @@ namespace Amritnagar.Models.Database
             {
                 qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' AND ";
                 qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103) AND ";
-                qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' and employer_cd='" + emp_name + "' and book_no='"+book_no+ "' and employer_branch='" + unit+"'";
+                qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' and employer_cd='" + emp_name + "' and book_no='" + book_no + "' and employer_branch='" + unit + "'";
                 qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             }
 
