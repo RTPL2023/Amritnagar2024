@@ -192,9 +192,7 @@
                 <div class="row mt-1">
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text")@*, "Select"*@, new
-{
-@class = "size"@*, @onchange= "changefocus()"*@})
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text")@*, "Select"*@, new{ @class = "size"@*, @onchange= "changefocus()"*@})
                     </div>
                     @*<div class="col-lg-2 col-md-2 col-sm-12 col-12">
                 Voucher Date:<br />

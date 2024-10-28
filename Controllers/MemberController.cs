@@ -3350,7 +3350,79 @@ namespace Amritnagar.Controllers
             }
             return File(memory.ToArray(), "text/plain", "Member_Details_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
         }
-
         /********************************************Member Details List End*******************************************/
-    }    
+
+        /********************************************Votar List Start*******************************************/
+
+        [HttpGet]
+        public ActionResult VoterList(VoterListViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            return View(model);
+        }
+        public JsonResult GetVoterList(VoterListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);
+            int i = 1;
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {                  
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>Member Id</th><th>Member Name</th><th>Gurdian Name</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult GetVoterListForAllBookNo(VoterListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getvoterlistbyemployerbranch(model.unit);
+            int i = 1;
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>Member Id</th><th>Member Name</th><th>Gurdian Name</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+
+        public ActionResult GetVotarListPrintFile()
+        {
+            return View();
+        }
+       
+        /********************************************Votar List End*******************************************/
+    }
 }
