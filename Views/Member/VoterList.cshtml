@@ -207,10 +207,12 @@
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ShowTable()" />
                     </div>
                     <div class="col-md-1 col-sm-12 col-12  mt-3">                       
-                        <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print" />
+                        <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print" onclick="DownloadTextFilesForVoterList()" />
                     </div>
                     <div class="col-md-3 col-sm-12 col-12 mt-3 ">
-                        <input id="BtnDistList" type="button" name="BtnDistList" Height="40" Width="100" class="btn btn-primary btn-sm" value="Distribution List" />
+                        @Html.CheckBoxFor(model => model.dist_list)
+                        Distribution List
+                        @*<input id="BtnDistList" type="button" name="BtnDistList" Height="40" Width="100" class="btn btn-primary btn-sm" value="Distribution List" />*@
                     </div>
                 </div>
 
@@ -274,7 +276,7 @@
                  }
         }
 
-        function ShowTableForAllBookNo() {          
+        function ShowTableForAllBookNo() {
             if ($('#unit').val() == "Select" || $('#unit').val() == "") {
                     alert("Please Choose Employer Branch");
             }
@@ -297,6 +299,9 @@
             }
         }
 
+        function DownloadTextFilesForVoterList() {
+            window.location.href = "@Url.Action("GetVotarListPrintFile", "Member")" + "?book_no=" + $('#book_no').val() + "&unit=" + $('#unit').val() + "&dist_list=" + document.getElementById('dist_list').checked;
+        }
 
     </script>
 }

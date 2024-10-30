@@ -11,6 +11,7 @@ namespace Amritnagar.Models.ViewModel
         public string book_no { get; set; }
         public string unit { get; set; }
         public string tableelement { get; set; }
+        public bool dist_list { get; set; }
         public IEnumerable<SelectListItem> EmpBranchDesc { get; set; }
     }
 }

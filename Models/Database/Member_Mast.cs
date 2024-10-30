@@ -1338,7 +1338,6 @@ namespace Amritnagar.Models.Database
             }
             return mml;
         }
-
         public List<Member_Mast> getvoterlistbyemployerbranch(string unit)
         {
             string sql = "select * from member_mast where employer_branch='" + unit + "' and (BOOK_NO<>'LT' AND BOOK_NO<>'00' AND BOOK_NO<>'lt') and member_closed is null order by member_id";
