@@ -54,8 +54,8 @@ namespace Amritnagar.Controllers
             ld.prin_amt = Convert.ToDecimal(model.prin_amt);
             ld.prin_bal = Convert.ToDecimal(model.prin_amt);
             model.msg = ld.SaveLoanLedger(ld);         
-            Loan_Ledger ldd = new Loan_Ledger();
-            ldd.ResetPrinBalIntDueForLoanLedger_LTL_STL_FES(model.branch_id.ToUpper(), model.ac_hd, model.emp_id);
+            Ledger ldd = new Ledger();
+            ldd.ResetPrinBalIntDueForLoanLedgerfor_vch_entry("LOAN_LEDGER", model.ac_hd, model.emp_id, ld.vch_dt, ld.vch_no);
             return Json(model.msg);
         }
         public JsonResult getdetailsbyMemberId(string mem_id)
@@ -1048,6 +1048,8 @@ namespace Amritnagar.Controllers
             ld.int_amt = Convert.ToDecimal(model.int_amt);
             ld.int_due = Convert.ToDecimal(model.int_bal);
             model.msg = ld.checkandsaveloanledger(ld);
+            Ledger ldd = new Ledger();
+            ldd.ResetPrinBalIntDueForLoanLedgerfor_vch_entry("LOAN_LEDGER", model.ac_hd, model.emp_id, ld.vch_dt, ld.vch_no);
             return Json(model.msg);
         }
         public JsonResult UpdateLoanLedger(LoanLedgerCorrectionViewModel model)
