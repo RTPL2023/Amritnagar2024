@@ -368,7 +368,7 @@ namespace Amritnagar.Controllers
             var vchtypes = vh.VchType();
             return Json(vchtypes, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Add_Vch_In_Temp_table(string vch_date, string drcr, string vch_achd, string vchpacno, string particular, string amount, string ref_ac_hd, string refacno, string refParticular, string vch_no)
+        public JsonResult Add_Vch_In_Temp_table(string vch_date, string drcr, string vch_achd, string vchpacno, string particular, string amount, string ref_ac_hd, string refacno, string refParticular, string vch_no, string vch_type)
         {
             Temp_Vch_Entry tve = new Temp_Vch_Entry();
             int serial = tve.GetLastSerialNoBydate(vch_date, vch_no);
@@ -378,6 +378,7 @@ namespace Amritnagar.Controllers
             tve.vch_pacno = vchpacno;
             tve.vch_no = vch_no;
             tve.paid_to_rcv_frm = particular;
+            tve.vch_type = vch_type;
             //tve.vch_dt = Convert.ToDateTime(vch_date);
             tve.str_vchdt = vch_date.Replace("-", "/");
             tve.amount = Convert.ToDecimal(amount);
@@ -508,6 +509,51 @@ namespace Amritnagar.Controllers
             tve.computer_name = Environment.MachineName;
             tve.UpdateTempVchData(tve);
             return Json("Over");
+        }
+        public JsonResult gettempdetails(string vch_date)
+        {
+            VoucherEntryViewModel model = new VoucherEntryViewModel();
+            Temp_Vch_Entry tve = new Temp_Vch_Entry();
+            List<Temp_Vch_Entry> tvel = new List<Temp_Vch_Entry>();
+            tvel = tve.getdetails(vch_date);
+            int i = 1;                    
+            if (tvel.Count > 0)
+            {
+                foreach (var a in tvel)
+                {            
+                    if(a.vch_type == "C")
+                    {
+                        a.vch_type = "CASH";
+                    }
+                    if (a.vch_type == "T")
+                    {
+                        a.vch_type = "TRANSFER";
+                    }
+                    if (a.vch_type == "J")
+                    {
+                        a.vch_type = "JOURNAL";
+                    }
+                    if (a.vch_type == "B")
+                    {
+                        a.vch_type = "BANK";
+                    }
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>DrCr</th><th>A/C Head</th><th>Vch No</th><th>A/C No</th><th>Paid To</th><th>Amount</th><th>Ref A/C Head</th><th>Ref A/C No</th><th>Ref Particular</th><th>Type</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.srl + "</td><td>" + a.drcr + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_no + "</td><td>" + a.vch_pacno + "</td><td>" + a.paid_to_rcv_frm + "</td><td>" + a.amount + "</td><td>" + a.ref_achd + "</td><td>" + a.ref_acno + "</td><td>" + a.ref_ac_particulars + "</td><td>" + a.vch_type + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + a.srl + "</td><td>" + a.drcr + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_no + "</td><td>" + a.vch_pacno + "</td><td>" + a.paid_to_rcv_frm + "</td><td>" + a.amount + "</td><td>" + a.ref_achd + "</td><td>" + a.ref_acno + "</td><td>" + a.ref_ac_particulars + "</td><td>" + a.vch_type + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
         }
 
         /********************************************Vouchar Entry End*******************************************/
