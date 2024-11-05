@@ -961,7 +961,7 @@ namespace Amritnagar.Models.Database
                     sql = sql + "convert(date,GL_DATE, 103) >= convert(date, '" + model.fr_dt + "', 103)";
                     config.Execute_Query(sql);
                 }
-                sql = "SELECT convert(date, A.VCH_DATE, 103) AS TR_DATE,A.AC_HD,";
+                sql = "(SELECT convert(date, A.VCH_DATE, 103) AS TR_DATE,A.AC_HD,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_CR,";
                 sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND (B.VCH_TYPE='T' OR B.VCH_TYPE='J'),A.VCH_AMT,0)) AS TRANS_CR,";
@@ -971,7 +971,7 @@ namespace Amritnagar.Models.Database
                 sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (convert(date, A.VCH_DATE, 103)=convert(date, B.VCH_DATE, 103) AND A.VCH_NO=B.VCH_NO) ";
                 sql = sql + "And convert(date, A.VCH_DATE, 103) >= convert(date, '" + model.fr_dt + "', 103) And ";
                 sql = sql + "A.BRANCH_ID='" + model.branch + "' ";
-                sql = sql + "GROUP BY convert(date, A.VCH_DATE, 103),A.AC_HD";
+                sql = sql + "GROUP BY convert(date, A.VCH_DATE, 103),A.AC_HD) order by  convert(date, A.VCH_DATE, 103)";
                 config.singleResult(sql); //convert(varchar, A.VCH_DATE, 103) = convert(varchar, '" + model.daybook_dt + "', 103)
                 List<AccountsUtility> aulst = new List<AccountsUtility>();
                 DataTable dt1 = config.dt;
