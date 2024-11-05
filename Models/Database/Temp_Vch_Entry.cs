@@ -118,7 +118,6 @@ namespace Amritnagar.Models.Database
             qry = qry + "'" + Convert.ToString(tve.paid_to_rcv_frm) + "','" + Convert.ToDecimal(tve.amount) + "','" + Convert.ToString(tve.ref_achd) + "','" + Convert.ToString(tve.ref_acno) + "','" + Convert.ToString(tve.ref_ac_particulars) + "','" + Convert.ToString(tve.created_by) + "',convert(datetime, '" + tve.created_on + "', 103)" + ",'" + Convert.ToString(tve.computer_name) + "', '" + tve.vch_type + "')";
             config.Execute_Query(qry);
         }
-
         public List<Temp_Vch_Entry> getdetails(string vch_date)
         {
             string sql = "select * from temp_vch_entry where convert(varchar, vch_dt, 103) = convert(varchar, '" + vch_date + "', 103) order by Vch_Dt, vch_no";

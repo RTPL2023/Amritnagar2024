@@ -1367,6 +1367,8 @@ namespace Amritnagar.Controllers
             return Json(msg);
         }
         //********************************Trial Balance Report End******************************************
+
+        //********************************General Ledger Start******************************************
         [HttpGet]
         public ActionResult GeneralLedgerReport(GeneralLedgerReportViewModel model)
         {
@@ -1400,7 +1402,7 @@ namespace Amritnagar.Controllers
         {
             Rep_Acc_Genled rag = new Rep_Acc_Genled();
             List<Rep_Acc_Genled> raglst = new List<Rep_Acc_Genled>();
-            raglst = rag.getdetails(model.fr_dt, model.to_dt);
+            raglst = rag.getdetails(model.fr_dt, model.to_dt, model.ac_hd);
             int i = 1;
             if (raglst.Count > 0)
             {
