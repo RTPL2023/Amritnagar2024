@@ -379,39 +379,196 @@ namespace Amritnagar.Models.Database
         }
         public List<AccountsUtility> getCashAccountlistbydaywise()
         {
-            string sql = "SELECT * FROM rep_acc_cashacc";
-            config.singleResult(sql);
+            int i = 1;
             List<AccountsUtility> aulst = new List<AccountsUtility>();
-            if (config.dt.Rows.Count > 0)
+            string sql = "select distinct ac_majgr from acc_head";
+            config.singleResult(sql);
+            DataTable dtAchdNo = config.dt;           
+            if (dtAchdNo.Rows.Count > 0)
             {
-                foreach (DataRow dr in config.dt.Rows)
-                {
-                    AccountsUtility au = new AccountsUtility();
-                    au.ac_majgr_cr = Convert.ToString(dr["ac_majgr_cr"]);
-                    au.ac_majgrdesc_cr = Convert.ToString(dr["ac_majgrdesc_cr"]);
-                    au.ac_hd_cr = Convert.ToString(dr["ac_hd_cr"]);
-                    au.ac_desc_cr = Convert.ToString(dr["ac_desc_cr"]);
-                    au.cash_cr = Convert.ToDecimal(dr["CASH_CR"]);
-                    au.trans_cr = Convert.ToDecimal(dr["trans_cr"]);
-                    au.total_cr = Convert.ToDecimal(dr["total_cr"]);
-                    au.ac_majgr_dr = Convert.ToString(dr["ac_majgr_dr"]);
-                    au.ac_majgrdesc_dr = Convert.ToString(dr["ac_majgrdesc_dr"]);
-                    au.ac_hd_dr = Convert.ToString(dr["ac_hd_dr"]);
-                    au.ac_desc_dr = Convert.ToString(dr["ac_desc_dr"]);
-                    au.cash_dr = Convert.ToDecimal(dr["cash_dr"]);
-                    au.trans_dr = Convert.ToDecimal(dr["trans_dr"]);
-                    au.total_dr = Convert.ToDecimal(dr["total_dr"]);
-                    au.majgr_cash_cr = Convert.ToDecimal(dr["majgr_cash_cr"]);
-                    au.majgr_trans_cr = Convert.ToDecimal(dr["majgr_trans_cr"]);
-                    au.majgr_tot_cr = Convert.ToDecimal(dr["majgr_tot_cr"]);
-                    au.majgr_cash_dr = Convert.ToDecimal(dr["majgr_cash_dr"]);
-                    au.majgr_trans_dr = Convert.ToDecimal(dr["majgr_trans_dr"]);
-                    au.majgr_tot_dr = Convert.ToDecimal(dr["majgr_tot_dr"]);
-                    aulst.Add(au);
+                foreach (DataRow dr1 in dtAchdNo.Rows)
+                {                   
+                    sql = "SELECT * FROM rep_acc_cashacc where ac_majgr_cr='" + Convert.ToString(dr1["ac_majgr"]) + "' or ac_majgr_dr='" + Convert.ToString(dr1["ac_majgr"]) + "' order by AC_MAJGR_CR,AC_HD_CR";
+                    config.singleResult(sql);
+                    DataTable dtab = config.dt;
+                    if (dtab.Rows.Count > 0)
+                    {
+                        AccountsUtility auu = new AccountsUtility();
+                        if (i!= 1)
+                        {
+                            auu.ac_majgr_cr = "";
+                            auu.ac_majgrdesc_cr = "";
+                            auu.ac_hd_cr = "";
+                            auu.ac_desc_cr ="" ;
+                            auu.cash_cr =0 ;
+                            auu.trans_cr =0 ;
+                            auu.total_cr = 0;
+                            auu.majgr_cash_cr =0 ;
+                            auu.majgr_trans_cr =0 ;
+                            auu.majgr_tot_cr =0 ;
+                            auu.ac_hd_dr ="" ;
+                            auu.ac_majgr_dr = "";
+                            auu.ac_majgrdesc_dr ="" ;
+                            auu.ac_hd_dr ="" ;
+                            auu.ac_desc_dr = "";
+                            auu.cash_dr = 0;
+                            auu.trans_dr =0 ;
+                            auu.total_dr =0 ;
+                            auu.majgr_cash_dr =0 ;
+                            auu.majgr_trans_dr =0 ;
+                            auu.majgr_tot_dr = 0;
+                            aulst.Add(auu);
+                        }
+                        foreach (DataRow dr in dtab.Rows)
+                        {
+                            AccountsUtility au = new AccountsUtility();
+                            au.ac_majgr_cr = Convert.ToString(dr["ac_majgr_cr"]);
+                            au.ac_majgrdesc_cr = Convert.ToString(dr["ac_majgrdesc_cr"]);
+                            au.ac_hd_cr = Convert.ToString(dr["ac_hd_cr"]);
+                            au.ac_desc_cr = Convert.ToString(dr["ac_desc_cr"]);
+                            au.cash_cr = Convert.ToDecimal(dr["CASH_CR"]);
+                            au.trans_cr = Convert.ToDecimal(dr["trans_cr"]);
+                            au.total_cr = Convert.ToDecimal(dr["total_cr"]);
+                            au.majgr_cash_cr = Convert.ToDecimal(dr["majgr_cash_cr"]);
+                            au.majgr_trans_cr = Convert.ToDecimal(dr["majgr_trans_cr"]);
+                            au.majgr_tot_cr = Convert.ToDecimal(dr["majgr_tot_cr"]);
+                            au.ac_hd_dr = Convert.ToString(dr["ac_hd_dr"]);
+                            au.ac_majgr_dr = Convert.ToString(dr["ac_majgr_dr"]);
+                            au.ac_majgrdesc_dr = Convert.ToString(dr["ac_majgrdesc_dr"]);
+                            au.ac_hd_dr = Convert.ToString(dr["ac_hd_dr"]);
+                            au.ac_desc_dr = Convert.ToString(dr["ac_desc_dr"]);
+                            au.cash_dr = Convert.ToDecimal(dr["cash_dr"]);
+                            au.trans_dr = Convert.ToDecimal(dr["trans_dr"]);
+                            au.total_dr = Convert.ToDecimal(dr["total_dr"]);
+                            au.majgr_cash_dr = Convert.ToDecimal(dr["majgr_cash_dr"]);
+                            au.majgr_trans_dr = Convert.ToDecimal(dr["majgr_trans_dr"]);
+                            au.majgr_tot_dr = Convert.ToDecimal(dr["majgr_tot_dr"]);
+                            aulst.Add(au);
+                        }
+                    }
+                    i = i + 1;
                 }
-            }
-            return aulst;
+            }          
+           return aulst;
         }
+
+        //public List<AccountsUtility> getCashAccountlistbydaywise()
+        //{
+        //    List<AccountsUtility> aulst = new List<AccountsUtility>();
+        //    string sql = "SELECT * FROM rep_acc_cashacc where AC_MAJGR_CR is not null order by AC_MAJGR_CR,AC_HD_CR";
+        //    string ac_hd = "";
+        //    config.singleResult(sql);
+        //    DataTable dtcr = config.dt;
+
+        //    if (dtcr.Rows.Count > 0)
+        //    {
+        //        foreach (DataRow dr in dtcr.Rows)
+        //        {
+        //            AccountsUtility au = new AccountsUtility();
+
+        //            au.ac_majgr_cr = Convert.ToString(dr["ac_majgr_cr"]);
+        //            au.ac_majgrdesc_cr = Convert.ToString(dr["ac_majgrdesc_cr"]);
+        //            au.ac_hd_cr = Convert.ToString(dr["ac_hd_cr"]);
+        //            au.ac_desc_cr = Convert.ToString(dr["ac_desc_cr"]);
+        //            au.cash_cr = Convert.ToDecimal(dr["CASH_CR"]);
+        //            au.trans_cr = Convert.ToDecimal(dr["trans_cr"]);
+        //            au.total_cr = Convert.ToDecimal(dr["total_cr"]);
+        //            au.majgr_cash_cr = Convert.ToDecimal(dr["majgr_cash_cr"]);
+        //            au.majgr_trans_cr = Convert.ToDecimal(dr["majgr_trans_cr"]);
+        //            au.majgr_tot_cr = Convert.ToDecimal(dr["majgr_tot_cr"]);
+        //            au.ac_hd_dr = Convert.ToString(dr["ac_hd_dr"]);
+        //            if (au.ac_hd_dr != "")
+        //            {
+        //                au.ac_majgr_dr = Convert.ToString(dr["ac_majgr_dr"]);
+        //                au.ac_majgrdesc_dr = Convert.ToString(dr["ac_majgrdesc_dr"]);
+        //                au.ac_hd_dr = Convert.ToString(dr["ac_hd_dr"]);
+        //                au.ac_desc_dr = Convert.ToString(dr["ac_desc_dr"]);
+        //                au.cash_dr = Convert.ToDecimal(dr["cash_dr"]);
+        //                au.trans_dr = Convert.ToDecimal(dr["trans_dr"]);
+        //                au.total_dr = Convert.ToDecimal(dr["total_dr"]);
+        //                au.majgr_cash_dr = Convert.ToDecimal(dr["majgr_cash_dr"]);
+        //                au.majgr_trans_dr = Convert.ToDecimal(dr["majgr_trans_dr"]);
+        //                au.majgr_tot_dr = Convert.ToDecimal(dr["majgr_tot_dr"]);
+        //                aulst.Add(au);
+        //            }
+        //            else
+        //            {
+        //                string sql1 = "SELECT * FROM rep_acc_cashacc where AC_MAJGR_DR is not null and ac_hd_dr<>'" + ac_hd + "' order by AC_MAJGR_DR,AC_HD_DR";
+        //                config.singleResult(sql1);
+        //                DataTable dtdr = config.dt;
+        //                int i = 1;
+        //                if (dtdr.Rows.Count > 0)
+        //                {
+
+        //                    foreach (DataRow dr1 in dtdr.Rows)
+        //                    {
+
+        //                        if (i == 1)
+        //                        {
+
+        //                            au.ac_majgr_dr = Convert.ToString(dr1["ac_majgr_dr"]);
+        //                            au.ac_majgrdesc_dr = Convert.ToString(dr1["ac_majgrdesc_dr"]);
+        //                            au.ac_hd_dr = Convert.ToString(dr1["ac_hd_dr"]);
+        //                            ac_hd = au.ac_hd_dr;
+        //                            au.ac_desc_dr = Convert.ToString(dr1["ac_desc_dr"]);
+        //                            au.cash_dr = Convert.ToDecimal(dr1["cash_dr"]);
+        //                            au.trans_dr = Convert.ToDecimal(dr1["trans_dr"]);
+        //                            au.total_dr = Convert.ToDecimal(dr1["total_dr"]);
+        //                            au.majgr_cash_dr = Convert.ToDecimal(dr1["majgr_cash_dr"]);
+        //                            au.majgr_trans_dr = Convert.ToDecimal(dr1["majgr_trans_dr"]);
+        //                            au.majgr_tot_dr = Convert.ToDecimal(dr1["majgr_tot_dr"]);
+        //                            if ((aulst.Exists(x => x.ac_hd_dr == Convert.ToString(dr1["ac_hd_dr"]))) == false)
+        //                            {
+        //                                i = i + 1;
+        //                                aulst.Add(au);
+        //                            }
+
+
+        //                        }
+
+
+        //                    }
+
+
+        //                }
+
+
+
+        //            }
+
+
+
+
+
+        //        }
+        //    }
+        //    sql = "SELECT * FROM rep_acc_cashacc where AC_MAJGR_DR is not null and ac_hd_dr<>'" + ac_hd + "' order by AC_MAJGR_DR,AC_HD_DR";
+        //    config.singleResult(sql);
+        //    if (config.dt.Rows.Count > 0)
+        //    {
+        //        foreach (DataRow dr1 in config.dt.Rows)
+        //        {
+        //            AccountsUtility auu = new AccountsUtility();
+        //            if ((aulst.Exists(x => x.ac_hd_dr == Convert.ToString(dr1["ac_hd_dr"]))) == false)
+        //            {
+        //                auu.ac_majgr_dr = Convert.ToString(dr1["ac_majgr_dr"]);
+        //                auu.ac_majgrdesc_dr = Convert.ToString(dr1["ac_majgrdesc_dr"]);
+        //                auu.ac_hd_dr = Convert.ToString(dr1["ac_hd_dr"]);
+        //                //ac_hd = auu.ac_hd_dr;
+        //                auu.ac_desc_dr = Convert.ToString(dr1["ac_desc_dr"]);
+        //                auu.cash_dr = Convert.ToDecimal(dr1["cash_dr"]);
+        //                auu.trans_dr = Convert.ToDecimal(dr1["trans_dr"]);
+        //                auu.total_dr = Convert.ToDecimal(dr1["total_dr"]);
+        //                auu.majgr_cash_dr = Convert.ToDecimal(dr1["majgr_cash_dr"]);
+        //                auu.majgr_trans_dr = Convert.ToDecimal(dr1["majgr_trans_dr"]);
+        //                auu.majgr_tot_dr = Convert.ToDecimal(dr1["majgr_tot_dr"]);
+        //                aulst.Add(auu);
+        //            }
+        //        }
+        //    }
+        //    return aulst;
+        //}
+
         public CashBankPositionReportViewModel getCashBankPositionReport(CashBankPositionReportViewModel model)
         {
             decimal GD_OPBAL = 0;

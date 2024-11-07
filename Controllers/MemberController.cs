@@ -294,6 +294,7 @@ namespace Amritnagar.Controllers
                     {
                         mm.tf_double = "S";
                     }
+                    mm.created_by = Convert.ToString(Session["Uid"]);
                     model.msg = mm.SaveMemberMaster(mm);
                     if (model.msg == "Saved Successfully")
                     {
@@ -942,6 +943,7 @@ namespace Amritnagar.Controllers
             {
                 mm.tf_double = "S";
             }
+            mm.modified_by = Convert.ToString(Session["Uid"]);
             model.msg = mm.UpdateMemberMaster(mm);
             if (model.msg == "Updated Successfuly")
             {

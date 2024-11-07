@@ -189,9 +189,9 @@ namespace Amritnagar.Models.Database
             if (config.dt.Rows.Count > 0)
             {
                 DataRow dr = (DataRow)config.dt.Rows[0];                                  
-                  gl.op_cash = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
-                  gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
-                  gl.op_cash = Math.Abs(gl.op_cash);                                   
+                gl.op_cash = !Convert.IsDBNull(dr["gl_bal"]) ? Convert.ToDecimal(dr["gl_bal"]) : Convert.ToDecimal("00");
+                gl.gl_date = !Convert.IsDBNull(dr["GL_DATE"]) ? Convert.ToDateTime(dr["GL_DATE"]) : Convert.ToDateTime(null);
+                gl.op_cash = Math.Abs(gl.op_cash);                                   
             }
             qry = "select * from gl_balnce where branch_id='" + branch + "'";
             qry = qry + " and  convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";

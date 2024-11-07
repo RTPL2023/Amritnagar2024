@@ -552,7 +552,7 @@ namespace Amritnagar.Models.Database
                 //sql = sql + "  AND EMPLOYER_BRANCH='" + unit + "'";
                 sql = sql + " AND MEMBER_TYPE='" + mem_type + "'";
                 sql = sql + " AND MEM_CATEGORY='" + mem_cat + "' and  MEMBER_RETIRED IS NULL";
-                sql = sql + " AND MEMBER_TRANSFERED IS NULL AND IS_DEAD='A' AND MEMBER_CLOSED IS NULL AND BOOK_NO<>'LT' AND BOOK_NO<> 'ST'";
+                sql = sql + " AND MEMBER_TRANSFERED IS NULL AND IS_DEAD='A' AND MEMBER_CLOSED IS NULL AND BOOK_NO<>'LT' AND BOOK_NO<> 'ST' And Book_no<>'00' And Book_no<>'01'";
                 sql = sql + " ORDER BY EMPLOYER_CD,EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             }
 
@@ -1383,7 +1383,7 @@ namespace Amritnagar.Models.Database
             {
                 qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' AND ";
                 qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103) AND ";
-                qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' and employer_cd='" + emp_name + "'";
+                qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' and employer_cd='" + emp_name + "' AND BOOK_NO<>'LT' AND BOOK_NO<> 'ST' And Book_no<>'00' And Book_no<>'01'";
                 qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             }
             else
