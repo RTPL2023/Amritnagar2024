@@ -516,6 +516,10 @@ namespace Amritnagar.Models.Database
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     ld.ac_hd = Convert.ToString(dr["AC_HD"]);
+                    if(ld.ac_hd== "SL6")
+                    {
+
+                    }
                     ld.ledger_tab = Convert.ToString(dr["LEDGER_TAB"]);
                     ld.ledger_col = Convert.ToString(dr["LEDGER_COL"]);
                     ld.led_ac_hd = Convert.ToString(dr["LED_ACHD"]);
@@ -524,10 +528,10 @@ namespace Amritnagar.Models.Database
                     if(ld.xmast == "D")
                     {
                         sql = "SELECT * FROM DEPOSIT_MAST WHERE BRANCH_ID='" + branch + "'AND ";
-                        sql = sql + "AC_HD='" + led_ac_hd + "' AND AC_NO='" + acc_no + "'";
+                        sql = sql + "AC_HD='" + ld.ac_hd + "' AND AC_NO='" + acc_no + "'";
                         config.singleResult(sql);
                         if(config.dt.Rows.Count > 0)
-                        {
+                        { 
                             foreach(DataRow dr1 in config.dt.Rows)
                             {
                                 ld.cus_name = Convert.ToString(dr1["ac_name"]);
@@ -610,7 +614,7 @@ namespace Amritnagar.Models.Database
                     if(ld.xmast == "L")
                     {
                         sql = "SELECT * FROM LOAN_MASTER WHERE BRANCH_ID='" +branch+ "' AND ";
-                        sql = sql + "AC_HD='" + achd + "'  AND employee_ID='" + acc_no + "'";
+                        sql = sql + "AC_HD='" + ld.ac_hd + "' AND employee_ID='" + acc_no + "'";
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
