@@ -59,15 +59,16 @@ namespace Amritnagar.Controllers
                     var i = authDbUtility.getLoggin(model.userid, model.Password, model.BranchId);
                     if (i < 0)
                         model.msg = "Unable to connect with database host.";
-                    if (i == 2)
-                    {
-                        model.msg = "User already logged in";
-                    }
+                  
                     if (i == 4)
                     {
                         model.msg = "Wrong Branch Selected";
                     }
-                    else if (i == 1)
+                    if(i == 2)
+                    {
+                        model.msg = "User Blocked";
+                    }
+                    if (i == 1)
                     {
                         string role = authDbUtility.getRole(model.userid);
                         Session["Uid"] = model.userid;
@@ -79,7 +80,7 @@ namespace Amritnagar.Controllers
                         Session["BName"] = mb.getBranch(u.Allocated_BranchId);
                         return RedirectToAction("Index", "Home");
                     }
-                    else if (i == 3)
+                    if (i == 3)
                         model.msg = "Invalid User Name Or Password";
                 }
             }

@@ -52,77 +52,53 @@ namespace Amritnagar.Models.Database
             {                
                 XOPDT = Convert.ToDateTime(Convert.ToDateTime(fr_dt).AddDays(-1).ToString("dd-MM-yyyy").Replace("-", "/"));
                 xcldt = Convert.ToDateTime(Convert.ToDateTime(to_dt).AddDays(1).ToString("dd-MM-yyyy").Replace("-", "/"));
-                //for (int i = 1; i <= config.dt.Rows.Count; i++)
-                //{
-                    foreach (DataRow dr in config.dt.Rows)
+                DataTable dtab1 = config.dt;               
+                foreach (DataRow dr in dtab1.Rows)
+                {                       
+                    rag.ac_hd = Convert.ToString(dr["ac_hd"]);
+                    rag.ac_desc = Convert.ToString(dr["ac_desc"]);
+                    rag.ac_majgr = Convert.ToString(dr["ac_majgr"]);
+                    rag.xmgrdesc = GET_MGR(rag.ac_majgr);
+                    rag.XACBAL = 0;
+                    rag.GETBAL = true;
+                    if (rag.ac_hd != "CASH" && rag.ac_hd != "BANK")
                     {
-                        //DataRow dr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                        rag.ac_hd = Convert.ToString(dr["ac_hd"]);
-                        rag.ac_desc = Convert.ToString(dr["ac_desc"]);
-                        rag.ac_majgr = Convert.ToString(dr["ac_majgr"]);
-                        rag.xmgrdesc = GET_MGR(rag.ac_majgr);
-                        rag.XACBAL = 0;
-                        rag.GETBAL = true;
-                        if (rag.ac_hd != "CASH" && rag.ac_hd != "BANK")
+                        sql = "SELECT * FROM GL_BALNCE ";
+                        sql = sql + "WHERE branch_id='" + branch + "' and ";
+                        sql = sql + "convert(date, GL_DATE, 103) < convert(date, '" + fr_dt + "', 103)";
+                        sql = sql + "AND AC_HD='" + rag.ac_hd + "' ORDER BY GL_DATE";
+                        config.singleResult(sql);
+                        DataTable dtab2 = config.dt;
+                        if (dtab2.Rows.Count == 0)
                         {
-                            sql = "SELECT * FROM GL_BALNCE ";
-                            sql = sql + "WHERE branch_id='" + branch + "' and ";
-                            sql = sql + "convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
-                            sql = sql + "AND AC_HD='" + rag.ac_hd + "' ORDER BY GL_DATE";
-                            config.singleResult(sql);
-                            if (config.dt.Rows.Count == 0)
+                            rag.GETBAL = false;
+                            rag.XACBAL = 0;
+                        }
+                        else
+                        {
+                            DataRow dr1 = (DataRow)dtab2.Rows[dtab2.Rows.Count - 1];
+                            rag.GETBAL = true;
+                            rag.XACBAL = !Convert.IsDBNull(dr1["gl_bal"]) ? Convert.ToDecimal(dr1["gl_bal"]) : Convert.ToDecimal(00);
+                        }
+                        sql = "SELECT A.AC_HD, A.VCH_DATE AS TR_DATE,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_CR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='T',A.VCH_AMT,0)) AS TRANS_CR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='J',A.VCH_AMT,0)) AS JOURNAL_CR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='C',A.VCH_AMT,0)) AS CASH_DR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_DR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='T',A.VCH_AMT,0)) AS TRANS_DR,";
+                        sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='J',A.VCH_AMT,0)) AS JOURNAL_DR ";
+                        sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (A.BRANCH_ID=B.BRANCH_ID AND A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) ";
+                        sql = sql + "AND convert(date, A.VCH_DATE, 103) >= convert(date, '" + fr_dt + "', 103) and convert(date, A.VCH_DATE, 103) <= convert(date, '" + to_dt + "', 103) AND ";
+                        sql = sql + "A.BRANCH_ID='" + branch + "' AND AC_HD='" + rag.ac_hd + "'";
+                        sql = sql + "GROUP BY A.AC_HD,A.VCH_DATE";
+                        config.singleResult(sql);
+                        DataTable dtab3 = config.dt;
+                        if (dtab3.Rows.Count == 0)
+                        {                                
+                            if (rag.GETBAL == true)
                             {
-                                rag.GETBAL = false;
-                                rag.XACBAL = 0;
-                            }
-                            else
-                            {
-                                DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                                rag.GETBAL = true;
-                                rag.XACBAL = !Convert.IsDBNull(dr1["gl_bal"]) ? Convert.ToDecimal(dr1["gl_bal"]) : Convert.ToDecimal(00);
-                            }
-                            sql = "SELECT A.AC_HD, A.VCH_DATE AS TR_DATE,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='C', A.VCH_AMT,0)) AS CASH_CR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_CR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='T',A.VCH_AMT,0)) AS TRANS_CR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='C' AND B.VCH_TYPE='J',A.VCH_AMT,0)) AS JOURNAL_CR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='C',A.VCH_AMT,0)) AS CASH_DR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='B',A.VCH_AMT,0)) AS BANK_DR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='T',A.VCH_AMT,0)) AS TRANS_DR,";
-                            sql = sql + "SUM(IIF(A.VCH_DRCR='D' AND B.VCH_TYPE='J',A.VCH_AMT,0)) AS JOURNAL_DR ";
-                            sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (A.BRANCH_ID=B.BRANCH_ID AND A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) ";
-                            sql = sql + "AND convert(datetime, A.VCH_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, A.VCH_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) AND ";
-                            sql = sql + "A.BRANCH_ID='" + branch + "' AND AC_HD='" + rag.ac_hd + "'";
-                            sql = sql + "GROUP BY A.AC_HD,A.VCH_DATE";
-                            config.singleResult(sql);
-                            if (config.dt.Rows.Count == 0)
-                            {                                
-                                if (rag.GETBAL == true)
-                                {
-                                    config.Insert("rep_acc_genled", new Dictionary<String, object>()
-                                    {
-                                        {"GL_TYPE",   "O" },
-                                        {"ac_hd", rag.ac_hd },
-                                        {"ac_majgr",    rag.ac_majgr},
-                                        {"AC_DESC",   rag.ac_desc},
-                                        {"ac_majgrdesc", rag.xmgrdesc },
-                                        {"GL_DATE",    XOPDT},
-                                        {"gl_bal",    rag.XACBAL}
-                                    });
-                                    config.Insert("rep_acc_genled", new Dictionary<String, object>()
-                                    {
-                                        {"GL_TYPE",   "C" },
-                                        {"ac_hd", rag.ac_hd },
-                                        {"ac_majgr",    rag.ac_majgr},
-                                        {"AC_DESC",   rag.ac_desc},
-                                        {"ac_majgrdesc", rag.xmgrdesc },
-                                        {"GL_DATE",    xcldt},
-                                        {"gl_bal",    rag.XACBAL}
-                                    });
-                                }
-                            }
-                            else
-                            {                               
                                 config.Insert("rep_acc_genled", new Dictionary<String, object>()
                                 {
                                     {"GL_TYPE",   "O" },
@@ -130,53 +106,9 @@ namespace Amritnagar.Models.Database
                                     {"ac_majgr",    rag.ac_majgr},
                                     {"AC_DESC",   rag.ac_desc},
                                     {"ac_majgrdesc", rag.xmgrdesc },
-                                    {"GL_DATE",    xcldt},
+                                    {"GL_DATE",    XOPDT},
                                     {"gl_bal",    rag.XACBAL}
                                 });
-                                foreach (DataRow dr3 in config.dt.Rows)
-                                {
-                                    if (config.dt.Rows.Count == 0)
-                                    {
-                                        break;
-                                    }
-                                    rag.vch_ac_hd = Convert.ToString(dr3["ac_hd"]);
-                                    if (rag.vch_ac_hd != rag.ac_hd)
-                                    {
-                                        break;
-                                    }
-                                    rag.gl_date = !Convert.IsDBNull(dr3["tr_date"]) ? Convert.ToDateTime(dr3["tr_date"]) : Convert.ToDateTime(null);
-                                    rag.cash_cr = !Convert.IsDBNull(dr3["CASH_CR"]) ? Convert.ToDecimal(dr3["CASH_CR"]) : Convert.ToDecimal(00);
-                                    rag.bank_cr = !Convert.IsDBNull(dr3["BANK_CR"]) ? Convert.ToDecimal(dr3["BANK_CR"]) : Convert.ToDecimal(00);
-                                    rag.trans_cr = !Convert.IsDBNull(dr3["TRANS_CR"]) ? Convert.ToDecimal(dr3["TRANS_CR"]) : Convert.ToDecimal(00);
-                                    rag.journal_cr = !Convert.IsDBNull(dr3["JOURNAL_CR"]) ? Convert.ToDecimal(dr3["JOURNAL_CR"]) : Convert.ToDecimal(00);
-                                    rag.total_cr = rag.cash_cr + rag.bank_cr + rag.trans_cr + rag.journal_cr;
-                                    rag.cash_dr = !Convert.IsDBNull(dr3["CASH_DR"]) ? Convert.ToDecimal(dr3["CASH_DR"]) : Convert.ToDecimal(00);
-                                    rag.bank_dr = !Convert.IsDBNull(dr3["BANK_DR"]) ? Convert.ToDecimal(dr3["BANK_DR"]) : Convert.ToDecimal(00);
-                                    rag.trans_dr = !Convert.IsDBNull(dr3["TRANS_DR"]) ? Convert.ToDecimal(dr3["TRANS_DR"]) : Convert.ToDecimal(00);
-                                    rag.journal_dr = !Convert.IsDBNull(dr3["JOURNAL_DR"]) ? Convert.ToDecimal(dr3["JOURNAL_DR"]) : Convert.ToDecimal(00);
-                                    rag.total_dr = rag.cash_dr + rag.bank_dr + rag.trans_dr + rag.journal_dr;
-                                    rag.XACBAL = rag.XACBAL + rag.total_cr - rag.total_dr;
-                                    config.Insert("rep_acc_genled", new Dictionary<String, object>()
-                                    {
-                                        {"GL_TYPE",   "T" },
-                                        {"ac_hd", rag.ac_hd },
-                                        {"ac_majgr",    rag.ac_majgr},
-                                        {"AC_DESC",   rag.ac_desc},
-                                        {"ac_majgrdesc", rag.xmgrdesc },
-                                        {"GL_DATE",    rag.gl_date},
-                                        {"CASH_CR",    rag.cash_cr},
-                                        {"BANK_CR",    rag.bank_cr},
-                                        {"TRANS_CR",    rag.trans_cr},
-                                        {"JOURNAL_CR",    rag.journal_cr},
-                                        {"TOTAL_CR",    rag.total_cr},
-                                        {"CASH_DR",    rag.cash_dr},
-                                        {"BANK_DR",    rag.bank_dr},
-                                        {"TRANS_DR",    rag.trans_dr},
-                                        {"JOURNAL_DR",    rag.journal_dr},
-                                        {"TOTAL_DR",    rag.total_dr},
-                                        {"gl_bal",    rag.XACBAL}
-                                    });
-                                }
                                 config.Insert("rep_acc_genled", new Dictionary<String, object>()
                                 {
                                     {"GL_TYPE",   "C" },
@@ -186,11 +118,75 @@ namespace Amritnagar.Models.Database
                                     {"ac_majgrdesc", rag.xmgrdesc },
                                     {"GL_DATE",    xcldt},
                                     {"gl_bal",    rag.XACBAL}
-                                });                               
+                                });
                             }
                         }
+                        else
+                        {                               
+                            config.Insert("rep_acc_genled", new Dictionary<String, object>()
+                            {
+                                {"GL_TYPE",   "O" },
+                                {"ac_hd", rag.ac_hd },
+                                {"ac_majgr",    rag.ac_majgr},
+                                {"AC_DESC",   rag.ac_desc},
+                                {"ac_majgrdesc", rag.xmgrdesc },
+                                {"GL_DATE",    xcldt},
+                                {"gl_bal",    rag.XACBAL}
+                            });                                                            
+                            foreach (DataRow dr3 in dtab3.Rows)
+                            {
+                                           
+                                rag.vch_ac_hd = Convert.ToString(dr3["ac_hd"]);
+                                if (rag.vch_ac_hd != rag.ac_hd)
+                                {
+                                    break;
+                                }
+                                rag.gl_date = !Convert.IsDBNull(dr3["tr_date"]) ? Convert.ToDateTime(dr3["tr_date"]) : Convert.ToDateTime(null);
+                                rag.cash_cr = !Convert.IsDBNull(dr3["CASH_CR"]) ? Convert.ToDecimal(dr3["CASH_CR"]) : Convert.ToDecimal(00);
+                                rag.bank_cr = !Convert.IsDBNull(dr3["BANK_CR"]) ? Convert.ToDecimal(dr3["BANK_CR"]) : Convert.ToDecimal(00);
+                                rag.trans_cr = !Convert.IsDBNull(dr3["TRANS_CR"]) ? Convert.ToDecimal(dr3["TRANS_CR"]) : Convert.ToDecimal(00);
+                                rag.journal_cr = !Convert.IsDBNull(dr3["JOURNAL_CR"]) ? Convert.ToDecimal(dr3["JOURNAL_CR"]) : Convert.ToDecimal(00);
+                                rag.total_cr = rag.cash_cr + rag.bank_cr + rag.trans_cr + rag.journal_cr;
+                                rag.cash_dr = !Convert.IsDBNull(dr3["CASH_DR"]) ? Convert.ToDecimal(dr3["CASH_DR"]) : Convert.ToDecimal(00);
+                                rag.bank_dr = !Convert.IsDBNull(dr3["BANK_DR"]) ? Convert.ToDecimal(dr3["BANK_DR"]) : Convert.ToDecimal(00);
+                                rag.trans_dr = !Convert.IsDBNull(dr3["TRANS_DR"]) ? Convert.ToDecimal(dr3["TRANS_DR"]) : Convert.ToDecimal(00);
+                                rag.journal_dr = !Convert.IsDBNull(dr3["JOURNAL_DR"]) ? Convert.ToDecimal(dr3["JOURNAL_DR"]) : Convert.ToDecimal(00);
+                                rag.total_dr = rag.cash_dr + rag.bank_dr + rag.trans_dr + rag.journal_dr;
+                                rag.XACBAL = rag.XACBAL + rag.total_cr - rag.total_dr;
+                                config.Insert("rep_acc_genled", new Dictionary<String, object>()
+                                {
+                                    {"GL_TYPE",   "T" },
+                                    {"ac_hd", rag.ac_hd },
+                                    {"ac_majgr",    rag.ac_majgr},
+                                    {"AC_DESC",   rag.ac_desc},
+                                    {"ac_majgrdesc", rag.xmgrdesc },
+                                    {"GL_DATE",    rag.gl_date},
+                                    {"CASH_CR",    rag.cash_cr},
+                                    {"BANK_CR",    rag.bank_cr},
+                                    {"TRANS_CR",    rag.trans_cr},
+                                    {"JOURNAL_CR",    rag.journal_cr},
+                                    {"TOTAL_CR",    rag.total_cr},
+                                    {"CASH_DR",    rag.cash_dr},
+                                    {"BANK_DR",    rag.bank_dr},
+                                    {"TRANS_DR",    rag.trans_dr},
+                                    {"JOURNAL_DR",    rag.journal_dr},
+                                    {"TOTAL_DR",    rag.total_dr},
+                                    {"gl_bal",    rag.XACBAL}
+                                });
+                            }                                                              
+                            config.Insert("rep_acc_genled", new Dictionary<String, object>()
+                            {
+                                {"GL_TYPE",   "C" },
+                                {"ac_hd", rag.ac_hd },
+                                {"ac_majgr",    rag.ac_majgr},
+                                {"AC_DESC",   rag.ac_desc},
+                                {"ac_majgrdesc", rag.xmgrdesc },
+                                {"GL_DATE",    xcldt},
+                                {"gl_bal",    rag.XACBAL}
+                            });                               
+                        }
                     }
-                //}
+                }               
             }
             sql = "SELECT * FROM ACC_HEAD WHERE IS_CONTRA='Y'";
             config.singleResult(sql);
@@ -200,22 +196,22 @@ namespace Amritnagar.Models.Database
             {            
                 foreach (DataRow dr8 in config.dt.Rows)
                 {
-                    rag.ac_hd = Convert.ToString(dr8["ac_hd"]);
-                    for(B=1; B<= config.dt.Rows.Count; B++)
+                    rag.ac_hd = Convert.ToString(dr8["ac_hd"]);                   
+                    if (CHKBNK != "")
                     {
-                        if (CHKBNK != "")
-                        {
-                            CHKBNK = CHKBNK + ",";
-                        }
+                        CHKBNK = CHKBNK + ","+ rag.ac_hd;
+                    }
+                    else
+                    {
                         CHKBNK = CHKBNK + rag.ac_hd;
-                    }                   
+                    }                                                       
                 }
             }
             decimal XCASHBAL = 0;
             decimal XBANKBAL = 0;            
             sql = "SELECT * FROM GL_BALNCE ";
             sql = sql + "WHERE branch_id='" +branch+ "' and ";
-            sql = sql + "convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            sql = sql + "convert(date, GL_DATE, 103) < convert(date, '" + fr_dt + "', 103)";
             sql = sql + "AND AC_HD='CASH' ORDER BY GL_DATE";
             config.singleResult(sql);
             if(config.dt.Rows.Count == 0)
@@ -229,7 +225,7 @@ namespace Amritnagar.Models.Database
             }
             sql = "SELECT * FROM GL_BALNCE ";
             sql = sql + "WHERE branch_id='" + branch + "' and ";
-            sql = sql + "convert(datetime, GL_DATE, 103) < convert(datetime, '" + fr_dt + "', 103)";
+            sql = sql + "convert(date, GL_DATE, 103) < convert(date, '" + fr_dt + "', 103)";
             sql = sql + "AND AC_HD='BANK' ORDER BY GL_DATE";
             config.singleResult(sql);
             if(config.dt.Rows.Count == 0)
@@ -320,7 +316,7 @@ namespace Amritnagar.Models.Database
                 sql = sql + "0 AS BANK_CONT_CR,0 AS BANK_CONT_DR";
             }
             sql = sql + "FROM VCH_DETAIL A,VCH_HEADER B WHERE (A.VCH_DATE=B.VCH_DATE AND A.VCH_NO=B.VCH_NO) ";
-            sql = sql + "AND convert(datetime, A.VCH_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, A.VCH_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) AND ";
+            sql = sql + "AND convert(date, A.VCH_DATE, 103) >= convert(date, '" + fr_dt + "', 103) and convert(date, A.VCH_DATE, 103) <= convert(date, '" + to_dt + "', 103) AND ";
             sql = sql + "A.BRANCH_ID='" + branch + "'";
             sql = sql + "GROUP BY A.VCH_DATE";
             config.singleResult(sql);
@@ -451,12 +447,12 @@ namespace Amritnagar.Models.Database
             string sql = string.Empty;
             if(ac_hd == "ALL" || ac_hd == "all")
             {
-                sql = "select * from rep_acc_genled where convert(datetime, GL_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, GL_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) order by GL_DATE";
+                sql = "select * from rep_acc_genled where convert(date, GL_DATE, 103) >= convert(date, '" + fr_dt + "', 103) and convert(date, GL_DATE, 103) <= convert(date, '" + to_dt + "', 103) AND AC_HD<>'CASH' AND AC_HD<>'BANK' AND AC_HD<>'TRANSFER' AND AC_HD<>'JOURNAL' order by GL_DATE";
                 config.singleResult(sql);
             }
             else
             {
-                sql = "select * from rep_acc_genled where convert(datetime, GL_DATE, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, GL_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) and AC_HD ='" + ac_hd + "' order by GL_DATE";
+                sql = "select * from rep_acc_genled where convert(date, GL_DATE, 103) >= convert(date, '" + fr_dt + "', 103) and convert(date, GL_DATE, 103) <= convert(date, '" + to_dt + "', 103) and AC_HD ='" + ac_hd + "' order by GL_DATE";
                 config.singleResult(sql);
             }            
             if (config.dt.Rows.Count > 0)

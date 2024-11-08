@@ -1217,13 +1217,15 @@ namespace Amritnagar.Controllers
         public ActionResult UpdateLedgerListByEmpId(RecoveryFrmSalaryDeductionViewModel model)
         {
             Recovery_Get rg = new Recovery_Get();
-            rg.UpdateLedgerListByEmpId(model);
+            string userid = Convert.ToString(Session["Uid"]);
+            rg.UpdateLedgerListByEmpId(model, userid);
             return Json("Updated");
         }
         public ActionResult saveRecoveryGet(RecoveryFrmSalaryDeductionViewModel model)
         {
             Recovery_Get rg = new Recovery_Get();
-            string msg = rg.saveRecovery(model);
+            string userid = Convert.ToString(Session["Uid"]);
+            string msg = rg.saveRecovery(model, userid);
             return Json(msg);
         }
         public ActionResult SaveInledger(RecoveryFrmSalaryDeductionViewModel model)

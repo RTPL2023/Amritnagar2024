@@ -20,32 +20,22 @@ namespace Amritnagar.Models.Database
             int RetValue = 0;
             try
             {
-                string encpwd = AmritnagarUtility.Encryptdata(_pwd);
-
-            
-                    sql = "SELECT * FROM users WHERE USER_ID = '" + userid + "'  and PASSWORD = '" + encpwd + "' ";
-
-            
-                LoginDetails ld = new LoginDetails();
-            
+                string encpwd = AmritnagarUtility.Encryptdata(_pwd);           
+                sql = "SELECT * FROM users WHERE USER_ID = '" + userid + "'  and PASSWORD = '" + encpwd + "' ";           
+                LoginDetails ld = new LoginDetails();           
                 config.singleResult(sql);
            
                 if (config.dt.Rows.Count > 0)
                 {
-                    //sql = "SELECT * FROM users WHERE USER_ID = '" + userid + "' and Allocated_BranchId = '" + branch + "'";
-                    //config.singleResult(sql);
-                    //if (config.dt.Rows.Count > 0)
-                    //{
-                    RetValue = 1;
-
-                    //}
-                    //else
-                    //{
-                    //    RetValue = 4;
-                    //}
-
-
-
+                    DataRow dr = (DataRow)config.dt.Rows[0];
+                    if (Convert.ToInt32(dr["blocked"]) == 1)
+                    {
+                        RetValue = 2;
+                    }
+                    else
+                    {
+                        RetValue = 1;
+                    }
                 }
                 else
                 {
@@ -55,17 +45,7 @@ namespace Amritnagar.Models.Database
             catch
             {
                 RetValue = -1;
-            }
-                
-
-
-
-           
-           
-            //finally
-            //{
-            //    objDB.DisConnect();
-            //}
+            }                
             return Convert.ToInt32(RetValue);
         }
 
@@ -91,8 +71,6 @@ namespace Amritnagar.Models.Database
 
             //    });
             //}
-
-
         }
 
         //public int updatePassword(string _UserName, string _pwd)
@@ -132,32 +110,24 @@ namespace Amritnagar.Models.Database
         //}
 
 
-     public String getRole(String _UserName)
+        public String getRole(String _UserName)
         {
             String _role=String.Empty ;
-            sql = "SELECT USER_ROLE from USERS WHERE user_id = '" + _UserName + "' ";
-         
-
+            sql = "SELECT USER_ROLE from USERS WHERE user_id = '" + _UserName + "' ";        
             try
             {
                 config.singleResult(sql);
                 if (config.dt.Rows.Count > 0)
                 {
                     _role= config.dt.Rows[0]["USER_ROLE"].ToString() ;
-                    //_role = '"' + rl + '"';
-                   
+                    //_role = '"' + rl + '"';                   
                 }
-
                 return _role;
-
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
-               
-
+                throw ex.InnerException;               
             }
-
            // return _role;
         }
 
@@ -165,8 +135,6 @@ namespace Amritnagar.Models.Database
         {
             String branch = String.Empty;
             sql = "SELECT * from USERS WHERE user_id = '" + UserId + "' ";
-
-
             try
             {
                 config.singleResult(sql);
@@ -174,21 +142,14 @@ namespace Amritnagar.Models.Database
                 {
                     DataRow dr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                     branch = Convert.ToString(dr["Allocated_BranchId"]);
-
                 }
-
                 return branch;
-
             }
             catch (Exception ex)
             {
                 throw ex.InnerException;
-
-
             }
-
             // return _role;
         }
-
     }
 }
