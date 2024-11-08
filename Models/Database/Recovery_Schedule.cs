@@ -459,7 +459,7 @@ namespace Amritnagar.Models.Database
             }
             return rgl;
         }
-        public void SaveDataInRecoverySchedule(Recovery_Schedule rs, string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch, string xemployee_ID)
+        public void SaveDataInRecoverySchedule(Recovery_Schedule rs, string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch, string xemployee_ID,string user_id)
         {
             string SDL_QRY = "";
             SDL_QRY = "select * from recovery_schedule where branch_id='" + branch + "'";
@@ -480,8 +480,8 @@ namespace Amritnagar.Models.Database
                 SDL_QRY = SDL_QRY + " AND MEM_CATEGORY='" + mem_cat + "'and BOOK_NO='" + rs.r1 + "'";
                 config.Execute_Query(SDL_QRY);
             }
-            SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT )";
-            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + rs.r1 + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ")";
+            SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT,Create_date,create_time,created_by,device_name)";
+            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + rs.r1 + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ", '" + DateTime.Now.ToString("dd/MM/yyyy") + "', '" + DateTime.Now.ToLongTimeString() + "', '" + user_id + "', '" + Environment.MachineName + "')";
             config.Execute_Query(SDL_QRY);
             //else
             //{
@@ -494,7 +494,7 @@ namespace Amritnagar.Models.Database
             //    }
             //}
         }
-        public List<Recovery_Schedule> getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
+        public List<Recovery_Schedule> getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch,string user_id)
         {
             decimal totalR7 = 0;
             decimal totalR8 = 0;
@@ -681,7 +681,7 @@ namespace Amritnagar.Models.Database
                                                 rs.r11 = prin_bal.ToString("0.00");
                                                 rs.r12 = INT_DUE.ToString("0.00");
                                                 rs.r13 = INT_RATE.ToString("0.00") + "%";
-                                                rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID);
+                                                rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID, user_id);
                                                 rslst.Add(rs);
                                                 CAL_LOAN_DUE = true;
                                             }
@@ -759,7 +759,7 @@ namespace Amritnagar.Models.Database
                                             rs.r5 = MEMBER;
                                             rs.r6 = prin_bal.ToString("0.00");
                                             rs.r8 = XTF.ToString("0.00");
-                                            rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID);
+                                            rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID, user_id);
                                             rslst.Add(rs);
                                             CAL_TF_DUE = true;
                                             if (CAL_TF_DUE == true)
@@ -792,7 +792,7 @@ namespace Amritnagar.Models.Database
                                                     rs.r3 = XMEMBER_NM;
                                                     rs.r4 = "LICP";
                                                     rs.r5 = xmem;
-                                                    rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID);
+                                                    rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID, user_id);
                                                     rslst.Add(rs);
                                                     break;
                                                 }
@@ -879,7 +879,7 @@ namespace Amritnagar.Models.Database
                                             rs.r5 = MEMBER;
                                             rs.r6 = prin_bal.ToString("0.00");
                                             rs.r8 = xirate.ToString("0.00");
-                                            rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID);
+                                            rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID,user_id);
                                             rslst.Add(rs);
                                             CAL_RTB_DUE = true;
                                             if (CAL_RTB_DUE == true)
@@ -1334,7 +1334,7 @@ namespace Amritnagar.Models.Database
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             if (config.dt.Rows.Count > 0)
             {
-                string qry = "Update recovery_schedule set prin_bal=" + Convert.ToDecimal(model.prin_bal) + ",OVER_DUE=" + Convert.ToDecimal(model.over_due) + ",PRIN_AMT=" + Convert.ToDecimal(model.prin_amt) + ",INT_AMT=" + Convert.ToDecimal(model.int_amt) + " where convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103) AND EMPLOYEE_ID='" + model.employee_id + "' and branch_id='" + model.branch + "' and employer_branch=" + model.unit + " and employer_cd='" + model.emp_name + "' and ac_hd='" + model.ac_hd + "' AND MEM_CATEGORY='" + model.mem_cat + "'and BOOK_NO='" + model.book_no + "'";
+                string qry = "Update recovery_schedule set prin_bal=" + Convert.ToDecimal(model.prin_bal) + ",OVER_DUE=" + Convert.ToDecimal(model.over_due) + ",PRIN_AMT=" + Convert.ToDecimal(model.prin_amt) + ",INT_AMT=" + Convert.ToDecimal(model.int_amt) + ", modified_date='" + DateTime.Now.ToString("dd/MM/yyyy") + "', modified_time='" + DateTime.Now.ToShortTimeString() + "', modified_by='" + model.user_id + "', m_device_name='" + Environment.MachineName + "' where convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103) AND EMPLOYEE_ID='" + model.employee_id + "' and branch_id='" + model.branch + "' and employer_branch=" + model.unit + " and employer_cd='" + model.emp_name + "' and ac_hd='" + model.ac_hd + "' AND MEM_CATEGORY='" + model.mem_cat + "'and BOOK_NO='" + model.book_no + "'";
                 config.Execute_Query(qry);
             }
             return "Updated";

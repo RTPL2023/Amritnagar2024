@@ -904,6 +904,7 @@ namespace Amritnagar.Controllers
         public JsonResult updateBlanceofLoans(PrepOfDeductionScheduleViewModel model)
         {
             Recovery_Schedule rs = new Recovery_Schedule();
+           model.user_id = Convert.ToString(Session["uid"]);
             string msg = rs.updatloanblances(model);
             return Json(msg);
         }
@@ -923,7 +924,8 @@ namespace Amritnagar.Controllers
                 arrachd[i + 3] = "0";
                 i = i + 4;
             }
-            rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
+            string user_id = Convert.ToString(Session["Uid"]);
+            rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch,user_id);
             if (rslst.Count > 0)
             {
                 model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
@@ -955,29 +957,7 @@ namespace Amritnagar.Controllers
                         "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
                 }
             }
-            //if (book_no == "AL")
-            //{
-            //    rslst = rs.getdetailsForDeductionSchedule(emp_name, "both", mem_type, mem_cat, book_no, sch_date, branch);
-            //    if (rslst.Count > 0)
-            //    {
-
-            //        foreach (var a in rslst)
-            //        {
-            //            if (a.r4 != null)
-            //            {
-            //                var index = Array.FindIndex(arrachd, row => row.Contains(a.r4));
-            //                if (a.r8 != null && a.r8 != "")
-            //                {
-            //                    arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(a.r8));
-            //                }
-            //                if (a.r9 != null && a.r9 != "")
-            //                {
-            //                    arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+         
             model.grid2 = "";
             model.grid2 = "<tr></th><th>Account Head Particulars</th><th>Principal Amount</th><th>Interest Amount</th><th>Total Amount</th></tr>";
             int j = 0;

@@ -29,6 +29,7 @@ namespace Amritnagar.Models.ViewModel
         public string over_due { get; set; }
         public string prin_amt { get; set; }
         public string int_amt { get; set; }
+        public string user_id { get; set; }
 
 
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
