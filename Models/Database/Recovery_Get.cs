@@ -388,7 +388,7 @@ namespace Amritnagar.Models.Database
             }
             return rgl;
         }
-        public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model)
+        public string saveRecovery(RecoveryFrmSalaryDeductionViewModel model, string user_id)
         {
             string sql = "";
             string msg = "";
@@ -420,8 +420,8 @@ namespace Amritnagar.Models.Database
                 string yy = Convert.ToDateTime(model.rec_dt).Year.ToString();
                 try
                 {
-                    sql = "INSERT INTO RECOVERY_GET(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, book_no, EMPLOYEE_ID , SCH_DATE, ac_hd ,vch_pacno ,RECOVERY_DATE ,recovery_mn,recovery_yr,PRIN_AMT,INT_AMT )";
-                    sql = sql + "VALUES('" + model.branch + "', '" + model.emplyer_name + "', '" + model.emp_unit + "', '" + model.book_no + "','" + a.emp_id + "', convert(datetime, '" + model.sch_dt + "', 103),'" + a.ac_hd + "', '" + a.vch_pacno + "', convert(datetime, '" + model.rec_dt + "', 103), '" + mm + "', '" + yy + "'," + Convert.ToDecimal(a.prin_amt) + ", " + Convert.ToDecimal(a.int_amt) + ")";
+                    sql = "INSERT INTO RECOVERY_GET(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, book_no, EMPLOYEE_ID , SCH_DATE, ac_hd ,vch_pacno ,RECOVERY_DATE ,recovery_mn,recovery_yr,PRIN_AMT,INT_AMT,Create_date,create_time,created_by,device_name )";
+                    sql = sql + "VALUES('" + model.branch + "', '" + model.emplyer_name + "', '" + model.emp_unit + "', '" + model.book_no + "','" + a.emp_id + "', convert(datetime, '" + model.sch_dt + "', 103),'" + a.ac_hd + "', '" + a.vch_pacno + "', convert(datetime, '" + model.rec_dt + "', 103), '" + mm + "', '" + yy + "'," + Convert.ToDecimal(a.prin_amt) + ", " + Convert.ToDecimal(a.int_amt) + ", '" + DateTime.Now.ToString("dd/MM/yyyy") + "', '" + DateTime.Now.ToShortTimeString() + "', '" + user_id + "', '" + Environment.MachineName + "')";
                     config.Execute_Query(sql);
                     // msg = "update Done";
                 }
@@ -433,14 +433,13 @@ namespace Amritnagar.Models.Database
             }
             return msg;
         }
-
-        public void UpdateLedgerListByEmpId(RecoveryFrmSalaryDeductionViewModel model)
+        public void UpdateLedgerListByEmpId(RecoveryFrmSalaryDeductionViewModel model, string user_id)
         {
             string sql = "Select * from RECOVERY_GET where BRANCH_ID='" + model.branch + "' and book_no='" + model.book_no + "' and EMPLOYEE_ID='" + model.employee_id + "'and EMPLOYER_CD='" + model.emplyer_name + "' and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103) AND convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + model.rec_dt + "', 103) AND AC_HD='" + model.ac_hd + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
-                string qry = "Update RECOVERY_GET set PRIN_AMT=" + model.over_due + ",INT_AMT=" + model.int_amt + " where convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + model.rec_dt + "', 103) and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103)   AND BRANCH_ID='" + model.branch + "' and EMPLOYEE_ID='" + model.employee_id + "'and EMPLOYER_CD='" + model.emplyer_name + "' AND AC_HD='" + model.ac_hd + "'";
+                string qry = "Update RECOVERY_GET set PRIN_AMT=" + model.over_due + ",INT_AMT=" + model.int_amt + ", modified_date = '" + DateTime.Now.ToString("dd/MM/yyyy") + "', modified_time = '" + DateTime.Now.ToShortTimeString() + "', modified_by = '" + user_id + "', m_device_name = '" + Environment.MachineName + "' where convert(varchar, RECOVERY_DATE, 103) = convert(varchar, '" + model.rec_dt + "', 103) and convert(varchar, SCH_DATE, 103) = convert(varchar, '" + model.sch_dt + "', 103)   AND BRANCH_ID='" + model.branch + "' and EMPLOYEE_ID='" + model.employee_id + "'and EMPLOYER_CD='" + model.emplyer_name + "' AND AC_HD='" + model.ac_hd + "'";
                 config.Execute_Query(qry);
             }
         }

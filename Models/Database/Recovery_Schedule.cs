@@ -481,7 +481,7 @@ namespace Amritnagar.Models.Database
                 config.Execute_Query(SDL_QRY);
             }
             SDL_QRY = "INSERT INTO recovery_schedule(BRANCH_ID, EMPLOYER_CD, EMPLOYER_BRANCH, SCH_DATE, book_no, EMPLOYEE_ID , member_name, MEMBER_TYPE,MEM_CATEGORY,ac_hd ,vch_pacno ,prin_bal ,OVER_DUE,PRIN_AMT,INT_AMT,Create_date,create_time,created_by,device_name)";
-            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + rs.r1 + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ", '" + DateTime.Now.ToString("dd/MM/yyyy") + "', '" + DateTime.Now.ToLongTimeString() + "', '" + user_id + "', '" + Environment.MachineName + "')";
+            SDL_QRY = SDL_QRY + "VALUES('" + branch + "', '" + emp_name + "', '" + unit + "', convert(datetime, '" + sch_date + "', 103), '" + rs.r1 + "', '" + rs.r2 + "', '" + rs.r3 + "', '" + mem_type + "', '" + mem_cat + "', '" + rs.r4 + "', '" + rs.r5 + "', " + Convert.ToDecimal(rs.r6) + ", " + Convert.ToDecimal(rs.r7) + ", " + Convert.ToDecimal(rs.r8) + ", " + Convert.ToDecimal(rs.r9) + ", '" + DateTime.Now.ToString("dd/MM/yyyy") + "', '" + DateTime.Now.ToShortTimeString() + "', '" + user_id + "', '" + Environment.MachineName + "')";
             config.Execute_Query(SDL_QRY);
             //else
             //{

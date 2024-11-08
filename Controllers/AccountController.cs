@@ -1466,7 +1466,13 @@ namespace Amritnagar.Controllers
         {
             Rep_Acc_Genled rag = new Rep_Acc_Genled();
             List<Rep_Acc_Genled> raglst = new List<Rep_Acc_Genled>();
+            GL_BALNCE gl = new GL_BALNCE();            
+            gl = gl.getopeningbalanceforcashaccount(model.branch, model.fr_dt);
+            model.open_bal = gl.gl_bal.ToString("0.00");
             raglst = rag.getdetails(model.fr_dt, model.to_dt, model.ac_hd);
+            decimal cl_cash = 0;
+            decimal tot_cash_cr = 0;
+            decimal tot_cash_dr = 0;
             int i = 1;
             if (raglst.Count > 0)
             {
@@ -1481,8 +1487,13 @@ namespace Amritnagar.Controllers
                     {
                         model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.ac_majgrdesc + "</td><td>" + a.gl_type + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td style =\"background-color:lightgreen\">" + a.total_cr.ToString("0.00") + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
                     }
+                    tot_cash_cr = tot_cash_cr + a.cash_cr;
+                    tot_cash_dr = tot_cash_dr + a.cash_dr;
+                   //cl_cash = Convert.ToDecimal(model.open_bal) + (a.cash_cr - a.cash_dr);
                     i = i + 1;
                 }
+                cl_cash = Convert.ToDecimal(model.open_bal) + (tot_cash_cr - tot_cash_dr);
+                model.close_bal = Math.Abs(cl_cash).ToString("0.00");
             }
             else
             {

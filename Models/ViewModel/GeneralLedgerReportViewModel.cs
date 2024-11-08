@@ -14,6 +14,8 @@ namespace Amritnagar.Models.ViewModel
         public string ac_hd { get; set; } 
         public string ac_desc { get; set; }
         public string tableelement { get; set; }
+        public string open_bal { get; set; }
+        public string close_bal { get; set; }
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
     }
 }
