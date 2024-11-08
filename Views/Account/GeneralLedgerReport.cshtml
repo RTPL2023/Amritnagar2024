@@ -52,7 +52,9 @@
             border-collapse: collapse;
             width: 900px;
         }
-
+        .tab td {
+            border-bottom: 1px solid black;
+        }
         .tab tr:nth-child(even) {
             background-color: #f2f2f2;
         }
@@ -265,7 +267,7 @@
 
       function ShowTable() {
             $("#loading").show();
-             let ModelObject = { fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val() };
+          let ModelObject = { fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val(), ac_hd: $('#ac_hd').val() };
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("getgeneralledgerdetails", "Account")',

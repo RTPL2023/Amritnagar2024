@@ -78,6 +78,8 @@ namespace Amritnagar.Models.Database
         public string pan { get; set; }
         public string nom_srl { get; set; }
         public string nom_name { get; set; }
+        public string created_by { get; set; }
+        public string modified_by { get; set; }
         public string nom_rltn_id { get; set; }
         public string nom_birthdt { get; set; }
         public string nom_hno { get; set; }
@@ -252,6 +254,10 @@ namespace Amritnagar.Models.Database
                         { "share",mm.share },
                         { "bank_code",mm.bank_code },
                         { "ACCOUNT_NO",mm.accc_no },
+                        { "Created_by",  mm.created_by},
+                        { "Create_date", DateTime.Now.ToString("dd-MM-yyyy").Replace("-","/")},
+                        { "Create_Time", System.DateTime.Now.ToShortTimeString()},                       
+                        { "Device_name", Environment.MachineName},                      
                 });
             }
             catch (Exception x)
@@ -680,6 +686,10 @@ namespace Amritnagar.Models.Database
                     { "share",mm.share },
                     { "bank_code",mm.bank_code },
                     { "ACCOUNT_NO",mm.accc_no },
+                    { "Modified_By",   mm.modified_by},
+                    { "Modified_Date", DateTime.Now.ToString("dd-MM-yyyy").Replace("-","/")},
+                    { "Modified_Time", System.DateTime.Now.ToShortTimeString()},
+                    { "M_Device_Name", Environment.MachineName},
                 }, new Dictionary<string, object>()
                     {
                     { "BRANCH_ID",  mm.branch_id },
@@ -1319,6 +1329,42 @@ namespace Amritnagar.Models.Database
                     }
                 }
             }
+        }
+        public List<Member_Mast> getvoterlistbybooknoandemployerbranch(string book_no, string unit)
+        {
+            string sql = "select * from member_mast where employer_branch='" + unit + "'and  book_no='" + book_no + "' and (BOOK_NO<>'LT' AND BOOK_NO<>'00' AND BOOK_NO<>'lt') and member_closed is null order by member_id";
+            config.singleResult(sql);
+            List<Member_Mast> mml = new List<Member_Mast>();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();
+                    mm.guardian_name = dr["GRDN_NAME"].ToString();                  
+                    mml.Add(mm);
+                }
+            }
+            return mml;
+        }
+        public List<Member_Mast> getvoterlistbyemployerbranch(string unit)
+        {
+            string sql = "select * from member_mast where employer_branch='" + unit + "' and (BOOK_NO<>'LT' AND BOOK_NO<>'00' AND BOOK_NO<>'lt') and member_closed is null order by member_id";
+            config.singleResult(sql);
+            List<Member_Mast> mml = new List<Member_Mast>();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();
+                    mm.guardian_name = dr["GRDN_NAME"].ToString();
+                    mml.Add(mm);
+                }
+            }
+            return mml;
         }
     }
 }

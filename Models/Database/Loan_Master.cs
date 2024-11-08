@@ -95,6 +95,8 @@ namespace Amritnagar.Models.Database
         public string arr_3_2 { get; set; }
         public string arr_3_3 { get; set; }
         public string arr_3_4 { get; set; }
+        public string created_by { get; set; }
+        public string modified_by { get; set; }
       
         public string Save(Loan_Master lm)
         {
@@ -115,7 +117,11 @@ namespace Amritnagar.Models.Database
                         { "LOAN_AMT",       lm.loan_amt },
                         { "NO_INSTL",   lm.inst_no},
                         { "INT_RATE",   lm.inst_rate},
-                        { "INSTL_AMOUNT",   lm.inst_amt},                        
+                        { "INSTL_AMOUNT",   lm.inst_amt},
+                        { "Modified_By",   lm.modified_by},
+                        { "Modified_Date", DateTime.Now.ToString("dd-MM-yyyy").Replace("-","/")},
+                        { "Modified_Time", System.DateTime.Now.ToShortTimeString()},
+                        { "M_Device_Name", Environment.MachineName},
                     }, new Dictionary<string, object>()
                     {
                         { "BRANCH_ID",  lm.branch_id },
@@ -148,6 +154,10 @@ namespace Amritnagar.Models.Database
                         { "LOAN_DATE",      lm.loan_dt },
                         { "EMPLOYEE_ID",    lm.emp_id },
                         { "AC_HD",  lm.ac_hd },
+                        { "Created_by",  lm.created_by},
+                        { "Create_date", DateTime.Now.ToString("dd-MM-yyyy").Replace("-","/")},
+                        { "Create_Time", System.DateTime.Now.ToShortTimeString()},
+                        { "Device_name", Environment.MachineName},
                     });
                 }
                 catch (Exception x)

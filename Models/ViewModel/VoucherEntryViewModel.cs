@@ -39,6 +39,7 @@ namespace Amritnagar.Models.ViewModel
         public string ref_ac_hd1 { get; set; }
         public string refacno1 { get; set; }
         public string refParticular1 { get; set; }
+        public string tableelement { get; set; }
 
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
     }

@@ -506,13 +506,14 @@
                         dataType: "json",
                         success: function (data) {
                             alert(data);
+                            ShowTable();
                         },
                         error: function (err) {
                             alert("Error Occured");
                         }
                     });
                  }
-        }
+       }
 
        function Close() {
             if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {

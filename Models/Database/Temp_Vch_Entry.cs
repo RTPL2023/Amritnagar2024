@@ -22,6 +22,7 @@ namespace Amritnagar.Models.Database
         public String ref_acno { get; set; }
         public String ref_ac_particulars { get; set; }
         public String created_by { get; set; }
+        public String vch_type { get; set; }
         public DateTime created_on { get; set; }
         public String computer_name { get; set; }
         public String modified_by { get; set; }
@@ -65,9 +66,9 @@ namespace Amritnagar.Models.Database
             //        { "computer_name",  tve.computer_name }
             //});
 
-            string qry = "Insert into temp_vch_entry (srl,drcr,ac_hd,vch_dt,vch_pacno,vch_no,paid_to_rcv_frm,amount,ref_achd,ref_acno,ref_ac_particulars,created_by,created_on,computer_name) values('" + Convert.ToInt32(tve.srl) + "',";      
+            string qry = "Insert into temp_vch_entry (srl,drcr,ac_hd,vch_dt,vch_pacno,vch_no,paid_to_rcv_frm,amount,ref_achd,ref_acno,ref_ac_particulars,created_by,created_on,computer_name,Vch_Type) values('" + Convert.ToInt32(tve.srl) + "',";      
             qry = qry + "'" + Convert.ToString(tve.drcr.ToUpper()) + "','" + Convert.ToString(tve.ac_hd.ToUpper()) + "'," + "convert(datetime, '" + tve.str_vchdt + "', 103),'" + Convert.ToString(tve.vch_pacno) + "','" + Convert.ToString(tve.vch_no) + "',";
-            qry = qry + "'" + Convert.ToString(tve.paid_to_rcv_frm) + "','" + Convert.ToDecimal(tve.amount) + "','" + Convert.ToString(tve.ref_achd) + "','" + Convert.ToString(tve.ref_acno) + "','" + Convert.ToString(tve.ref_ac_particulars) + "','" + Convert.ToString(tve.created_by) + "',convert(datetime, '" + tve.created_on + "', 103)" + ",'" + Convert.ToString(tve.computer_name) +"')";
+            qry = qry + "'" + Convert.ToString(tve.paid_to_rcv_frm) + "','" + Convert.ToDecimal(tve.amount) + "','" + Convert.ToString(tve.ref_achd) + "','" + Convert.ToString(tve.ref_acno) + "','" + Convert.ToString(tve.ref_ac_particulars) + "','" + Convert.ToString(tve.created_by) + "',convert(datetime, '" + tve.created_on + "', 103)" + ",'" + Convert.ToString(tve.computer_name) +"', '"+ tve.vch_type +"')";
             config.Execute_Query(qry);
         }
         public List<Temp_Vch_Entry> GetTempVchDataByVchdate(string dt, string vchno)
@@ -112,10 +113,36 @@ namespace Amritnagar.Models.Database
             string qry = string.Empty;        
             qry = "delete from temp_vch_entry where vch_no='" + tve.vch_no + "' and srl = '"+ tve.srl +"'";
             config.Execute_Query(qry);
-            qry = "Insert into temp_vch_entry (srl,drcr,ac_hd,vch_dt,vch_pacno,vch_no,paid_to_rcv_frm,amount,ref_achd,ref_acno,ref_ac_particulars,created_by,created_on,computer_name) values('" + Convert.ToInt32(tve.srl) + "',";
+            qry = "Insert into temp_vch_entry (srl,drcr,ac_hd,vch_dt,vch_pacno,vch_no,paid_to_rcv_frm,amount,ref_achd,ref_acno,ref_ac_particulars,created_by,created_on,computer_name,Vch_Type) values('" + Convert.ToInt32(tve.srl) + "',";
             qry = qry + "'" + Convert.ToString(tve.drcr) + "','" + Convert.ToString(tve.ac_hd) + "'," + "convert(datetime, '" + tve.str_vchdt + "', 103),'" + Convert.ToString(tve.vch_pacno) + "','" + Convert.ToString(tve.vch_no) + "',";
-            qry = qry + "'" + Convert.ToString(tve.paid_to_rcv_frm) + "','" + Convert.ToDecimal(tve.amount) + "','" + Convert.ToString(tve.ref_achd) + "','" + Convert.ToString(tve.ref_acno) + "','" + Convert.ToString(tve.ref_ac_particulars) + "','" + Convert.ToString(tve.created_by) + "',convert(datetime, '" + tve.created_on + "', 103)" + ",'" + Convert.ToString(tve.computer_name) + "')";
+            qry = qry + "'" + Convert.ToString(tve.paid_to_rcv_frm) + "','" + Convert.ToDecimal(tve.amount) + "','" + Convert.ToString(tve.ref_achd) + "','" + Convert.ToString(tve.ref_acno) + "','" + Convert.ToString(tve.ref_ac_particulars) + "','" + Convert.ToString(tve.created_by) + "',convert(datetime, '" + tve.created_on + "', 103)" + ",'" + Convert.ToString(tve.computer_name) + "', '" + tve.vch_type + "')";
             config.Execute_Query(qry);
+        }
+        public List<Temp_Vch_Entry> getdetails(string vch_date)
+        {
+            string sql = "select * from temp_vch_entry where convert(varchar, vch_dt, 103) = convert(varchar, '" + vch_date + "', 103) order by Vch_Dt, vch_no";
+            config.singleResult(sql);
+            List<Temp_Vch_Entry> tvel = new List<Temp_Vch_Entry>();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Temp_Vch_Entry tve = new Temp_Vch_Entry();
+                    tve.srl = Convert.ToInt32(dr["Srl"]);
+                    tve.drcr = dr["DrCr"].ToString();
+                    tve.ac_hd = dr["Ac_Hd"].ToString();
+                    tve.vch_no = dr["Vch_No"].ToString();
+                    tve.vch_pacno = dr["Vch_Pacno"].ToString();
+                    tve.paid_to_rcv_frm = dr["Paid_to_rcv_frm"].ToString();
+                    tve.amount = Convert.ToDecimal(dr["Amount"]);
+                    tve.ref_achd = dr["Ref_Achd"].ToString();
+                    tve.ref_acno = dr["Ref_Acno"].ToString();
+                    tve.ref_ac_particulars = dr["Ref_ac_particulars"].ToString();
+                    tve.vch_type = dr["Vch_Type"].ToString();
+                    tvel.Add(tve);
+                }
+            }
+            return tvel;
         }
     }
 }

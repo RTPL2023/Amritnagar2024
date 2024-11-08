@@ -193,8 +193,8 @@
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Branch<br />
                         @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text")@*, "Select"*@, new
-{
-@class = "size"@*, @onchange= "changefocus()"*@})
+                        {
+                            @class = "size"@*, @onchange= "changefocus()"*@})
                     </div>
                     @*<div class="col-lg-2 col-md-2 col-sm-12 col-12">
                 Voucher Date:<br />
@@ -353,12 +353,22 @@
                         <div class="col-lg-3 col-sm-12 col-12">
                             @Html.TextBoxFor(model => model.del_vch_no, new { @class = "sizebig", @type = "text" })
                         </div>
-                        <div class="col-lg-4 col-sm-12 col-12">
+                        <div class="col-lg-6 col-sm-12 col-12">
                             <input id="ButtonDelVchNo" type="button" value="Delete by VCH No" name="ButtonDelVchNo" class="btn btn-primary btn-sm" onclick="DeleteTempVoucher()" />
+                        </div>
+                        <div class="col-lg-3 col-sm-12 col-12">
+                            <input id="btnViewTempData" type="button" value="View Temp Data" name="btnViewTempData" class="btn btn-primary btn-sm" onclick="ShowTableforTempData()" />
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="table-responsive mt-1">
+                            <table id="Tempdata" class="tab">
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <div class="container mt-2">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center p-1" style="background-color: rgba(231,205,167); color: brown; font-size: 15px; font-weight: bold; text-align: center; text-transform: uppercase">
@@ -576,7 +586,8 @@
                     ref_ac_hd: $('#ref_ac_hd').val(),
                     refacno: $('#refacno').val(),
                     refParticular: $('#refParticular').val(),
-                    vch_no: $('#txtvch_No').val()
+                    vch_no: $('#txtvch_No').val(),
+                    vch_type: $('#vch_type').val()
                     };
                     //alert(JSON.stringify(ModelObject));
                     $.ajax({
@@ -601,7 +612,7 @@
                         alert(err);
                     }
                     });
-                 }          
+                 }
         }
 
         function ShowTable() {
@@ -709,6 +720,7 @@
                 refParticular: $('#refParticular1').val(),
                 txtvch_No: $('#txtvch_No').val(),
                 srl: $('#srl').val(),
+                vch_type: $('#vch_type').val()
             };
             //alert(JSON.stringify(ModelObject));
             $.ajax({
@@ -799,6 +811,7 @@
                     $('#txtvch_No').val("");
                     //$('#vch_type').val("");
                     $('#Vch_narr').val("");
+                    document.getElementById("Tempdata").innerHTML = "";
                 },
                 error: function (err) {
                     alert("Error Occured");
@@ -832,6 +845,7 @@
                     $('#crdt_amt').val("0");
                     $('#net_amt').val("0");
                     $('#vch_DrCr').val("");
+                    document.getElementById("Tempdata").innerHTML = "";
                     $('#drcr').focus();
                 },
                 error: function (err) {
@@ -1016,12 +1030,51 @@
             }
         }
 
+        function GetParticularPacnoforinsertnewrow() {
+             if ($('#vchpacno1').val() != null && $('#vchpacno1').val() != "") {
+                let ModelObject = {
+                    vch_achd: $('#vch_achd1').val(),
+                    vchpacno: $('#vchpacno1').val(),
+                    branch: $('#branch').val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetParticularsForvchEntry", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.clos_flag == "C") {
+                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
+                                $('#particular1').val(data.particular);
+                            }
+                            else
+                                $('#particular1').val("");
+                        }
+                        else {
+                            //alert(data.particulars);
+                            $('#particular1').val(data.particular);
+                        }
+                        $("#particular1").focus();
+                    },
+                    error: function (err) {
+                        //alert(err);
+                        $("#particular1").focus();
+                    }
+                });
+            }
+            else {
+                $('#particular1').val("");
+                $("#particular1").focus();
+             }
+         }
+
         function evtvchpacno1(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                $("#particular1").focus();
+                GetParticularPacnoforinsertnewrow();
+                //$("#particular1").focus();
             }
         }
 
@@ -1043,12 +1096,51 @@
             }
         }
 
+        function GetReferenceParticularPacnoforinsertnewrow() {
+            if ($('#refacno1').val() != null && $('#refacno1').val() != "") {
+                let ModelObject = {
+                    vch_achd: $('#ref_ac_hd1').val(),
+                    vchpacno: $('#refacno1').val(),
+                    branch: $('#branch').val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetParticularsForvchEntry", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.clos_flag == "C") {
+                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
+                                $('#refParticular1').val(data.particular);
+                            }
+                            else
+                                $('#refParticular1').val("");
+                        }
+                        else {
+                            //alert(data.particulars);
+                            $('#refParticular1').val(data.particular);
+                        }
+                        $("#refParticular1").focus();
+                    },
+                    error: function (err) {
+                        //alert(err);
+                        $("#refParticular1").focus();
+                    }
+                });
+            }
+            else {
+                $('#refParticular1').val("");
+                $("#refParticular1").focus();
+            }
+        }
+
         function evtrefacno1(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                $("#refParticular1").focus();
+                GetReferenceParticularPacnoforinsertnewrow();
+                //$("#refParticular1").focus();
             }
         }
 
@@ -1061,8 +1153,27 @@
             }
         }
 
-
-
+        function ShowTableforTempData() {
+            let ModelObject = { vch_date: $('#datepicker1').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                     url: '@Url.Action("gettempdetails", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                success: function (data) {
+                    if (data.tableelement == null) {
+                        alert("No Temporary Data Available On " + $('#datepicker1').val());
+                    }
+                    else {
+                        document.getElementById("Tempdata").innerHTML = data.tableelement;
+                    }                   
+                },
+                error: function (err) {
+                alert("Error Occured");
+                }
+            });
+        }
     </script>
 }
 

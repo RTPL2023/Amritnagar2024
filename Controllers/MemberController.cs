@@ -294,6 +294,7 @@ namespace Amritnagar.Controllers
                     {
                         mm.tf_double = "S";
                     }
+                    mm.created_by = Convert.ToString(Session["Uid"]);
                     model.msg = mm.SaveMemberMaster(mm);
                     if (model.msg == "Saved Successfully")
                     {
@@ -942,6 +943,7 @@ namespace Amritnagar.Controllers
             {
                 mm.tf_double = "S";
             }
+            mm.modified_by = Convert.ToString(Session["Uid"]);
             model.msg = mm.UpdateMemberMaster(mm);
             if (model.msg == "Updated Successfuly")
             {
@@ -3350,7 +3352,220 @@ namespace Amritnagar.Controllers
             }
             return File(memory.ToArray(), "text/plain", "Member_Details_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
         }
-
         /********************************************Member Details List End*******************************************/
-    }    
+
+        /********************************************Votar List Start***************************************************/
+        [HttpGet]
+        public ActionResult VoterList(VoterListViewModel model)
+        {
+            UtilityController u = new UtilityController();
+            model.EmpBranchDesc = u.getEmployerBranchMastDetails();
+            return View(model);
+        }
+        public JsonResult GetVoterList(VoterListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);
+            int i = 1;
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {                  
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>Member Id</th><th>Member Name</th><th>Gurdian Name</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public JsonResult GetVoterListForAllBookNo(VoterListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getvoterlistbyemployerbranch(model.unit);
+            int i = 1;
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>Member Id</th><th>Member Name</th><th>Gurdian Name</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td></tr>";
+                    }
+                    i = i + 1;
+                }
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
+        }
+        public ActionResult GetVotarListPrintFile(VoterListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);           
+            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
+            string serial = string.Empty;
+            string mem_no = "";
+            string mem_name = "";
+            string guardain_name = "";
+            if (model.dist_list == true)
+            {
+                using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Member_Voter_List.txt")))
+                {
+                    int Pg = 1;
+                    int Ln = 0;
+                    int i = 1;                  
+                    sw.WriteLine("BOOK - NO =" + model.book_no);
+                    sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
+                    sw.WriteLine("Distribution  LIST ");                    
+                    sw.WriteLine("==========================================================================");
+                    sw.WriteLine("Srl |Member No.| Member Name            | LTI/Signature                  |");
+                    sw.WriteLine("==========================================================================");
+                    foreach (var am in mml)
+                    {
+                        if (Convert.ToString(i).Length > 4)
+                        {
+                            serial = Convert.ToString(i).Substring(0, 3);
+                        }
+                        else
+                        {
+                            serial = Convert.ToString(i);
+                        }
+                        if (am.mem_id.ToString().Length > 10)
+                        {
+                            mem_no = (am.mem_id).Substring(0, 9);
+                        }
+                        else
+                        {
+                            mem_no = am.mem_id;
+                        }
+                        if (am.mem_name.ToString().Length > 24)
+                        {
+                            mem_name = (am.mem_name).Substring(0, 23);
+                        }
+                        else
+                        {
+                            mem_name = am.mem_name;
+                        }
+                        if (Ln > Pg * 65)
+                        {
+                            Pg = Pg + 1;
+                            Ln = Ln + 7;
+                            sw.WriteLine("BOOK - NO =" + model.book_no);
+                            sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
+                            sw.WriteLine("Distribution  LIST ");
+                            sw.WriteLine("==========================================================================");
+                            sw.WriteLine("Srl |Member No.| Member Name            | LTI/Signature                  |");
+                            sw.WriteLine("==========================================================================");
+                        }                                              
+                        sw.WriteLine("".ToString().PadLeft(4 - (serial).Length) + serial + "|"
+                        + "".ToString().PadLeft(10 - (mem_no).ToString().Length) + mem_no + "|"
+                        + "".ToString().PadLeft(24 - (mem_name).ToString().Length) + mem_name + "|");
+                        sw.WriteLine("--------------------------------------------------------------------------");
+                        Ln = Ln + 1;
+                        i = i + 1;
+                    }
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Member_Voter_List.txt")))
+                {
+                    int Pg = 1;
+                    int Ln = 0;
+                    int i = 1;                                    
+                    sw.WriteLine("BOOK - NO =" + model.book_no);
+                    sw.WriteLine("Unit :" + model.unit);
+                    sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
+                    sw.WriteLine("Member LIST ");
+                    sw.WriteLine("=====================================================================");
+                    sw.WriteLine("Srl |Member No.| Member Name                | Gurdian NAME          |");
+                    sw.WriteLine("=====================================================================");
+                    foreach (var am in mml)
+                    {
+                        if (Convert.ToString(i).Length > 4)
+                        {
+                            serial = Convert.ToString(i).Substring(0, 3);
+                        }
+                        else
+                        {
+                            serial = Convert.ToString(i);
+                        }
+                        if (am.mem_id.ToString().Length > 10)
+                        {
+                            mem_no = (am.mem_id).Substring(0, 9);
+                        }
+                        else
+                        {
+                            mem_no = am.mem_id;
+                        }
+                        if (am.mem_name.ToString().Length > 28)
+                        {
+                            mem_name = (am.mem_name).Substring(0, 27);
+                        }
+                        else
+                        {
+                            mem_name = am.mem_name;
+                        }
+                        if (am.guardian_name.ToString().Length > 23)
+                        {
+                            guardain_name = (am.guardian_name).Substring(0, 22);
+                        }
+                        else
+                        {
+                            guardain_name = am.guardian_name;
+                        }
+                        if (Ln > Pg * 65)
+                        {
+                            Pg = Pg + 1;
+                            Ln = Ln + 7;
+                            sw.WriteLine("BOOK - NO =" + model.book_no);
+                            sw.WriteLine("Unit :" + model.unit);
+                            sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
+                            sw.WriteLine("Member LIST ");
+                            sw.WriteLine("=====================================================================");
+                            sw.WriteLine("Srl |Member No.| Member Name                | Gurdian NAME          |");
+                            sw.WriteLine("=====================================================================");
+                        }
+                        sw.WriteLine("".ToString().PadLeft(4 - (serial).Length) + serial + "|"
+                        + "".ToString().PadLeft(10 - (mem_no).ToString().Length) + mem_no + "|"
+                        + "".ToString().PadLeft(28 - (mem_name).ToString().Length) + mem_name + "|"
+                        + "".ToString().PadLeft(23 - (guardain_name).ToString().Length) + guardain_name + "|");
+                        sw.WriteLine("---------------------------------------------------------------------");
+                        Ln = Ln + 1;
+                        i = i + 1;
+                    }
+                }
+            }
+            UtilityController u = new UtilityController();
+            var memory = u.DownloadTextFiles("Member_Voter_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+            if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Member_Voter_List.txt")))
+            {
+                System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Voter_List.txt"));
+            }
+            return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");           
+        }
+
+        /********************************************Votar List End***************************************************/
+    }
 }

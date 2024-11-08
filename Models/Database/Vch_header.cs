@@ -21,7 +21,8 @@ namespace Amritnagar.Models.Database
         public List<Vch_header> VchNo(string branch, string vch_date)
         {
             List<Vch_header> vhlist = new List<Vch_header>();
-            string sql = "select * from vch_header where BRANCH_ID='"+ branch + "' AND convert(varchar, vch_date, 103) = '" + vch_date + "' and insert_mode='D' order by branch_id,vch_date,vch_no";
+            string sql = string.Empty;
+            sql = "select * from vch_header where BRANCH_ID='" + branch + "' AND convert(varchar, vch_date, 103) = '" + vch_date + "' and insert_mode='D' order by branch_id,vch_date,vch_no";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -34,11 +35,11 @@ namespace Amritnagar.Models.Database
                         vh1.value = Convert.ToString("Select Voucher");
                         vh1.text = Convert.ToString("Select Voucher");
                         vhlist.Add(vh1);
-                    }                   
+                    }
                     Vch_header vh = new Vch_header();
                     vh.value = dr["vch_no"].ToString();
                     vh.text = dr["vch_no"].ToString();
-                    vhlist.Add(vh);                                  
+                    vhlist.Add(vh);
                     i = i + 1;
                 }
             }
@@ -48,7 +49,7 @@ namespace Amritnagar.Models.Database
                 vh1.value = Convert.ToString("Select Voucher");
                 vh1.text = Convert.ToString("Select Voucher");
                 vhlist.Add(vh1);
-            }
+            }           
             return vhlist;
         }
         public void SaveUpdateVoucherHeader(string vchdt, string vchno, string vchtype, string vchnarr, string branch_id)
