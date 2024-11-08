@@ -1280,9 +1280,9 @@ namespace Amritnagar.Controllers
                     else
                     {
                         op_bank = gl.op_bank;
-                    }
-                    closed_cash = Math.Abs(gl.op_cash + ((cr_cash_tot + cr_transfer_tot + cr_bank_tot) - (dr_cash_tot + dr_bank_tot + dr_transfer_tot)));
-                    closed_bank = gl.op_bank + ((cr_cash_tot + cr_transfer_tot + cr_bank_tot) - (dr_cash_tot + dr_bank_tot + dr_transfer_tot));
+                    }                   
+                    closed_cash = Math.Abs(gl.op_cash + (cr_cash_tot - dr_cash_tot));
+                    closed_bank = Math.Abs(gl.op_bank + (cr_bank_tot - dr_bank_tot));
                     op_cash_in_word = wordtonumber(Convert.ToInt32(Math.Abs(gl.op_cash))) + " Only";
                     cl_cash_in_word = wordtonumber(Convert.ToInt32(Math.Abs(closed_cash))) + " Only";
                     if (closed_bank.ToString().Length > 14)
