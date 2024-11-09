@@ -321,86 +321,83 @@ namespace Amritnagar.Models.Database
             sql = sql + "GROUP BY A.VCH_DATE";
             config.singleResult(sql);
             if(config.dt.Rows.Count > 0)
-            {
-                //for(int i=1; i<= config.dt.Rows.Count; i++)
-                //{
-                    foreach(DataRow dr8 in config.dt.Rows)
+            {               
+                foreach(DataRow dr8 in config.dt.Rows)
+                {
+                    rag.gl_date = !Convert.IsDBNull(dr8["tr_date"]) ? Convert.ToDateTime(dr8["tr_date"]) : Convert.ToDateTime(null);
+                    rag.cash_cr = !Convert.IsDBNull(dr8["CASH_CR"]) ? Convert.ToDecimal(dr8["CASH_CR"]) : Convert.ToDecimal(00);
+                    rag.bank_cr = !Convert.IsDBNull(dr8["BANK_CR"]) ? Convert.ToDecimal(dr8["BANK_CR"]) : Convert.ToDecimal(00);
+                    rag.cash_dr = !Convert.IsDBNull(dr8["CASH_DR"]) ? Convert.ToDecimal(dr8["CASH_DR"]) : Convert.ToDecimal(00);
+                    rag.bank_dr = !Convert.IsDBNull(dr8["BANK_DR"]) ? Convert.ToDecimal(dr8["BANK_DR"]) : Convert.ToDecimal(00);
+                    rag.bank_cont_cr = !Convert.IsDBNull(dr8["BANK_CONT_CR"]) ? Convert.ToDecimal(dr8["BANK_CONT_CR"]) : Convert.ToDecimal(00);
+                    rag.bank_cont_dr = !Convert.IsDBNull(dr8["BANK_CONT_DR"]) ? Convert.ToDecimal(dr8["BANK_CONT_DR"]) : Convert.ToDecimal(00);
+                    decimal tot_bank_cr = rag.bank_cr + rag.bank_cont_cr;
+                    decimal tot_bank_dr = rag.bank_dr + rag.bank_cont_dr;
+                    if (rag.cash_cr > 0 && rag.cash_dr > 0)
                     {
-                        rag.gl_date = !Convert.IsDBNull(dr8["tr_date"]) ? Convert.ToDateTime(dr8["tr_date"]) : Convert.ToDateTime(null);
-                        rag.cash_cr = !Convert.IsDBNull(dr8["CASH_CR"]) ? Convert.ToDecimal(dr8["CASH_CR"]) : Convert.ToDecimal(00);
-                        rag.bank_cr = !Convert.IsDBNull(dr8["BANK_CR"]) ? Convert.ToDecimal(dr8["BANK_CR"]) : Convert.ToDecimal(00);
-                        rag.cash_dr = !Convert.IsDBNull(dr8["CASH_DR"]) ? Convert.ToDecimal(dr8["CASH_DR"]) : Convert.ToDecimal(00);
-                        rag.bank_dr = !Convert.IsDBNull(dr8["BANK_DR"]) ? Convert.ToDecimal(dr8["BANK_DR"]) : Convert.ToDecimal(00);
-                        rag.bank_cont_cr = !Convert.IsDBNull(dr8["BANK_CONT_CR"]) ? Convert.ToDecimal(dr8["BANK_CONT_CR"]) : Convert.ToDecimal(00);
-                        rag.bank_cont_dr = !Convert.IsDBNull(dr8["BANK_CONT_DR"]) ? Convert.ToDecimal(dr8["BANK_CONT_DR"]) : Convert.ToDecimal(00);
-                        decimal tot_bank_cr = rag.bank_cr + rag.bank_cont_cr;
-                        decimal tot_bank_dr = rag.bank_dr + rag.bank_cont_dr;
-                        if (rag.cash_cr > 0 && rag.cash_dr > 0)
+                        if (XCASHBF == false)
                         {
-                            if (XCASHBF == false)
-                            {
-                                config.Insert("rep_acc_genled", new Dictionary<String, object>()
-                                {
-                                    {"GL_TYPE",   "O" },
-                                    {"ac_hd",   "CASH" },
-                                    {"ac_majgr",    XMGR1},
-                                    {"AC_DESC",   xacdesc1},
-                                    {"ac_majgrdesc", XMGRDESC1 },
-                                    {"GL_DATE",    XOPDT},
-                                    {"gl_bal",    XCASHBAL}
-                                });
-                                XCASHBF = true;
-                            }
-                            XCASHBAL = XCASHBAL + rag.cash_cr - rag.cash_dr;
                             config.Insert("rep_acc_genled", new Dictionary<String, object>()
                             {
-                                {"GL_TYPE",   "T" },
+                                {"GL_TYPE",   "O" },
                                 {"ac_hd",   "CASH" },
                                 {"ac_majgr",    XMGR1},
                                 {"AC_DESC",   xacdesc1},
                                 {"ac_majgrdesc", XMGRDESC1 },
-                                {"GL_DATE",     rag.gl_date},
-                                {"CASH_CR",     rag.cash_cr},
-                                {"TOTAL_CR",     rag.cash_cr},
-                                {"CASH_DR",     rag.cash_dr},
-                                {"TOTAL_DR",     rag.cash_dr},
+                                {"GL_DATE",    XOPDT},
                                 {"gl_bal",    XCASHBAL}
                             });
+                            XCASHBF = true;
                         }
-                        if (tot_bank_cr > 0 && tot_bank_dr > 0)
+                        XCASHBAL = XCASHBAL + rag.cash_cr - rag.cash_dr;
+                        config.Insert("rep_acc_genled", new Dictionary<String, object>()
                         {
-                            if (XBANKBF == false)
-                            {
-                                config.Insert("rep_acc_genled", new Dictionary<String, object>()
-                                {
-                                    {"GL_TYPE",   "O" },
-                                    {"ac_hd",   "BANK" },
-                                    {"ac_majgr",    XMGR2},
-                                    {"AC_DESC",   xacdesc2},
-                                    {"ac_majgrdesc", XMGRDESC2 },
-                                    {"GL_DATE",    XOPDT},
-                                    {"gl_bal",    XBANKBAL}
-                                });
-                                XBANKBF = true;
-                            }
-                            XBANKBAL = XBANKBAL + (rag.bank_cr - rag.bank_dr) + (rag.bank_cont_cr - rag.bank_cont_dr);
+                            {"GL_TYPE",   "T" },
+                            {"ac_hd",   "CASH" },
+                            {"ac_majgr",    XMGR1},
+                            {"AC_DESC",   xacdesc1},
+                            {"ac_majgrdesc", XMGRDESC1 },
+                            {"GL_DATE",     rag.gl_date},
+                            {"CASH_CR",     rag.cash_cr},
+                            {"TOTAL_CR",     rag.cash_cr},
+                            {"CASH_DR",     rag.cash_dr},
+                            {"TOTAL_DR",     rag.cash_dr},
+                            {"gl_bal",    XCASHBAL}
+                        });
+                    }
+                    if (tot_bank_cr > 0 && tot_bank_dr > 0)
+                    {
+                        if (XBANKBF == false)
+                        {
                             config.Insert("rep_acc_genled", new Dictionary<String, object>()
                             {
-                                {"GL_TYPE",   "T" },
+                                {"GL_TYPE",   "O" },
                                 {"ac_hd",   "BANK" },
                                 {"ac_majgr",    XMGR2},
                                 {"AC_DESC",   xacdesc2},
                                 {"ac_majgrdesc", XMGRDESC2 },
-                                {"GL_DATE",    rag.gl_date},
-                                {"BANK_CR",    tot_bank_cr},
-                                {"TOTAL_CR",    tot_bank_cr},
-                                {"BANK_DR",    tot_bank_dr},
-                                {"TOTAL_DR",    tot_bank_dr},
+                                {"GL_DATE",    XOPDT},
                                 {"gl_bal",    XBANKBAL}
                             });
+                            XBANKBF = true;
                         }
+                        XBANKBAL = XBANKBAL + (rag.bank_cr - rag.bank_dr) + (rag.bank_cont_cr - rag.bank_cont_dr);
+                        config.Insert("rep_acc_genled", new Dictionary<String, object>()
+                        {
+                            {"GL_TYPE",   "T" },
+                            {"ac_hd",   "BANK" },
+                            {"ac_majgr",    XMGR2},
+                            {"AC_DESC",   xacdesc2},
+                            {"ac_majgrdesc", XMGRDESC2 },
+                            {"GL_DATE",    rag.gl_date},
+                            {"BANK_CR",    tot_bank_cr},
+                            {"TOTAL_CR",    tot_bank_cr},
+                            {"BANK_DR",    tot_bank_dr},
+                            {"TOTAL_DR",    tot_bank_dr},
+                            {"gl_bal",    XBANKBAL}
+                        });
                     }
-                //}
+                }                
             }
             if (XCASHBF == true)
             {

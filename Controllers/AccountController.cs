@@ -588,7 +588,6 @@ namespace Amritnagar.Controllers
                 model.tableele = "<tr><th>PARTICULARS(CR)</th><th>CASH</th>" +
                     "<th>TRANSFER</th><th>TOTAL</th><th></th><th>PARTICULARS(DR)</th>" +
                     "<th>CASH</th><th>TRANSFER</th><th>TOTAL</th></tr>";
-
                 foreach (var a in aulst)
                 {
                     cashcr = "";
@@ -992,7 +991,8 @@ namespace Amritnagar.Controllers
             {
                 if (model.book_type == "Cash Book")
                 {
-                    model.tablee = "<tr><th>ac hd dr</th><th> ac desc dr </th><th>ac majgr dr</th><th>ac subgr dr</th><th>cash dr</th><th>bank dr</th><th>trans dr</th><th>tot dr</th><th> ac hd cr</th><th> ac desc cr </th><th>ac majgr cr</th><th>ac subgr cr</th><th>cash cr</th><th>bank cr</th><th>trans cr</th><th>tot cr</th></tr>";
+                    //model.tablee = "<tr><th>ac hd dr</th><th> ac desc dr </th><th>ac majgr dr</th><th>ac subgr dr</th><th>cash dr</th><th>bank dr</th><th>trans dr</th><th>tot dr</th><th> ac hd cr</th><th> ac desc cr </th><th>ac majgr cr</th><th>ac subgr cr</th><th>cash cr</th><th>bank cr</th><th>trans cr</th><th>tot cr</th></tr>";
+                    model.tablee = "<tr><th>Ac Hd(Dr)</th><th>Particulars(Dr)</th><th>Cash</th><th>Bank</th><th>Transfer</th><th>Total</th><th></th><th>AC Hd(Cr)</th><th>Particulars(Cr)</th><th>Cash</th><th>Bank</th><th>Transfer</th><th>Total</th></tr>";
                 }
                 else
                 {
@@ -1002,7 +1002,7 @@ namespace Amritnagar.Controllers
                 {
                     if (model.book_type == "Cash Book")
                     {
-                        model.tablee = model.tablee+ "<tr><td>" + a.ac_hd_dr+"</td><td>"+ a.ac_desc_dr +"</td><td>"+a.ac_majgr_dr+"</td><td>"+a.ac_subgr_dr+"</td><td>"+a.cash_dr.ToString("0.00") + "</td><td>"+a.bank_dr.ToString("0.00") + "</td><td>"+a.trans_dr.ToString("0.00") + "</td><td>"+a.tot_dr.ToString("0.00") + "</td><td> "+a.ac_hd_cr+"</td><td>"+ a.ac_desc_cr +"</td><td>"+a.ac_majgr_cr+"</td><td>"+a.ac_subgr_cr+ "</td><td>" + a.cash_cr.ToString("0.00") + " </td><td>"+a.bank_cr.ToString("0.00") + "</td><td>"+a.trans_cr.ToString("0.00") + "</td><td>"+a.tot_cr.ToString("0.00") + "</td></tr>";
+                        model.tablee = model.tablee+ "<tr><td>" + a.ac_hd_dr+"</td><td>"+ a.ac_desc_dr +"</td><td>"+a.cash_dr.ToString("0.00") + "</td><td>"+a.bank_dr.ToString("0.00") + "</td><td>"+a.trans_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.tot_dr.ToString("0.00") + "</td><th></th><td> " + a.ac_hd_cr+"</td><td>"+ a.ac_desc_cr +"</td><td>" + a.cash_cr.ToString("0.00") + " </td><td>"+a.bank_cr.ToString("0.00") + "</td><td>"+a.trans_cr.ToString("0.00") + "</td><td style =\"background-color:lightgreen\">" + a.tot_cr.ToString("0.00") + "</td></tr>";
                     }
                     else
                     {
@@ -1479,17 +1479,16 @@ namespace Amritnagar.Controllers
                 foreach (var a in raglst)
                 {
                     if (i == 1)
-                    {
-                        model.tableelement = "<tr><th>Sr No</th><th>Ac_Hd</th><th>Ac_Desc</th><th>Ac_Majgrdesc</th><th>GL Type</th><th>GL Date</th><th>Cash Cr</th><th>Bank Cr</th><th>Trans Cr</th><th>Journal Cr</th><th>Total Cr</th><th>Cash Dr</th><th>Bank Dr</th><th>Trans Dr</th><th>Journal Dr</th><th>Total Dr</th><th>GL Bal</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.ac_majgrdesc + "</td><td>" + a.gl_type + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td style =\"background-color: lightgreen\">" + a.total_cr.ToString("0.00") + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
+                    {                       
+                        model.tableelement = "<tr><th>Sr No</th><th>GL_Date</th><th>Particulars(Cr)</th><th>Cash</th><th>Bank</th><th>Transfer</th><th>Journal</th><th>Total</th><th></th><th>Particulars(Dr)</th><th>Cash</th><th>Bank</th><th>Transfer</th><th>Journal</th><th>Total</th><th>GL Bal</th></tr>";                       
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.ac_desc + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td style =\"background-color: lightgreen\">" + a.total_cr.ToString("0.00") + "</td><th></th><td>" + a.ac_desc + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
                     }
                     else
-                    {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.ac_desc + "</td><td>" + a.ac_majgrdesc + "</td><td>" + a.gl_type + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td style =\"background-color:lightgreen\">" + a.total_cr.ToString("0.00") + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
+                    {                      
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.ac_desc + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td style =\"background-color: lightgreen\">" + a.total_cr.ToString("0.00") + "</td><th></th><td>" + a.ac_desc + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
                     }
                     tot_cash_cr = tot_cash_cr + a.cash_cr;
-                    tot_cash_dr = tot_cash_dr + a.cash_dr;
-                   //cl_cash = Convert.ToDecimal(model.open_bal) + (a.cash_cr - a.cash_dr);
+                    tot_cash_dr = tot_cash_dr + a.cash_dr;                  
                     i = i + 1;
                 }
                 cl_cash = Convert.ToDecimal(model.open_bal) + (tot_cash_cr - tot_cash_dr);
