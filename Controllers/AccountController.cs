@@ -1473,7 +1473,9 @@ namespace Amritnagar.Controllers
             decimal cl_cash = 0;
             decimal tot_cash_cr = 0;
             decimal tot_cash_dr = 0;
-            int i = 1;
+            decimal tot_dr = 0;
+            decimal tot_cr = 0;
+            int i = 1;           
             if (raglst.Count > 0)
             {
                 foreach (var a in raglst)
@@ -1486,6 +1488,15 @@ namespace Amritnagar.Controllers
                     else
                     {                      
                         model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.gl_date.ToString("dd/MM/yyyy").Replace("-", "/") + "</td><td>" + a.ac_desc + "</td><td>" + a.cash_cr.ToString("0.00") + "</td><td>" + a.bank_cr.ToString("0.00") + "</td><td>" + a.trans_cr.ToString("0.00") + "</td><td>" + a.journal_cr.ToString("0.00") + "</td><td style =\"background-color: lightgreen\">" + a.total_cr.ToString("0.00") + "</td><th></th><td>" + a.ac_desc + "</td><td>" + a.cash_dr.ToString("0.00") + "</td><td>" + a.bank_dr.ToString("0.00") + "</td><td>" + a.trans_dr.ToString("0.00") + "</td><td>" + a.journal_dr.ToString("0.00") + "</td><td style =\"background-color:pink\">" + a.total_dr.ToString("0.00") + "</td><td>" + a.gl_bal.ToString("0.00") + "</td></tr>";
+                    }
+                    tot_cr = tot_cr + a.total_cr;
+                    tot_dr = tot_dr + a.total_dr;
+                    int j = raglst.Count();
+                    if (i == j)
+                    {                       
+                        model.tableelement = model.tableelement + "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style =\"background-color: lightgreen\">" + tot_cr.ToString("0.00") + "</td><th></th><td></td><td></td><td></td><td></td><td></td><td style =\"background-color:pink\">" + tot_dr.ToString("0.00")+ "</td><td></td></tr>";
+                        j = 0;
+                        i = 0;                                               
                     }
                     tot_cash_cr = tot_cash_cr + a.cash_cr;
                     tot_cash_dr = tot_cash_dr + a.cash_dr;                  
