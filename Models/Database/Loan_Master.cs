@@ -228,7 +228,7 @@ namespace Amritnagar.Models.Database
                     config.Update("LOAN_MASTER", new Dictionary<String, object>()
                     {
                         { "CLOS_FLAG",  lm.clos_flag },
-                        { "CLOS_DATE",  Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/")) },
+                        { "CLOS_DATE",  DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/")},
                     }, new Dictionary<string, object>()
                     {
                         { "BRANCH_ID",  lm.branch_id },
