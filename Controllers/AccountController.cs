@@ -288,20 +288,16 @@ namespace Amritnagar.Controllers
         public ActionResult OnLineCashRecLoan(OnLineCashRecLoanViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
             model.TypeDesc = u.getTypeMastDetails();
-
             return View(model);
         }
         [HttpGet]
         public ActionResult LoanTransfCreditEntry(LoanTransfCreditEntryViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
             model.TypeDesc = u.getTypeMastDetails();
-
             return View(model);
         }
         /********************************************Vouchar Entry Start*******************************************/
@@ -918,10 +914,7 @@ namespace Amritnagar.Controllers
         public ActionResult DayBookReport(DayBookReportViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
-
-
             return View(model);
         }
         public JsonResult getAccounthead(string ac_hd)
@@ -973,10 +966,7 @@ namespace Amritnagar.Controllers
         public ActionResult CashBookReport(CashBookReportViewModel model)
         {
             UtilityController u = new UtilityController();
-
             model.BranchDesc = u.getBranchMastDetails();
-
-
             return View(model);
         }
         public JsonResult populateCashBook(CashBookReportViewModel model)
@@ -1494,7 +1484,7 @@ namespace Amritnagar.Controllers
                     int j = raglst.Count();
                     if (i == j)
                     {                       
-                        model.tableelement = model.tableelement + "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style =\"background-color: lightgreen\">" + tot_cr.ToString("0.00") + "</td><th></th><td></td><td></td><td></td><td></td><td></td><td style =\"background-color:pink\">" + tot_dr.ToString("0.00")+ "</td><td></td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td></td><td></td><td style =\"font-weight: bold; font-size:14px \">Total</td><td></td><td></td><td></td><td></td><td style =\"background-color: lightgreen;font-weight: bold; font-size:14px;color:royalblue \">" + tot_cr.ToString("0.00") + "</td><th></th><td style =\"font-weight: bold; font-size: 14px\">Total</td><td></td><td></td><td></td><td></td><td style =\"background-color:pink;font-weight: bold; font-size:14px;color:firebrick \">" + tot_dr.ToString("0.00")+ "</td><td></td></tr>";
                         j = 0;
                         i = 0;                                               
                     }
