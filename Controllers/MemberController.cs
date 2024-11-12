@@ -392,7 +392,6 @@ namespace Amritnagar.Controllers
         }
         public JsonResult GetRetirementDate(string BrthDt)
         {
-
             string retirementdt = Convert.ToDateTime(Convert.ToDateTime(BrthDt).ToString("dd/MM/yyyy")).AddDays(60 * 365 + 15).ToString("dd/MM/yyyy").Replace("-", "/");
             int year = Convert.ToDateTime(retirementdt).Year;
             int month = Convert.ToDateTime(retirementdt).Month;

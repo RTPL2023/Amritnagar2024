@@ -204,6 +204,7 @@
     <Compile Include="Models\Database\Vch_Details.cs" />
     <Compile Include="Models\Database\Vch_header.cs" />
     <Compile Include="Models\Database\Vch_Type.cs" />
+    <Compile Include="Models\ViewModel\BackupViewModel.cs" />
     <Compile Include="Models\ViewModel\BankMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\CashAccountReportViewModel.cs" />
     <Compile Include="Models\ViewModel\CashBankPositionReportViewModel.cs" />
@@ -350,6 +351,7 @@
     <Content Include="Views\Home\DashBoard.cshtml" />
     <Content Include="Views\SalaryDeduction\GeneralDeductionschedule.cshtml" />
     <Content Include="Views\Member\VoterList.cshtml" />
+    <Content Include="Views\Utility\BackUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

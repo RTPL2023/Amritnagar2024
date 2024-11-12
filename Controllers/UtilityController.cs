@@ -5,6 +5,7 @@ using System.Web;
 using Amritnagar.Models.ViewModel;
 using System.Web.Mvc;
 using Amritnagar.Models.Database;
+using Amritnagar.Includes;
 using System.Drawing.Printing;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -281,5 +282,69 @@ namespace Amritnagar.Controllers
             return memory;
         }
 
+        //****************For BackUp Database
+        public ActionResult BackUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Backup(BackupViewModel model, string btnbackup)
+        {
+            if (btnbackup != null)
+            {
+                SQLConfig sc = new SQLConfig();
+                try
+                {
+                    //string dbNAme = Convert.ToString(System.Web.HttpContext.Current.Session["DB"]);
+                    //string backupDestination = Server.MapPath("~BackUp");
+                    //string backupDestination = @"\\172.16.0.5\software";
+                    //string backupDestination = @"\\172.16.0.14\software";
+                    //string backupDestination = @"\\192.168.137.1\Store_Backup";                 
+                     //System.IO.File.Delete(@"\\192.168.137.1\Store_Backup\" + fileName);
+                     //Directory.CreateDirectory(Server.MapPath(@"D:\Amritnagar_Backup"));
+                    Directory.CreateDirectory(@"D:\Amritnagar_Backup");                                   
+                    string backupDestination = @"D:\Amritnagar_Backup";
+                    string dateStamp = DateTime.Now.ToString("yyyy-MM-dd@HH_mm");
+                    //string fileName = dbNAme.Replace(".", "_") + "of" + dateStamp + ".Bak";
+                    string fileName = "BackUp" + "of" + dateStamp + ".Bak";
+                    //if (!Directory.Exists(backupDestination))
+                    //{
+                    //    Directory.CreateDirectory(backupDestination);
+                    //}
+                    string sql = "BACKUP database Amritnagar to disk='" + backupDestination + "\\" + fileName + "'";
+                    sc.Execute_Query(sql);
+                    //byte[] bytes = System.IO.File.ReadAllBytes(@"\\172.16.0.5\software\" + fileName);
+                    //byte[] bytes = System.IO.File.ReadAllBytes(@"\\172.16.0.14\software\" + fileName);
+                    byte[] bytes = System.IO.File.ReadAllBytes(@"D:\Amritnagar_Backup\" + fileName);
+                    Response.Clear();
+                    Response.Buffer = false;
+                    Response.Charset = "";
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.ContentType = "application/octet-stream";
+                    Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();
+                    //if (System.IO.File.Exists(@"\\172.16.0.5\software\" + fileName))
+                    //if (System.IO.File.Exists(@"\\172.16.0.14\software\" + fileName))
+                    //{
+                    //    System.IO.File.Delete(@"\\172.16.0.14\software\" + fileName);
+                    //}
+                    //if (System.IO.File.Exists(@"\\192.168.137.1\Store_Backup\" + fileName))
+                    if (System.IO.File.Exists(@"D:\Amritnagar_Backup\" + fileName))
+                    {
+                        //System.IO.File.Delete(@"\\192.168.137.1\Store_Backup\" + fileName);
+                        System.IO.File.Delete(@"D:\Amritnagar_Backup\" + fileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string exception = ex.ToString();
+                }
+                //sc.Getbackup();
+            }
+            return View(model);
+        }
     }
 }
