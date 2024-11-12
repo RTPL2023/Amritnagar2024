@@ -170,7 +170,7 @@ namespace Amritnagar.Models.Database
         }
         public List<Loan_Master> getmemdetails(string branch_id, string ac_hd, string emp_id)
         {
-            string sql = "select * from loan_master where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and employee_id='" + emp_id + "' order by branch_id,ac_hd,employee_id";
+            string sql = "select * from loan_master where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and employee_id='" + emp_id + "' order by LOAN_DATE desc";
             config.singleResult(sql);
             List<Loan_Master> lml = new List<Loan_Master>();
             if (config.dt.Rows.Count > 0)
