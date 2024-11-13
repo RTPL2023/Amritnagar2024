@@ -894,8 +894,10 @@ namespace Amritnagar.Models.Database
                     if (config.dt.Rows.Count > 0)
                     {
                         DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                        lbal_prin = Convert.ToDecimal(dr1["prin_bal"]);
-                        lbal_int = Convert.ToDecimal(dr1["int_DUE"]);
+                        //lbal_prin = Convert.ToDecimal(dr1["prin_bal"]);
+                        lbal_prin = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal(00);
+                        //lbal_int = Convert.ToDecimal(dr1["int_DUE"]);
+                        lbal_int = !Convert.IsDBNull(dr1["int_DUE"]) ? Convert.ToDecimal(dr1["int_DUE"]) : Convert.ToDecimal(00);
                         lbal_aint = !Convert.IsDBNull(dr1["AINT_DUE"]) ? Convert.ToDecimal(dr1["AINT_DUE"]) : Convert.ToDecimal(00);
                         lbal_ch = !Convert.IsDBNull(dr1["ichrg_due"]) ? Convert.ToDecimal(dr1["ichrg_due"]) : Convert.ToDecimal(00);
                     }
