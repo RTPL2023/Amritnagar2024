@@ -111,20 +111,20 @@ namespace Amritnagar.Models.Database
             vd.vch_amt = Convert.ToDecimal(amt);
             vd.insert_mode = "MR";         
             config.Insert("TVCH_DETAIL", new Dictionary<String, object>()
-                {
-                    {"branch_id",   vd.branch_id },
-                    { "trn_date",   vd.trn_date },
-                    { "trn_shift", vd.trn_shift },
-                    { "trn_no",    vd.trn_no },
-                    { "VCH_DRCR",   vd.vch_drcr },
-                    { "ac_hd",  vd.ac_hd },
-                    { "vch_pacno",  vd.vch_pacno },
-                    { "vch_acname", vd.vch_acname },
-                    { "vch_amt",    vd.vch_amt },
-                    {"counter_no",   vd.counter_no},
-                    { "trn_srl",  vd.trn_srl},                    
-                    { "insert_mode",    vd.insert_mode},
-                });
+            {
+                {"branch_id",   vd.branch_id },
+                { "trn_date",   vd.trn_date },
+                { "trn_shift", vd.trn_shift },
+                { "trn_no",    vd.trn_no },
+                { "VCH_DRCR",   vd.vch_drcr },
+                { "ac_hd",  vd.ac_hd },
+                { "vch_pacno",  vd.vch_pacno },
+                { "vch_acname", vd.vch_acname },
+                { "vch_amt",    vd.vch_amt },
+                {"counter_no",   vd.counter_no},
+                { "trn_srl",  vd.trn_srl},                    
+                { "insert_mode",    vd.insert_mode},
+            });
             Ledger ld = new Ledger();
             ld.AddLedger_For_TVCH(vd);
         }

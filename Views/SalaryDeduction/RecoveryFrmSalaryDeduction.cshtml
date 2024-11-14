@@ -346,6 +346,7 @@
             $("#changesTbox").hide();
             //$("#to_dt").hide();
         });
+
         function evtbook_no(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
@@ -354,35 +355,49 @@
                 getList();
             }
         }
+
         function Btnrefreshonclick() {
-            $("#loading").show();
-            /*alert("ok");*/
-            let ModelObject = {
-                ded_achd: $('#ded_achd').val(),
-                branch: $('#branch').val(),
-                emplyer_name: $('#emplyer_name').val(),
-                emp_unit: $('#emp_unit').val(),
-                book_no: $('#book_no').val(),
-                sch_dt: $('#sch_dt').val(),
-                rec_dt: $('#rec_dt').val(),
+            if ($('#rec_dt').val() == null || $('#rec_dt').val() == "") {
+                alert("Recovery Date Cannot Be Blank");
+                $('#rec_dt').focus();
+            }
+            else {
+                if (confirm("Recovery Date Is : " + $('#rec_dt').val()+" Do You Want to Continue?")) {
+                     $("#loading").show();
 
-            };
-            /*alert(JSON.stringify(ModelObject));*/
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("saveRecoveryGet", "SalaryDeduction")',
-                data: ModelObject,
-                dataType: "json",
-                success: function (data) {
-                    getList();
+                    let ModelObject = {
+                        ded_achd: $('#ded_achd').val(),
+                        branch: $('#branch').val(),
+                        emplyer_name: $('#emplyer_name').val(),
+                        emp_unit: $('#emp_unit').val(),
+                        book_no: $('#book_no').val(),
+                        sch_dt: $('#sch_dt').val(),
+                        rec_dt: $('#rec_dt').val(),
+                    };
 
-                },
-                error: function (err) {
-                    alert("Unable To Calculate");
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("saveRecoveryGet", "SalaryDeduction")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            getList();
+
+                        },
+                        error: function (err) {
+                            alert("Unable To Calculate");
+                        }
+                    });
+
                 }
-            });
+                else
+                    return false;
+
+            }
+
 
         };
+
         function getList() {
             $("#loading").show();
             /*alert("ok");*/
@@ -438,30 +453,46 @@
             });
 
         };
+
         function btnsaveRecoveryonclick() {
-            $("#loading").show();
-            let ModelObject = {
-                branch: $('#branch').val(),
-                emplyer_name: $('#emplyer_name').val(),
-                emp_unit: $('#emp_unit').val(),
-                book_no: $('#book_no').val(),
-                sch_dt: $('#sch_dt').val(),
-                rec_dt: $('#rec_dt').val(),
-            };
-            /*alert(JSON.stringify(ModelObject));*/
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("SaveInledger", "SalaryDeduction")',
-                data: ModelObject,
-                dataType: "json",
-                success: function (data) {
-                    alert(data);
-                    $("#loading").hide();
-                },
-                error: function (err) {
-                    alert(data);
+            if ($('#rec_dt').val() == null || $('#rec_dt').val() == "") {
+                alert("Recovery Date Cannot Be Blank");
+                $('#rec_dt').focus();
+            }
+             else {
+                if (confirm("Recovery Date Is : " + $('#rec_dt').val()+" Do You Want to Save?")) {
+                   
+                     $("#loading").show();
+                    let ModelObject = {
+                        branch: $('#branch').val(),
+                        emplyer_name: $('#emplyer_name').val(),
+                        emp_unit: $('#emp_unit').val(),
+                        book_no: $('#book_no').val(),
+                        sch_dt: $('#sch_dt').val(),
+                        rec_dt: $('#rec_dt').val(),
+                    };
+          
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveInledger", "SalaryDeduction")',
+                        data: ModelObject,
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            $("#loading").hide();
+                        },
+                        error: function (err) {
+                            alert(data);
+                        }
+                    });
+
                 }
-            });
+                else
+                    return false;
+
+            }
+
+
         };
 
         (function () {

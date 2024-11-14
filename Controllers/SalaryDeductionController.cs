@@ -1114,7 +1114,7 @@ namespace Amritnagar.Controllers
             model.EmpDesc = u.getEmployerMastDetails();
             model.EmpBranchDesc = u.getEmployerBranchMastDetails();
             model.sch_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
-            model.rec_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
+            //model.rec_dt = DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/");
             return View(model);
         }
         public ActionResult getdeductlist(string emplyer_name, string emp_unit)
