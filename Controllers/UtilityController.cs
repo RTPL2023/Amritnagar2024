@@ -324,5 +324,18 @@ namespace Amritnagar.Controllers
             }
             return View(model);
         }
+
+        //****************Ac/Hd DropdownFor GFTFDetailList
+        public IEnumerable<SelectListItem> getAcchdForGFTFDEtailList()
+        {
+            LoanMasterEntryViewModel lmevm = new LoanMasterEntryViewModel();
+            ACC_HEAD acc = new ACC_HEAD();
+            lmevm.achddesc = acc.getac_hdforgftfdetaillist().ToList().Select(x => new SelectListItem
+            {
+                Value = x.ac_hd.ToString(),
+                Text = x.ac_desc.ToString()
+            }); ;
+            return lmevm.achddesc;
+        }
     }
 }    
