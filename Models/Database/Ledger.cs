@@ -1526,8 +1526,6 @@ namespace Amritnagar.Models.Database
                 }
             }            
             return ldl;
-        }
-
-       
+        }       
     }
 }

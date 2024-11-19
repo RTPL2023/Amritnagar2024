@@ -163,7 +163,10 @@
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="Btnrefreshonclick()" />
-                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save"  onclick="btnsaveonclick()"/>
+                        <input id="BtnSave" type="button" name="BtnSave" Height="40" Width="100" class="btn btn-primary btn-sm" value="Save" onclick="btnsaveonclick()" />
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="BtnDebitInt" type="button" name="BtnDebitInt" Height="40" Width="100" class="btn btn-primary btn-sm" value="Debit Interest" onclick="btnsavedebitintonclick()" />
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -306,15 +309,14 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
     <script type="text/javascript">
+
         $(document).ready(function () {
             $("#loading").hide();
             //$("#frm_dt").hide();
             //$("#to_dt").hide();
         });
-      
 
        function AchdOnchange() {
-           
                 /*alert("ok");*/
            let ModelObject = { ac_hd: $('#ac_hd').val()};
                 /*alert(JSON.stringify(ModelObject));*/
@@ -331,8 +333,9 @@
                         alert("Unable To Calculate");
                     }
                 });
-            
-        };
+
+       };
+
         function Btnrefreshonclick() {
             $("#loading").show();
                 /*alert("ok");*/
@@ -370,8 +373,8 @@
                         alert("Unable To Calculate");
                     }
                 });
-            
         };
+
         function btnsaveonclick() {
             $("#loading").show();
             $('#forsave').val("Savedata");
@@ -402,20 +405,50 @@
                     alert("Unable To Calculate");
                 }
             });
+        };
 
+        function btnsavedebitintonclick() {
+            $("#loading").show();
+            $('#forsave').val("Savedata");
+            /*alert("ok");*/
+            let ModelObject = {
+                ac_hd: $('#ac_hd').val(),
+                fr_dt: $('#fr_dt').val(),
+                colliery_code: $('#colliery_code').val(),
+                branch: $('#branch').val(),
+                ex_gen: $('#ex_gen').val(),
+                to_dt: $('#to_dt').val(),
+                book_no: $('#book_no').val(),
+                int_rate: $('#int_rate').val(),
+                post_dt: $('#post_dt').val(),
+                forsave: $('#forsave').val(),
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("debitinterestforgftf", "Member")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    alert(data);
+                    $("#loading").hide();
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
         };
 
        //function evtbirth_date(evt) {
        //     var charCode = (evt.which) ? evt.which : event.keyCode;
        //     if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
        //         return false;
-       //     else if (charCode == 13) { 
+       //     else if (charCode == 13) {
        //         getRetirementDate();
        //         $('#sex').focus();
        //     }
        // }
 
-     
 
     </script>
 }

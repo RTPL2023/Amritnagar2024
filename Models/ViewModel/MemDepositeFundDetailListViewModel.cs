@@ -15,6 +15,12 @@ namespace Amritnagar.Models.ViewModel
         public string int_bal { get; set; }
         public string tot_bal { get; set; }
         public string tableelement { get; set; }
+        public string brn_txtbox { get; set; }
+        public string mem_no { get; set; }
+        public string mem_name { get; set; }
+        public string mem_name_txt { get; set; }
+        public string mem_id { get; set; }
+        public string table { get; set; }
         public IEnumerable<SelectListItem> BranchDesc { get; set; }
         public IEnumerable<SelectListItem> achddesc { get; set; }
     }

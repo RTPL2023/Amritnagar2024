@@ -2503,6 +2503,18 @@ namespace Amritnagar.Controllers
                 i++;
             }
         }
+        public JsonResult debitinterestforgftf(MemDepositeFundIntPaySchViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mmlst = new List<Member_Mast>();
+            mmlst = mm.GetmemMastForDemandInterestCalculation(model);
+            TF_Ledger tf = new TF_Ledger();
+            foreach(var a in mmlst)
+            {
+                tf.SaveDebitIntInLedgerForGFTF(a.mem_id, model);
+            }              
+            return Json("Over");
+        }
         public double CAL_GFTF_INT(DateTime xfrdt, DateTime XTODT, List<TF_Ledger> tflst, int xformonths, decimal XINT_RATE, decimal XMAX_MINBAL, MemDepositeFundIntPaySchViewModel model)
         {
             double open_bal = 0; double clos_bal = 0; double xtot = 0;
@@ -2982,7 +2994,6 @@ namespace Amritnagar.Controllers
             model.achddesc = u.getAcchdForGFTFDEtailList();
             return View(model);
         }
-
         public JsonResult GetGFTFDetailList(MemDepositeFundDetailListViewModel model)
         {
             Member_Mast mm = new Member_Mast();

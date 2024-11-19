@@ -68,6 +68,7 @@ namespace Amritnagar.Models.Database
         public string trans { get; set; }
         public string ret { get; set; }
         public string exp { get; set; }
+        public string table { get; set; }
         public Nullable<DateTime> exp_dt { get; set; }
         public string tf_double { get; set; }
         public string mem_closed { get; set; }
@@ -970,9 +971,7 @@ namespace Amritnagar.Models.Database
             string sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + model.branch + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' AND ";
             sql = sql + "BOOK_NO= '" + model.book_no + "' AND MEM_CATEGORY='" + model.ex_gen + "' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + model.to_dt + "', 103) AND ";
             sql = sql + "IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + model.to_dt + "', 103) ORDER BY MEMBER_ID";
-
             config.singleResult(sql);
-
             if (config.dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in config.dt.Rows)
@@ -989,8 +988,6 @@ namespace Amritnagar.Models.Database
                 mmlst = null;
             }
             return mmlst;
-
-
         }
         public List<Member_Mast> getallmemberdetails()
         {
@@ -1368,7 +1365,6 @@ namespace Amritnagar.Models.Database
             }
             return mml;
         }
-
         public List<Member_Mast> getdetaillist(string BranchID, string gl_hd, string on_dt)
         {
             string sql = string.Empty;
@@ -1392,8 +1388,7 @@ namespace Amritnagar.Models.Database
                     Member_Mast mm = new Member_Mast();
                     mm.mem_id = dr1["MEMBER_ID"].ToString();
                     mm.mem_name = dr1["MEMBER_NAME"].ToString();
-                    mm.mem_date = !Convert.IsDBNull(dr1["MEMBER_DATE"]) ? Convert.ToDateTime(dr1["MEMBER_DATE"]) : Convert.ToDateTime("01/01/0001");
-                    
+                    mm.mem_date = !Convert.IsDBNull(dr1["MEMBER_DATE"]) ? Convert.ToDateTime(dr1["MEMBER_DATE"]) : Convert.ToDateTime("01/01/0001");                    
                     sql = "select * from "+ Tablename + " where branch_id='" + BranchID + "' and ";
                     sql = sql + "member_id='" + mm.mem_id + "' and Convert(date,vch_date,103)<=Convert(Date,'" + on_dt + "',103) order by vch_date,vch_no,vch_srl";
                     config.singleResult(sql);
@@ -1405,13 +1400,10 @@ namespace Amritnagar.Models.Database
                         if((mm.prin_bal + mm.int_bal) > 0)
                         {
                             mml.Add(mm);
-                        }
-                        
+                        }                        
                     }
-
                 }
             }
-
             return mml;
         }
     }
