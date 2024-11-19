@@ -5,6 +5,7 @@ using System.Web;
 using Amritnagar.Models.ViewModel;
 using System.Web.Mvc;
 using Amritnagar.Models.Database;
+using Amritnagar.Includes;
 using System.Drawing.Printing;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -281,5 +282,60 @@ namespace Amritnagar.Controllers
             return memory;
         }
 
+        //****************For BackUp Database
+        public ActionResult BackUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Backup(BackupViewModel model, string btnbackup)
+        {
+            if (btnbackup != null)
+            {
+                SQLConfig sc = new SQLConfig();
+                try
+                {                  
+                    Directory.CreateDirectory(@"D:\Amritnagar_Backup");                                   
+                    string backupDestination = @"D:\Amritnagar_Backup";
+                    string dateStamp = DateTime.Now.ToString("yyyy-MM-dd@HH_mm");                  
+                    string fileName = "BackUp" + "of" + dateStamp + ".Bak";                   
+                    string sql = "BACKUP database Amritnagar to disk='" + backupDestination + "\\" + fileName + "'";
+                    sc.Execute_Query(sql);                   
+                    byte[] bytes = System.IO.File.ReadAllBytes(@"D:\Amritnagar_Backup\" + fileName);
+                    Response.Clear();
+                    Response.Buffer = false;
+                    Response.Charset = "";
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.ContentType = "application/octet-stream";
+                    Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+                    Response.BinaryWrite(bytes);
+                    Response.Flush();
+                    Response.End();                   
+                    if (System.IO.File.Exists(@"D:\Amritnagar_Backup\" + fileName))
+                    {                       
+                        System.IO.File.Delete(@"D:\Amritnagar_Backup\" + fileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string exception = ex.ToString();
+                }               
+            }
+            return View(model);
+        }
+
+        //****************Ac/Hd DropdownFor GFTFDetailList
+        public IEnumerable<SelectListItem> getAcchdForGFTFDEtailList()
+        {
+            LoanMasterEntryViewModel lmevm = new LoanMasterEntryViewModel();
+            ACC_HEAD acc = new ACC_HEAD();
+            lmevm.achddesc = acc.getac_hdforgftfdetaillist().ToList().Select(x => new SelectListItem
+            {
+                Value = x.ac_hd.ToString(),
+                Text = x.ac_desc.ToString()
+            }); ;
+            return lmevm.achddesc;
+        }
     }
-}
+}    

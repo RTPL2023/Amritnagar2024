@@ -26,16 +26,17 @@
 
     .tab {
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
+        font-size: 13px;
         border-collapse: collapse;
-        width: 600px;
+        width: 800px;
         margin-left: auto;
         margin-right: auto;
+        font-weight:bold
     }
 
         .tab tbody {
             display: block;
-           /* width: 400px;*/
+            width: 800px;
             overflow: auto;
             height: 200px;
             text-align: center;
@@ -45,7 +46,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-           /* width: 400px;*/
+            width: 800px;
         }
 
         .tab tr:nth-child(even) {
@@ -66,11 +67,56 @@
             position: sticky;
             top: 0;
         }
+        .tab_1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        border-collapse: collapse;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        font-weight:bold
+    }
+
+        .tab_1 tbody {
+            display: block;
+            width: 800px;
+            overflow: auto;
+            height: 100px;
+            text-align: center;
+        }
+
+        .tab_1 td, .tab_1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-collapse: collapse;
+            width: 800px;
+        }
+
+        .tab_1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tab_1 tr:hover {
+            background-color: rgba(255, 182, 193, 0.2);
+        }
+
+        .tab_1 th {
+            padding: 8px;
+            text-align: center;
+            /*background-color: #04AA6D;*/
+            background-color: firebrick;
+            font-size: 12px;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
 
 
 
     input {
-        background-color: rgb(226,148,91,0.2)
+        background-color: rgb(226,148,91,0.2);
+        font-weight:bold;
+        font-size:13px
     }
 
     select {
@@ -136,7 +182,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                             <div class="table-responsive">
-                                <table  class="tab" id="list3">
+                                <table  class="tab_1" id="list3">
                                     
                                 </table>
                             </div>

@@ -392,7 +392,6 @@ namespace Amritnagar.Controllers
         }
         public JsonResult GetRetirementDate(string BrthDt)
         {
-
             string retirementdt = Convert.ToDateTime(Convert.ToDateTime(BrthDt).ToString("dd/MM/yyyy")).AddDays(60 * 365 + 15).ToString("dd/MM/yyyy").Replace("-", "/");
             int year = Convert.ToDateTime(retirementdt).Year;
             int month = Convert.ToDateTime(retirementdt).Month;
@@ -2504,6 +2503,18 @@ namespace Amritnagar.Controllers
                 i++;
             }
         }
+        public JsonResult debitinterestforgftf(MemDepositeFundIntPaySchViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mmlst = new List<Member_Mast>();
+            mmlst = mm.GetmemMastForDemandInterestCalculation(model);
+            TF_Ledger tf = new TF_Ledger();
+            foreach(var a in mmlst)
+            {
+                tf.SaveDebitIntInLedgerForGFTF(a.mem_id, model);
+            }              
+            return Json("Over");
+        }
         public double CAL_GFTF_INT(DateTime xfrdt, DateTime XTODT, List<TF_Ledger> tflst, int xformonths, decimal XINT_RATE, decimal XMAX_MINBAL, MemDepositeFundIntPaySchViewModel model)
         {
             double open_bal = 0; double clos_bal = 0; double xtot = 0;
@@ -2980,8 +2991,43 @@ namespace Amritnagar.Controllers
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
-            model.achddesc = u.getGlAcchd();
+            model.achddesc = u.getAcchdForGFTFDEtailList();
             return View(model);
+        }
+        public JsonResult GetGFTFDetailList(MemDepositeFundDetailListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetaillist(model.branch, model.gl_achd, model.on_dt);
+            int i = 1;
+            decimal prin_bal = 0;
+            decimal int_bal = 0;           
+            if (mml.Count > 0)
+            {
+                foreach (var a in mml)
+                {
+                    if (i == 1)
+                    {
+                        model.tableelement = "<tr><th>Srl</th><th>MemberShip No</th><th>Member Date</th><th>Name</th><th>Principal Balance</th><th>Interest Balance</th><th>Total Balance</th></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-","/") + "</td><td>" + a.mem_name + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + (a.prin_bal + a.int_bal).ToString("0.00") + "</td></tr>";
+                    }
+                    else
+                    {
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.mem_name + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + (a.prin_bal + a.int_bal).ToString("0.00") + "</td></tr>";
+                    }
+                    i = i + 1;
+                    prin_bal = prin_bal + a.prin_bal;
+                    int_bal = int_bal + a.int_bal;
+                }
+                model.prnt_bal = prin_bal.ToString("0.00");
+                model.int_bal = int_bal.ToString("0.00");
+                model.tot_bal = (prin_bal + int_bal).ToString("0.00");
+            }
+            else
+            {
+                model.tableelement = null;
+            }
+            return Json(model);
         }
 
         /********************************************Member Details List Start*******************************************/

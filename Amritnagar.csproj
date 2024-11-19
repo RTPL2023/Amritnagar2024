@@ -204,6 +204,7 @@
     <Compile Include="Models\Database\Vch_Details.cs" />
     <Compile Include="Models\Database\Vch_header.cs" />
     <Compile Include="Models\Database\Vch_Type.cs" />
+    <Compile Include="Models\ViewModel\BackupViewModel.cs" />
     <Compile Include="Models\ViewModel\BankMasterViewModel.cs" />
     <Compile Include="Models\ViewModel\CashAccountReportViewModel.cs" />
     <Compile Include="Models\ViewModel\CashBankPositionReportViewModel.cs" />
@@ -265,6 +266,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\datepicker.css" />
     <Content Include="Content\Images\icon.png" />
+    <Content Include="Content\Images\login_bg.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -272,6 +274,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="wwwroot\Images\LoadingGif.gif" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
+    <None Include="Properties\PublishProfiles\Server.pubxml" />
+    <None Include="Properties\PublishProfiles\Sneha.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -350,6 +355,7 @@
     <Content Include="Views\Home\DashBoard.cshtml" />
     <Content Include="Views\SalaryDeduction\GeneralDeductionschedule.cshtml" />
     <Content Include="Views\Member\VoterList.cshtml" />
+    <Content Include="Views\Utility\BackUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

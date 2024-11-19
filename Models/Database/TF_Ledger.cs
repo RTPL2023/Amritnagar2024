@@ -74,6 +74,7 @@ namespace Amritnagar.Models.Database
         {
             string sql = string.Empty;
             string acc = "";
+            decimal last_int_bal = 0;
             if (model.ac_hd == "TF")
             {
                 acc = "TF_LEDGER";
@@ -82,13 +83,21 @@ namespace Amritnagar.Models.Database
             {
                 acc = "GF_LEDGER";
             }
+            sql = "Delete From " + acc + " WHERE BRANCH_ID='" + model.branch + "' and ";
+            sql = sql + "member_id='" + mm.mem_id + "' and convert(date, vch_date, 103) = convert(date, '" + model.post_dt + "', 103) and ";
+            sql = sql + "vch_no = 'SI" + model.ac_hd + "01' and vch_srl = 1 and DR_CR ='C' and vch_Type ='T' and insert_mode='SI'";
+            config.Execute_Query(sql);
+
             sql = "SELECT * FROM " + acc + " WHERE BRANCH_ID='" + model.branch + "' and ";
             sql = sql + "member_id='" + mm.mem_id + "' order by vch_date,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
+                DataRow dr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                last_int_bal = !Convert.IsDBNull(dr["INT_BAL"]) ? Convert.ToDecimal(dr["INT_BAL"]) : Convert.ToDecimal("00");
                 try
                 {
+                    last_int_bal = last_int_bal + Convert.ToDecimal(xtot_int);
                     config.Insert(acc, new Dictionary<String, object>()
                     {
                         { "BRANCH_ID",   model.branch },
@@ -100,6 +109,7 @@ namespace Amritnagar.Models.Database
                         { "DR_CR",       "C" },
                         { "INT_AMOUNT",  xtot_int },
                         { "PRIN_BAL",    Convert.ToDecimal(clos_prin.ToString("0.00"))},
+                        { "INT_BAL",    last_int_bal},
                         { "INSERT_MODE", "SI"},
                         { "vch_achd",    ("INTP"+model.ac_hd).Substring(0,6) },
                     });
@@ -109,11 +119,66 @@ namespace Amritnagar.Models.Database
 
                 }
             }
-
             string msg = "Saved Successfully";
             return (msg);
         }
+        public string SaveDebitIntInLedgerForGFTF(string memberid, MemDepositeFundIntPaySchViewModel model)
+        {
+            string sql = string.Empty;
+            string acc = "";
+            decimal last_int_bal = 0;
+            decimal last_Prin_bal = 0;
+            decimal last_int_amt = 0;
+            if (model.ac_hd == "TF")
+            {
+                acc = "TF_LEDGER";
+            }
+            else if (model.ac_hd == "GF")
+            {
+                acc = "GF_LEDGER";
+            }
 
+            sql = "Delete From " + acc + " WHERE BRANCH_ID='" + model.branch + "' and ";
+            sql = sql + "member_id='" + memberid + "' and convert(date, vch_date, 103) = convert(date, '" + model.post_dt + "', 103) and ";
+            sql = sql + "vch_no = 'DEBIT-INT" + model.ac_hd + "01' and vch_srl = 9 and DR_CR ='D' and vch_Type ='B' and insert_mode='GFTFPAY'";
+            config.Execute_Query(sql);
+
+            sql = "SELECT * FROM " + acc + " WHERE BRANCH_ID='" + model.branch + "' and ";
+            sql = sql + "member_id='" + memberid + "' order by vch_date,VCH_NO,VCH_SRL";
+            config.singleResult(sql);
+            if (config.dt.Rows.Count > 0)
+            {
+                DataRow dr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                last_int_bal = !Convert.IsDBNull(dr["INT_BAL"]) ? Convert.ToDecimal(dr["INT_BAL"]) : Convert.ToDecimal("00");
+                last_Prin_bal = !Convert.IsDBNull(dr["prin_BAL"]) ? Convert.ToDecimal(dr["prin_BAL"]) : Convert.ToDecimal("00");
+                last_int_amt = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal("00");
+                try
+                {                    
+                    last_int_bal = last_int_bal - Convert.ToDecimal(last_int_amt);
+                    config.Insert(acc, new Dictionary<String, object>()
+                    {
+                        { "BRANCH_ID",   model.branch },
+                        { "MEMBER_ID",  memberid },
+                        { "VCH_DATE",    Convert.ToDateTime(model.post_dt +" "+Convert.ToString(DateTime.Now.ToShortTimeString()))},
+                        { "VCH_NO",      "DEBIT-INT"+model.ac_hd+"01" },
+                        { "VCH_SRL",     "9"},
+                        { "VCH_TYPE",    "B" },
+                        { "DR_CR",       "D" },
+                        { "INT_AMOUNT",  last_int_amt },
+                        { "PRIN_BAL",    last_Prin_bal},
+                        { "INT_BAL",    last_int_bal},
+                        { "INSERT_MODE", "GFTFPAY"},
+                        { "vch_achd",    ("INTD"+model.ac_hd).Substring(0,6) },
+                    });
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            string msg = "Saved Successfully";
+            return (msg);
+        }
         public List<TF_Ledger> getdataByledgerTab(string gl_achd, string branch, string mem_no)
         {
 
@@ -168,7 +233,6 @@ namespace Amritnagar.Models.Database
             }
             return tflst;
         }
-
         public List<TF_Ledger> getTfRate()
         {
             List<TF_Ledger> tflst = new List<TF_Ledger>();
@@ -186,12 +250,7 @@ namespace Amritnagar.Models.Database
                 }
             }
             return tflst;
-
-
-
-
         }
-
         public string UpdateGFandTFLedger(Tf_Gf_LedgerViewModel model)
         {
             string sql = string.Empty;
@@ -244,12 +303,10 @@ namespace Amritnagar.Models.Database
             {
                 ResetBalAmtForshare(acc, model.mem_no, model.con_vch_date);
             }
-            else {
+            else 
+            {
                 ResetPrinBalIntBalForLedgerModification(acc, model.mem_no, model.con_vch_date);
-
             }
-
-
             return (msg);
         }
         public void ResetPrinBalIntBalForLedgerModification(string xledtab, string xacnoOrContno, string dt)
@@ -305,7 +362,6 @@ namespace Amritnagar.Models.Database
                 }
             }
         }
-
         public void ResetBalAmtForshare(string xledtab, string xacnoOrContno, string dt)
         {
             TF_Ledger tfl = new TF_Ledger();
