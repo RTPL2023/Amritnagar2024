@@ -562,7 +562,8 @@ namespace Amritnagar.Models.Database
                                 FLAG = Convert.ToString(dr["FLAG"]);
                                 if (lm.loan_dt.Month == Convert.ToDateTime(model.fr_dt).Month && lm.loan_dt.Year == Convert.ToDateTime(model.fr_dt).Year)
                                 {
-                                    cal_date = Convert.ToDateTime(lm.loan_dt - Convert.ToDateTime(model.fr_dt).AddDays(+1)).Day;
+                                    //cal_date = Convert.ToDateTime(lm.loan_dt - Convert.ToDateTime(model.fr_dt).AddDays(1)).Day;
+                                    cal_date = Convert.ToInt32(lm.loan_dt.Subtract(Convert.ToDateTime(model.fr_dt)).TotalDays)+1;
                                     XPRIN_BAL = Convert.ToDecimal(dr3["prin_bal"]);
                                     DataRow dr4 = (DataRow)config.dt.Rows[0];
                                     if (Convert.ToDateTime(dr4["VCH_DATE"]) == lm.loan_dt)
