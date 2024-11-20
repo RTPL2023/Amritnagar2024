@@ -564,7 +564,7 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs1 = new Recovery_Schedule();
                     XBOOK_NO = Convert.ToString(dr["book_no"]);
                     xemployee_ID = Convert.ToString(dr["EMPLOYEE_ID"]);
-                    if (xemployee_ID == "104957")
+                    if (xemployee_ID == "111731")
                     {
 
                     }
@@ -582,10 +582,11 @@ namespace Amritnagar.Models.Database
                             string Acc_Head = Convert.ToString(dr1["ac_hd"]);
                             sql = "Select * from acc_head where ac_hd='" + Acc_Head + "'";
                             config.singleResult(sql);
-                            if (Acc_Head == "M14")
+                            if (Acc_Head == "SL6")
                             {
 
                             }
+                           
                             if (config.dt.Rows.Count > 0)
                             {
                                 DataRow drac = (DataRow)config.dt.Rows[0];
@@ -594,14 +595,14 @@ namespace Amritnagar.Models.Database
                                 {
                                     LED_TAB = Convert.ToString(drac["LEDGER_TAB"]);
                                     sql = " select * from LOAN_MASTER where branch_id = '" + branch + "' and ac_hd = '" + Acc_Head + "' " +
-                                        "and EMPLOYEE_ID = '" + xemployee_ID + "' And convert(datetime, loan_date, 103) <= convert(datetime, '" + sch_date + "', 103) AND" +
+                                        "and EMPLOYEE_ID = '" + xemployee_ID + "' And convert(date, loan_date, 103) <= convert(date, '" + sch_date + "', 103) AND" +
                                         " CLOS_FLAG IS NULL AND CLOS_DATE IS NULL AND FLAG IS NULL";
                                     config.singleResult(sql);
                                     if (config.dt.Rows.Count > 0)
                                     {
                                         DataRow drlm = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                                         string rSource = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + branch + "' AND ";
-                                        rSource = rSource + "AC_HD='" + Acc_Head + "' and  EMPLOYEE_ID='" + xemployee_ID + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + sch_date + "', 103) ";
+                                        rSource = rSource + "AC_HD='" + Acc_Head + "' and  EMPLOYEE_ID='" + xemployee_ID + "' AND convert(date, VCH_DATE, 103) <= convert(date, '" + sch_date + "', 103) ";
                                         rSource = rSource + "ORDER BY BRANCH_ID,AC_HD,employee_ID,VCH_DATE,VCH_NO,VCH_SRL";
                                         config.singleResult(rSource);
                                         if (config.dt.Rows.Count > 0)
@@ -684,6 +685,7 @@ namespace Amritnagar.Models.Database
                                                 rs.SaveDataInRecoverySchedule(rs, emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, xemployee_ID, user_id);
                                                 rslst.Add(rs);
                                                 CAL_LOAN_DUE = true;
+                                                XPRIN_BAL = 0;
                                             }
                                             if (CAL_LOAN_DUE == true)
                                             {
@@ -733,7 +735,7 @@ namespace Amritnagar.Models.Database
                                             }
                                             ACT_DUE = 0;
                                             prin_bal = 0;
-                                            sql = "SELECT* FROM TF_LEDGER WHERE BRANCH_ID = '" + branch + "' AND MEMBER_ID='" + MEMBER + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + sch_date + "', 103) ORDER BY BRANCH_ID,MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
+                                            sql = "SELECT* FROM TF_LEDGER WHERE BRANCH_ID = '" + branch + "' AND MEMBER_ID='" + MEMBER + "' AND convert(date, VCH_DATE, 103) <= convert(date, '" + sch_date + "', 103) ORDER BY BRANCH_ID,MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
                                             config.singleResult(sql);
                                             if (config.dt.Rows.Count > 0)
                                             {
@@ -853,7 +855,7 @@ namespace Amritnagar.Models.Database
                                             }
                                             ACT_DUE = 0;
                                             prin_bal = 0;
-                                            sql = "SELECT * FROM RTB_LEDGER WHERE BRANCH_ID='" + branch + "' AND MEMBER_ID='" + MEMBER + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + sch_date + "', 103) ORDER BY BRANCH_ID,MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
+                                            sql = "SELECT * FROM RTB_LEDGER WHERE BRANCH_ID='" + branch + "' AND MEMBER_ID='" + MEMBER + "' AND convert(date, VCH_DATE, 103) <= convert(date, '" + sch_date + "', 103) ORDER BY BRANCH_ID,MEMBER_ID,VCH_DATE,VCH_NO,VCH_SRL";
                                             config.singleResult(sql);
                                             if (config.dt.Rows.Count > 0)
                                             {
