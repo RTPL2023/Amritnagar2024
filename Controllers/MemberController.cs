@@ -2986,6 +2986,8 @@ namespace Amritnagar.Controllers
             return GETINSTFOR;
         }
         /********************************************Member Deposit Fund Ledger Statement End*******************************************/
+
+        /********************************************Member GFTF Details List Start *******************************************/
         [HttpGet]
         public ActionResult MemDepositeFundDetailList(MemDepositeFundDetailListViewModel model)
         {
@@ -3029,6 +3031,81 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
+        public ActionResult GFTFDetailsPrintfile(MemDepositeFundDetailListViewModel model)
+        {
+            string serial = "";
+            string mem_name = "";
+            decimal tot_bal = 0;
+            Licence lc = new Licence();
+            lc = lc.getlicencedetails();
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetaillist(model.branch, model.gl_achd, model.on_dt);
+            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
+            using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\GFTF_Details_List.txt")))
+            {
+                int Pg = 1;
+                int Ln = 0;
+                int i = 1;                
+                sw.WriteLine("                       " + lc.lic_name);
+                sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
+                sw.WriteLine("");
+                sw.WriteLine( model.branch +  "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                          Page No # " + Pg);                
+                sw.WriteLine("==================================================================================================");            
+                sw.WriteLine("Srl. |Member No|Member Date|Member Name                     |Prin Balance|Int Balance|Total Amount");
+                sw.WriteLine("==================================================================================================");
+                foreach (var am in mml)
+                {                    
+                    if (Ln > Pg * 65)
+                    {
+                        Pg = Pg + 1;
+                        Ln = Ln + 7;                       
+                        sw.WriteLine("");
+                        sw.WriteLine(model.branch + "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                          Page No # " + Pg);
+                        sw.WriteLine("==================================================================================================");
+                        sw.WriteLine("Srl. |Member No|Member Date|Member Name                     |Prin Balance|Int Balance|Total Amount");
+                        sw.WriteLine("==================================================================================================");
+                    }
+                    tot_bal = am.prin_bal + am.int_bal;
+                    if (Convert.ToString(i).Length > 4)
+                    {
+                        serial = Convert.ToString(i).Substring(0, 3);
+                    }
+                    else
+                    {
+                        serial = Convert.ToString(i);
+                    }
+                    if (am.mem_name.ToString().Length > 32)
+                    {
+                        mem_name = (am.mem_name).Substring(0, 31);
+                    }
+                    else
+                    {
+                        mem_name = am.mem_name;
+                    }
+                    sw.WriteLine("".ToString().PadLeft(5 - (serial).ToString().Length) + serial + "|"
+                         + "".ToString().PadLeft(9 - (am.mem_id).ToString().Length) + am.mem_id + "|"
+                           + "".ToString().PadLeft(11 - (am.mem_date).ToString("dd-MM-yyyy").Replace("-", "/").Length) + am.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "|"
+                           + "".ToString().PadLeft(32 - (mem_name).ToString().Length) + mem_name + "|"
+                            + "".ToString().PadLeft(12 - (am.prin_bal).ToString().Length) + am.prin_bal + "|"
+                             + "".ToString().PadLeft(11 - (am.int_bal).ToString("0.00").Length) + am.int_bal.ToString("0.00") + "|"
+                              + "".ToString().PadLeft(12 - (tot_bal).ToString("0.00").Length) + tot_bal.ToString("0.00") + "|");
+                    Ln = Ln + 1;
+                    i = i + 1;
+                }
+                sw.WriteLine("==================================================================================================");
+                sw.WriteLine("");
+            }
+            UtilityController u = new UtilityController();
+            var memory = u.DownloadTextFiles("GFTF_Details_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+            if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\GFTF_Details_List.txt")))
+            {
+                System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\GFTF_Details_List.txt"));
+            }
+            return File(memory.ToArray(), "text/plain", "GFTF_Details_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+        }
+
+        /********************************************Member GFTF Details List End *******************************************/
 
         /********************************************Member Details List Start*******************************************/
         [HttpGet]
