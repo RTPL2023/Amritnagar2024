@@ -384,11 +384,11 @@
                         As On Date<br />
                         @Html.TextBoxFor(p => p.on_dt, new { @class = "size", @type = "text" })
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-12 mt-3 text-right">
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ShowTableForGfTfList()" />
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
-                        <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print" />
+                        <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print" onclick="DownloadTextFilesForGFTFDetailList()"/>
                     </div>
                 </div>
                 @*<div class="container mt-2">
@@ -498,7 +498,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#loading").hide();           
+            $("#loading").hide();
         });
 
         function ShowTableForGfTfList() {
@@ -550,22 +550,22 @@
                         return;
                     }
                     var f1 = document.getElementById('mem_id');
-                    var f2 = document.getElementById('mem_name_txt');                 
+                    var f2 = document.getElementById('mem_name_txt');
 
                     f1.value = cells[1].innerHTML;
-                    f2.value = cells[3].innerHTML;                  
+                    f2.value = cells[3].innerHTML;
                     ShowLedgerTable();
                 };
             }
         })();
 
-        function ShowLedgerTable() {        
+        function ShowLedgerTable() {
             if ($('#gl_achd').val() == "GF") {
                 $('#table').val("GF_LEDGER");
             }
             if ($('#gl_achd').val() == "TF") {
                 $('#table').val("TF_LEDGER");
-            }        
+            }
             let ModelObject = { BranchID: $('#branch').val(), member_no: $('#mem_id').val(), table: $('#table').val(), emp_id: $('#emp_id').val(), ac_hd: $('#gl_achd').val(), name: $('#mem_name_txt').val()};
                 $.ajax({
                     type: "POST",
@@ -578,7 +578,7 @@
                             $("#ledgerdetails_gf").show();
                             $("#gf_head").show();
                             $("#ledgerdetails_tf").hide();
-                            $("#tf_head").hide();                                                         
+                            $("#tf_head").hide();
                             $('#brn_txtbox').val(data.Branch);
                             $('#mem_no').val(data.mem_no);
                             $('#mem_name').val(data.mem_name);
@@ -588,17 +588,22 @@
                             $("#ledgerdetails_tf").show();
                             $("#tf_head").show();
                             $("#ledgerdetails_gf").hide();
-                            $("#gf_head").hide();                              
+                            $("#gf_head").hide();
                             $('#brn_txtbox').val(data.Branch);
                             $('#mem_no').val(data.mem_no);
                             $('#mem_name').val(data.mem_name);
-                        }                          
+                        }
                     },
                     error: function (err) {
-                       
+
                     }
-                });                     
+                });
         }
+
+        function DownloadTextFilesForGFTFDetailList() {
+            window.location.href = "@Url.Action("GFTFDetailsPrintfile", "Member")" + "?branch=" + $('#branch').val() + "&gl_achd=" + $('#gl_achd').val() + "&on_dt=" + $('#on_dt').val();
+        }
+
 
     </script>
 }
