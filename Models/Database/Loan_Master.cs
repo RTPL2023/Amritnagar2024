@@ -97,7 +97,7 @@ namespace Amritnagar.Models.Database
         public string arr_3_4 { get; set; }
         public string created_by { get; set; }
         public string modified_by { get; set; }
-      
+
         public string Save(Loan_Master lm)
         {
             string sql = string.Empty;
@@ -344,7 +344,7 @@ namespace Amritnagar.Models.Database
             string sql = string.Empty;
             if (searchtype == "New Loan")
             {
-                if(ac_hd == "" || ac_hd == null)
+                if (ac_hd == "" || ac_hd == null)
                 {
                     sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
                     sql = sql + "convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)";
@@ -356,7 +356,7 @@ namespace Amritnagar.Models.Database
                     sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)" +
                     "ORDER BY ac_hd,EMPLOYEE_id,loan_date";
                     config.singleResult(sql);
-                }             
+                }
                 if (config.dt.Rows.Count > 0)
                 {
                     foreach (DataRow dr in config.dt.Rows)
@@ -374,11 +374,11 @@ namespace Amritnagar.Models.Database
             }
             else
             {
-                if(ac_hd == "" || ac_hd == null)
+                if (ac_hd == "" || ac_hd == null)
                 {
                     sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
                     sql = sql + "iif(clos_date is null,convert(datetime, '31/03/2099', 103),convert(datetime, CLOS_DATE, 103)) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) ";
-                    sql = sql + "AND clos_flag is not null ORDER BY ac_hd,EMPLOYEE_id,clos_date";                    
+                    sql = sql + "AND clos_flag is not null ORDER BY ac_hd,EMPLOYEE_id,clos_date";
                     config.singleResult(sql);
                 }
                 else
@@ -470,6 +470,35 @@ namespace Amritnagar.Models.Database
             }
             return lml;
         }
+        public Loan_Master getInterestAmtfromRecovery_Schedule(MonthlyInterestScheduleForLoanViewModel model,string emp_id)
+        {
+            
+            string qryMEM = string.Empty;
+
+            qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + model.branch_id + "' AND ";
+            qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_date + "', 103) AND ac_hd='"+model.ln_achd+"' and";
+            qryMEM = qryMEM + " book_no='" + model.book_no + "' and employer_branch='" + model.colliery_code + "' and EMPLOYEE_ID='"+ emp_id + "'";
+            qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
+
+            config.singleResult(qryMEM);
+            Loan_Master lm = new Loan_Master();
+            if (config.dt.Rows.Count > 0)
+            {
+                //decimal NHD = 0;               
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                  
+                  
+                    lm.intdbt = Convert.ToDecimal(dr["INT_AMT"]);
+
+                 
+                }
+            }
+            return lm;
+        }
+      
+
+
         public List<Loan_Master> getmonthlyIntrestList(MonthlyInterestScheduleForLoanViewModel model)
         {
             decimal xr = 0;
@@ -492,7 +521,7 @@ namespace Amritnagar.Models.Database
             decimal YINT_CAL = 0;
             decimal YPRIN_BAL = 0;
             int cal_date = 0;
-             List<Loan_Master> lml = new List<Loan_Master>();
+            List<Loan_Master> lml = new List<Loan_Master>();
             string sql = string.Empty;
             sql = "select * from loan_master where branch_id='" + model.branch_id + "' and EMPLOYER_BRANCH='" + model.colliery_code + "' and ";
             sql = sql + "ac_hd='" + model.ln_achd + "' and BOOK_NO='" + model.book_no + "' and convert(datetime, loan_date, 103) <= convert(datetime, '" + model.sch_date + "', 103) and ";
@@ -563,7 +592,7 @@ namespace Amritnagar.Models.Database
                                 if (lm.loan_dt.Month == Convert.ToDateTime(model.fr_dt).Month && lm.loan_dt.Year == Convert.ToDateTime(model.fr_dt).Year)
                                 {
                                     //cal_date = Convert.ToDateTime(lm.loan_dt - Convert.ToDateTime(model.fr_dt).AddDays(1)).Day;
-                                    cal_date = Convert.ToInt32(lm.loan_dt.Subtract(Convert.ToDateTime(model.fr_dt)).TotalDays)+1;
+                                    cal_date = Convert.ToInt32(lm.loan_dt.Subtract(Convert.ToDateTime(model.fr_dt)).TotalDays) + 1;
                                     XPRIN_BAL = Convert.ToDecimal(dr3["prin_bal"]);
                                     DataRow dr4 = (DataRow)config.dt.Rows[0];
                                     if (Convert.ToDateTime(dr4["VCH_DATE"]) == lm.loan_dt)
@@ -603,6 +632,7 @@ namespace Amritnagar.Models.Database
             int i = 10001;
             foreach (var a in lmlst)
             {
+                lm = lm.getInterestAmtfromRecovery_Schedule(model, a.emp_id);
                 string sql = string.Empty;
                 sql = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + model.branch_id + "' AND ";
                 sql = sql + "Ac_hd='" + model.ln_achd + "' and employee_id='" + a.emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
@@ -631,9 +661,9 @@ namespace Amritnagar.Models.Database
                         { "DR_CR",       "D" },
                         { "ref_ac_hd",   model.ln_achd },
                         { "ref_pacno",   a.emp_id },
-                        { "INT_AMOUNT",  a.intdbt },
+                        { "INT_AMOUNT", lm.intdbt },
                         { "prin_bal",    a.prin_amt },
-                        { "INT_DUE",     a.intdbt+a.intdue },
+                        { "INT_DUE",     lm.intdbt+a.intdue },
                         { "INSERT_MODE", "SI"},
                         });
                     }
@@ -778,11 +808,11 @@ namespace Amritnagar.Models.Database
             DataTable dt_rsintrate = new DataTable();
             sql = "select * from LNSTATUS_MAST ORDER BY OD_MONTH_UPTO";
             config.singleResult(sql);
-            if(config.dt.Rows.Count > 0)
+            if (config.dt.Rows.Count > 0)
             {
-                foreach(DataRow dr6 in config.dt.Rows)
+                foreach (DataRow dr6 in config.dt.Rows)
                 {
-                    lm.od_month_upto = !Convert.IsDBNull(dr6["OD_MONTH_UPTO"]) ? Convert.ToInt32(dr6["OD_MONTH_UPTO"]) : Convert.ToInt32("0");                   
+                    lm.od_month_upto = !Convert.IsDBNull(dr6["OD_MONTH_UPTO"]) ? Convert.ToInt32(dr6["OD_MONTH_UPTO"]) : Convert.ToInt32("0");
                 }
             }
             sql = "select * from lntype_mast where ac_hd='" + ac_hd + "'";
@@ -896,7 +926,7 @@ namespace Amritnagar.Models.Database
             else
             {
                 xirate = 0;
-            }         
+            }
             lm = CAL_LOAN_RECV(loan_dt, xinstl, loan_amt, xfrdt, dt_rsled, dt_lnscheme, dt_rsaintschm, dt_rsintrate, dt_rsaintrate, dt_rslntype, xirate, XLESS_INT, null, 0);
             //lm.prin_bal = Convert.ToDecimal(LN_RECV_ARRAY[1, 1]);
             //lm.int_bal = Convert.ToDecimal(LN_RECV_ARRAY[3, 2]);
@@ -907,10 +937,10 @@ namespace Amritnagar.Models.Database
             lm.lbal_aint = Convert.ToDecimal(lm.arr_3_3);
             lm.lbal_ch = Convert.ToDecimal(lm.arr_3_4);
             int xoddue = 0;
-            string  xodfrom = "";
+            string xodfrom = "";
             lm.xodprin = 0;
             lm.xodprin = Convert.ToDecimal(lm.arr_2_1);
-            if(lm.xodprin > 0 && lm.is_addint != "Y")
+            if (lm.xodprin > 0 && lm.is_addint != "Y")
             {
                 int add_month = Convert.ToInt32(((loan_amt - lm.prin_bal) / xinstl) + 1);
                 DateTime XCLRUPTO = loan_dt.AddMonths(add_month);
@@ -923,13 +953,13 @@ namespace Amritnagar.Models.Database
                 xoddue = 0;
                 xodfrom = "";
             }
-            if(lm.od_month_upto > xoddue)
+            if (lm.od_month_upto > xoddue)
             {
-                if(config.dt.Rows.Count > 0)
+                if (config.dt.Rows.Count > 0)
                 {
                     DataRow dr8 = (DataRow)config.dt.Rows[0];
                     lm.status_snm = !Convert.IsDBNull(dr8["STATUS_SNM"]) ? Convert.ToString(dr8["STATUS_SNM"]) : Convert.ToString("");
-                }              
+                }
             }
             //lml.Add(lm);
             return lm;
@@ -1037,7 +1067,7 @@ namespace Amritnagar.Models.Database
             xlast_trdt = lm.vch_dt;
             decimal xodprin = 0;
             xodprin = (Convert.ToInt32(Convert.ToDateTime(LCAL_DATE).Subtract(Convert.ToDateTime(XLOAN_DATE.AddDays(1))).Days / (365.25 / 12)) * XINSTL_PRIN) - (XLOAN_AMT - xlprbal);
-            if (xodprin < 0) 
+            if (xodprin < 0)
             {
                 xodprin = 0;
             }
@@ -1045,9 +1075,9 @@ namespace Amritnagar.Models.Database
             {
                 xodprin = xlprbal;
             }
-           // LN_RECV_ARRAY[2, 1] = xodprin.ToString("0.00");
+            // LN_RECV_ARRAY[2, 1] = xodprin.ToString("0.00");
             arr_2_1 = xlintbal.ToString("0.00");
-          //  LN_RECV_ARRAY[3, 1] = ((Convert.ToInt32(Convert.ToDateTime(LCAL_DATE).Subtract(Convert.ToDateTime(XLOAN_DATE)).Days / (365.25 / 12)) * XINSTL_PRIN) - (XLOAN_AMT - xlprbal)).ToString("0.00");
+            //  LN_RECV_ARRAY[3, 1] = ((Convert.ToInt32(Convert.ToDateTime(LCAL_DATE).Subtract(Convert.ToDateTime(XLOAN_DATE)).Days / (365.25 / 12)) * XINSTL_PRIN) - (XLOAN_AMT - xlprbal)).ToString("0.00");
             arr_3_1 = ((Convert.ToInt32(Convert.ToDateTime(LCAL_DATE).Subtract(Convert.ToDateTime(XLOAN_DATE)).Days / (365.25 / 12)) * XINSTL_PRIN) - (XLOAN_AMT - xlprbal)).ToString("0.00");
             //if(Convert.ToInt32(LN_RECV_ARRAY[3, 1]) < 0)
             //{
@@ -1061,7 +1091,7 @@ namespace Amritnagar.Models.Database
             //{
             //    LN_RECV_ARRAY[3, 1] = xlprbal.ToString("0.00");
             //}
-            if (Convert.ToDecimal(arr_3_1 )> xlprbal)
+            if (Convert.ToDecimal(arr_3_1) > xlprbal)
             {
                 arr_3_1 = xlprbal.ToString("0.00");
             }
@@ -1082,9 +1112,9 @@ namespace Amritnagar.Models.Database
             {
                 case "D":
                     int XIPERIOD = 0;
-                    
+
                     XIPERIOD = Convert.ToDateTime(LCAL_DATE).Subtract(xlast_trdt).Days;
-                    if(XIPERIOD == 0)
+                    if (XIPERIOD == 0)
                     {
                         XCALINT = 0;
                     }
@@ -1093,8 +1123,8 @@ namespace Amritnagar.Models.Database
                         if (FIXED_INTRT != 0)
                         {
                             XRATE = FIXED_INTRT - LESS_INT;
-                        
-                            if(out_intrt != 0)
+
+                            if (out_intrt != 0)
                             {
                                 switch (out_intrt)
                                 {
@@ -1116,7 +1146,7 @@ namespace Amritnagar.Models.Database
                             XCALUPTO = xlast_trdt;
                             if (dt_rsintrate.Rows.Count > 0)
                             {
-                                foreach(DataRow dr in dt_rsintrate.Rows)
+                                foreach (DataRow dr in dt_rsintrate.Rows)
                                 {
                                     if (XTODT >= LCAL_DATE)
                                     {
@@ -1130,7 +1160,7 @@ namespace Amritnagar.Models.Database
                                         DataRow dr1 = (DataRow)dt_rsintrate.Rows[dt_rsintrate.Rows.Count - 1];
                                         XEFF_DT = weff_date;
                                     }
-                                    if(weff_date == XEFF_DT && (UPPER_LIMIT >= XLOAN_AMT))
+                                    if (weff_date == XEFF_DT && (UPPER_LIMIT >= XLOAN_AMT))
                                     {
                                         DataRow dr2 = (DataRow)dt_rsintrate.Rows[0];
                                     }
@@ -1139,7 +1169,7 @@ namespace Amritnagar.Models.Database
                                     {
                                         DataRow dr3 = (DataRow)dt_rsintrate.Rows[0];
                                         XTODT = LCAL_DATE;
-                                    }                                   
+                                    }
                                     else
                                     {
                                         if (weff_date > LCAL_DATE)
@@ -1151,9 +1181,9 @@ namespace Amritnagar.Models.Database
                                             XTODT = weff_date.AddDays(-1);
                                         }
                                     }
-                                    if(out_intrt != 0)
+                                    if (out_intrt != 0)
                                     {
-                                        switch(out_intrt)
+                                        switch (out_intrt)
                                         {
                                             case 1:
                                                 break;
@@ -1166,7 +1196,7 @@ namespace Amritnagar.Models.Database
                                     XCALUPTO = XCALUPTO.AddDays(Convert.ToDateTime(XTODT).Subtract(XCALUPTO).Days);
                                 }
                             }
-                            if(XCALINT < 0)
+                            if (XCALINT < 0)
                             {
                                 XCALINT = 0;
                             }
@@ -1174,7 +1204,7 @@ namespace Amritnagar.Models.Database
                             //LN_RECV_ARRAY[3, 2] = Math.Round(XCALINT, 0).ToString("0.00");
                             arr_3_2 = Math.Round(XCALINT, 0);
                         }
-                    }                  
+                    }
                     break;
             }
             decimal XAION = 0;
@@ -1206,7 +1236,7 @@ namespace Amritnagar.Models.Database
                 AINT_ODPERIOD_TYPE = !Convert.IsDBNull(dr["AINT_ODPERIOD_TYPE"]) ? Convert.ToString(dr["AINT_ODPERIOD_TYPE"]) : Convert.ToString("");
                 AINT_PERIOD_OD = !Convert.IsDBNull(dr["AINT_PERIOD_OD"]) ? Convert.ToDecimal(dr["AINT_PERIOD_OD"]) : Convert.ToDecimal("0.00");
             }
-            if(IS_ADDINT != null && IS_ADDINT!="")
+            if (IS_ADDINT != null && IS_ADDINT != "")
             {
                 switch (AINT_APPLY_ON)
                 {
@@ -1225,7 +1255,7 @@ namespace Amritnagar.Models.Database
                 }
                 XAIPERIOD = 0;
                 XAIOK = false;
-                if(xlaintbal > 0)
+                if (xlaintbal > 0)
                 {
                     XAIOK = true;
                     XAIPERIOD = Convert.ToDateTime(LCAL_DATE).Subtract(xlast_trdt).Days;
@@ -1239,8 +1269,8 @@ namespace Amritnagar.Models.Database
                             {
                                 case "M":
                                     XPOD = Convert.ToInt32(AINT_PERIOD_OD);
-                                    XINSTPAYB = Convert.ToInt32(Convert.ToDateTime(xlast_trdt).Subtract(Convert.ToDateTime(XLOAN_DATE.AddDays(1))).Days / (365.25 / 12)- XPOD);
-                                    if(XINSTPAYB > 0)
+                                    XINSTPAYB = Convert.ToInt32(Convert.ToDateTime(xlast_trdt).Subtract(Convert.ToDateTime(XLOAN_DATE.AddDays(1))).Days / (365.25 / 12) - XPOD);
+                                    if (XINSTPAYB > 0)
                                     {
                                         XPAYB = XINSTPAYB * XINSTL_PRIN;
                                         XLESSPAID = XPAYB - (XLOAN_AMT - xlprbal);
@@ -1250,17 +1280,17 @@ namespace Amritnagar.Models.Database
                                             XAIPERIOD = Convert.ToDateTime(LCAL_DATE).Subtract(xlast_trdt).Days;
                                         }
                                     }
-                                    if(XAIOK == false)
+                                    if (XAIOK == false)
                                     {
                                         XINSTPAYB = Convert.ToInt32(Convert.ToDateTime(LCAL_DATE).Subtract(Convert.ToDateTime(XLOAN_DATE.AddDays(1))).Days / (365.25 / 12) - XPOD);
-                                        if(XINSTPAYB > 0)
+                                        if (XINSTPAYB > 0)
                                         {
                                             XPAYB = XINSTPAYB * XINSTL_PRIN;
                                             XLESSPAID = XPAYB - (XLOAN_AMT - xlprbal);
-                                            if(XLESSPAID > 0)
+                                            if (XLESSPAID > 0)
                                             {
                                                 XAIOK = true;
-                                                decimal X_CLRUPTO= ((XLOAN_AMT - xlprbal) / XINSTL_PRIN) + 1;
+                                                decimal X_CLRUPTO = ((XLOAN_AMT - xlprbal) / XINSTL_PRIN) + 1;
                                                 XCLRUPTO = Convert.ToDateTime(Convert.ToDateTime(LCAL_DATE).AddDays(Convert.ToInt32(X_CLRUPTO)));
                                                 XAIPERIOD = Convert.ToDateTime(LCAL_DATE).Subtract(XCLRUPTO).Days;
                                             }
@@ -1281,7 +1311,7 @@ namespace Amritnagar.Models.Database
                                     XPOD = Convert.ToInt32(AINT_CHECK_OD);
                                     XAINTDT = Convert.ToDateTime(Convert.ToDateTime(LCAL_DATE).AddDays(Convert.ToInt32(-XPOD)));
                                     XIPERIOD_AI = Convert.ToDateTime(LCAL_DATE).Subtract(XAINTDT).Days;
-                                    if(FIXED_INTRT != 0)
+                                    if (FIXED_INTRT != 0)
                                     {
                                         XRATE = FIXED_INTRT - LESS_INT;
                                         XCALINT_AI = (xlprbal * XIPERIOD_AI * FIXED_INTRT) / 36500;
@@ -1290,19 +1320,19 @@ namespace Amritnagar.Models.Database
                                     {
                                         xfrdt = XAINTDT;
                                         XTODT = xfrdt;
-                                        XCALUPTO = XAINTDT;                                        
-                                        if(dt_rsintrate.Rows.Count > 0)
+                                        XCALUPTO = XAINTDT;
+                                        if (dt_rsintrate.Rows.Count > 0)
                                         {
-                                            foreach(DataRow dr in dt_rsintrate.Rows)
+                                            foreach (DataRow dr in dt_rsintrate.Rows)
                                             {
-                                                if(XTODT >= LCAL_DATE)
+                                                if (XTODT >= LCAL_DATE)
                                                 {
                                                     break;
                                                 }
                                                 weff_date = !Convert.IsDBNull(dr["weff_date"]) ? Convert.ToDateTime(dr["weff_date"]) : Convert.ToDateTime(null);
                                                 UPPER_LIMIT = !Convert.IsDBNull(dr["UPPER_LIMIT"]) ? Convert.ToDecimal(dr["UPPER_LIMIT"]) : Convert.ToDecimal("0.00");
                                                 INT_RATE = !Convert.IsDBNull(dr["INT_RATE"]) ? Convert.ToDecimal(dr["INT_RATE"]) : Convert.ToDecimal("0.00");
-                                                if(weff_date <= xfrdt)
+                                                if (weff_date <= xfrdt)
                                                 {
                                                     DataRow dr1 = (DataRow)dt_rsintrate.Rows[dt_rsintrate.Rows.Count - 1];
                                                     XEFF_DT = weff_date;
@@ -1319,7 +1349,7 @@ namespace Amritnagar.Models.Database
                                                 }
                                                 else
                                                 {
-                                                    if(WEFF_DATE > LCAL_DATE)
+                                                    if (WEFF_DATE > LCAL_DATE)
                                                     {
                                                         XTODT = LCAL_DATE;
                                                     }
@@ -1330,17 +1360,17 @@ namespace Amritnagar.Models.Database
                                                 }
                                                 XCALINT_AI = XCALINT_AI + ((xlprbal * (Convert.ToDateTime(XTODT).Subtract(XCALUPTO).Days) * XRATE) / 36500);
                                                 xfrdt = XTODT.AddDays(1);
-                                                XCALUPTO = XCALUPTO.AddDays(Convert.ToDateTime(XTODT).Subtract(XCALUPTO).Days);                                            
+                                                XCALUPTO = XCALUPTO.AddDays(Convert.ToDateTime(XTODT).Subtract(XCALUPTO).Days);
                                             }
                                         }
                                     }
-                                    if(XCALINT > XCALINT_AI)
+                                    if (XCALINT > XCALINT_AI)
                                     {
                                         XAIOK = true;
                                         XAIPERIOD = Convert.ToDateTime(LCAL_DATE).Subtract(xlast_trdt).Days;
-                                        if(xlintbal > 0)
+                                        if (xlintbal > 0)
                                         {
-                                            if(weff_date <= xlast_trdt)
+                                            if (weff_date <= xlast_trdt)
                                             {
                                                 DataRow dr1 = (DataRow)dt_rsintrate.Rows[dt_rsintrate.Rows.Count - 1];
                                                 XEFF_DT = WEFF_DATE;
@@ -1350,7 +1380,7 @@ namespace Amritnagar.Models.Database
                                                 DataRow dr2 = (DataRow)dt_rsintrate.Rows[0];
                                                 XRATE = INT_RATE - LESS_INT;
                                             }
-                                            if(xlprbal > 0)
+                                            if (xlprbal > 0)
                                             {
                                                 XADDAIPERIOD = Math.Round((36500 * xlintbal) / (XRATE * xlprbal), 0);
                                             }
@@ -1358,25 +1388,25 @@ namespace Amritnagar.Models.Database
                                             {
                                                 XADDAIPERIOD = 0;
                                             }
-                                            if(XPTYPE == "D")
+                                            if (XPTYPE == "D")
                                             {
                                                 XADDAINTDT = xlast_trdt.AddDays(-XPOD);
                                             }
-                                            else if(XPTYPE == "D")
+                                            else if (XPTYPE == "D")
                                             {
                                                 XADDAINTDT = xlast_trdt.AddMonths(-XPOD);
                                             }
-                                            else if(XPTYPE == "Y")
+                                            else if (XPTYPE == "Y")
                                             {
                                                 XADDAINTDT = xlast_trdt.AddYears(-XPOD);
                                             }
                                             int add_days = Convert.ToInt32(xlast_trdt.AddDays(Convert.ToDouble(-XADDAIPERIOD)));
-                                            if(add_days > Convert.ToInt32(XADDAINTDT))
+                                            if (add_days > Convert.ToInt32(XADDAINTDT))
                                             {
                                                 XAIPERIOD = Convert.ToInt32(XAIPERIOD + XADDAIPERIOD);
                                             }
                                             XAIPERIOD = XAIPERIOD - 1;
-                                            if(XAIPERIOD < 0)
+                                            if (XAIPERIOD < 0)
                                             {
                                                 XAIPERIOD = 0;
                                             }
@@ -1387,24 +1417,24 @@ namespace Amritnagar.Models.Database
                             break;
                     }
                 }
-                if(XAIOK == true)
+                if (XAIOK == true)
                 {
                     XCALAINT = 0;
                     xfrdt = LCAL_DATE.AddDays(-XAIPERIOD);
                     XTODT = xfrdt;
                     XCALUPTO = xfrdt;
-                    if(dt_rsaintrate.Rows.Count > 0)
+                    if (dt_rsaintrate.Rows.Count > 0)
                     {
-                        foreach(DataRow dr in dt_rsaintrate.Rows)
+                        foreach (DataRow dr in dt_rsaintrate.Rows)
                         {
-                            if(XTODT >= LCAL_DATE)
+                            if (XTODT >= LCAL_DATE)
                             {
                                 break;
                             }
                             DateTime weff_date = !Convert.IsDBNull(dr["weff_date"]) ? Convert.ToDateTime(dr["weff_date"]) : Convert.ToDateTime(null);
                             UPPER_LIMIT = !Convert.IsDBNull(dr["UPPER_LIMIT"]) ? Convert.ToDecimal(dr["UPPER_LIMIT"]) : Convert.ToDecimal("0.00");
                             decimal AINT_RATE = !Convert.IsDBNull(dr["AINT_RATE"]) ? Convert.ToDecimal(dr["AINT_RATE"]) : Convert.ToDecimal("0.00");
-                            if(weff_date <= xfrdt)
+                            if (weff_date <= xfrdt)
                             {
                                 DataRow dr1 = (DataRow)dt_rsintrate.Rows[dt_rsintrate.Rows.Count - 1];
                                 XRATE = AINT_RATE;
@@ -1437,11 +1467,11 @@ namespace Amritnagar.Models.Database
             arr_4_2 = arr_3_2.ToString("0.00");
             arr_4_3 = arr_3_3.ToString("0.00");
             arr_4_4 = arr_3_4;
-            lm.arr_1_1=arr_1_1;
-            lm.arr_3_2=Convert.ToDecimal(arr_3_2).ToString("0.00");
-            lm.arr_3_3= Convert.ToDecimal(arr_3_3).ToString("0.00"); ;
-            lm.arr_3_4= arr_3_4;
-            lm.arr_2_1= arr_2_1;           
+            lm.arr_1_1 = arr_1_1;
+            lm.arr_3_2 = Convert.ToDecimal(arr_3_2).ToString("0.00");
+            lm.arr_3_3 = Convert.ToDecimal(arr_3_3).ToString("0.00"); ;
+            lm.arr_3_4 = arr_3_4;
+            lm.arr_2_1 = arr_2_1;
             return lm;
         }
     }

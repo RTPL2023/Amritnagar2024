@@ -28,7 +28,7 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             lm.branch_id = model.branch_id.ToUpper();
             lm.ac_hd = model.ac_hd;
-            lm.emp_id = model.emp_id;           
+            lm.emp_id = model.emp_id;
             lm.loan_dt = Convert.ToDateTime(Convert.ToDateTime(model.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/"));
             lm.mem_id = model.mem_id;
             lm.ln_spcl = model.status_cd;
@@ -40,7 +40,7 @@ namespace Amritnagar.Controllers
             lm.inst_rate = Convert.ToDecimal(model.inst_rate);
             lm.inst_amt = Convert.ToDecimal(model.inst_amt);
             lm.created_by = Convert.ToString(Session["Uid"]);
-            model.msg = lm.Save(lm);           
+            model.msg = lm.Save(lm);
             Loan_Ledger ld = new Loan_Ledger();
             ld.branch_id = model.branch_id.ToUpper();
             ld.ac_hd = model.ac_hd;
@@ -54,7 +54,7 @@ namespace Amritnagar.Controllers
             ld.vch_dt = Convert.ToDateTime(Convert.ToDateTime(model.vch_date).ToString("dd/MM/yyyy").Replace("-", "/"));
             ld.prin_amt = Convert.ToDecimal(model.prin_amt);
             ld.prin_bal = Convert.ToDecimal(model.prin_amt);
-            model.msg = ld.SaveLoanLedger(ld);         
+            model.msg = ld.SaveLoanLedger(ld);
             Ledger ldd = new Ledger();
             ldd.ResetPrinBalIntDueForLoanLedgerfor_vch_entry("LOAN_LEDGER", model.ac_hd, model.emp_id, ld.vch_dt, ld.vch_no);
             return Json(model.msg);
@@ -67,21 +67,21 @@ namespace Amritnagar.Controllers
             model.mem_dt = mm.mem_date.ToString("dd-MM-yyyy").Replace("-", "/");
             model.loanee_name = mm.mem_name.ToUpper();
             model.book_no = mm.book_no;
-            model.mem_type = mm.member_type.ToUpper(); 
-            model.mem_cat = mm.member_category.ToUpper(); 
-            model.gurdian_name = mm.guardian_name.ToUpper();           
-            return Json(model);           
+            model.mem_type = mm.member_type.ToUpper();
+            model.mem_cat = mm.member_category.ToUpper();
+            model.gurdian_name = mm.guardian_name.ToUpper();
+            return Json(model);
         }
         public JsonResult getdetailsbyEmpId(string branch_id, string ac_hd, string emp_id)
         {
             Member_Mast mm = new Member_Mast();
             LoanMasterEntryViewModel model = new LoanMasterEntryViewModel();
             mm = mm.getmemidbyempid(emp_id);
-            model.mem_id = mm.mem_id;          
+            model.mem_id = mm.mem_id;
             model.msg = mm.msg;
             Loan_Master lm = new Loan_Master();
-            List<Loan_Master> lml = new List<Loan_Master>();         
-            lml = lm.getmemdetails(branch_id, ac_hd, emp_id);           
+            List<Loan_Master> lml = new List<Loan_Master>();
+            lml = lm.getmemdetails(branch_id, ac_hd, emp_id);
             int i = 1;
             if (lml.Count > 0)
             {
@@ -89,7 +89,7 @@ namespace Amritnagar.Controllers
                 {
                     if (i == 1)
                     {
-                        if(a.clos_flag == "C") 
+                        if (a.clos_flag == "C")
                         {
                             model.tableelement = "<tr><th>Srl</th></th><th>Loan Type</th><th>Loan Amount</th><th>Loan Date</th><th>Mode Of Loan</th></tr>";
                             model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + "Closed" + "</td></tr>";
@@ -98,18 +98,18 @@ namespace Amritnagar.Controllers
                         {
                             model.tableelement = "<tr><th>Srl</th></th><th>Loan Type</th><th>Loan Amount</th><th>Loan Date</th><th>Mode Of Loan</th></tr>";
                             model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + "" + "</td></tr>";
-                        }                       
+                        }
                     }
                     else
                     {
                         if (a.clos_flag == "C")
-                        {                            
+                        {
                             model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + "Closed" + "</td></tr>";
                         }
                         else
-                        {                           
+                        {
                             model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.ac_hd + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + "" + "</td></tr>";
-                        }                       
+                        }
                     }
                     i = i + 1;
                 }
@@ -125,7 +125,7 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             LoanMasterEntryViewModel model = new LoanMasterEntryViewModel();
             lm = lm.getdetailsbyloandate(branch_id, ac_hd, emp_id, loan_dt);
-            if(lm.msg == "Details Found")
+            if (lm.msg == "Details Found")
             {
                 model.status_cd = lm.ln_spcl;
                 model.loan_amt = lm.loan_amt.ToString("0.00");
@@ -142,7 +142,7 @@ namespace Amritnagar.Controllers
             {
                 model.inst_rate = lm.inst_rate.ToString("0.00");
                 model.msg = lm.msg;
-            }           
+            }
             return Json(model);
         }
         public JsonResult getinstallmentno(LoanMasterEntryViewModel model)
@@ -150,7 +150,7 @@ namespace Amritnagar.Controllers
             int inst_no = 0;
             decimal loan_amt = 0;
             decimal inst_amt = 0;
-            if(model.loan_amt == "")
+            if (model.loan_amt == "")
             {
                 loan_amt = 0;
             }
@@ -174,7 +174,7 @@ namespace Amritnagar.Controllers
             Loan_Ledger ld = new Loan_Ledger();
             LoanMasterEntryViewModel model = new LoanMasterEntryViewModel();
             ld = ld.getdetailsbyVchNo(branch_id, ac_hd, emp_id, vch_date, vch_no);
-            model.prin_amt = ld.prin_amt.ToString("0.00");     
+            model.prin_amt = ld.prin_amt.ToString("0.00");
             return Json(model);
         }
         public JsonResult Update(LoanMasterEntryViewModel model)
@@ -195,10 +195,10 @@ namespace Amritnagar.Controllers
             lm.loan_dt = Convert.ToDateTime(Convert.ToDateTime(model.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/"));
             lm.ac_hd = model.ac_hd;
             lm.emp_id = model.emp_id;
-            lm.clos_flag = "C";           
+            lm.clos_flag = "C";
             model.msg = lm.CloseFlag(lm);
             return Json(model.msg);
-        }       
+        }
         public JsonResult SaveInstChng(LoanMasterEntryViewModel model)
         {
             Loan_Master lm = new Loan_Master();
@@ -259,8 +259,8 @@ namespace Amritnagar.Controllers
             else
             {
                 model.ret_dt = Convert.ToDateTime(mm.retmnt_dt).ToString("dd-MM-yyyy").Replace("-", "/");
-            }            
-            if(mm.mailAdd_house == null)
+            }
+            if (mm.mailAdd_house == null)
             {
                 model.mail_h_no = "";
             }
@@ -268,7 +268,7 @@ namespace Amritnagar.Controllers
             {
                 model.mail_h_no = mm.mailAdd_house;
             }
-            if(mm.mailAdd_add1 == null)
+            if (mm.mailAdd_add1 == null)
             {
                 model.mail_add1 = "";
             }
@@ -316,7 +316,7 @@ namespace Amritnagar.Controllers
             {
                 model.mail_pin = mm.mailAdd_pin;
             }
-            model.msg = lm.msg;                       
+            model.msg = lm.msg;
             return Json(model);
         }
         public JsonResult getmemberdetailsbymemberid(string branch_id, string mem_id)
@@ -325,7 +325,7 @@ namespace Amritnagar.Controllers
             Occupation_Mast ocm = new Occupation_Mast();
             Relation_Mast rlm = new Relation_Mast();
             Caste_Mast cm = new Caste_Mast();
-            DisplayloanLedgerViewModel model = new DisplayloanLedgerViewModel();          
+            DisplayloanLedgerViewModel model = new DisplayloanLedgerViewModel();
             List<Member_Mast> mml = new List<Member_Mast>();
             mml = mm.getmemberdetailsbymemid(branch_id, mem_id);
             int i = 1;
@@ -338,7 +338,7 @@ namespace Amritnagar.Controllers
                     string caste_name = cm.getCastenamebyid(a.caste);
                     if (i == 1)
                     {
-                        if(a.ltl_app == 0)
+                        if (a.ltl_app == 0)
                         {
                             model.tableelement = "<tr><th>Srl</th></th><th>Member Id</th><th>Name</th><th>Guardians Name</th><th>Relation</th><th>Sex</th><th>Caste</th><th>Occupation</th><th>Sign</th><th>LTI</th></tr>";
                             model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td><td>" + reln_name + "</td><td>" + a.sex + "</td><td>" + caste_name + "</td><td>" + occname + "</td><td>" + a.ltl_app + "</td><td>" + "" + "</td></tr>";
@@ -348,7 +348,7 @@ namespace Amritnagar.Controllers
                             model.tableelement = "<tr><th>Srl</th></th><th>Member Id</th><th>Name</th><th>Guardians Name</th><th>Relation</th><th>Sex</th><th>Caste</th><th>Occupation</th><th>Sign</th><th>LTI</th></tr>";
                             model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.guardian_name + "</td><td>" + reln_name + "</td><td>" + a.sex + "</td><td>" + caste_name + "</td><td>" + occname + "</td><td>" + "" + "</td><td>" + a.ltl_app + "</td></tr>";
                         }
-                        
+
                     }
                     else
                     {
@@ -377,14 +377,14 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             DisplayloanLedgerViewModel model = new DisplayloanLedgerViewModel();
             lm = lm.getdetailsbybranchac_hdandempid(emp_id, branch_id, loan_type);
-            if(Convert.ToDateTime(lm.cheque_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
+            if (Convert.ToDateTime(lm.cheque_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
             {
                 model.chq_dt = "";
             }
             else
             {
                 model.chq_dt = lm.cheque_dt.ToString("dd-MM-yyyy").Replace("-", "/");
-            }           
+            }
             model.chq_no = lm.cheque_no;
             model.chq_bank_branch_ref = lm.bank_ref;
             model.sanc_dt = lm.loan_dt.ToString("dd-MM-yyyy").Replace("-", "/");
@@ -435,10 +435,10 @@ namespace Amritnagar.Controllers
                 model.tableelement = null;
             }
             return Json(model);
-        }       
+        }
         public ActionResult LoanLedgerDeatilsPrintFile(DisplayloanLedgerViewModel model, string todt)
         {
-            if((model.fr_dt == null) || (model.fr_dt == ""))
+            if ((model.fr_dt == null) || (model.fr_dt == ""))
             {
                 model.fr_dt = model.sanc_dt;
             }
@@ -454,13 +454,13 @@ namespace Amritnagar.Controllers
             List<Loan_Ledger> ldl = new List<Loan_Ledger>();
             ldl = ld.getmemberdetailsbymemid(model.emp_id, model.branch_id, model.loan_type);
             int i = 1;
-            decimal prin_bal = 0; 
-            decimal int_due = 0; 
-            decimal aint_due = 0; 
-            decimal dr_amt = 0; 
-            decimal cr_amt = 0; 
-            string trns_particular = ""; 
-            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));       
+            decimal prin_bal = 0;
+            decimal int_due = 0;
+            decimal aint_due = 0;
+            decimal dr_amt = 0;
+            decimal cr_amt = 0;
+            string trns_particular = "";
+            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Ledger_Statement_List.txt")))
             {
                 int Pg = 1;
@@ -471,14 +471,14 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("");
                 sw.WriteLine(model.loan_type.ToUpper() + " LEDGER STATEMENT FOR THE PERIOD " + model.fr_dt + " to " + model.to_dt);
                 sw.WriteLine("----------------------------------------------------------------+---------------------------------------");
-                sw.WriteLine("Loan Id.   : " +"".ToString().PadLeft(17) + model.emp_id + " | Loan Date       : " + model.sanc_dt);
-                sw.WriteLine("Name       : " +"".ToString().PadLeft(6) + mm.mem_name + " | Loan Amount     : " + model.loan_amt);
+                sw.WriteLine("Loan Id.   : " + "".ToString().PadLeft(17) + model.emp_id + " | Loan Date       : " + model.sanc_dt);
+                sw.WriteLine("Name       : " + "".ToString().PadLeft(6) + mm.mem_name + " | Loan Amount     : " + model.loan_amt);
                 sw.WriteLine("Address    : " + "".ToString().PadLeft(6) + model.mail_add1 + " | Instalments     : " + model.inst);
-                sw.WriteLine("             " + "".ToString().PadLeft(6) + model.mail_add2 + " " + model.mail_city + " " + model.mail_dist + " " + model.mail_state + " " + model.mail_pin + " | Instl.Amount    : " + "".ToString().PadLeft(9 - (model.inst_amt).ToString().Length) + model.inst_amt);                  
-                sw.WriteLine("Member No  : " + "".ToString().PadLeft(6) + model.mem_id + " | To Repay within : " );
+                sw.WriteLine("             " + "".ToString().PadLeft(6) + model.mail_add2 + " " + model.mail_city + " " + model.mail_dist + " " + model.mail_state + " " + model.mail_pin + " | Instl.Amount    : " + "".ToString().PadLeft(9 - (model.inst_amt).ToString().Length) + model.inst_amt);
+                sw.WriteLine("Member No  : " + "".ToString().PadLeft(6) + model.mem_id + " | To Repay within : ");
                 sw.WriteLine("----------+---------------------------------+----------+----------+----------+------------+---------+----------");
                 sw.WriteLine("Date      |Transaction Particulars          |Cheque No.|Debit Amt |Credit Amt|Prin Balance|Int.Bal. |AInt.Bal");
-                sw.WriteLine("----------+---------------------------------+----------+----------+----------+------------+---------+----------");                    
+                sw.WriteLine("----------+---------------------------------+----------+----------+----------+------------+---------+----------");
                 foreach (var am in ldl)
                 {
                     if (am.prin_bal.ToString().Length > 12)
@@ -530,7 +530,7 @@ namespace Amritnagar.Controllers
                         trns_particular = am.trns_particular;
                     }
                     if (Ln > Pg * 62)
-                    {                        
+                    {
                         Pg = Pg + 1;
                         Ln = Ln + 7;
                         sw.WriteLine("----------+---------------------------------+----------+----------+----------+------------+---------+----------");
@@ -551,7 +551,7 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("");
                     }
                     if (am.vch_dt >= Convert.ToDateTime(model.fr_dt) && am.vch_dt <= Convert.ToDateTime(model.to_dt))
-                    {   
+                    {
                         sw.WriteLine("".ToString().PadLeft(10 - ("").Length) + "".ToString() + "|"
                           + "".ToString().PadLeft(33 - ("By Balance B/F").ToString().Length) + "By Balance B/F" + "|"
                           + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
@@ -559,7 +559,7 @@ namespace Amritnagar.Controllers
                             + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
                              + "".ToString().PadLeft(9 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
                               + "".ToString().PadLeft(6 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
-                              + "".ToString().PadLeft(6 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                                                                                    
+                              + "".ToString().PadLeft(6 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");
                     }
                     else
                     {
@@ -572,7 +572,7 @@ namespace Amritnagar.Controllers
                                + "".ToString().PadLeft(10 - ("").ToString().Length) + "".ToString() + "|"
                                  + "".ToString().PadLeft(9 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
                                   + "".ToString().PadLeft(6 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
-                                  + "".ToString().PadLeft(6 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                               
+                                  + "".ToString().PadLeft(6 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");
                         }
                         if (am.cr_amt > 0)
                         {
@@ -583,13 +583,13 @@ namespace Amritnagar.Controllers
                                 + "".ToString().PadLeft(7 - (cr_amt).ToString().Length) + cr_amt.ToString("0.00") + "|"
                                   + "".ToString().PadLeft(9 - (prin_bal).ToString().Length) + prin_bal.ToString("0.00") + "|"
                                    + "".ToString().PadLeft(6 - (int_due).ToString().Length) + int_due.ToString("0.00") + "|"
-                                   + "".ToString().PadLeft(6 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");                                
+                                   + "".ToString().PadLeft(6 - (aint_due).ToString().Length) + aint_due.ToString("0.00") + "|");
                         }
                     }
                     Ln = Ln + 1;
                     i = i + 1;
                 }
-            }                                          
+            }
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Loan_Ledger_Statement_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
             if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Ledger_Statement_List.txt")))
@@ -621,7 +621,7 @@ namespace Amritnagar.Controllers
             decimal xtopprin = 0;
             decimal xcllnamt = 0;
             decimal xtclprin = 0;
-            
+
             if (model.searchtype == "New Loan")
             {
                 if (lml.Count > 0)
@@ -641,10 +641,10 @@ namespace Amritnagar.Controllers
                         }
                         i = i + 1;
                     }
-                    model.tot_xtopprin = xtopprin.ToString("0.00");                  
+                    model.tot_xtopprin = xtopprin.ToString("0.00");
                 }
                 else
-                {                 
+                {
                     model.tableelement = null;
                 }
             }
@@ -691,7 +691,7 @@ namespace Amritnagar.Controllers
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             if (model.searchtype == "New Loan")
             {
-                if(model.ac_hd == "" || model.ac_hd == null)
+                if (model.ac_hd == "" || model.ac_hd == null)
                 {
                     using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
                     {
@@ -826,11 +826,11 @@ namespace Amritnagar.Controllers
                             i = i + 1;
                         }
                     }
-                }               
+                }
             }
             else
             {
-                if(model.ac_hd == "" || model.ac_hd == null)
+                if (model.ac_hd == "" || model.ac_hd == null)
                 {
                     using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
                     {
@@ -963,8 +963,8 @@ namespace Amritnagar.Controllers
                             i = i + 1;
                         }
                     }
-                }                
-            }            
+                }
+            }
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Loan_Opening_Closing_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
             if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Opening_Closing_List.txt")))
@@ -995,7 +995,7 @@ namespace Amritnagar.Controllers
             {
                 foreach (var a in ldl)
                 {
-                    if(Convert.ToDateTime(a.chq_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
+                    if (Convert.ToDateTime(a.chq_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
                     {
                         chq_date = "";
                     }
@@ -1006,7 +1006,7 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Sl</th><th>Voucher Date</th><th>Vch No</th><th>Vsr</th><th>Vtype</th><th>D/C</th><th>Prin Amt</th><th>Int Amt</th><th>Prin Balance</th><th>Int Balance</th><th>Chq No</th><th>Chq Dt</th><th>BankCD</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.vch_dt + "</td><td>" + a.vch_no + "</td><td>" + a.vch_srl + "</td><td>" + a.vch_type + "</td><td>" + a.dr_cr + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.chq_no + "</td><td>" + chq_date + "</td><td>" + a.bank_cd + "</td></tr>";                       
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.vch_dt + "</td><td>" + a.vch_no + "</td><td>" + a.vch_srl + "</td><td>" + a.vch_type + "</td><td>" + a.dr_cr + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.chq_no + "</td><td>" + chq_date + "</td><td>" + a.bank_cd + "</td></tr>";
                         //model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.vch_dt.ToString("dd/MM/yyyy HH:mm:ss").Replace("-","/") + "</td><td>" + a.vch_no + "</td><td>" + a.vch_srl + "</td><td>" + a.vch_type + "</td><td>" + a.dr_cr + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.chq_no + "</td><td>" + chq_date + "</td><td>" + a.bank_cd + "</td></tr>";                       
                     }
                     else
@@ -1015,7 +1015,7 @@ namespace Amritnagar.Controllers
                         //model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.vch_dt.ToString("dd/MM/yyyy HH:mm:ss").Replace("-", "/") + "</td><td>" + a.vch_no + "</td><td>" + a.vch_srl + "</td><td>" + a.vch_type + "</td><td>" + a.dr_cr + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_due.ToString("0.00") + "</td><td>" + a.chq_no + "</td><td>" + chq_date + "</td><td>" + a.bank_cd + "</td></tr>";
                     }
                     i = i + 1;
-                }               
+                }
             }
             else
             {
@@ -1033,10 +1033,10 @@ namespace Amritnagar.Controllers
             ld.vch_no = model.vch_no;
             ld.prin_amt = Convert.ToDecimal(model.prnt_amt);
             ld.prin_bal = Convert.ToDecimal(model.prnt_bal);
-            ld.chq_no = model.chq_no;            
+            ld.chq_no = model.chq_no;
             if (model.chq_dt == null)
             {
-                ld.chq_dt =null;
+                ld.chq_dt = null;
             }
             else
             {
@@ -1115,7 +1115,7 @@ namespace Amritnagar.Controllers
         //    return Json(model);
         //}
 
-       
+
         /************************************************Loan Detail List End**********************************************************/
 
         /********************************************Monthly Interest Posting Start***********************************************/
@@ -1140,25 +1140,26 @@ namespace Amritnagar.Controllers
         {
             Loan_Master lm = new Loan_Master();
             List<Loan_Master> lmlst = new List<Loan_Master>();
+
             lmlst = lm.getmonthlyIntrestList(model);
-       
+
             int i = 1;
             if (lmlst.Count > 0)
             {
                 foreach (var a in lmlst)
                 {
-                 
+                    lm = lm.getInterestAmtfromRecovery_Schedule(model, a.emp_id);
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Sl</th><th>Emp.ID</th><th>Name Of Lonee</th><th>Loan Date</th><th>Loan Amount</th><th>Instl</th><th>Principal Balance</th><th>Int.Debitable</th><th>Int.Due Balance</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_rate.ToString("0.00") + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.intdbt.ToString("0.00") + "</td><td>" + a.intdue.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_rate.ToString("0.00") + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + lm.intdbt.ToString("0.00") + "</td><td>" + a.intdue.ToString("0.00") + "</td></tr>";
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_rate.ToString("0.00") + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.intdbt.ToString("0.00") + "</td><td>" + a.intdue.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.loanee_name + "</td><td>" + Convert.ToDateTime(a.loan_dt).ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.loan_amt.ToString("0.00") + "</td><td>" + a.inst_rate.ToString("0.00") + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + lm.intdbt.ToString("0.00") + "</td><td>" + a.intdue.ToString("0.00") + "</td></tr>";
                     }
                     model.prcl_bal = Convert.ToDecimal(Convert.ToDecimal(model.prcl_bal) + a.prin_amt).ToString("0.00");
-                    model.inst_debt = Convert.ToDecimal(Convert.ToDecimal(model.inst_debt) + a.intdbt).ToString("0.00");
+                    model.inst_debt = Convert.ToDecimal(Convert.ToDecimal(model.inst_debt) + lm.intdbt).ToString("0.00");
                     //ws.Cells[string.Format("A{0}", rowstart)].Value = i;
                     //ws.Cells[string.Format("B{0}", rowstart)].Value = a.emp_id;
                     //ws.Cells[string.Format("C{0}", rowstart)].Value = a.loanee_name;
@@ -1185,6 +1186,6 @@ namespace Amritnagar.Controllers
             return Json(MSG);
         }
 
-        /********************************************Monthly Interest Posting End***********************************************/    
+        /********************************************Monthly Interest Posting End***********************************************/
     }
 }
