@@ -1224,13 +1224,16 @@
                                       
                     f2.value = cells[5].innerHTML;
                     f3.value = cells[6].innerHTML;
-                    ShowLedgerTable();
-                    //if (f3.value == "GF_LEDGER" || f3.value == "TF_LEDGER" || f3.value == "DIVIDEND_LEDGER" || f3.value == "SHARE_LEDGER") {
-                    //    ShowLedgerTable();
-                    //}
-                    //else {
-
-                    //}                      
+                    
+                    if (f3.value == "GF_LEDGER" || f3.value == "TF_LEDGER" || f3.value == "DIVIDEND_LEDGER") {                       
+                        $("#GfTfDiv-modal").show();
+                        ShowLedgerTable();
+                    }
+                    else {
+                        alert("No Ledger Available");
+                        $("#GfTfDiv-modal").hide();
+                       // document.getElementById("ledgerdetails_gf").innerHTML = "";
+                    }                      
                 };
             }
         })();
