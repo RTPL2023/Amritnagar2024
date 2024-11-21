@@ -1418,5 +1418,20 @@ namespace Amritnagar.Models.Database
             }
             return rslst;
         }
+        public string checkrefreshdata(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
+        {
+            string qryMEM = string.Empty;
+            string msg = "";
+            qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + branch + "' AND ";
+            qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + sch_date + "', 103) AND ";
+            qryMEM = qryMEM + "MEM_CATEGORY='" + mem_cat + "' and employer_cd='" + emp_name + "' and book_no='" + book_no + "' and employer_branch='" + unit + "'";
+            qryMEM = qryMEM + "ORDER BY EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
+            config.singleResult(qryMEM);
+            if (config.dt.Rows.Count > 0)
+            {
+                msg = "Aready Refreshed!!";
+            }
+            return msg;
+        }    
     }
 }

@@ -2994,6 +2994,7 @@ namespace Amritnagar.Controllers
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
             model.achddesc = u.getAcchdForGFTFDEtailList();
+            model.on_dt = DateTime.Now.ToString("dd/MM/yyyy");
             return View(model);
         }
         public JsonResult GetGFTFDetailList(MemDepositeFundDetailListViewModel model)

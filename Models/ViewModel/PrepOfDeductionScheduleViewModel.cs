@@ -30,6 +30,7 @@ namespace Amritnagar.Models.ViewModel
         public string prin_amt { get; set; }
         public string int_amt { get; set; }
         public string user_id { get; set; }
+        public string msg { get; set; }
 
 
         public IEnumerable<SelectListItem> BranchDesc { get; set; }

@@ -913,63 +913,66 @@ namespace Amritnagar.Controllers
             PrepOfDeductionScheduleViewModel model = new PrepOfDeductionScheduleViewModel();
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             Recovery_Schedule rs = new Recovery_Schedule();
-            rslst = rs.getdecachd(emp_name, unit);
-            string[] arrachd = new string[rslst.Count * 4];
-            int i = 0;
-            foreach (var a in rslst)
+            model.msg = rs.checkrefreshdata(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
+            if(model.msg == null || model.msg == "")
             {
-                arrachd[i] = a.ac_hd;
-                arrachd[i + 1] = a.ac_desc;
-                arrachd[i + 2] = "0";
-                arrachd[i + 3] = "0";
-                i = i + 4;
-            }
-            string user_id = Convert.ToString(Session["Uid"]);
-            rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch,user_id);
-            if (rslst.Count > 0)
-            {
-                model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
-                string emp = "";
-                int rowsp = 0;
-
+                rslst = rs.getdecachd(emp_name, unit);
+                string[] arrachd = new string[rslst.Count * 4];
+                int i = 0;
                 foreach (var a in rslst)
                 {
-                    //int[] result = findIndex(arrachd, a.r4);
-                    //if (book_no != "AL")
-                    //{
-
-
-                    if (a.r4 != null)
-                    {
-                        var index = Array.FindIndex(arrachd, row => row.Contains(a.r4));
-                        if (a.r8 != null && a.r8 != "")
-                        {
-                            arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(a.r8));
-                        }
-                        if (a.r9 != null && a.r9 != "")
-                        {
-                            arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
-                        }
-                    }
-                    model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
-                    model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
-                       "<td>" + a.r5 + "</td><td>" + a.r6 + "</td>" +
-                        "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
+                    arrachd[i] = a.ac_hd;
+                    arrachd[i + 1] = a.ac_desc;
+                    arrachd[i + 2] = "0";
+                    arrachd[i + 3] = "0";
+                    i = i + 4;
                 }
-            }
-         
-            model.grid2 = "";
-            model.grid2 = "<tr></th><th>Account Head Particulars</th><th>Principal Amount</th><th>Interest Amount</th><th>Total Amount</th></tr>";
-            int j = 0;
-            for (i = 0; i < (arrachd.Length) / 4; i++)
-            {
-                decimal totalamt = (Convert.ToDecimal(arrachd[j + 2]) + Convert.ToDecimal(arrachd[j + 3]));
-                model.grid2 = model.grid2 + "<tr><td>" + arrachd[j + 1] + "</td><td>" + arrachd[j + 2] + "</td><td>" + arrachd[j + 3] + "</td><td>" + totalamt + "</td></tr>";
-                model.prnt_bal = (Convert.ToDecimal(model.prnt_bal) + Convert.ToDecimal(arrachd[j + 2])).ToString("0.00");
-                model.int_bal = (Convert.ToDecimal(model.int_bal) + Convert.ToDecimal(arrachd[j + 3])).ToString("0.00");
-                model.tot_bal = (Convert.ToDecimal(model.tot_bal) + totalamt).ToString("0.00");
-                j = j + 4;
-            }
+                string user_id = Convert.ToString(Session["Uid"]);
+                rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, user_id);
+                if (rslst.Count > 0)
+                {
+                    model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
+                    string emp = "";
+                    int rowsp = 0;
+
+                    foreach (var a in rslst)
+                    {
+                        //int[] result = findIndex(arrachd, a.r4);
+                        //if (book_no != "AL")
+                        //{
+
+
+                        if (a.r4 != null)
+                        {
+                            var index = Array.FindIndex(arrachd, row => row.Contains(a.r4));
+                            if (a.r8 != null && a.r8 != "")
+                            {
+                                arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(a.r8));
+                            }
+                            if (a.r9 != null && a.r9 != "")
+                            {
+                                arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
+                            }
+                        }
+                        model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
+                        model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
+                           "<td>" + a.r5 + "</td><td>" + a.r6 + "</td>" +
+                            "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
+                    }
+                }
+                model.grid2 = "";
+                model.grid2 = "<tr></th><th>Account Head Particulars</th><th>Principal Amount</th><th>Interest Amount</th><th>Total Amount</th></tr>";
+                int j = 0;
+                for (i = 0; i < (arrachd.Length) / 4; i++)
+                {
+                    decimal totalamt = (Convert.ToDecimal(arrachd[j + 2]) + Convert.ToDecimal(arrachd[j + 3]));
+                    model.grid2 = model.grid2 + "<tr><td>" + arrachd[j + 1] + "</td><td>" + arrachd[j + 2] + "</td><td>" + arrachd[j + 3] + "</td><td>" + totalamt + "</td></tr>";
+                    model.prnt_bal = (Convert.ToDecimal(model.prnt_bal) + Convert.ToDecimal(arrachd[j + 2])).ToString("0.00");
+                    model.int_bal = (Convert.ToDecimal(model.int_bal) + Convert.ToDecimal(arrachd[j + 3])).ToString("0.00");
+                    model.tot_bal = (Convert.ToDecimal(model.tot_bal) + totalamt).ToString("0.00");
+                    j = j + 4;
+                }
+            }            
             return Json(model);
         }
         public JsonResult GetBothcoliarylist(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)

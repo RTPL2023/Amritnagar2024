@@ -356,18 +356,23 @@
                 data: ModelObject,
                 dataType: "json",
                 success: function (data) {
-                    $("#loading").hide();
-                    document.getElementById("list").innerHTML = data.grid1;
-                    document.getElementById("list2").innerHTML = data.grid2;
-                    $('#prnt_bal').val(data.prnt_bal);
-                    $('#int_bal').val(data.int_bal);
-                    $('#tot_bal').val(data.tot_bal);
+                    if (data.msg == null || data.msg == "") {
+                        $("#loading").hide();
+                        document.getElementById("list").innerHTML = data.grid1;
+                        document.getElementById("list2").innerHTML = data.grid2;
+                        $('#prnt_bal').val(data.prnt_bal);
+                        $('#int_bal').val(data.int_bal);
+                        $('#tot_bal').val(data.tot_bal);
+                    }
+                    else {
+                        $("#loading").hide();
+                        alert(data.msg);                        
+                    }
                 },
                 error: function (err) {
                     alert("Unable To Calculate");
                 }
             });
-
         };
 
         function Filldeductachd() {
@@ -386,7 +391,6 @@
                     });
                 }
             });
-
         };
 
         (function () {
