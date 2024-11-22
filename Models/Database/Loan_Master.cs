@@ -584,8 +584,10 @@ namespace Amritnagar.Models.Database
                             PRIN_DUE = 0;
                             INT_DUE = 0;
                             DataRow dr3 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                            LBAL_PRIN = Convert.ToDecimal(dr3["prin_bal"]);
-                            LBAL_INT = Convert.ToDecimal(dr3["INT_DUE"]);
+                            //LBAL_PRIN = Convert.ToDecimal(dr3["prin_bal"]);
+                            LBAL_PRIN = !Convert.IsDBNull(dr3["prin_bal"]) ? Convert.ToDecimal(dr3["prin_bal"]) : Convert.ToDecimal("0.00");
+                            //LBAL_INT = Convert.ToDecimal(dr3["INT_DUE"]);
+                            LBAL_INT = !Convert.IsDBNull(dr3["INT_DUE"]) ? Convert.ToDecimal(dr3["INT_DUE"]) : Convert.ToDecimal("0.00");
                             if (LBAL_PRIN > 0)
                             {
                                 FLAG = Convert.ToString(dr["FLAG"]);

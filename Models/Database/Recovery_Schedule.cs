@@ -564,7 +564,7 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs1 = new Recovery_Schedule();
                     XBOOK_NO = Convert.ToString(dr["book_no"]);
                     xemployee_ID = Convert.ToString(dr["EMPLOYEE_ID"]);
-                    if (xemployee_ID == "111731")
+                    if (xemployee_ID == "122865")
                     {
 
                     }
@@ -1378,7 +1378,6 @@ namespace Amritnagar.Models.Database
         }
         public List<Recovery_Schedule> getaLLCOLIARYData(string emp_name, string mem_type, string mem_cat, string sch_date, string branch, string book_no, string unit)
         {
-
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             string qryMEM = string.Empty;
             if (book_no.ToUpper() == "AL")
