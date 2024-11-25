@@ -131,6 +131,8 @@ namespace Amritnagar.Models.Database
                         { "PRIN_AMOUNT",       ld.prin_amt },
                         { "PRIN_BAL",       ld.prin_bal},
                         { "VCH_ACHD",       ld.vch_achd},
+                        { "MODIFIED_BY",       ld.modified_by},
+                        { "MODIFIED_ON",       DateTime.Now},
                         }, new Dictionary<string, object>()
                         {
                         { "BRANCH_ID",      ld.branch_id },
@@ -162,6 +164,8 @@ namespace Amritnagar.Models.Database
                         { "PRIN_BAL",       ld.prin_bal},
                         { "VCH_ACHD",       ld.vch_achd},
                         { "AC_HD",      ld.ac_hd },
+                        { "CREATED_BY",      ld.created_by },
+                        { "CREATED_ON",      DateTime.Now },
                     });
                 }
                 catch (Exception x)
@@ -415,7 +419,7 @@ namespace Amritnagar.Models.Database
             string sql = "select * from loan_ledger where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and employee_id='" + emp_id + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND VCH_NO='" + ld.vch_no + "' AND VCH_SRL='" + ld.vch_srl + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
-            {
+            {                
                 try
                 {
                     string qry = "";
@@ -423,7 +427,7 @@ namespace Amritnagar.Models.Database
                     {
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no +
                       "',BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + "," +
-                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " " +
+                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " , Modified_Date = "+ DateTime.Now + ", MODIFIED_BY = '"+ ld.modified_by + "'" +
                       " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt.Replace("-", "/") + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
@@ -431,7 +435,7 @@ namespace Amritnagar.Models.Database
                     {
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no + "',CHQ_DT='" + ld.chq_dt + "'" +
                       ",BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + "," +
-                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " " +
+                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + ", Modified_Date = " + DateTime.Now + ", MODIFIED_BY = '" + ld.modified_by + "'" +
                       " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt/*.Replace("-", "/")*/ + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
@@ -485,6 +489,8 @@ namespace Amritnagar.Models.Database
                         { "BANKCD",       ld.bank_cd},
                         { "CHQ_NO",       ld.chq_no},
                         { "CHQ_DT",       ld.chq_dt},
+                        { "CREATED_BY",   ld.created_by },
+                        { "CREATED_ON",   DateTime.Now },
                     });                   
                 }
                 catch (Exception x)

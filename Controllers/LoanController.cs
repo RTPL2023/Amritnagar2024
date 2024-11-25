@@ -54,6 +54,8 @@ namespace Amritnagar.Controllers
             ld.vch_dt = Convert.ToDateTime(Convert.ToDateTime(model.vch_date).ToString("dd/MM/yyyy").Replace("-", "/"));
             ld.prin_amt = Convert.ToDecimal(model.prin_amt);
             ld.prin_bal = Convert.ToDecimal(model.prin_amt);
+            ld.modified_by = lm.created_by;
+            ld.created_by = lm.created_by;
             model.msg = ld.SaveLoanLedger(ld);
             Ledger ldd = new Ledger();
             ldd.ResetPrinBalIntDueForLoanLedgerfor_vch_entry("LOAN_LEDGER", model.ac_hd, model.emp_id, ld.vch_dt, ld.vch_no);
@@ -1052,6 +1054,8 @@ namespace Amritnagar.Controllers
             ld.vch_srl = Convert.ToDecimal(model.vch_srl);
             ld.int_amt = Convert.ToDecimal(model.int_amt);
             ld.int_due = Convert.ToDecimal(model.int_bal);
+            ld.modified_by = Convert.ToString(Session["Uid"]);
+            ld.created_by = Convert.ToString(Session["Uid"]);
             model.msg = ld.checkandsaveloanledger(ld);
             Ledger ldd = new Ledger();
             ldd.ResetPrinBalIntDueForLoanLedgerfor_vch_entry("LOAN_LEDGER", model.ac_hd, model.emp_id, ld.vch_dt, ld.vch_no);

@@ -940,8 +940,6 @@ namespace Amritnagar.Controllers
                         //int[] result = findIndex(arrachd, a.r4);
                         //if (book_no != "AL")
                         //{
-
-
                         if (a.r4 != null)
                         {
                             var index = Array.FindIndex(arrachd, row => row.Contains(a.r4));
