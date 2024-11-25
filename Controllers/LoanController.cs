@@ -410,7 +410,11 @@ namespace Amritnagar.Controllers
                     string tagColor = "style='color: black;'";
                     string condition = "";
                     string condition1 = "";
-                    condition = a.trns_particular.Substring((a.trns_particular).Length - 10);
+                    if(a.trns_particular.Length > 10)
+                    {
+                        condition = a.trns_particular.Substring((a.trns_particular).Length - 10);
+                    }
+                    //condition = a.trns_particular.Substring((a.trns_particular).Length - 10);
                     if (a.trns_particular.Length >= 28)
                     {
                         condition1 = a.trns_particular.Substring(0, 27);
