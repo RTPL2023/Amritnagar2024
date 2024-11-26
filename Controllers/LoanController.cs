@@ -1096,8 +1096,8 @@ namespace Amritnagar.Controllers
         //    if (ldl.Count > 0)
         //    {
         //        foreach (var a in ldl)
-        //        {
-        //            lm.get_loan_current_due(model.ac_hd, a.loan_amt, a.inst_no, a.ln_spcl, a.int_rate, Convert.ToDateTime(model.on_date)/*, DataTable dt*/);
+        //        {                  
+        //            //lm.get_loan_current_due(model.ac_hd, a.loan_amt, a.inst_no, a.ln_spcl, a.int_rate, Convert.ToDateTime(model.on_date)/*, DataTable dt*/);
         //            if (Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
         //            {
         //                vch_date = "";

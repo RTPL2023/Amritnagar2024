@@ -820,14 +820,15 @@ namespace Amritnagar.Models.Database
         //{
         //    List<Loan_Ledger> ldl = new List<Loan_Ledger>();
         //    string sql = string.Empty;
-        //    sql = "select * from loan_master where branch_id='" + branch_id + "' and ac_hd = '" + ac_hd + "' and convert(varchar, loan_date, 103) <= convert(varchar, '" + on_date + "', 103) order by loan_date,EMPLOYEE_ID";
+        //    DataTable dt_ln_mast = new DataTable();
         //    sql = "select * from loan_master where branch_id='" + branch_id + "' and ";
         //    sql = sql + "ac_hd='" + ac_hd + "' and convert(varchar, loan_date, 103) <= convert(varchar, '" + on_date + "', 103) and ";
-        //    sql = sql + "IIF(clos_date is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, clos_date, 103)) >= convert(datetime, '" + on_date + "', 103) order by loan_date,EMPLOYEE_ID";
+        //    sql = sql + "IIF(clos_date is NULL,convert(date, '31/03/2099', 103),convert(date, clos_date, 103)) >= convert(date, '" + on_date + "', 103) order by loan_date,EMPLOYEE_ID";
         //    config.singleResult(sql);
         //    if (config.dt.Rows.Count > 0)
         //    {
-        //        foreach (DataRow dr in config.dt.Rows)
+        //        dt_ln_mast = config.dt;
+        //        foreach (DataRow dr in dt_ln_mast.Rows)
         //        {
         //            Loan_Ledger ld = new Loan_Ledger();
         //            ld.emp_id = dr["EMPLOYEE_ID"].ToString();
@@ -837,13 +838,15 @@ namespace Amritnagar.Models.Database
         //            ld.int_rate = !Convert.IsDBNull(dr["INT_RATE"]) ? Convert.ToDecimal(dr["INT_RATE"]) : Convert.ToDecimal(00);
         //            ld.inst_no = !Convert.IsDBNull(dr["NO_INSTL"]) ? Convert.ToInt32(dr["NO_INSTL"]) : Convert.ToInt32(00);
         //            ld.ln_spcl = !Convert.IsDBNull(dr["LN_SPEACIAL"]) ? Convert.ToString(dr["LN_SPEACIAL"]) : Convert.ToString("");
-        //            sql = "select * from loan_ledger where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and EMPLOYEE_id='" + ld.emp_id + "' and convert(varchar, vch_date, 103) <= convert(varchar, '" + on_date + "', 103) order by vch_date,vch_no,vch_srl";
+        //            sql = "select * from loan_ledger where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and EMPLOYEE_id='" + ld.emp_id + "' and convert(date, vch_date, 103) <= convert(date, '" + on_date + "', 103) order by vch_date,vch_no,vch_srl";
         //            config.singleResult(sql);
         //            if (config.dt.Rows.Count > 0)
         //            {
         //                foreach (DataRow dr1 in config.dt.Rows)
         //                {
         //                    ld.vch_dt = !Convert.IsDBNull(dr1["VCH_DATE"]) ? Convert.ToDateTime(dr1["VCH_DATE"]) : Convert.ToDateTime("");
+        //                    Loan_Master lm = new Loan_Master();
+        //                    lm.get_loan_current_due(ac_hd, ld.loan_amt, ld.inst_no, ld.ln_spcl, ld.int_rate, Convert.ToDateTime(ld.loan_dt), dt_ln_mast);
         //                }
         //            }
         //            ldl.Add(ld);
