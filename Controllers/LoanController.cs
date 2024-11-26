@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Amritnagar.Models.Database;
 using Amritnagar.Models.ViewModel;
 using System.IO;
+using System.Data;
 
 namespace Amritnagar.Controllers
 {
@@ -1087,6 +1088,7 @@ namespace Amritnagar.Controllers
         //public JsonResult Getexistingloandetailsbybranchac_hdanddate(LoanDetailListViewModel model)
         //{
         //    Loan_Ledger ld = new Loan_Ledger();
+        //    Loan_Master lm = new Loan_Master();
         //    List<Loan_Ledger> ldl = new List<Loan_Ledger>();
         //    ldl = ld.getallexistingloandetails(model.branch_id, model.ac_hd, model.on_date);
         //    string vch_date = "";
@@ -1095,7 +1097,7 @@ namespace Amritnagar.Controllers
         //    {
         //        foreach (var a in ldl)
         //        {
-        //            ld.get_current_due(model.branch_id, model.ac_hd, model.on_date, a.emp_id, a.loan_amt, a.inst_no, a.int_rate, a.ln_spcl);
+        //            lm.get_loan_current_due(model.ac_hd, a.loan_amt, a.inst_no, a.ln_spcl, a.int_rate, Convert.ToDateTime(model.on_date)/*, DataTable dt*/);
         //            if (Convert.ToDateTime(a.vch_dt).ToString("dd-MM-yyyy").Replace("-", "/") == "01/01/0001")
         //            {
         //                vch_date = "";
@@ -1122,7 +1124,6 @@ namespace Amritnagar.Controllers
         //    }
         //    return Json(model);
         //}
-
 
         /************************************************Loan Detail List End**********************************************************/
 
