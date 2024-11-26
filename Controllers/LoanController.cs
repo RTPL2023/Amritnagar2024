@@ -1088,9 +1088,9 @@ namespace Amritnagar.Controllers
         //{
         //    Loan_Ledger ld = new Loan_Ledger();
         //    List<Loan_Ledger> ldl = new List<Loan_Ledger>();
-        //    ldl = ld.getallexistingloandetails(model.branch_id, model.ac_hd, model.on_date);            
+        //    ldl = ld.getallexistingloandetails(model.branch_id, model.ac_hd, model.on_date);
         //    string vch_date = "";
-        //    int i = 1;            
+        //    int i = 1;
         //    if (ldl.Count > 0)
         //    {
         //        foreach (var a in ldl)

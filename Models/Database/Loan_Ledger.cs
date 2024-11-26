@@ -862,7 +862,7 @@ namespace Amritnagar.Models.Database
         //    DataTable loanledgerdattab = config.dt;
         //    if (config.dt.Rows.Count > 0)
         //    {
-        //        Loan_Ledger ld = new Loan_Ledger();
+        //        //Loan_Ledger ld = new Loan_Ledger();
         //        sql = "select * from lntype_mast where ac_hd='" + ac_hd + "'";
         //        config.singleResult(sql);
         //        if (config.dt.Rows.Count > 0)
