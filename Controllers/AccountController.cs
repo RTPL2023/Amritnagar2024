@@ -560,6 +560,8 @@ namespace Amritnagar.Controllers
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
+            model.fr_dt = DateTime.Now.ToString("dd/MM/yyyy");
+            model.to_dt = DateTime.Now.ToString("dd/MM/yyyy");
             return View(model);
         }
         public JsonResult SaveDataforCashAccount(CashAccountReportViewModel model)
@@ -915,6 +917,7 @@ namespace Amritnagar.Controllers
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
+            model.daybook_dt = DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/");
             return View(model);
         }
         public JsonResult getAccounthead(string ac_hd)
@@ -967,6 +970,8 @@ namespace Amritnagar.Controllers
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
+            model.fr_dt = DateTime.Now.ToString("dd/MM/yyyy");
+            model.to_dt = DateTime.Now.ToString("dd/MM/yyyy");
             return View(model);
         }
         public JsonResult populateCashBook(CashBookReportViewModel model)
@@ -1395,6 +1400,7 @@ namespace Amritnagar.Controllers
         {
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
+            model.gl_date = DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/");
             return View(model);
         }
         public JsonResult getdataforTrialBlance(TrialBalanceReportViewModel model)

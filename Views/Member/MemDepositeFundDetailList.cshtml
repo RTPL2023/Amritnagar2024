@@ -374,15 +374,15 @@
                 <div class="row mt-2">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Branch<br />
-                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size" })
+                        @Html.DropDownListFor(p => p.branch, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "size"})
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         G/L Account Head <br />
-                        @Html.DropDownListFor(p => p.gl_achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.gl_achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "size", @onchange = "gl_aconchange()" })
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         As On Date<br />
-                        @Html.TextBoxFor(p => p.on_dt, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(p => p.on_dt, new { @class = "size", @type = "text", onkeypress = "javascript:return evton_dt(event);" })
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ShowTableForGfTfList()" />
@@ -482,8 +482,7 @@
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
                                 @Html.TextBoxFor(model => model.table, new { @class = "size2", @type = "hidden" })
-                            </div>
-                        
+                            </div>                        
                 </div>
             </div>
         </div>
@@ -499,6 +498,7 @@
 
         $(document).ready(function () {
             $("#loading").hide();
+            $("#gl_achd").focus();
         });
 
         function ShowTableForGfTfList() {
@@ -603,7 +603,19 @@
         function DownloadTextFilesForGFTFDetailList() {
             window.location.href = "@Url.Action("GFTFDetailsPrintfile", "Member")" + "?branch=" + $('#branch').val() + "&gl_achd=" + $('#gl_achd').val() + "&on_dt=" + $('#on_dt').val();
         }
-
+       
+        function gl_aconchange() {
+            $("#on_dt").focus();
+        }
+       
+        function evton_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#BtnRefresh").focus();
+            }
+        }
 
     </script>
 }
