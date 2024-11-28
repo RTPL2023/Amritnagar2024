@@ -3040,6 +3040,8 @@ namespace Amritnagar.Controllers
             Licence lc = new Licence();
             lc = lc.getlicencedetails();
             Member_Mast mm = new Member_Mast();
+            MasterBranch mb = new MasterBranch();
+            string Branchname = mb.getBranch(model.branch);
             List<Member_Mast> mml = new List<Member_Mast>();
             mml = mm.getdetaillist(model.branch, model.gl_achd, model.on_dt);
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
@@ -3051,7 +3053,7 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("                       " + lc.lic_name);
                 sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
                 sw.WriteLine("");
-                sw.WriteLine( model.branch +  "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                          Page No # " + Pg);                
+                sw.WriteLine(Branchname +  "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                 Page No # " + Pg);                
                 sw.WriteLine("==================================================================================================");            
                 sw.WriteLine("Srl. |Member No|Member Date|Member Name                     |Prin Balance|Int Balance|Total Amount");
                 sw.WriteLine("==================================================================================================");
@@ -3062,7 +3064,7 @@ namespace Amritnagar.Controllers
                         Pg = Pg + 1;
                         Ln = Ln + 7;                       
                         sw.WriteLine("");
-                        sw.WriteLine(model.branch + "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                          Page No # " + Pg);
+                        sw.WriteLine(Branchname + "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                 Page No # " + Pg);
                         sw.WriteLine("==================================================================================================");
                         sw.WriteLine("Srl. |Member No|Member Date|Member Name                     |Prin Balance|Int Balance|Total Amount");
                         sw.WriteLine("==================================================================================================");
