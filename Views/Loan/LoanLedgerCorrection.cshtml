@@ -115,11 +115,11 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Loan Type:<br />
-                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig" })
+                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig", @onchange= "ChangeLoanType()" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Man Number:<br />
-                        @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @*@required = "true",*@ onkeypress = "javascript:return evtemp_id(event);" })
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ShowTable()" />
@@ -227,10 +227,31 @@
 
         $(document).ready(function () {
             $('#loading').hide();
+            $('#ac_hd').focus();
         });
 
+        function ChangeLoanType() {
+            $('#emp_id').focus();
+        }
+
+        function evtemp_id(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                ShowTable();
+            }
+        }
+
         function ShowTable() {
-            let ModelObject = { branch_id: $('#branch_id').val(), ac_hd: $('#ac_hd').val(), emp_id: $('#emp_id').val()};
+            if ($('#ac_hd').val() == "" || $('#ac_hd').val() == null) {
+                alert("Please Select Loan Type");
+            }
+            else if ($('#emp_id').val() == "" || $('#emp_id').val() == null) {
+                alert("Please Put Man Number");
+            }
+            else {
+                    let ModelObject = { branch_id: $('#branch_id').val(), ac_hd: $('#ac_hd').val(), emp_id: $('#emp_id').val()};
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("GetloanTransactionDetailsBybranchidloantypeandemployeeid", "Loan")',
@@ -243,6 +264,7 @@
                     //alert("Error Occured");
                      }
                     });
+                 }
         }
 
         (function () {
@@ -295,7 +317,7 @@
             }
         })();
 
-        function Save() {          
+        function Save() {
                     let ModelObject = {
                         date: $('#date').val(),
                         vch_no: $('#vch_no').val(),
@@ -320,7 +342,7 @@
                         data: ModelObject,
                         dataType: "json",
                         success: function (data) {
-                            alert(data);                            
+                            alert(data);
                             /*Rebalance();*/
                             ShowTable();
                         },

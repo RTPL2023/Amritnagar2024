@@ -230,7 +230,7 @@
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-12 col-12">
                                 Loan Type:<br />
-                                @Html.DropDownListFor(model => model.loan_type, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig" })
+                                @Html.DropDownListFor(model => model.loan_type, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig", @onchange= "ChangeAc_Hd()" })
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Employee-Id:<br />
@@ -242,13 +242,13 @@
                         <div class="row mt-2">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                 From Date:
-                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "sizeM1", @type = "text" })
+                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtfr_dt(event);" })
                             </div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                 To Date: &nbsp;&nbsp;&nbsp;
-                                @Html.TextBoxFor(model => model.to_dt, new { @class = "sizeM1", @type = "text" })
+                                @Html.TextBoxFor(model => model.to_dt, new { @class = "sizeM1", @type = "text", onkeypress = "javascript:return evtto_dt(event);" })
                             </div>
                         </div>
                         <div class="row mt-1 mb-1">
@@ -460,8 +460,13 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#mem_id").hide();          
+            $("#mem_id").hide();
+            $("#loan_type").focus();
         });
+
+        function ChangeAc_Hd() {
+            $("#emp_id").focus();
+        }
 
        function GetloanData() {
            let ModelObject = { emp_id: $('#emp_id').val(), branch_id: $('#branch_id').val(), loan_type: $('#loan_type').val()};
@@ -571,6 +576,24 @@
 
        function ReloadPage() {
             window.location.href = "@Url.Action("LoanMasterEntry", "Loan")"
+        }
+
+        function evtfr_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#to_dt").focus();
+            }
+        }
+
+        function evtto_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                DownloadTextFiles();
+            }
         }
 
        function DownloadTextFiles() {
