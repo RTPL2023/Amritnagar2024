@@ -173,9 +173,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            //$("#debt_amt").val("0");
-            //$("#crdt_amt").val("0");
-            //$("#net_amt").val("0");
+            $('#gl_date').focus();
             $('#loading').hide();
         });
 
@@ -228,7 +226,7 @@
                 BtnRefreshOnClick();
             }
         }
-
+       
         function ReloadPage() {
             window.location.href = "@Url.Action("TrialBalanceReport", "Account")"
         }

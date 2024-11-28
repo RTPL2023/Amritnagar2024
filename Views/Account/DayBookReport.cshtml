@@ -213,6 +213,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('#ac_hd').focus();
 
             $("#ac_hd").autocomplete({
                 source: function (request, response) {
@@ -236,9 +237,7 @@
                     }
                 }
             });
-
         });
-
 
         function evtachd(evt) {
 
@@ -253,7 +252,6 @@
         function getparticulars() {
              let ModelObject = {
                  ac_hd: $('#ac_hd').val(),
-
              };
               $.ajax({
                 type: "POST",
@@ -273,12 +271,11 @@
         }
 
         function evtdaybook_dt(evt) {
-
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                $('#BtnRefresh').focus();
+                BtnRefreshOnclick();
             }
         }
 
@@ -334,7 +331,6 @@
         function ReloadPage() {
             window.location.href = "@Url.Action("DayBookReport", "Account")"
         }
-
 
     </script>
 }

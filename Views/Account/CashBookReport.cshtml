@@ -119,11 +119,11 @@
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Date From<br />
-                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "size", @type = "text" })
+                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "size", @type = "text", onkeypress = "javascript:return evtfr_dt(event);" })
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Date To<br />
-                                @Html.TextBoxFor(model => model.to_dt, new { @class = "size", @type = "text" })
+                                @Html.TextBoxFor(model => model.to_dt, new { @class = "size", @type = "text", onkeypress = "javascript:return evtto_dt(event);" })
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 Account Head<br />
@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                                 select Bank<br />
-                                @Html.DropDownListFor(p => p.book_type, new SelectList(new string[] { "Journal Book", "Cash Book" }), "Select Book", new { @class = "sizebig"@*, @onchange = "onchangeNeftOrOtherBank()"*@ })
+                                @Html.DropDownListFor(p => p.book_type, new SelectList(new string[] { "Journal Book", "Cash Book" }), "Select Book", new { @class = "sizebig", @onchange = "ChangeBookType()" })
 
                             </div>
                         </div>
@@ -203,6 +203,8 @@
 
         $(document).ready(function () {
 
+            $('#fr_dt').focus();
+
             $("#ac_hd").autocomplete({
                 source: function (request, response) {
                     let ModelObject = { ac_hd: $('#ac_hd').val() };
@@ -229,7 +231,6 @@
         });
 
         function evtachd(evt) {
-
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
@@ -241,7 +242,6 @@
         function getparticulars() {
              let ModelObject = {
                  ac_hd: $('#ac_hd').val(),
-
              };
               $.ajax({
                 type: "POST",
@@ -252,7 +252,7 @@
                   {
                     //alert(data);
                       $('#ac_hddesc').val(data);
-                      $('#daybook_dt').focus();
+                      $('#book_type').focus();
                 },
                 error: function (err) {
                     alert(err);
@@ -323,7 +323,29 @@
 
          function DownloadTextFiles() {
              window.location.href = "@Url.Action("getcashbookprintfile", "Account")" + "?ac_hd=" + $('#ac_hd').val() + "&branch=" + $('#branch').val() + "&book_type=" + $('#book_type').val() + "&fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val();
-         }
+        }
+
+        function evtfr_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#to_dt').focus();
+            }
+        }
+
+        function evtto_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $('#ac_hd').focus();
+            }
+        }
+
+        function ChangeBookType() {
+            $('#btnPopulate').focus();
+        }
 
     </script>
 }
