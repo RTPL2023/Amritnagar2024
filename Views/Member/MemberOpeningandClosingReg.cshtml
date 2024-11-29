@@ -128,7 +128,7 @@
                         <div class="row mt-1 mb-2">
                             <div class="col-lg-3  col-sm-12 col-12">
                                 Search Option :<br />
-                                @Html.DropDownListFor(p => p.searchtype, new SelectList(new string[] { "Opening", "Closing" }), new { @class = "size", @onchange = "showhide()" })
+                                @Html.DropDownListFor(p => p.searchtype, new SelectList(new string[] { "Select", "Opening", "Closing" }), new { @class = "size", @onchange = "SearchOptionOnChange()" })
                             </div>
                             <div class="col-lg-2  col-sm-12 col-12">
                                 Branch:<br />
@@ -136,15 +136,15 @@
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12">
                                 Member Type:<br />
-                                @Html.DropDownListFor(model => model.mem_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select Member Type", new { @class = "sizel" })
+                                @Html.DropDownListFor(model => model.mem_type, new SelectList(Model.TypeDesc, "Value", "Text"), "Select Member Type", new { @class = "sizel", @onchange = "mem_typeOnChange()" })
                             </div>
                             <div class="col-lg-2  col-sm-12 col-12">
                                 From Date:<br />
-                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "sizeM", @type = "text" })
+                                @Html.TextBoxFor(model => model.fr_dt, new { @class = "sizeM", @type = "text", onkeypress = "javascript:return evtfr_dt(event);" })
                             </div>
                             <div class="col-lg-2  col-sm-12 col-12">
                                 To Date:<br />
-                                @Html.TextBoxFor(model => model.to_dt, new { @class = "sizeM", @type = "text" })
+                                @Html.TextBoxFor(model => model.to_dt, new { @class = "sizeM", @type = "text", onkeypress = "javascript:return evtto_dt(event);" })
                             </div>
                         </div>
 
@@ -219,15 +219,47 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $("#searchtype").focus();
             $("#openingDiv").hide();
             $("#closingDiv").hide();
             $("#close").hide();
-           
         });
-       
-        function ShowTable() {
-            $("#loading").show();
-            let ModelObject = { searchtype: $('#searchtype').val(), branch_id: $('#branch_id').val(), mem_type: $('#mem_type').val(), fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val()};
+
+        function SearchOptionOnChange() {
+            $("#mem_type").focus();
+        }
+
+        function mem_typeOnChange() {
+            $("#fr_dt").focus();
+        }
+
+        function evtfr_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                $("#to_dt").focus();
+            }
+        }
+
+        function evtto_dt(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
+                return false;
+            else if (charCode == 13) {
+                ShowTable();
+            }
+        }
+
+        function ShowTable() {           
+            if ($('#fr_dt').val() == "" || $('#fr_dt').val() == null) {
+                alert("From Date Cannot Be Blank");
+            }
+            else if ($('#to_dt').val() == "" || $('#to_dt').val() == null) {
+                alert("To Date Cannot Be Blank");
+            }
+            else {
+                    let ModelObject = { searchtype: $('#searchtype').val(), branch_id: $('#branch_id').val(), mem_type: $('#mem_type').val(), fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val()};
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("GetMemberOpeningClosingDetails", "Member")',
@@ -236,7 +268,6 @@
                     success: function (data) {
                         //$("#ItemListTable").show();
                         if ($('#searchtype').val() == "Opening") {
-                          
                             document.getElementById("OpeningTab").innerHTML = data.tableelement;
                             $('#op_shcap').val(data.tot_xtopsh);
                             $('#op_tfcap').val(data.tot_xtoptf);
@@ -248,23 +279,26 @@
                             $("#open").show();
                         }
                         else {
-                            document.getElementById("ClosingTab").innerHTML = data.tableelement;                           
+                            document.getElementById("ClosingTab").innerHTML = data.tableelement;
                             $('#op_shcap').val(data.tot_xtclsh);
                             $('#op_tfcap').val(data.tot_xtcltf);
                             $("#closingDiv").show();
                             $("#openingDiv").hide();
                             $("#close").show();
-                            $("#open").hide();                                                 
+                            $("#open").hide();
                         }
                     },
                      error: function (err) {
                     //alert("Error Occured");
                      }
                     });
-           }
+                 }
+
+        }
 
         function DownloadTextFiles() {
             window.location.href = "@Url.Action("MembersOpeningClosingList", "Member")" + "?searchtype=" + $('#searchtype').val() + "&branch_id=" + $('#branch_id').val() + "&mem_type=" + $('#mem_type').val() + "&fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val();
         }
+
     </script>
 }

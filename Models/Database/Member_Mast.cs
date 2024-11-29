@@ -731,7 +731,7 @@ namespace Amritnagar.Models.Database
                         mm.member_category = dr["MEM_CATEGORY"].ToString();
                         mm.mem_name = dr["MEMBER_NAME"].ToString();
                         //mil.Add(mm);
-                        if (mm.member_type == "GEN")
+                        if (mm.member_category == "GEN")
                         {
                             sql = "select * from share_ledger where BRANCH_ID='" + branch + "' AND member_id='" + mm.mem_id + "' AND convert(datetime, vch_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, vch_date, 103) <= convert(datetime, '" + to_dt + "', 103) order by vch_date,vch_srl";
                             config.singleResult(sql);
@@ -759,7 +759,7 @@ namespace Amritnagar.Models.Database
                     }
                 }
             }
-            else if (searchtype == "Closing")
+            else
             {
                 sql = "SELECT EMPLOYEE_ID,MEMBER_ID,MEMBER_DATE,MEMBER_TYPE,MEM_CATEGORY,MEMBER_NAME,MEMBER_CLOSED,MEMBER_CLOSDT  " +
                     "FROM MEMBER_MAST WHERE BRANCH_ID='" + branch + "' AND  convert(datetime, MEMBER_CLOSDT, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, MEMBER_CLOSDT, 103) <= convert(datetime, '" + to_dt + "', 103) " +
@@ -779,7 +779,7 @@ namespace Amritnagar.Models.Database
                         mm.member_category = dr["MEM_CATEGORY"].ToString();
                         mm.mem_name = dr["MEMBER_NAME"].ToString();
                         // mil.Add(mm);
-                        if (mm.member_type == "GEN")
+                        if (mm.member_category == "GEN")
                         {
                             sql = "select * from share_ledger where BRANCH_ID='" + branch + "' AND member_id='" + mm.mem_id + "' AND convert(datetime, vch_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, vch_date, 103) <= convert(datetime, '" + to_dt + "', 103) AND DR_CR='D' order by vch_date,vch_srl";
                             config.singleResult(sql);

@@ -347,13 +347,13 @@ namespace Amritnagar.Models.Database
                 if (ac_hd == "" || ac_hd == null)
                 {
                     sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
-                    sql = sql + "convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)";
+                    sql = sql + "convert(date, loan_date, 103) >= convert(date, '" + fr_dt + "', 103) and convert(date, loan_date, 103) <= convert(date, '" + to_dt + "', 103)";
                     sql = sql + "ORDER BY ac_hd,EMPLOYEE_id,loan_date";
                     config.singleResult(sql);
                 }
                 else
                 {
-                    sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(datetime, loan_date, 103) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, loan_date, 103) <= convert(datetime, '" + to_dt + "', 103)" +
+                    sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND AC_HD = '" + ac_hd + "' and convert(date, loan_date, 103) >= convert(date, '" + fr_dt + "', 103) and convert(date, loan_date, 103) <= convert(date, '" + to_dt + "', 103)" +
                     "ORDER BY ac_hd,EMPLOYEE_id,loan_date";
                     config.singleResult(sql);
                 }
@@ -377,14 +377,14 @@ namespace Amritnagar.Models.Database
                 if (ac_hd == "" || ac_hd == null)
                 {
                     sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
-                    sql = sql + "iif(clos_date is null,convert(datetime, '31/03/2099', 103),convert(datetime, CLOS_DATE, 103)) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) ";
+                    sql = sql + "iif(clos_date is null,convert(date, '31/03/2099', 103),convert(date, CLOS_DATE, 103)) >= convert(date, '" + fr_dt + "', 103) and convert(date, CLOS_DATE, 103) <= convert(date, '" + to_dt + "', 103) ";
                     sql = sql + "AND clos_flag is not null ORDER BY ac_hd,EMPLOYEE_id,clos_date";
                     config.singleResult(sql);
                 }
                 else
                 {
                     sql = "select * FROM loan_master WHERE BRANCH_ID='" + branch_id + "' AND ";
-                    sql = sql + "AC_HD = '" + ac_hd + "' and iif(clos_date is null,convert(datetime, '31/03/2099', 103),convert(datetime, CLOS_DATE, 103)) >= convert(datetime, '" + fr_dt + "', 103) and convert(datetime, CLOS_DATE, 103) <= convert(datetime, '" + to_dt + "', 103) ";
+                    sql = sql + "AC_HD = '" + ac_hd + "' and iif(clos_date is null,convert(date, '31/03/2099', 103),convert(date, CLOS_DATE, 103)) >= convert(date, '" + fr_dt + "', 103) and convert(date, CLOS_DATE, 103) <= convert(date, '" + to_dt + "', 103) ";
                     sql = sql + "AND clos_flag is not null ORDER BY ac_hd,EMPLOYEE_id,clos_date";
                     config.singleResult(sql);
                 }
@@ -402,9 +402,9 @@ namespace Amritnagar.Models.Database
                         lm.loan_amt = !Convert.IsDBNull(dr["LOAN_AMT"]) ? Convert.ToDecimal(dr["LOAN_AMT"]) : Convert.ToDecimal("0.00");
                         lm.loanee_name = dr["LOANEE_NAME"].ToString();
                         lm.inst_no = Convert.ToInt32(dr["NO_INSTL"]);
-                        lm.inst_amt = (lm.loan_amt / lm.inst_no);
-                        sql = "select * from loan_ledger where BRANCH_ID='" + branch_id + "' AND ac_hd='" + ac_hd + "' and EMPLOYEE_id='" + lm.emp_id + "' and convert(datetime, vch_date, 103) = convert(datetime, '" + lm.clos_dt + "', 103) AND DR_CR='C' order by vch_date,vch_srl";
-                        config.singleResult(sql);
+                        lm.inst_amt = (lm.loan_amt / lm.inst_no);                       
+                        sql = "select * from loan_ledger where BRANCH_ID='" + branch_id + "' AND ac_hd='" + ac_hd + "' and EMPLOYEE_id='" + lm.emp_id + "' and convert(varchar, vch_date, 103) = convert(varchar, '" + lm.clos_dt + "', 103) AND DR_CR='C' order by vch_date,vch_srl";
+                        config.singleResult(sql);                     
                         if (config.dt.Rows.Count > 0)
                         {
                             DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
@@ -495,10 +495,7 @@ namespace Amritnagar.Models.Database
                 }
             }
             return lm;
-        }
-      
-
-
+        }    
         public List<Loan_Master> getmonthlyIntrestList(MonthlyInterestScheduleForLoanViewModel model)
         {
             decimal xr = 0;
