@@ -2628,6 +2628,7 @@ namespace Amritnagar.Controllers
             UtilityController u = new UtilityController();
             model.BranchDesc = u.getBranchMastDetails();
             model.achddesc = u.getGlAcc_hd();
+            model.on_dt = DateTime.Now.ToString("dd/MM/yyyy");
             return View(model);
         }
         public JsonResult getsharecapitaldetaillist(ShareCapitalDetailListViewModel model)
