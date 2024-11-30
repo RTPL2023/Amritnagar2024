@@ -189,44 +189,54 @@ namespace Amritnagar.Models.Database
         public List<SHARE_LEDGER> getdetails(string BranchID, string on_dt, string gl_hd)
         {
             List<SHARE_LEDGER> sll = new List<SHARE_LEDGER>();
+            //SHARE_LEDGER sl = new SHARE_LEDGER();
             string sql = string.Empty;
             if(gl_hd != "")
             {
                 sql = "SELECT * FROM ACC_HEAD WHERE AC_HD='" + gl_hd + "'";
-                config.singleResult(sql);   
-                if(config.dt.Rows.Count > 0)
+                config.singleResult(sql);
+                DataTable ac_dt = config.dt; 
+                if(ac_dt.Rows.Count > 0)
                 {
-                    foreach (DataRow dr in config.dt.Rows)
+                    foreach (DataRow dr in ac_dt.Rows)
                     {
                         SHARE_LEDGER sl = new SHARE_LEDGER();
                         sl.ac_hd = Convert.ToString(dr["ac_hd"]);
                         sl.acc_desc = Convert.ToString(dr["AC_DESC"]) + "(" + Convert.ToString(dr["ac_hd"]) + ")";
                         sl.MISCDEP_BASEAMT = !Convert.IsDBNull(dr["MISCDEP_BASEAMT"]) ? Convert.ToDecimal(dr["MISCDEP_BASEAMT"]) : Convert.ToDecimal(00);
                         sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + BranchID + "' AND ";
-                        sql = sql + "MEMBER_TYPE='GEN' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_dt + "', 103) AND ";
+                        sql = sql + "MEM_CATEGORY='GEN' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_dt + "', 103) AND ";
                         sql = sql + "IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + on_dt + "', 103) ORDER BY member_id";
                         config.singleResult(sql);
-                        if (config.dt.Rows.Count > 0)
+                        DataTable mem_mast = config.dt;
+                        if (mem_mast.Rows.Count > 0)
                         {
-                            foreach (DataRow dr1 in config.dt.Rows)
+                            foreach (DataRow dr1 in mem_mast.Rows)
                             {
                                 //SHARE_LEDGER sl = new SHARE_LEDGER();
                                 sl.mem_date = Convert.ToDateTime(dr1["MEMBER_DATE"]);
                                 sl.mem_name = Convert.ToString(dr1["member_name"]);
-                                sl.mem_id = Convert.ToString(dr1["MEMBER_ID"]);
+                                sl.member_id = Convert.ToString(dr1["MEMBER_ID"]);
                                 sql = "SELECT SUM(IIF(DR_CR='D',-UNITS,UNITS)) AS BAL_UNIT,SUM(IIF(DR_CR='D',-TR_AMOUNT,TR_AMOUNT)) AS BAL_AMT ";
                                 sql = sql + "FROM SHARE_LEDGER WHERE BRANCH_ID='" + BranchID + "' AND MEMBER_ID='" + sl.mem_id + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_dt + "', 103)";
                                 sql = sql + " AND VCH_ACHD='" + gl_hd + "'";
                                 config.singleResult(sql);
-                                if (config.dt.Rows.Count > 0)
+                                DataTable sh_led = config.dt;
+                                if (sh_led.Rows.Count > 0)
                                 {
-                                    foreach (DataRow dr2 in config.dt.Rows)
+                                    foreach (DataRow dr2 in sh_led.Rows)
                                     {
-                                        sl.bal_amount = !Convert.IsDBNull(dr2["bal_amt"]) ? Convert.ToDecimal(dr2["bal_amt"]) : Convert.ToDecimal(00);
-                                        sl.balance_unit = !Convert.IsDBNull(dr2["bal_unit"]) ? Convert.ToDecimal(dr2["bal_unit"]) : Convert.ToDecimal(00);
-                                        sll.Add(sl);
+                                        SHARE_LEDGER sl1 = new SHARE_LEDGER();
+                                        sl1.bal_amount = !Convert.IsDBNull(dr2["bal_amt"]) ? Convert.ToDecimal(dr2["bal_amt"]) : Convert.ToDecimal(00);
+                                        sl1.balance_unit = !Convert.IsDBNull(dr2["bal_unit"]) ? Convert.ToDecimal(dr2["bal_unit"]) : Convert.ToDecimal(00);
+                                        sl1.mem_date = sl.mem_date;
+                                        sl1.mem_name = sl.mem_name;
+                                        sl1.member_id = sl.member_id;
+                                        sl1.acc_desc = sl.acc_desc;
+                                        sl1.MISCDEP_BASEAMT = sl.MISCDEP_BASEAMT;
+                                        sll.Add(sl1);
                                     }
-                                }
+                                }                               
                             }
                         }
                     }
@@ -236,37 +246,46 @@ namespace Amritnagar.Models.Database
             {
                 sql = "SELECT * FROM ACC_HEAD order by AC_HD";
                 config.singleResult(sql);
-                if(config.dt.Rows.Count > 0)
+                DataTable ac_dt = config.dt;
+                if (config.dt.Rows.Count > 0)
                 {
-                    foreach (DataRow dr in config.dt.Rows)
+                    foreach (DataRow dr in ac_dt.Rows)
                     {
                         SHARE_LEDGER sl = new SHARE_LEDGER();
                         sl.ac_hd = Convert.ToString(dr["ac_hd"]);
                         sl.acc_desc = Convert.ToString(dr["AC_DESC"]) + "(" + Convert.ToString(dr["ac_hd"]) + ")";
                         sl.MISCDEP_BASEAMT = !Convert.IsDBNull(dr["MISCDEP_BASEAMT"]) ? Convert.ToDecimal(dr["MISCDEP_BASEAMT"]) : Convert.ToDecimal(00);
                         sql = "SELECT * FROM MEMBER_MAST WHERE BRANCH_ID='" + BranchID + "' AND ";
-                        sql = sql + "MEMBER_TYPE='GEN' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_dt + "', 103) AND ";
+                        sql = sql + "MEM_CATEGORY='GEN' AND convert(datetime, MEMBER_DATE, 103) <= convert(datetime, '" + on_dt + "', 103) AND ";
                         sql = sql + "IIF(MEMBER_CLOSDT is NULL,convert(datetime, '31/03/2099', 103),convert(datetime, MEMBER_CLOSDT, 103)) >= convert(datetime, '" + on_dt + "', 103) ORDER BY member_id";
                         config.singleResult(sql);
-                        if (config.dt.Rows.Count > 0)
+                        DataTable mem_mast = config.dt;
+                        if (mem_mast.Rows.Count > 0)
                         {
-                            foreach (DataRow dr1 in config.dt.Rows)
+                            foreach (DataRow dr1 in mem_mast.Rows)
                             {
                                 //SHARE_LEDGER sl = new SHARE_LEDGER();
                                 sl.mem_date = Convert.ToDateTime(dr1["MEMBER_DATE"]);
                                 sl.mem_name = Convert.ToString(dr1["member_name"]);
-                                sl.mem_id = Convert.ToString(dr1["MEMBER_ID"]);
+                                sl.member_id = Convert.ToString(dr1["MEMBER_ID"]);
                                 sql = "SELECT SUM(IIF(DR_CR='D',-UNITS,UNITS)) AS BAL_UNIT,SUM(IIF(DR_CR='D',-TR_AMOUNT,TR_AMOUNT)) AS BAL_AMT ";
                                 sql = sql + "FROM SHARE_LEDGER WHERE BRANCH_ID='" + BranchID + "' AND MEMBER_ID='" + sl.mem_id + "' AND convert(datetime, VCH_DATE, 103) <= convert(datetime, '" + on_dt + "', 103)";
                                 sql = sql + " AND VCH_ACHD='" + sl.ac_hd + "'";
                                 config.singleResult(sql);
-                                if (config.dt.Rows.Count > 0)
+                                DataTable sh_led = config.dt;
+                                if (sh_led.Rows.Count > 0)
                                 {
-                                    foreach (DataRow dr2 in config.dt.Rows)
+                                    foreach (DataRow dr2 in sh_led.Rows)
                                     {
+                                        SHARE_LEDGER sl1 = new SHARE_LEDGER();
                                         sl.bal_amount = !Convert.IsDBNull(dr2["bal_amt"]) ? Convert.ToDecimal(dr2["bal_amt"]) : Convert.ToDecimal(00);
                                         sl.balance_unit = !Convert.IsDBNull(dr2["bal_unit"]) ? Convert.ToDecimal(dr2["bal_unit"]) : Convert.ToDecimal(00);
-                                        sll.Add(sl);
+                                        sl1.mem_date = sl.mem_date;
+                                        sl1.mem_name = sl.mem_name;
+                                        sl1.member_id = sl.member_id;
+                                        sl1.acc_desc = sl.acc_desc;
+                                        sl1.MISCDEP_BASEAMT = sl.MISCDEP_BASEAMT;
+                                        sll.Add(sl1);
                                     }
                                 }
                             }

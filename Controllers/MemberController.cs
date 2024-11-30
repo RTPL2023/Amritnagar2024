@@ -2673,12 +2673,12 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Share Account Head</th><th>Face Value</th><th>Total Units</th><th>Total Share Capital</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.MISCDEP_BASEAMT.ToString("0.00") + "</td><td>" + a.balance_unit.ToString("0.00") + a.bal_amount.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.MISCDEP_BASEAMT.ToString("0.00") + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
                         xtot = xtot + a.bal_amount;
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.MISCDEP_BASEAMT.ToString("0.00") + "</td><td>" + a.balance_unit.ToString("0.00") + a.bal_amount.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + a.acc_desc + "</td><td>" + a.MISCDEP_BASEAMT.ToString("0.00") + "</td><td>" + a.balance_unit.ToString("0.00") + "</td><td>" + a.bal_amount.ToString("0.00") + "</td></tr>";
                         xtot = xtot + a.bal_amount;
                     }
                     i = i + 1;

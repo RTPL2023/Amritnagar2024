@@ -57,14 +57,14 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        /* width: 1000px;*/
+         width: 900px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab tbody {
             display: block;
-            /* width: 1000px;*/
+             width: 900px;
             overflow: auto;
             height: 200px;
             text-align: center;
@@ -74,7 +74,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             border-collapse: collapse;
-            /* width: 1000px;*/
+             width: 900px;
         }
 
         .tab tr:nth-child(even) {
@@ -100,14 +100,14 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
         border-collapse: collapse;
-        /* width: 1000px;*/
+         width: 600px;
         margin-left: auto;
         margin-right: auto;
     }
 
         .tab1 tbody {
             display: block;
-            /* width: 1000px;*/
+             width: 600px;
             overflow: auto;
             height: 200px;
             text-align: center;
@@ -117,7 +117,7 @@
             border: 1px solid black;
             padding: 8px;
             border-collapse: collapse;
-            /* width: 1000px;*/
+             width: 600px;
         }
 
         .tab1 tr:nth-child(even) {
@@ -132,7 +132,7 @@
             padding: 8px;
             text-align: center;
             /*background-color: #04AA6D;*/
-            background-color: lightgray;
+            background-color: firebrick;
             color: firebrick;
             font-size: 12px;
             color: white;
@@ -228,7 +228,7 @@
                     </div>
                 </div>
                 <div class="row mt-1 mb-1">
-                    <div class="col-lg-9 col-sm-12 col-12">
+                    <div class="col-lg-12 col-sm-12 col-12">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="background-color:lightcoral;color:white;font-size:14px;font-weight:bold;text-align:center">
                                 Detail List Summary
@@ -236,15 +236,15 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                <div class="table-responsive mt-1">
+                                <div class="table-responsive mt-1 mb-3">
                                     <table id="Summarydetails" class="tab1">
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-12 col-12">
-                        Grand Total<br />
+                    <div class="col-lg-12 col-sm-12 col-12">
+                        Grand Total
                         @Html.TextBoxFor(p => p.gr_total, new { @class = "size", @type = "text" })
                     </div>
                 </div>
