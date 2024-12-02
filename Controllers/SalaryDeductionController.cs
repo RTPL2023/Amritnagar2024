@@ -1315,7 +1315,7 @@ namespace Amritnagar.Controllers
             string emp = "";
             Recovery_Schedule rs = new Recovery_Schedule();
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
-            rslst = rs.getdecschlist(model.branch, model.mem_cat, model.sending_dt, model.unit);
+            rslst = rs.getdecschlistforExcel(model.branch, model.mem_cat, model.sending_dt, model.unit);
             using (var workbook = new XLWorkbook())
             {
                 int k = 1;
