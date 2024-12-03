@@ -3690,7 +3690,14 @@ namespace Amritnagar.Controllers
             {
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Voter_List.txt"));
             }
-            return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");           
+            if(model.dist_list == true)
+            {
+                return File(memory.ToArray(), "text/plain", "Distribution_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+            }
+            else
+            {
+                return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+            }          
         }
 
         /********************************************Votar List End***************************************************/

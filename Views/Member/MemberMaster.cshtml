@@ -990,7 +990,6 @@
         }
 
        function copyAddressToPermanent() {
-
             $('#prmntAdd_house').val($('#mailAdd_house').val());
             $('#prmntAdd_add1').val($('#mailAdd_add1').val());
             $('#prmntAdd_add2').val($('#mailAdd_add2').val());
@@ -998,17 +997,14 @@
             $('#prmntAdd_dist').val($('#mailAdd_dist').val());
             $('#prmntAdd_state').val($('#mailAdd_state').val());
             $('#prmntAdd_pin').val($('#mailAdd_pin').val());
-
-        }
+       }
 
        function getIntroducerName() {
-
             if ($("#intr_mem_no").val() !=null) {
                 /*alert("ok");*/
                 let ModelObject = { intr_mem_no: $('#intr_mem_no').val()};
                 /*alert(JSON.stringify(ModelObject));*/
                 $.ajax({
-
                     type: "POST",
                     url: '@Url.Action("GetIntroducerName", "Member")',
                     data: ModelObject,
@@ -1020,17 +1016,15 @@
                     error: function (err) {
                         alert("Unable To Retrieve");
                     }
-
                 });
             }
-        };
+       };
 
        function evtintr_mem_no(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-
                 getIntroducerName();
             }
        }
@@ -1169,10 +1163,9 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-
                 GetDetailsByMemberId();
             }
-        }
+       }
 
        function GetDetailsByEmployeeId() {
             let ModelObject = { branch_id: $('#branch_id').val(), emp_id: $('#emp_id').val()};
@@ -1310,10 +1303,9 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-
                 GetDetailsByEmployeeId();
             }
-        }
+       }
 
        function UpdateMemberMaster() {
             let ModelObject = {
@@ -1408,7 +1400,6 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-
                 $("#mailAdd_add1").val("AMRITNAGAR - COLLIERY");
                 $("#mailAdd_city").val("RANIGANJ");
                 $("#mailAdd_dist").val("BURDWAN");
@@ -1459,8 +1450,7 @@
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
-            else if (charCode == 13) {
-               
+            else if (charCode == 13) {               
                 $('#nominee_add1').val($('#mailAdd_add1').val());
                 $('#nominee_add2').val($('#mailAdd_add2').val());
                 $('#nominee_city').val($('#mailAdd_city').val());
