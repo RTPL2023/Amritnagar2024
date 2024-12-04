@@ -273,26 +273,36 @@
                     success: function (data) {
                         //$("#ItemListTable").show();
                         if ($('#searchtype').val() == "Opening") {
-                            $("#loading").hide();
-                            document.getElementById("OpeningTab").innerHTML = data.tableelement;
-                            $('#op_shcap').val(data.tot_xtopsh);
-                            $('#op_tfcap').val(data.tot_xtoptf);
-                            $("#openingDiv").show();
-                            $("#closingDiv").hide();
-                            $("#cl_shcap").hide();
-                            $("#cl_tfcap").hide();
-                            $("#close").hide();
-                            $("#open").show();
+                            if (data.tableelement == "" || data.tableelement == null) {
+                                alert(data.msg);
+                            }
+                            else {
+                                $("#loading").hide();
+                                document.getElementById("OpeningTab").innerHTML = data.tableelement;
+                                $('#op_shcap').val(data.tot_xtopsh);
+                                $('#op_tfcap').val(data.tot_xtoptf);
+                                $("#openingDiv").show();
+                                $("#closingDiv").hide();
+                                $("#cl_shcap").hide();
+                                $("#cl_tfcap").hide();
+                                $("#close").hide();
+                                $("#open").show();
+                            }                            
                         }
                         else {
-                            $("#loading1").hide();
-                            document.getElementById("ClosingTab").innerHTML = data.tableelement;
-                            $('#op_shcap').val(data.tot_xtclsh);
-                            $('#op_tfcap').val(data.tot_xtcltf);
-                            $("#closingDiv").show();
-                            $("#openingDiv").hide();
-                            $("#close").show();
-                            $("#open").hide();
+                            if (data.tableelement == "" || data.tableelement == null) {
+                                alert(data.msg);
+                            }
+                            else {
+                                $("#loading1").hide();
+                                document.getElementById("ClosingTab").innerHTML = data.tableelement;
+                                $('#op_shcap').val(data.tot_xtclsh);
+                                $('#op_tfcap').val(data.tot_xtcltf);
+                                $("#closingDiv").show();
+                                $("#openingDiv").hide();
+                                $("#close").show();
+                                $("#open").hide();
+                            }                            
                         }
                     },
                      error: function (err) {

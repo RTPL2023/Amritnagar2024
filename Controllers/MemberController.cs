@@ -1127,6 +1127,7 @@ namespace Amritnagar.Controllers
                 {
                     //fd = "";
                     model.tableelement = null;
+                    model.msg = "No Record Found";
                 }
             }
             else
@@ -1174,6 +1175,7 @@ namespace Amritnagar.Controllers
                 {
                     //fd = "";
                     model.tableelement = null;
+                    model.msg = "No Record Found";
                 }
             }
             return Json(model);
