@@ -254,7 +254,7 @@
                         </div>
                         <div class="row mt-1">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" />
+                                <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" height="100" width="200" />
                                 <div class="table-responsive">
                                     <table id="DetailList" class="tab1">
                                     </table>
@@ -323,7 +323,8 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">                                
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"> 
+                                <img id="loading1" src="~/wwwroot/Images/LoadingGif.gif" height="100" width="200" />
                                     <table id="LicPrimiumList" class="tab2">
                                     </table>                               
                             </div>
@@ -401,6 +402,8 @@
         $(document).ready(function () {
             $("#mem_no").hide();
             $("#loading").hide();
+            $("#loading1").hide();
+            $("#rec_dt").focus();
         });
 
         function ShowTable() {
@@ -420,7 +423,7 @@
                     //alert("Error Occured");
                      }
                     });
-       }
+        }
 
        function ShowTableForTotalPosition() {
            let ModelObject = { emp_branch: $('#emp_branch').val(), book_no: $('#book_no').val(), rec_dt: $('#rec_dt').val()};
@@ -438,14 +441,16 @@
                     });
         }
 
-       function ShowTableForLicPrimium() {
+        function ShowTableForLicPrimium() {
+            $("#loading1").show();
             let ModelObject = { fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val(), dob: $('#dob').val()};
                     $.ajax({
                     type: "POST",
                          url: '@Url.Action("getloandetailsbydaterange", "SalaryDeduction")',
                         data: ModelObject,
                         dataType: "json",
-                    success: function (data) {
+                        success: function (data) {
+                            $("#loading1").hide();
                         document.getElementById("LicPrimiumList").innerHTML = data.tableelement;
                     },
                      error: function (err) {
@@ -496,13 +501,13 @@
                         data: ModelObject,
                         dataType: "json",
                         success: function (data) {
-                            alert(data);
+                            alert(data);                            
                         },
                         error: function (err) {
                             alert("Error Occured");
                         }
                     });
-        }
+       }
 
         function DownloadTextFilesForLicPrimium() {
             window.location.href = "@Url.Action("getlicprimiumlistprintfile", "SalaryDeduction")" + "?fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val() + "&premium_yr=" + $('#premium_yr').val() + "&contc_no=" + $('#contc_no').val() + "&email=" + $('#email').val() + "&pan_no=" + $('#pan_no').val();

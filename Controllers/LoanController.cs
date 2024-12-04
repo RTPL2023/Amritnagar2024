@@ -604,7 +604,8 @@ namespace Amritnagar.Controllers
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Loan_Ledger_Statement_List.txt"));
             }
             return File(memory.ToArray(), "text/plain", "Loan_Ledger_Statement_List_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
-        }
+        }    
+
         /********************************************Loan Ledger Statement End*******************************************/
 
         /********************************************Loan Opening Closing List Start*******************************************/
@@ -653,6 +654,7 @@ namespace Amritnagar.Controllers
                 else
                 {
                     model.tableelement = null;
+                    model.msg = "No Data Found";
                 }
             }
             else
@@ -682,6 +684,7 @@ namespace Amritnagar.Controllers
                 else
                 {
                     model.tableelement = null;
+                    model.msg = "No Data Found";
                 }
             }
             return Json(model);

@@ -471,10 +471,8 @@ namespace Amritnagar.Models.Database
             return lml;
         }
         public Loan_Master getInterestAmtfromRecovery_Schedule(MonthlyInterestScheduleForLoanViewModel model,string emp_id)
-        {
-            
+        {           
             string qryMEM = string.Empty;
-
             qryMEM = "SELECT * FROM RECOVERY_SCHEDULE WHERE BRANCH_ID='" + model.branch_id + "' AND ";
             qryMEM = qryMEM + "convert(datetime, SCH_DATE, 103) = convert(datetime, '" + model.sch_date + "', 103) AND ac_hd='"+model.ln_achd+"' and";
             qryMEM = qryMEM + " book_no='" + model.book_no + "' and employer_branch='" + model.colliery_code + "' and EMPLOYEE_ID='"+ emp_id + "'";

@@ -136,7 +136,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Account Head:<br />
-                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Account Head", new { @class = "sizebig" })
+                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Account Head", new { @class = "sizebig", @onchange= "ac_hdonchange()" })
                     </div>
                     <div class="col-lg-3 col-md-2 col-sm-12 col-12">
                         Employee-Id:<br />
@@ -365,7 +365,12 @@
 
         $(document).ready(function () {
             $('#loading').hide();          
+            $('#ac_hd').focus();
         });
+
+        function ac_hdonchange() {
+            $('#emp_id').focus();
+        }
 
         function Save() {           
             if ($('#loan_dt').val() == null || $('#loan_dt').val() == "") {

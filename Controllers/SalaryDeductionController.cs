@@ -26,6 +26,7 @@ namespace Amritnagar.Controllers
             UtilityController u = new UtilityController();
             model.EmpBranchDesc = u.getEmployerBranchMastDetails();
             model.percnt = Convert.ToString(25);
+            model.dob = DateTime.Now.ToString("dd-MM-yyyy").Replace("-", "/");
             return View(model);
         }
         public JsonResult getfreshlistbyempbranchbooknoanddate(FreshListViewModel model)
@@ -126,7 +127,10 @@ namespace Amritnagar.Controllers
                     //xmdiff = (a.birth_date).Month - Convert.ToDateTime(model.dob).Month;
                     xmdiff = Convert.ToDateTime(model.dob).Subtract(a.birth_date).Days / (365.25 / 12);
                     xmdiff1 = xmdiff / 12;
-                    xmd = Convert.ToDouble(Convert.ToString(xmdiff1).Substring(0, 2));
+                    if(xmdiff1 > 0)
+                    {
+                        xmd = Convert.ToDouble(Convert.ToString(xmdiff1).Substring(0, 2));
+                    }                   
                     xmd1 = xmd * 12;
                     xac = xmdiff * xmd1;
                     if (xac > 6)
@@ -165,7 +169,7 @@ namespace Amritnagar.Controllers
             mm.branch_id = "MN";
             model.msg = mm.updatetfbuffer(mm);
             return Json(model.msg);
-        }
+        }        
         public ActionResult getlicprimiumlistprintfile(FreshListViewModel model)
         {
             Loan_Master lm = new Loan_Master();

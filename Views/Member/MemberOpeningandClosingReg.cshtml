@@ -163,7 +163,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="table-responsive mt-2">                       
+                    <div class="table-responsive mt-2"> 
+                        <img id="loading" src="~/wwwroot/Images/LoadingGif.gif" height="100" width="200" />
                         <table id="OpeningTab" class="tab">
                         </table>
                     </div>
@@ -180,7 +181,8 @@
 
                 </div>
                 <div class="row">
-                    <div class="table-responsive mt-2">                        
+                    <div class="table-responsive mt-2">   
+                        <img id="loading1" src="~/wwwroot/Images/LoadingGif.gif" height="100" width="200" />
                         <table id="ClosingTab" class="tab">
                         </table>
                     </div>
@@ -223,6 +225,8 @@
             $("#openingDiv").hide();
             $("#closingDiv").hide();
             $("#close").hide();
+            $("#loading").hide();
+            $("#loading1").hide();
         });
 
         function SearchOptionOnChange() {
@@ -259,6 +263,7 @@
                 alert("To Date Cannot Be Blank");
             }
             else {
+                    $("#loading").show();
                     let ModelObject = { searchtype: $('#searchtype').val(), branch_id: $('#branch_id').val(), mem_type: $('#mem_type').val(), fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val()};
                     $.ajax({
                     type: "POST",
@@ -268,6 +273,7 @@
                     success: function (data) {
                         //$("#ItemListTable").show();
                         if ($('#searchtype').val() == "Opening") {
+                            $("#loading").hide();
                             document.getElementById("OpeningTab").innerHTML = data.tableelement;
                             $('#op_shcap').val(data.tot_xtopsh);
                             $('#op_tfcap').val(data.tot_xtoptf);
@@ -279,6 +285,7 @@
                             $("#open").show();
                         }
                         else {
+                            $("#loading1").hide();
                             document.getElementById("ClosingTab").innerHTML = data.tableelement;
                             $('#op_shcap').val(data.tot_xtclsh);
                             $('#op_tfcap').val(data.tot_xtcltf);

@@ -251,30 +251,40 @@
                         data: ModelObject,
                         dataType: "json",
                         success: function (data) {
-                        if ($('#searchtype').val() == "New Loan") {
-                            document.getElementById("NewLoanTab").innerHTML = data.tableelement;
-                            $('#tot_xtopprin').show();
-                            $('#tot_xtopprin').val(data.tot_xtopprin);
-                            $("#openingDiv").show();
-                            $("#closingDiv").hide();
-                            $("#tot_cl_loan_amt").hide();
-                            $("#tot_cl_prin_amt").hide();
-                            $("#close").hide();
-                            $("#open").show();
-                        }
-                        else {
-                            document.getElementById("ClosingTab").innerHTML = data.tableelement;
-                            $('#tot_cl_loan_amt').val(data.tot_cl_loan_amt);
-                            $('#tot_cl_prin_amt').val(data.tot_cl_prin_amt);
-                            $('#tot_cl_loan_amt').show();
-                            $('#tot_cl_prin_amt').show();
-                            $('#tot_xtopprin').hide();
-                            $("#closingDiv").show();
-                            $("#openingDiv").hide();
-                            $("#close").show();
-                            $("#open").hide();
-                        }
-                    },
+                            if ($('#searchtype').val() == "New Loan") {
+                                if (data.tableelement == "" || data.tableelement == null) {
+                                    alert(data.msg);                                   
+                                }
+                                else {
+                                    document.getElementById("NewLoanTab").innerHTML = data.tableelement;
+                                    $('#tot_xtopprin').show();
+                                    $('#tot_xtopprin').val(data.tot_xtopprin);
+                                    $("#openingDiv").show();
+                                    $("#closingDiv").hide();
+                                    $("#tot_cl_loan_amt").hide();
+                                    $("#tot_cl_prin_amt").hide();
+                                    $("#close").hide();
+                                    $("#open").show();
+                                }                            
+                            }
+                            else {
+                                if (data.tableelement == "" || data.tableelement == null) {
+                                    alert(data.msg);                                   
+                                }
+                                else {
+                                    document.getElementById("ClosingTab").innerHTML = data.tableelement;
+                                    $('#tot_cl_loan_amt').val(data.tot_cl_loan_amt);
+                                    $('#tot_cl_prin_amt').val(data.tot_cl_prin_amt);
+                                    $('#tot_cl_loan_amt').show();
+                                    $('#tot_cl_prin_amt').show();
+                                    $('#tot_xtopprin').hide();
+                                    $("#closingDiv").show();
+                                    $("#openingDiv").hide();
+                                    $("#close").show();
+                                    $("#open").hide();
+                                }                            
+                            }
+                        },
                      error: function (err) {
                     //alert("Error Occured");
                      }

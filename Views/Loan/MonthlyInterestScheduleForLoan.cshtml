@@ -210,6 +210,7 @@
 
         $(document).ready(function () {
             $("#loading").hide();
+            $("#colliery_code").focus();
             //$("#frm_dt").hide();
             //$("#to_dt").hide();
         });
@@ -225,7 +226,6 @@
                sch_date: $('#sch_date').val(),
                fr_dt: $('#fr_dt').val(),
                to_dt: $('#to_dt').val(),
-
            };
                     $.ajax({
                     type: "POST",
@@ -243,6 +243,7 @@
                      }
                     });
         }
+
         function BtnpostOnclick() {
             $("#loading").show();
            let ModelObject = {
