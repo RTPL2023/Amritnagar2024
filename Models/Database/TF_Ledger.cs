@@ -32,7 +32,6 @@ namespace Amritnagar.Models.Database
         public string book_no { get; set; }
         public List<TF_Ledger> getgetGFandTFDetail(string AcHd, string branch, string fr_dt, string mem_id)
         {
-
             string sql;
             string acc = "";
             List<TF_Ledger> tflst = new List<TF_Ledger>();
@@ -57,19 +56,11 @@ namespace Amritnagar.Models.Database
                     //  tfl.chq_no = dr["chq_no"].ToString();
                     tfl.vch_date = Convert.ToDateTime(dr["vch_date"]);
                     tfl.insert_mode = dr["insert_mode"].ToString();
-
                     tflst.Add(tfl);
                 }
-
             }
-
             return tflst;
-
-
-
-
         }
-
         public string SaveInLedger(Member_Mast mm, MemDepositeFundIntPaySchViewModel model, decimal clos_prin, double xtot_int)
         {
             string sql = string.Empty;
@@ -181,7 +172,6 @@ namespace Amritnagar.Models.Database
         }
         public List<TF_Ledger> getdataByledgerTab(string gl_achd, string branch, string mem_no)
         {
-
             string sql;
             string acc = "";
             decimal xbal = 0;

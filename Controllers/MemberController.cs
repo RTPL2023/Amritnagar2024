@@ -2752,8 +2752,6 @@ namespace Amritnagar.Controllers
             model.mailAdd_dist = mm.mailAdd_dist;
             model.mailAdd_state = mm.mailAdd_state;
             model.mailAdd_pin = mm.mailAdd_pin;
-
-
             if (model.gl_achd == "TF")
             {
                 XBUFF = mm.tf_buffer;
@@ -2761,7 +2759,6 @@ namespace Amritnagar.Controllers
                 {
                     model.buff_txt = "Transferred Rs. " + mm.tf_buffer.ToString("0.00");
                 }
-
             }
             XPAIDUPTO = mm.mem_date;
             XPAIDUPTO = Convert.ToDateTime("01/" + XPAIDUPTO.Month +"/"+ XPAIDUPTO.Year);
@@ -2776,19 +2773,15 @@ namespace Amritnagar.Controllers
                 else
                 {
                     model.statbar = "Membership is Closed.";
-
                 }
-
             }
             if (model.gl_achd == "TF")
             {
-
                 if (XBUFF > 0)
                 {
                     XPAIDUPTO = GET_INST_FOR(XBUFF + XRESTADV, XPAIDUPTO.AddDays(1));
                 }
             }
-
             TF_Ledger tfl = new TF_Ledger();
             List<TF_Ledger> tfllst = new List<TF_Ledger>();
             tfllst = tfl.getdataByledgerTab(model.gl_achd,model.branch,model.mem_no);
@@ -2797,7 +2790,6 @@ namespace Amritnagar.Controllers
             string XTR_TYPE = "";
             string xref = "";
             model.tableelement = "<tr><th>Date</th><th>Particulars of Transaction</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Bal.</th><th>Interest Bal.</th></tr>";
-
             if (tfllst.Count > 0)
             {
                 foreach (var a in tfllst)
@@ -2837,7 +2829,6 @@ namespace Amritnagar.Controllers
                         case "BF":
                             XTR_TYPE = XTR_TYPE + " (Balance From Ledger)";
                             break;
-
                     }
                     if (model.gl_achd == "TF")
                     {

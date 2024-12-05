@@ -147,7 +147,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         G/L Account Head <br />
-                        @Html.DropDownListFor(p => p.gl_achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "size" })
+                        @Html.DropDownListFor(p => p.gl_achd, new SelectList(Model.achddesc, "Value", "Text"), "Select", new { @class = "size", @onchange= "gl_achd_onchange()" })
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                         Membership No.<br />
@@ -323,20 +323,25 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
     <script type="text/javascript">
+
         $(document).ready(function () {
             $("#loading").hide();
-            //$("#frm_dt").hide();
-            //$("#to_dt").hide();
+            $("#gl_achd").focus();           
         });
+
+        function gl_achd_onchange() {
+            $("#mem_no").focus();
+        }
+
         function evtMEM_NO(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode;
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-
                 GetDetailsByMemberId();
             }
         }
+
         function GetDetailsByMemberId() {
             let ModelObject = { branch: $('#branch').val(), mem_no: $('#mem_no').val(), gl_achd: $('#gl_achd').val() };
             //alert(JSON.stringify(ModelObject));
@@ -368,15 +373,12 @@
                     $('#buff_txt').val(data.buff_txt);
                     $('#statbar').val(data.statbar);
                     document.getElementById("list").innerHTML = data.tableelement;
-
                 },
                 error: function (err) {
                     alert("Error Occured");
                 }
-
             });
         }
-
       
     </script>
 }
