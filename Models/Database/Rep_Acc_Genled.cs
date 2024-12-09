@@ -199,7 +199,7 @@ namespace Amritnagar.Models.Database
                     rag.ac_hd = Convert.ToString(dr8["ac_hd"]);                   
                     if (CHKBNK != "")
                     {
-                        CHKBNK = CHKBNK + ","+ rag.ac_hd;
+                        CHKBNK = CHKBNK + "," + rag.ac_hd;
                     }
                     else
                     {

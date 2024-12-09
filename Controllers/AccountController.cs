@@ -1371,7 +1371,6 @@ namespace Amritnagar.Controllers
                     word += tensMap[(number / 10) - 1];
                     if ((number % 10) > 0)
                         word += " " + unitmap[(number % 10) - 1];
-
                 }
             }
             return word;
