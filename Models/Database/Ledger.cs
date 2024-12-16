@@ -1075,7 +1075,7 @@ namespace Amritnagar.Models.Database
                     string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '" + xled_achd + "'";
                     config.Execute_Query(qry);
                 }
             }
