@@ -688,12 +688,12 @@ namespace Amritnagar.Models.Database
         //    {
         //        foreach (DataRow dr in config.dt.Rows)
         //        {
-        //            Loan_Master lm = new Loan_Master();                   
+        //            Loan_Master lm = new Loan_Master();
         //            lm.ac_desc = dr["AC_DESC"].ToString();
         //            lm.ac_hd = dr["AC_HD"].ToString();
         //            lm.ledger_tab = dr["LEDGER_TAB"].ToString();
         //            lm.emp_id = dr["EMPLOYEE_ID"].ToString();
-        //            lm.loan_dt = !Convert.IsDBNull(dr["LOAN_DATE"]) ? Convert.ToDateTime(dr["LOAN_DATE"]) : Convert.ToDateTime(null);                  
+        //            lm.loan_dt = !Convert.IsDBNull(dr["LOAN_DATE"]) ? Convert.ToDateTime(dr["LOAN_DATE"]) : Convert.ToDateTime(null);
         //            lm.loan_amt = !Convert.IsDBNull(dr["LOAN_AMT"]) ? Convert.ToDecimal(dr["LOAN_AMT"]) : Convert.ToDecimal("00");
         //            lm.inst_no = !Convert.IsDBNull(dr["NO_INSTL"]) ? Convert.ToInt32(dr["NO_INSTL"]) : Convert.ToInt32("00");
         //            //lm.is_secured = Convert.ToString(dr["is_secured"]);
@@ -702,7 +702,7 @@ namespace Amritnagar.Models.Database
         //            if (config.dt.Rows.Count > 0)
         //            {
         //                DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-        //                //lm.prin_bal = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("00");
+        //                lm.prin_bal = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("00");
         //                //lm.int_due = !Convert.IsDBNull(dr1["int_due"]) ? Convert.ToDecimal(dr1["int_due"]) : Convert.ToDecimal("00");
         //                //lm.tot_rcv = lm.prin_bal + lm.int_due;
         //            }
@@ -713,38 +713,49 @@ namespace Amritnagar.Models.Database
         //}
         public List<Loan_Master> getmemberloandetails(string BranchID, string member_id)
         {
-            string sql = "SELECT A.*,D.AC_DESC,D.LEDGER_TAB FROM LOAN_MASTER A,LNTYPE_MAST B,ACC_HEAD D WHERE ";
+            List<Loan_Master> lml = new List<Loan_Master>();
+            string sql = "SELECT distinct A.ac_hd  as dachd  FROM LOAN_MASTER A,LNTYPE_MAST B,ACC_HEAD D WHERE ";
             sql = sql + "(A.AC_HD=B.AC_HD) AND (B.AC_HD=D.AC_HD) AND ";
             sql = sql + "B.MEMBER_REQD='Y' AND (A.BRANCH_ID='" + BranchID + "' AND A.MEMBER_ID='" + member_id + "') AND A.CLOS_FLAG IS NULL ";
-            sql = sql + "ORDER BY A.LOAN_DATE,A.AC_HD,A.EMPLOYEE_ID";
-            List<Loan_Master> lml = new List<Loan_Master>();
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in config.dt.Rows)
+                DataTable dtab = config.dt;             
+                foreach(DataRow drr in dtab.Rows)
                 {
-                    Loan_Master lm = new Loan_Master();
-                    lm.ac_desc = dr["AC_DESC"].ToString();
-                    lm.ac_hd = dr["ac_hd"].ToString();
-                    lm.emp_id = dr["EMPLOYEE_ID"].ToString();
-                    lm.loan_dt = !Convert.IsDBNull(dr["LOAN_DATE"]) ? Convert.ToDateTime(dr["LOAN_DATE"]) : Convert.ToDateTime(null);
-                    lm.loan_amt = !Convert.IsDBNull(dr["LOAN_AMT"]) ? Convert.ToDecimal(dr["LOAN_AMT"]) : Convert.ToDecimal("0.00");
-                    lm.inst_rate = !Convert.IsDBNull(dr["INT_RATE"]) ? Convert.ToDecimal(dr["INT_RATE"]) : Convert.ToDecimal("0.00");
-                    lm.inst_no = Convert.ToInt32(dr["NO_INSTL"]);
-                    lm.ledger_tab = Convert.ToString(dr["LEDGER_TAB"]);
-                    lm.ln_spcl = Convert.ToString(dr["ln_SPEACIAL"]);
-                    lm.branch_id = BranchID;
-                    lm.mem_id = member_id;
-                    lml.Add(lm);
-                    //sql = "SELECT * FROM " + lm.ledger_tab + " WHERE BRANCH_ID='" + BranchID + "' AND AC_HD='" + lm.ac_hd + "' AND employee_ID='" + lm.emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
-                    //config.singleResult(sql);
-                    //if (config.dt.Rows.Count > 0)
-                    //{
-                    //    DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
-                    //    lml.Add(lm);
-                    //}
+                    string dachd = Convert.ToString(drr["dachd"]);
+                    sql = "SELECT A.*,D.AC_DESC,D.LEDGER_TAB FROM LOAN_MASTER A,LNTYPE_MAST B,ACC_HEAD D WHERE ";
+                    sql = sql + "(A.AC_HD=B.AC_HD) AND (B.AC_HD=D.AC_HD) AND ";
+                    sql = sql + "B.MEMBER_REQD='Y' AND (A.BRANCH_ID='" + BranchID + "' AND A.MEMBER_ID='" + member_id + "') AND A.CLOS_FLAG IS NULL and A.AC_HD='"+ dachd + "'";
+                    sql = sql + "ORDER BY A.LOAN_DATE,A.AC_HD,A.EMPLOYEE_ID";                  
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];                       
+                        Loan_Master lm = new Loan_Master();
+                        lm.ac_desc = dr["AC_DESC"].ToString();
+                        lm.ac_hd = dr["ac_hd"].ToString();
+                        lm.emp_id = dr["EMPLOYEE_ID"].ToString();
+                        lm.loan_dt = !Convert.IsDBNull(dr["LOAN_DATE"]) ? Convert.ToDateTime(dr["LOAN_DATE"]) : Convert.ToDateTime(null);
+                        lm.loan_amt = !Convert.IsDBNull(dr["LOAN_AMT"]) ? Convert.ToDecimal(dr["LOAN_AMT"]) : Convert.ToDecimal("0.00");
+                        lm.inst_rate = !Convert.IsDBNull(dr["INT_RATE"]) ? Convert.ToDecimal(dr["INT_RATE"]) : Convert.ToDecimal("0.00");
+                        lm.inst_no = Convert.ToInt32(dr["NO_INSTL"]);
+                        lm.ledger_tab = Convert.ToString(dr["LEDGER_TAB"]);
+                        lm.ln_spcl = Convert.ToString(dr["ln_SPEACIAL"]);
+                        lm.branch_id = BranchID;
+                        lm.mem_id = member_id;
+                        //lml.Add(lm);
+                        sql = "SELECT * FROM " + lm.ledger_tab + " WHERE BRANCH_ID='" + BranchID + "' AND AC_HD='" + lm.ac_hd + "' AND employee_ID='" + lm.emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+                        config.singleResult(sql);
+                        if (config.dt.Rows.Count > 0)
+                        {
+                            DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            lm.prin_bal = !Convert.IsDBNull(dr1["prin_bal"]) ? Convert.ToDecimal(dr1["prin_bal"]) : Convert.ToDecimal("00");
+                            lml.Add(lm);
+                        }                       
+                    }
                 }
-            }
+            }                          
             return lml;
         }
         public Loan_Master getloanledger(string ledger_tab, string ac_hd, string branch_id, string emp_id, decimal loan_amt, int inst_no, string ln_spcl, decimal inst_rate, DateTime loan_dt)
@@ -757,7 +768,7 @@ namespace Amritnagar.Models.Database
             if (config.dt.Rows.Count > 0)
             {
                 dt_rsled = config.dt;
-                DataRow dr1 = (DataRow)dt_rsled.Rows[dt_rsled.Rows.Count - 1];
+                //DataRow dr1 = (DataRow)dt_rsled.Rows[dt_rsled.Rows.Count - 1];
                 lm = get_loan_current_due(ac_hd, loan_amt, inst_no, ln_spcl, inst_rate, loan_dt, dt_rsled);
             }
             return lm;

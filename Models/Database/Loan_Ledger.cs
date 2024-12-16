@@ -427,7 +427,7 @@ namespace Amritnagar.Models.Database
                     {
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no +
                       "',BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + "," +
-                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " , Modified_Date = "+ DateTime.Now + ", MODIFIED_BY = '"+ ld.modified_by + "'" +
+                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " , Modified_on = '"+ DateTime.Now.ToString("dd/MM/yyyy").Replace("-","/") + "', MODIFIED_BY = '"+ ld.modified_by + "'" +
                       " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt.Replace("-", "/") + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
@@ -435,7 +435,7 @@ namespace Amritnagar.Models.Database
                     {
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no + "',CHQ_DT='" + ld.chq_dt + "'" +
                       ",BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + "," +
-                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + ", Modified_Date = " + DateTime.Now + ", MODIFIED_BY = '" + ld.modified_by + "'" +
+                      "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + ", Modified_On = '" + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + "', MODIFIED_BY = '" + ld.modified_by + "'" +
                       " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt/*.Replace("-", "/")*/ + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
