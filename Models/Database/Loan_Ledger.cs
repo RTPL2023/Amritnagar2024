@@ -190,8 +190,13 @@ namespace Amritnagar.Models.Database
                 {
                     if (i == 1)
                     {
-                        lbal_prin = !Convert.IsDBNull(dr["prin_bal"]) ? Convert.ToDecimal(dr["prin_bal"]) : Convert.ToDecimal(00);
-                        lbal_int = !Convert.IsDBNull(dr["INT_DUE"]) ? Convert.ToDecimal(dr["INT_DUE"]) : Convert.ToDecimal(00);
+                        lbal_prin = !Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00);
+                        lbal_int = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00);
+                        string VOUCHER_DATE1 = ((Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy")).Replace("-", "/");
+                        ld.vch_no = Convert.ToString(dr["vch_no"]);
+                        ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
+                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + VOUCHER_DATE1 + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and AC_HD='" + achd + "'";
+                        config.Execute_Query(qry);
                     }
                     else
                     {
@@ -209,7 +214,7 @@ namespace Amritnagar.Models.Database
                         string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy")).Replace("-", "/");
                         ld.vch_no = Convert.ToString(dr["vch_no"]);
                         ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + VOUCHER_DATE + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + VOUCHER_DATE + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and AC_HD='" + achd + "'";
                         config.Execute_Query(qry);
                     }
                     i = i + 1;
