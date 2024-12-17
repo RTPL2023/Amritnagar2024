@@ -93,7 +93,7 @@ namespace Amritnagar.Models.Database
             {
                 Vch_Details vd = new Vch_Details();
                 vd.branch_id = branch_id;
-                vd.vch_date = vch_date;
+                vd.vch_date = vch_date +" "+DateTime.Now.ToShortTimeString() ;
                 vd.vch_no = txtvch_No;
                 vd.vch_type = vch_type;
                 vd.vch_srl = a.srl;                               

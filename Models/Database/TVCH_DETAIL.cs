@@ -99,7 +99,7 @@ namespace Amritnagar.Models.Database
             }
             TVCH_DETAIL vd = new TVCH_DETAIL();
             vd.branch_id = branch_id;
-            vd.trn_date = Convert.ToDateTime(vch_date.Replace("-", "/"));
+            vd.trn_date = Convert.ToDateTime(vch_date.Replace("-", "/") +" "+ DateTime.Now.ToShortTimeString());
             vd.trn_no = txtvch_No;
             vd.trn_shift = Shift_type;
             vd.counter_no = Convert.ToDecimal(counter);

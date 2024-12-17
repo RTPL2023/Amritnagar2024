@@ -237,7 +237,7 @@ namespace Amritnagar.Models.Database
                     dlsb.branch_id = vd.branch_id;
                     dlsb.ac_hd = ah.led_achd;
                     dlsb.member_id = vd.vch_pacno;
-                    dlsb.vch_date = Convert.ToDateTime(vd.vch_date);
+                    dlsb.vch_date = Convert.ToDateTime(voucher_date);
                     dlsb.vch_no = vd.vch_no;
                     dlsb.vch_srl = Convert.ToInt32(vd.vch_srl);
                     dlsb.vch_type = Convert.ToString(vd.vch_type);
@@ -310,7 +310,7 @@ namespace Amritnagar.Models.Database
                     }
                     dlsb.branch_id = vd.branch_id;
                     dlsb.member_id = vd.vch_pacno;
-                    dlsb.vch_date = Convert.ToDateTime(vd.vch_date);
+                    dlsb.vch_date = Convert.ToDateTime(voucher_date);
                     dlsb.vch_no = vd.vch_no;
                     dlsb.vch_srl = Convert.ToInt32(vd.vch_srl);
                     dlsb.vch_type = Convert.ToString(vd.vch_type);
@@ -402,7 +402,7 @@ namespace Amritnagar.Models.Database
                     dlsb.branch_id = vd.branch_id;
                     dlsb.ac_hd = ah.led_achd;
                     dlsb.employee_id = vd.vch_pacno;
-                    dlsb.vch_date = Convert.ToDateTime(vd.vch_date);
+                    dlsb.vch_date = Convert.ToDateTime(voucher_date);
                     dlsb.vch_no = vd.vch_no;
                     dlsb.vch_srl = Convert.ToInt32(vd.vch_srl);
                     dlsb.vch_type = vd.vch_type;
@@ -503,10 +503,11 @@ namespace Amritnagar.Models.Database
                         lbal_prin = lbal_prin + (!Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00));
                         lbal_int = lbal_int - (!Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    //string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString()).Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_bal=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + VOUCHER_DATE + "', 103)  AND AC_NO='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_bal=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + VOUCHER_DATE + "', 103)  AND AC_NO='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
                     config.Execute_Query(qry);
                 }
             }
@@ -541,10 +542,11 @@ namespace Amritnagar.Models.Database
                         lbal_prin = lbal_prin + (!Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00));
                         lbal_int = lbal_int - (!Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy").Replace("-", "/");
+                    //string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy").Replace("-", "/");
+                    string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString().Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_bal=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = '"+ VOUCHER_DATE + "' AND member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_bal=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + VOUCHER_DATE + "', 103) AND member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
                     config.Execute_Query(qry);
                 }
             }
@@ -575,10 +577,11 @@ namespace Amritnagar.Models.Database
                     {
                         lbal_prin = lbal_prin + (!Convert.IsDBNull(dr["tr_amount"]) ? Convert.ToDecimal(dr["tr_amount"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    //string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString()).Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set BAL_AMOUNT=" + lbal_prin + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' and Member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set BAL_AMOUNT=" + lbal_prin + " where convert(datetime, VCH_DATE, 103) = convert(datetime,'" + VOUCHER_DATE + "', 103)  and Member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
                     config.Execute_Query(qry);                   
                 }
             }
@@ -616,10 +619,11 @@ namespace Amritnagar.Models.Database
                         lbal_prin = lbal_prin - (!Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00));
                         lbal_int = lbal_int - (!Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    //string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString()).Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '"+ xled_achd + "'";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = Convert(datetime,'" + VOUCHER_DATE + "',103) AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '"+ xled_achd + "'";
                     config.Execute_Query(qry);
                 }
             }
@@ -722,7 +726,7 @@ namespace Amritnagar.Models.Database
 
         public void AddLedger_For_TVCH(TVCH_DETAIL vd)
         {
-            string voucher_date = vd.trn_date.ToString("dd/MM/yyyy").Replace("-", "/");
+            string voucher_date = vd.trn_date.ToString().Replace("-", "/");
             string sql = "select * from ACC_HEAD WHERE AC_HD='" + vd.ac_hd + "'";
             ACC_HEAD ah = new ACC_HEAD();
             config.singleResult(sql);
@@ -753,7 +757,7 @@ namespace Amritnagar.Models.Database
                     dlsb.branch_id = vd.branch_id;
                     dlsb.ac_hd = ah.led_achd;
                     dlsb.member_id = vd.vch_pacno;
-                    dlsb.vch_date = Convert.ToDateTime(vd.trn_date);
+                    dlsb.vch_date = vd.trn_date;
                     dlsb.vch_no = vd.trn_no;
                     dlsb.vch_srl = 1;
                     dlsb.vch_type = "C";
@@ -803,7 +807,7 @@ namespace Amritnagar.Models.Database
                         {"prin_bal",    dlsb.prin_bal},
                         {"int_bal",     dlsb.int_bal},
                     });
-                    ResetPrinBalIntBalForGF_TF__For_TVCH(ah.ledger_tab, ah.led_achd, vd.vch_pacno, Convert.ToDateTime(vd.trn_date), vd.trn_no);
+                    ResetPrinBalIntBalForGF_TF__For_TVCH(ah.ledger_tab, ah.led_achd, vd.vch_pacno, vd.trn_date, vd.trn_no);
                 }
                 if (ah.ledger_tab == "SHARE_LEDGER" || ah.ledger_tab == "DIVIDEND_LEDGER")
                 {
@@ -819,7 +823,7 @@ namespace Amritnagar.Models.Database
                     }
                     dlsb.branch_id = vd.branch_id;
                     dlsb.member_id = vd.vch_pacno;
-                    dlsb.vch_date = Convert.ToDateTime(vd.trn_date);
+                    dlsb.vch_date = vd.trn_date;
                     dlsb.vch_no = vd.trn_no;
                     dlsb.vch_srl = 1;
                     dlsb.vch_type = "C";
@@ -880,7 +884,7 @@ namespace Amritnagar.Models.Database
                             {"BAL_AMOUNT", dlsb.bal_amount}
                         });
                     }
-                    ResetPrinBalIntBalForShare_DividendLedger_For_TVCH(ah.ledger_tab, vd.vch_pacno, Convert.ToDateTime(vd.trn_date), vd.trn_no);
+                    ResetPrinBalIntBalForShare_DividendLedger_For_TVCH(ah.ledger_tab, vd.vch_pacno, vd.trn_date, vd.trn_no);
                 }
                 if (ah.ledger_tab == "LOAN_LEDGER")
                 {
@@ -904,7 +908,7 @@ namespace Amritnagar.Models.Database
                     dlsb.branch_id = vd.branch_id;
                     dlsb.ac_hd = ah.led_achd;
                     dlsb.employee_id = vd.vch_pacno;
-                    dlsb.vch_date = Convert.ToDateTime(vd.trn_date);
+                    dlsb.vch_date = vd.trn_date;
                     dlsb.vch_no = vd.trn_no;
                     dlsb.vch_srl = 1;
                     dlsb.vch_type = "C";
@@ -963,7 +967,7 @@ namespace Amritnagar.Models.Database
                         {"int_due",     dlsb.int_due},
                         {"int_amount",  dlsb.int_amount},                       
                     });
-                    ResetPrinBalIntDueForLoanLedger_For_TVCH(ah.ledger_tab, ah.led_achd, vd.vch_pacno, Convert.ToDateTime(vd.trn_date), vd.trn_no);
+                    ResetPrinBalIntDueForLoanLedger_For_TVCH(ah.ledger_tab, ah.led_achd, vd.vch_pacno, vd.trn_date, vd.trn_no);
                 }
             }
         }
@@ -972,7 +976,7 @@ namespace Amritnagar.Models.Database
             Ledger ld = new Ledger();
             decimal lbal_prin = 0;
             decimal lbal_int = 0;
-            string sql = "SELECT * FROM " + xledtab + " where Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) < convert(datetime, '" + vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+            string sql = "SELECT * FROM " + xledtab + " where Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) < convert(datetime, '" + vch_dt.ToString().Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -980,7 +984,7 @@ namespace Amritnagar.Models.Database
                 lbal_prin = !Convert.IsDBNull(ldr["prin_bal"]) ? Convert.ToDecimal(ldr["prin_bal"]) : Convert.ToDecimal(00);
                 lbal_int = !Convert.IsDBNull(ldr["int_bal"]) ? Convert.ToDecimal(ldr["int_bal"]) : Convert.ToDecimal(00);
             }
-            sql = "SELECT * FROM " + xledtab + " WHERE  Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) >= convert(datetime, '" + vch_dt.ToString("dd/MM/yyyy").Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+            sql = "SELECT * FROM " + xledtab + " WHERE  Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) >= convert(datetime, '" + vch_dt.ToString().Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -997,10 +1001,11 @@ namespace Amritnagar.Models.Database
                         lbal_prin = lbal_prin + (!Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00));
                         lbal_int = lbal_int - (!Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy").Replace("-", "/");
+                    //string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy").Replace("-", "/");
+                    string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString().Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_bal=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' AND member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_bal=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime,'" + VOUCHER_DATE + "',103) AND member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
                     config.Execute_Query(qry);
                 }
             }
@@ -1009,14 +1014,14 @@ namespace Amritnagar.Models.Database
         {
             Ledger ld = new Ledger();
             decimal lbal_prin = 0;
-            string sql = "SELECT * FROM " + xledtab + " where  Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) < convert(datetime, '" + dt.ToString("dd/MM/yyyy").Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+            string sql = "SELECT * FROM " + xledtab + " where  Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) < convert(datetime, '" + dt.ToString().Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
                 DataRow ldr = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
                 lbal_prin = !Convert.IsDBNull(ldr["BAL_AMOUNT"]) ? Convert.ToDecimal(ldr["BAL_AMOUNT"]) : Convert.ToDecimal(00);
             }
-            sql = "SELECT * FROM " + xledtab + " WHERE  Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) >= convert(datetime, '" + dt.ToString("dd/MM/yyyy").Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+            sql = "SELECT * FROM " + xledtab + " WHERE  Member_id='" + xacno + "' and convert(datetime, VCH_DATE, 103) >= convert(datetime, '" + dt.ToString().Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -1031,10 +1036,11 @@ namespace Amritnagar.Models.Database
                     {
                         lbal_prin = lbal_prin + (!Convert.IsDBNull(dr["tr_amount"]) ? Convert.ToDecimal(dr["tr_amount"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    //string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString().Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set BAL_AMOUNT=" + lbal_prin + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' and Member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set BAL_AMOUNT=" + lbal_prin + " where convert(datetime, VCH_DATE, 103) = convert(datetime'" + VOUCHER_DATE + "',103) and Member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
                     config.Execute_Query(qry);
                 }
             }
@@ -1047,7 +1053,7 @@ namespace Amritnagar.Models.Database
             int i = 1;
             //decimal Tr_prin = 0;
             //decimal Tr_int = 0;
-            string sql = "SELECT * FROM " + xledtab + " where  AC_HD='" + xled_achd + "' AND EMPLOYEE_ID='" + xacno + "' and convert(datetime, VCH_DATE, 103) < convert(datetime, '" + dt.ToString("dd/MM/yyyy").Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+            string sql = "SELECT * FROM " + xledtab + " where  AC_HD='" + xled_achd + "' AND EMPLOYEE_ID='" + xacno + "' and convert(datetime, VCH_DATE, 103) < convert(datetime, '" + dt.ToString().Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -1055,7 +1061,7 @@ namespace Amritnagar.Models.Database
                 lbal_prin = !Convert.IsDBNull(ldr["prin_bal"]) ? Convert.ToDecimal(ldr["prin_bal"]) : Convert.ToDecimal(00);
                 lbal_int = !Convert.IsDBNull(ldr["int_Due"]) ? Convert.ToDecimal(ldr["int_Due"]) : Convert.ToDecimal(00);
             }
-            sql = "SELECT * FROM " + xledtab + " WHERE AC_HD='" + xled_achd + "' AND EMPLOYEE_ID='" + xacno + "' and convert(datetime, VCH_DATE, 103) >= convert(datetime, '" + dt.ToString("dd/MM/yyyy").Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
+            sql = "SELECT * FROM " + xledtab + " WHERE AC_HD='" + xled_achd + "' AND EMPLOYEE_ID='" + xacno + "' and convert(datetime, VCH_DATE, 103) >= convert(datetime, '" + dt.ToString().Replace("-", "/") + "', 103) ORDER BY VCH_DATE,VCH_NO,VCH_SRL";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -1072,10 +1078,11 @@ namespace Amritnagar.Models.Database
                         lbal_prin = lbal_prin - (!Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00));
                         lbal_int = lbal_int - (!Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00));
                     }
-                    string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    //string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToShortDateString()).Replace("-", "/");
+                    string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString().Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = '" + VOUCHER_DATE + "' AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '" + xled_achd + "'";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime'" + VOUCHER_DATE + "',103) AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '" + xled_achd + "'";
                     config.Execute_Query(qry);
                 }
             }

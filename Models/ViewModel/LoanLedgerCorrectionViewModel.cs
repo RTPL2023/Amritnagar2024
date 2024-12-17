@@ -10,6 +10,7 @@ namespace Amritnagar.Models.ViewModel
     {
         public string branch_id { get; set; }
         public string ac_hd { get; set; }
+        public string old_date { get; set; }
         public string emp_id { get; set; }
         public string date { get; set; }
         public string vch_no { get; set; }

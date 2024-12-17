@@ -15,6 +15,7 @@ namespace Amritnagar.Models.Database
         public string ac_hd { get; set; }
         public string emp_id { get; set; }
         public DateTime vch_dt { get; set; }
+        public DateTime old_vch_dt { get; set; }
         public string vch_no { get; set; }
         public decimal vch_srl { get; set; }
         public string vch_type { get; set; }
@@ -192,10 +193,10 @@ namespace Amritnagar.Models.Database
                     {
                         lbal_prin = !Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00);
                         lbal_int = !Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00);
-                        string VOUCHER_DATE1 = ((Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy")).Replace("-", "/");
+                        string VOUCHER_DATE1 = ((Convert.ToDateTime(dr["vch_date"])).ToString()).Replace("-", "/");
                         ld.vch_no = Convert.ToString(dr["vch_no"]);
                         ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + VOUCHER_DATE1 + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and AC_HD='" + achd + "'";
+                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + VOUCHER_DATE1 + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and AC_HD='" + achd + "'";
                         config.Execute_Query(qry);
                     }
                     else
@@ -211,10 +212,11 @@ namespace Amritnagar.Models.Database
                             lbal_prin = lbal_prin - (!Convert.IsDBNull(dr["prin_amount"]) ? Convert.ToDecimal(dr["prin_amount"]) : Convert.ToDecimal(00));
                             lbal_int = lbal_int - (!Convert.IsDBNull(dr["INT_AMOUNT"]) ? Convert.ToDecimal(dr["INT_AMOUNT"]) : Convert.ToDecimal(00));
                         }
-                        string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy")).Replace("-", "/");
+                        //string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString("dd/MM/yyyy")).Replace("-", "/");
+                        string VOUCHER_DATE = ((Convert.ToDateTime(dr["vch_date"])).ToString()).Replace("-", "/");
                         ld.vch_no = Convert.ToString(dr["vch_no"]);
                         ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + VOUCHER_DATE + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and AC_HD='" + achd + "'";
+                        string qry = "Update loan_ledger set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + VOUCHER_DATE + "', 103) AND EMPLOYEE_ID='" + empid + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and AC_HD='" + achd + "'";
                         config.Execute_Query(qry);
                     }
                     i = i + 1;
@@ -418,10 +420,10 @@ namespace Amritnagar.Models.Database
         }
         public string checkandsaveloanledger(Loan_Ledger ld)
         {
-            string dt = ld.vch_dt.ToString("dd/MM/yyyy");
-            string tm = ld.vch_dt.ToString("HH:mm:ss");
+            //string dt = ld.vch_dt.ToString("dd/MM/yyyy");
+            //string tm = ld.vch_dt.ToString("HH:mm:ss");
             //string sql = string.Empty;
-            string sql = "select * from loan_ledger where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and employee_id='" + emp_id + "' AND convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND VCH_NO='" + ld.vch_no + "' AND VCH_SRL='" + ld.vch_srl + "'";
+            string sql = "select * from loan_ledger where branch_id='" + branch_id + "' and ac_hd='" + ac_hd + "' and employee_id='" + emp_id + "' AND convert(datetime, VCH_DATE, 103) = convert(datetime, '" + ld.old_vch_dt.ToString().Replace("-","/") + "', 103) AND VCH_NO='" + ld.vch_no + "' AND VCH_SRL='" + ld.vch_srl + "'";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {                
@@ -431,17 +433,17 @@ namespace Amritnagar.Models.Database
                     if (ld.chq_dt == null)
                     {
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no +
-                      "',BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + "," +
+                      "',BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + ",VCH_DATE=Convert(datetime,'" + ld.vch_dt.ToString().Replace("-","/") + "',103)," +
                       "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " , Modified_on = '"+ DateTime.Now.ToString("dd/MM/yyyy").Replace("-","/") + "', MODIFIED_BY = '"+ ld.modified_by + "'" +
-                      " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt.Replace("-", "/") + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
+                      " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" +ld.old_vch_dt.ToString().Replace("-","/") + "', 103) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
                     else
                     {
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no + "',CHQ_DT='" + ld.chq_dt + "'" +
-                      ",BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + "," +
+                      ",BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + ",VCH_DATE=Convert(datetime,'" + ld.vch_dt.ToString().Replace("-", "/") + "',103)," +
                       "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + ", Modified_On = '" + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + "', MODIFIED_BY = '" + ld.modified_by + "'" +
-                      " where convert(varchar, VCH_DATE, 103) = convert(varchar, '" + dt/*.Replace("-", "/")*/ + "', 103) AND convert(varchar, VCH_DATE, 108) = convert(varchar, '" + tm + "', 108) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
+                      " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + ld.old_vch_dt.ToString().Replace("-", "/") + "', 103) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
                     config.Execute_Query(qry);

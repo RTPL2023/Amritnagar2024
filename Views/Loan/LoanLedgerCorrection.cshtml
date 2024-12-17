@@ -109,21 +109,31 @@
         <div class="row justify-content-md-center">
             <div class="col-lg-11 col-md-11 col-sm-12 col-12 border border-1 rounded border-danger" style="width:1000px">
                 <div class="row mt-2">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Branch:<br />
                         @Html.DropDownListFor(model => model.branch_id, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "sizebig" })
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Loan Type:<br />
-                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig", @onchange= "ChangeLoanType()" })
+                        @Html.DropDownListFor(model => model.ac_hd, new SelectList(Model.lntypedesc, "Value", "Text"), "Select Loan Type", new { @class = "sizebig", @onchange = "ChangeLoanType()" })
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
                         Man Number:<br />
-                        @Html.TextBoxFor(model => model.emp_id, new { @class = "size", @type = "text", @*@required = "true",*@ onkeypress = "javascript:return evtemp_id(event);" })
+                        @Html.TextBoxFor(model => model.emp_id, new
+                        {
+                            @class = "size",
+                            @type = "text",@*@required = "true",*@onkeypress = "javascript:return evtemp_id(event);"
+                        })
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
                         <input id="BtnRefresh" type="button" name="BtnRefresh" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh" onclick="ShowTable()" />
                     </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-12">
+
+                        @Html.TextBoxFor(model => model.old_date, new { @class = "sizeM", @type = "hidden" })
+                    </div>
+
+
                 </div>
                 <hr />
                 <div class="row mt-2">
@@ -300,19 +310,21 @@
                     var f10 = document.getElementById('chq_no');
                     var f11 = document.getElementById('chq_dt');
                     var f12 = document.getElementById('bank_cd')
+                    var f13 = document.getElementById('old_date')
 
                     f1.value = cells[1].innerHTML;
                     f2.value = cells[2].innerHTML;
                     f3.value = cells[3].innerHTML;
                     f4.value = cells[4].innerHTML;
-                    f5.value = cells[5].innerHTML;;
-                    f6.value = cells[6].innerHTML;;
-                    f7.value = cells[7].innerHTML;;
-                    f8.value = cells[8].innerHTML;;
-                    f9.value = cells[9].innerHTML;;
-                    f10.value = cells[10].innerHTML;;
-                    f11.value = cells[11].innerHTML;;
-                    f12.value = cells[12].innerHTML;;
+                    f5.value = cells[5].innerHTML;
+                    f6.value = cells[6].innerHTML;
+                    f7.value = cells[7].innerHTML;
+                    f8.value = cells[8].innerHTML;
+                    f9.value = cells[9].innerHTML;
+                    f10.value = cells[10].innerHTML;
+                    f11.value = cells[11].innerHTML;
+                    f12.value = cells[12].innerHTML;
+                    f13.value = cells[1].innerHTML;
                 };
             }
         })();
@@ -334,6 +346,7 @@
                         branch_id: $('#branch_id').val(),
                         ac_hd: $('#ac_hd').val(),
                         emp_id: $('#emp_id').val(),
+                        old_date: $('#old_date').val(),
                     };
                     /*alert(JSON.stringify(ModelObject));*/
                     $.ajax({

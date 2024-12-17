@@ -52,7 +52,7 @@ namespace Amritnagar.Controllers
             ld.vch_type = "B";
             ld.vch_achd = model.ac_hd;
             //if(ld.vch_dt)
-            ld.vch_dt = Convert.ToDateTime(Convert.ToDateTime(model.vch_date).ToString("dd/MM/yyyy").Replace("-", "/"));
+            ld.vch_dt = Convert.ToDateTime(Convert.ToDateTime(model.vch_date).ToString("dd/MM/yyyy").Replace("-", "/") +" "+DateTime.Now.ToShortTimeString());
             ld.prin_amt = Convert.ToDecimal(model.prin_amt);
             ld.prin_bal = Convert.ToDecimal(model.prin_amt);
             ld.modified_by = lm.created_by;
@@ -1040,6 +1040,7 @@ namespace Amritnagar.Controllers
             ld.ac_hd = model.ac_hd;
             ld.emp_id = model.emp_id;
             ld.vch_dt = Convert.ToDateTime(model.date);
+            ld.old_vch_dt = Convert.ToDateTime(model.old_date);
             ld.vch_no = model.vch_no;
             ld.prin_amt = Convert.ToDecimal(model.prnt_amt);
             ld.prin_bal = Convert.ToDecimal(model.prnt_bal);
