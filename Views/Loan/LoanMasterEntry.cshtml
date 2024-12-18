@@ -388,6 +388,15 @@
             else if ($('#ln_purpose').val() == null || $('#ln_purpose').val() == "") {
                 alert("Loan Purpose Cannot Be Blank");
             }
+            else if ($('#vch_date').val() == null || $('#vch_date').val() == "") {
+                alert("Voucher Date Cannot Be Blank");
+            }
+            else if ($('#vch_no').val() == null || $('#vch_no').val() == "") {
+                alert("Voucher No Cannot Be Blank");
+            }
+            else if ($('#prin_amt').val() == null || $('#prin_amt').val() == "") {
+                alert("Loan Amount Cannot Be Blank");
+            }
             else {
                     $('#loading').show();
                     let ModelObject = {

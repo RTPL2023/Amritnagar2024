@@ -435,7 +435,7 @@ namespace Amritnagar.Models.Database
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no +
                       "',BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + ",VCH_DATE=Convert(datetime,'" + ld.vch_dt.ToString().Replace("-","/") + "',103)," +
                       "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + " , Modified_on = '"+ DateTime.Now.ToString("dd/MM/yyyy").Replace("-","/") + "', MODIFIED_BY = '"+ ld.modified_by + "'" +
-                      " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" +ld.old_vch_dt.ToString().Replace("-","/") + "', 103) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
+                      " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" +ld.old_vch_dt.ToString().Replace("-","/") + "', 103) AND EMPLOYEE_ID='" + ld.emp_id + "' and VCH_NO='" + ld.vch_no + "'" +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
                     else
@@ -443,7 +443,7 @@ namespace Amritnagar.Models.Database
                         qry = "Update loan_ledger set VCH_TYPE='" + ld.vch_type + "',CHQ_NO='" + ld.chq_no + "',CHQ_DT='" + ld.chq_dt + "'" +
                       ",BANKCD='" + ld.bank_cd + "',INT_DUE=" + ld.int_due + ",INT_AMOUNT=" + ld.int_amt + ",VCH_DATE=Convert(datetime,'" + ld.vch_dt.ToString().Replace("-", "/") + "',103)," +
                       "DR_CR='" + ld.dr_cr + "',PRIN_AMOUNT=" + ld.prin_amt + ",PRIN_BAL=" + ld.prin_bal + ", Modified_On = '" + DateTime.Now.ToString("dd/MM/yyyy").Replace("-", "/") + "', MODIFIED_BY = '" + ld.modified_by + "'" +
-                      " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + ld.old_vch_dt.ToString().Replace("-", "/") + "', 103) AND EMPLOYEE_ID='" + ld.emp_id + "' " +
+                      " where convert(datetime, VCH_DATE, 103) = convert(datetime, '" + ld.old_vch_dt.ToString().Replace("-", "/") + "', 103) AND EMPLOYEE_ID='" + ld.emp_id + "' and VCH_NO='" + ld.vch_no + "'" +
                       "and BRANCH_ID='" + ld.branch_id + "' and AC_HD='" + ld.ac_hd + "' and VCH_SRL=" + ld.vch_srl + "";
                     }
                     config.Execute_Query(qry);
