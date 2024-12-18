@@ -1040,7 +1040,7 @@ namespace Amritnagar.Models.Database
                     string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString().Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set BAL_AMOUNT=" + lbal_prin + " where convert(datetime, VCH_DATE, 103) = convert(datetime'" + VOUCHER_DATE + "',103) and Member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
+                    string qry = "Update " + xledtab + " set BAL_AMOUNT=" + lbal_prin + " where convert(datetime, VCH_DATE, 103) = convert(datetime,'" + VOUCHER_DATE + "',103) and Member_id='" + xacno + "' and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + "";
                     config.Execute_Query(qry);
                 }
             }
@@ -1082,7 +1082,7 @@ namespace Amritnagar.Models.Database
                     string VOUCHER_DATE = (Convert.ToDateTime(dr["vch_date"])).ToString().Replace("-", "/");
                     ld.vch_no = Convert.ToString(dr["vch_no"]);
                     ld.vch_srl = Convert.ToInt32(dr["vch_srl"]);
-                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime'" + VOUCHER_DATE + "',103) AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '" + xled_achd + "'";
+                    string qry = "Update " + xledtab + " set prin_bal=" + lbal_prin + ",int_Due=" + lbal_int + " where convert(datetime, VCH_DATE, 103) = convert(datetime,'" + VOUCHER_DATE + "',103) AND EMPLOYEE_ID='" + xacno + "'and vch_no='" + ld.vch_no + "' and vch_srl=" + ld.vch_srl + " and ac_hd = '" + xled_achd + "'";
                     config.Execute_Query(qry);
                 }
             }
