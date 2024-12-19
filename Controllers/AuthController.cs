@@ -39,53 +39,102 @@ namespace Amritnagar.Controllers
                 model.msg = "Unable To Connect Database Host";
             return View(model);
         }
-        [HttpPost]
-        public ActionResult Login(LoginViewModel model, string a)
+
+        public JsonResult GetLogin(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            AuthDbUtility authDbUtility = new AuthDbUtility();
+            MasterBranch mb = new MasterBranch();
+            if (model.userid.ToUpper() == "SA" && model.Password == "Rishi@2022")
             {
-                AuthDbUtility authDbUtility = new AuthDbUtility();
-                MasterBranch mb = new MasterBranch();
-                if (model.userid.ToUpper() == "SA" && model.Password == "Rishi@2022")
-                {
-                    Session["Uid"] = model.userid;
-                    Session["UserRole"] = "ADMIN";
-                    Session["Bid"] = "HO";
-                    Session["BName"] = "HEAD OFFICE";
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    var i = authDbUtility.getLoggin(model.userid, model.Password, model.BranchId);
-                    if (i < 0)
-                        model.msg = "Unable to connect with database host.";
-                  
-                    if (i == 4)
-                    {
-                        model.msg = "Wrong Branch Selected";
-                    }
-                    if(i == 2)
-                    {
-                        model.msg = "User Blocked";
-                    }
-                    if (i == 1)
-                    {
-                        string role = authDbUtility.getRole(model.userid);
-                        Session["Uid"] = model.userid;
-                        Session["UserRole"] = role;
-                        Users u = new Users();
-                        UserDBUtility udb = new UserDBUtility();
-                        u = udb.getUserDetailsByUserId(model.userid);
-                        Session["Bid"] = u.Allocated_BranchId;
-                        Session["BName"] = mb.getBranch(u.Allocated_BranchId);
-                        return RedirectToAction("Index", "Home");
-                    }
-                    if (i == 3)
-                        model.msg = "Invalid User Name Or Password";
-                }
+                Session["Uid"] = model.userid;
+                Session["UserRole"] = "ADMIN";
+                Session["Bid"] = "HO";
+                Session["BName"] = "HEAD OFFICE";
+                model.msg = "Success";
             }
-            return RedirectToAction("Login", model);
+            else
+            {
+                var i = authDbUtility.getLoggin(model.userid, model.Password, model.BranchId);
+
+                if (i < 0)
+                    model.msg = "Unable to connect with database host.";
+
+                if (i == 4)
+                {
+                    model.msg = "Wrong Branch Selected";
+                }
+                if (i == 2)
+                {
+                    model.msg = "User Blocked";
+                }
+                if (i == 1)
+                {
+                    string role = authDbUtility.getRole(model.userid);
+                    Session["Uid"] = model.userid;
+                    Session["UserRole"] = role;
+                    Users u = new Users();
+                    UserDBUtility udb = new UserDBUtility();
+                    u = udb.getUserDetailsByUserId(model.userid);
+                    Session["Bid"] = u.Allocated_BranchId;
+                    Session["BName"] = mb.getBranch(u.Allocated_BranchId);
+                    model.msg = "Success";
+                }
+
+                if (i == 3)
+                    model.msg = "Invalid User Name Or Password";
+            }
+
+            return Json(model);
+
         }
+
+        //[HttpPost]
+        //public ActionResult Login(LoginViewModel model, string a)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        AuthDbUtility authDbUtility = new AuthDbUtility();
+        //        MasterBranch mb = new MasterBranch();
+        //        if (model.userid.ToUpper() == "SA" && model.Password == "Rishi@2022")
+        //        {
+        //            Session["Uid"] = model.userid;
+        //            Session["UserRole"] = "ADMIN";
+        //            Session["Bid"] = "HO";
+        //            Session["BName"] = "HEAD OFFICE";
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //        {
+        //            var i = authDbUtility.getLoggin(model.userid, model.Password, model.BranchId);
+        //            if (i < 0)
+        //                model.msg = "Unable to connect with database host.";
+                  
+        //            if (i == 4)
+        //            {
+        //                model.msg = "Wrong Branch Selected";
+        //            }
+        //            if(i == 2)
+        //            {
+        //                model.msg = "User Blocked";
+        //            }
+        //            if (i == 1)
+        //            {
+        //                string role = authDbUtility.getRole(model.userid);
+        //                Session["Uid"] = model.userid;
+        //                Session["UserRole"] = role;
+        //                Users u = new Users();
+        //                UserDBUtility udb = new UserDBUtility();
+        //                u = udb.getUserDetailsByUserId(model.userid);
+        //                Session["Bid"] = u.Allocated_BranchId;
+        //                Session["BName"] = mb.getBranch(u.Allocated_BranchId);
+        //                return RedirectToAction("Index", "Home");
+        //            }
+        //            if (i == 3)
+        //                model.msg = "Invalid User Name Or Password";
+        //        }
+        //    }
+        //    return RedirectToAction("Login", model);
+        //}
 
         public IEnumerable<SelectListItem> getBranchMastDetails()
         {

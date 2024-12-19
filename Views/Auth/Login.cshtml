@@ -6,166 +6,166 @@
 }
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-<style>
-    .login-page {
-        width: 360px;
-        padding: 8% 0 0;
-        margin: auto;
-        margin-left: 56px;
-    }
-
-    .form {
-        position: relative;
-        z-index: 1;
-        background: rgb(152,69,53);
-        background: linear-gradient(210deg, rgba(152,69,53,1) 0%, rgba(198,114,96,1) 100%);
-        width: 380px;
-        height: 360px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 160px;
-        padding: 20px;
-        padding-bottom: 20px;
-        text-align: center;
-        box-shadow: 0 2.1rem 2.1rem rgba(0, 0, 0, 0.15);
-        /* border: rgba(11,156,49, 0.8) solid 3px;*/
-        border-radius: 15px;
-    }
-
-    img {
-        width: 65px;
-        height: 65px;
-        margin-top: 10px;
-    }
-
-    .form input {
-        font-family: "Roboto", sans-serif;
-        outline: 0;
-        background: #f2f2f2;
-        width: 100%;
-        border: 0;
-        /*margin: 0 0 15px;*/
-        padding: 10px;
-        box-sizing: border-box;
-        font-size: 14px;
-        border-radius: 12px;
-    }
-
-        .form input:hover {
-            background-color: lavender;
-            box-shadow: 0 0 0 2px rgba( 255, 182, 193, 0.8);
+<html>
+<head>
+    <style>
+        .login-page {
+            width: 360px;
+            padding: 8% 0 0;
+            margin: auto;
+            margin-left: 56px;
         }
 
-        .form input:focus {
-            /*background-color: rgba( 255, 182, 193, 0.2);*/
-            /*box-shadow: 0 0 0 2px rgba(11,156,49, 0.5);*/
-        }
-
-    .button {
-        font-family: "Roboto slab", sans-serif;
-        text-transform: uppercase;
-        outline: 0;
-        color: papayawhip;
-        background-color: #984535;
-        width: 60%;
-        height: 9%;
-        margin-top: 60px;
-        margin-right: 13px;
-        border: 0;
-        padding-top: 3px;
-        padding-bottom: 3px;
-        font-size: 17px;
-        transition: all 0.8s;
-        cursor: pointer;
-        border-radius: 10px;
-        /*border-radius: 20px;*/
-        font-weight: bold;
-    }
-
-        .button:hover {
-            background-color: #e99988;
-        }
-
-        .button span {
-            cursor: pointer;
-            display: inline-block;
+        .form {
             position: relative;
-            transition: 0.5s;
+            z-index: 1;
+            background: rgb(152,69,53);
+            background: linear-gradient(210deg, rgba(152,69,53,1) 0%, rgba(198,114,96,1) 100%);
+            width: 380px;
+            height: 360px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 160px;
+            padding: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2.1rem 2.1rem rgba(0, 0, 0, 0.15);
+            /* border: rgba(11,156,49, 0.8) solid 3px;*/
+            border-radius: 15px;
         }
 
-            .button span:after {
-                content: '\00bb';
-                position: absolute;
-                opacity: 0;
-                top: 0;
-                right: -20px;
-                transition: 0.8s;
+        img {
+            width: 65px;
+            height: 65px;
+            margin-top: 10px;
+        }
+
+        .form input {
+            font-family: "Roboto", sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            /*margin: 0 0 15px;*/
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+            border-radius: 12px;
+        }
+
+            .form input:hover {
+                background-color: lavender;
+                box-shadow: 0 0 0 2px rgba( 255, 182, 193, 0.8);
             }
 
-        .button:hover span {
-            padding-right: 25px;
-        }
-
-            .button:hover span:after {
-                opacity: 1;
-                right: 0;
+            .form input:focus {
+                /*background-color: rgba( 255, 182, 193, 0.2);*/
+                /*box-shadow: 0 0 0 2px rgba(11,156,49, 0.5);*/
             }
 
-
-    .form .message {
-        margin: 15px 0 0;
-        color: #b3b3b3;
-        font-size: 12px;
-    }
-
-        .form .message a {
-            color: #4CAF50;
-            text-decoration: none;
+        .button {
+            font-family: "Roboto slab", sans-serif;
+            text-transform: uppercase;
+            outline: 0;
+            color: papayawhip;
+            background-color: #984535;
+            width: 60%;
+            height: 9%;
+            margin-top: 60px;
+            margin-right: 13px;
+            border: 0;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            font-size: 17px;
+            transition: all 0.8s;
+            cursor: pointer;
+            border-radius: 10px;
+            /*border-radius: 20px;*/
+            font-weight: bold;
         }
 
-    .form .register-form {
-        display: none;
-    }
+            .button:hover {
+                background-color: #e99988;
+            }
 
-    .form-group {
-        color: darkgreen;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
+            .button span {
+                cursor: pointer;
+                display: inline-block;
+                position: relative;
+                transition: 0.5s;
+            }
 
+                .button span:after {
+                    content: '\00bb';
+                    position: absolute;
+                    opacity: 0;
+                    top: 0;
+                    right: -20px;
+                    transition: 0.8s;
+                }
 
-    body {
-         background-color:aqua;
-        font-family: "Roboto", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background-size: cover;
-        background-image: url('../../Content/Images/login_bg.jpg');
-    }
+            .button:hover span {
+                padding-right: 25px;
+            }
 
-    h2 {
-        font-family: Georgia, serif;
-        font-weight: 600;
-        color: whitesmoke;
-        margin-top: 8px;
-        font-size: 30px;
-    }
-
-    .font-style {
-        font-family: "Roboto", sans-serif;
-        font-weight: bold;
-        font-size: 16px;
-        color: whitesmoke;
-        text-align: left;
-    }
-</style>
+                .button:hover span:after {
+                    opacity: 1;
+                    right: 0;
+                }
 
 
-<form asp-controller="Auth" asp-action="Login" method="post" enctype="multipart/form-data">
+        .form .message {
+            margin: 15px 0 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+
+            .form .message a {
+                color: #4CAF50;
+                text-decoration: none;
+            }
+
+        .form .register-form {
+            display: none;
+        }
+
+        .form-group {
+            color: darkgreen;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+
+        body {
+            background-color: aqua;
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-size: cover;
+            background-image: url('../../Content/Images/login_bg.jpg');
+        }
+
+        h2 {
+            font-family: Georgia, serif;
+            font-weight: 600;
+            color: whitesmoke;
+            margin-top: 8px;
+            font-size: 30px;
+        }
+
+        .font-style {
+            font-family: "Roboto", sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            color: whitesmoke;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
     <div>
-          <div class="form">
+        <div class="form">
             <img src="~/Content/Images/icon.png">
             <div>
                 <h2>LOGIN</h2>
@@ -183,7 +183,7 @@
 
                 <div class="font-style">
                     <br />
-                    @*@Html.LabelFor(p => p.userid)*@
+
                     <i class='fa fa-user'></i>&nbsp; User-Id:@*<span style="color:red">*</span>*@
                     @Html.TextBoxFor(p => p.userid, new { @placeholder = "Enter User-Id", @class = "form-control", style = "margin-top:5px" })
                     <div class="text-danger">@Html.ValidationMessageFor(p => p.userid)</div>
@@ -192,26 +192,20 @@
 
                 <div class="font-style" style="margin-top:5px">
                     <i class="fa fa-lock"></i>&nbsp; Password:@*<span style="color:red">*</span>*@
-                    @Html.PasswordFor(p => p.Password, new { @placeholder = "Enter Password", @class = "form-control", style = "margin-top:5px" })
+                    @Html.TextBoxFor(p => p.Password, new { @type = "password", @class = "form-control", style = "margin-top:5px" })
                     <div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>
                 </div>
                 <div></div>
-
-
-
-                <!--<div class="form-group">
-            @Html.LabelFor(p => p.Branch)<span class="text-danger">*</span><br />-->
-                @*@Html.DropDownListFor(p => p.BranchId, new SelectList(Model.BranchDesc, "Value", "Text"), new { @class = "form-control" })*@
-                @*@Html.PasswordFor(p => p.Password, new { @class = "form-control" })*@
-                @*<div class="text-danger">@Html.ValidationMessageFor(p => p.Password)</div>*@
-                <!--</div>-->
             </div>
             <div class="form-group">
 
             </div>
-            <div class="card-footer d-flex justify-content-end">
+            
+            <input id="btnLogin" type="button" name="btnLogin" Height="40" Width="100" class="btn btn-primary btn-sm" value="LOGIN" onclick="LoginPage()" />
+            
+            @*<div class="card-footer d-flex justify-content-end">
                 <button class="button"><span>Login</span></button>
-            </div>
+            </div>*@
             <div align="center">
                 <table align="center">
                     <tr>
@@ -221,41 +215,68 @@
                     </tr>
                 </table>
             </div>
-            @*<input type="text" placeholder="username" />
-            <input type="password" placeholder="password" />
-            <button type="submit">login</button>*@
+
         </div>
     </div>
     <div class="container text-center" style="text-align:center;margin-top:35px; color:gray;font-size:14px">
 
         <p>&copy; @DateTime.Now.Year &nbsp; || &nbsp; Amritnagar CCS &nbsp;|| &nbsp; <a href="https://www.rishiindia.net/" style="color: #e21f36; text-decoration:none" onmouseover="this.style.color = '#814141';" onmouseout="this.style.color='#e21f36'">Rishi Technovision Pvt. Ltd.</a> @*<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@</p>
     </div>
-</form>
-
-
-@*@section scripts
-    {
-        <script type="text/javascript" src="~/Content/lib/bootstrap/dist/js/bootstrap-datepicker.js"></script>
-
+   
+        <script src="~/js/jquery-3.6.1.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script type="text/javascript">
-
-            (document).ready(function () {
-                //---> auto logout on 20mins -- codeview.in
-                var initialTime = new Date();
-                var intervalId = setInterval(function Redirect() {
-                    var minutes = Math.abs((initialTime - new Date()) / 1000 / 60);
-                    //console.log(minutes);
-                    if (minutes > 20) {
-                        clearInterval(intervalId);
-                        alert('Your session is expired, please login again.');
-                        window.location.href = '<%= ResolveUrl("Logout.aspx") %>';
-                    }
-                }, 60000); //1 min
-
-                $(document).delegate("#form", "click change", function () {
-                    initialTime = new Date();
+            $(document).ready(function () {
+                const inputPasswordElements = document.querySelectorAll('input[type=password]');
+                const observer = new MutationObserver(function (mutations) {
+                    mutations.forEach(function (mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'type') {
+                            mutation.target.value = '';
+                        }
+                    });
                 });
+                Array.from(inputPasswordElements).forEach(function (input) {
+                    observer.observe(input, { attributes: true });
+                });
+            });
+
+             function LoginPage() {
+                let ModelObject = {
+                    userid: $('#userid').val(),
+                    Password: $('#Password').val(),
+                };
+                /*alert(JSON.stringify(ModelObject));*/
+                $.ajax({
+                    url: '@Url.Action("GetLogin", "Auth")',
+                    type: "POST",
+                    data: ModelObject,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg == "Success") {
+                            ReturnToHomePage();
+                        }
+                        else {
+                            alert(data.msg);
+                        }
+                    },
+                    error: function (err) {
+                        alert("Error Occured");
+                    }
+                });
+             }
+
+            function ReturnToHomePage() {
+                window.location.href = "@Url.Action("Index", "Home")";
+            }
 
         </script>
-    }*@
+   
+</body>
+</html>
+
+
+
+
+
+
 
