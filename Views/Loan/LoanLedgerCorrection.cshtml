@@ -151,7 +151,7 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Print Balance:<br />
-                        @Html.TextBoxFor(model => model.prnt_bal, new { @class = "sizeM", @type = "text" })
+                        @Html.TextBoxFor(model => model.prnt_bal, new { @class = "sizeM", @type = "text", @readonly="true" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Chq No.:<br />
@@ -181,7 +181,7 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Int. Balance:<br />
-                        @Html.TextBoxFor(model => model.int_bal, new { @class = "size", @type = "text" })
+                        @Html.TextBoxFor(model => model.int_bal, new { @class = "size", @type = "text", @readonly="true" })
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-12 col-12">
                         Bank CD:<br />
