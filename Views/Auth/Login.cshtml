@@ -53,10 +53,10 @@
             border-radius: 12px;
         }
 
-            .form input:hover {
-                background-color: lavender;
-                box-shadow: 0 0 0 2px rgba( 255, 182, 193, 0.8);
-            }
+        .form .form-control:hover {
+            background-color: lavender;
+            box-shadow: 0 0 0 2px rgba( 255, 182, 193, 0.8);
+        }
 
             .form input:focus {
                 /*background-color: rgba( 255, 182, 193, 0.2);*/
@@ -161,6 +161,53 @@
             color: whitesmoke;
             text-align: left;
         }
+        .calcBtn {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 5rem;
+           /* color: #fff;*/
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.15rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+            .calcBtn:after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: navajowhite;
+                border-radius: 5rem;
+                z-index: -2;
+            }
+
+            .calcBtn:before {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0%;
+                height: 100%;
+                background-color: #87483b;
+                transition: all 0.3s;
+                border-radius: 5rem;
+                z-index: -1;
+            }
+
+            .calcBtn:hover {
+                color: #fff;
+            }
+
+                .calcBtn:hover:before {
+                    width: 100%;
+                }
+
     </style>
 </head>
 <body>
@@ -200,9 +247,9 @@
             <div class="form-group">
 
             </div>
-            
-            <input id="btnLogin" type="button" name="btnLogin" Height="40" Width="100" class="btn btn-primary btn-sm" value="LOGIN" onclick="LoginPage()" />
-            
+            <div class="calcBtn">
+                <input id="btnLogin" type="button" name="btnLogin" Height="40" Width="100" value="LOGIN" onclick="LoginPage()" style="background-color: transparent !important; color: black;font-weight:bold" />
+            </div>
             @*<div class="card-footer d-flex justify-content-end">
                 <button class="button"><span>Login</span></button>
             </div>*@
