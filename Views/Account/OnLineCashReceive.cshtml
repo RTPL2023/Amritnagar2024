@@ -644,30 +644,48 @@
             }
         }
 
-       function DeleteReciept() {
-            $('#loading').show();
-             let ModelObject = { achd: $('#achd').val(), vch_no: $('#vch_no').val(), date: $('#date').val(), acc_no: $('#acc_no').val()};
-            //alert(JSON.stringify(ModelObject));
-            $.ajax({
-                type: "POST",
-                     url: '@Url.Action("DeleteCashReciept", "Account")',
-                    data: ModelObject,
-                    dataType: "json",
-                success: function (data) {
-                    alert(data);
-                    ShowTableForRecieptDetails();
-                    ShowTableForRecieptSummary();
-                    $('#personalaccountinfo').hide();
-                    $('#personalledgerinfo').hide();
-                    //$('#gt_head').val("");
-                    //$('#gt_amt').val("");                   
-                },
-                error: function (err) {
-                    alert("Error Occured");
-                    $('#loading').hide();
-                }
-            });
-       }
+        function DeleteReciept() {
+            if ($('#achd').val() == null || $('#achd').val() == "") {
+                alert("Ac/Hd Cannot Be Blank");
+                $('#achd').focus();
+            }
+            else if ($('#vch_no').val() == null || $('#vch_no').val() == "") {
+                alert("Voucher No. Cannot be Blank");
+                $('#vch_no').focus();
+            }
+            else if ($('#date').val() == null || $('#date').val() == "") {
+                alert("Date Cannot be Blank");
+                $('#date').focus();
+            }
+            else if ($('#acc_no').val() == null || $('#acc_no').val() == "") {
+                alert("Account No. Cannot be Blank");
+                $('#acc_no').focus();
+            }
+            else {
+                    $('#loading').show();
+                    let ModelObject = { achd: $('#achd').val(), vch_no: $('#vch_no').val(), date: $('#date').val(), acc_no: $('#acc_no').val()};
+                    //alert(JSON.stringify(ModelObject));
+                    $.ajax({
+                    type: "POST",
+                         url: '@Url.Action("DeleteCashReciept", "Account")',
+                        data: ModelObject,
+                        dataType: "json",
+                    success: function (data) {
+                        alert(data);
+                        ShowTableForRecieptDetails();
+                        ShowTableForRecieptSummary();
+                        $('#personalaccountinfo').hide();
+                        $('#personalledgerinfo').hide();
+                        //$('#gt_head').val("");
+                        //$('#gt_amt').val("");
+                    },
+                    error: function (err) {
+                        alert("Error Occured");
+                        $('#loading').hide();
+                    }
+                    });
+                 }
+        }
 
     </script>
 }
