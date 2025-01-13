@@ -86,14 +86,12 @@ namespace Amritnagar.Models.Database
             }
             return ebml;
         }
-
         public void DeleteEmployerUnit(string emp_branch)
         {
             Employer_Branch_Mast ebm = new Employer_Branch_Mast();
             string sql = "Delete from EMPLOYER_BRANCH_MAST where EMPLOYER_BRANCH= '" + emp_branch + "'";
             config.Execute_Query(sql);
         }
-
         public List<Employer_Branch_Mast> getEmployerBranchMast()
         {
             string sql = "Select * from  EMPLOYER_BRANCH_MAST";
@@ -110,6 +108,20 @@ namespace Amritnagar.Models.Database
                 }
             }
             return ebml;
+        }
+        public string getunitnamebycode(string emp_br_code)
+        {
+            string sql = "Select * from EMPLOYER_BRANCH_MAST where EMPLOYER_BRANCH= '" + emp_br_code + "'";
+            config.singleResult(sql);
+            Employer_Branch_Mast ebm = new Employer_Branch_Mast();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {                                       
+                    ebm.emp_branch_name = Convert.ToString(dr["EMPLOYER_BR_NAME"]);                    
+                }
+            }
+            return ebm.emp_branch_name;
         }
     }
 }

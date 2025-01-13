@@ -19,7 +19,7 @@ namespace Amritnagar.Controllers
     public class SalaryDeductionController : Controller
     {
         SQLConfig config = new SQLConfig();
-
+        public char form_feed = Convert.ToChar(12);
         /********************************************Fresh List Start*******************************************/
         public ActionResult FreshList(FreshListViewModel model)
         {
@@ -479,35 +479,38 @@ namespace Amritnagar.Controllers
             Recovery_Schedule rs = new Recovery_Schedule();
             List<Recovery_Schedule> rsl = new List<Recovery_Schedule>();
             rsl = rs.getdetails(model.emp_branch, model.book_no, model.sch_dt);
-            int i = 1;
+            int i = 0;
+            string XEMP = "";
+            string YEMP = "";
+            string serial = "";
             if (rsl.Count > 0)
             {
                 model.tableelement = "<tr><th>SR No</th><th>Employee Id</th><th>Name Of Member</th><th>A/c Hd</th><th>Prin Amount</th><th>Int Amount</th><th>Prin Bal</th><th>Int Rate</th></tr>";
                 foreach (var a in rsl)
                 {
-                    if (a.ac_hd == "TF" || a.ac_hd == "SH" || a.ac_hd == "LICP" || a.ac_hd == "RTB")
+                    XEMP = a.emp_id;
+                    if (YEMP != XEMP)
                     {
-                        if (i == 1)
-                        {
-                            model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
-                        }
-                        else
-                        {
-                            model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
-                        }
+                        i = i + 1;
+                        YEMP = XEMP;
+                        serial = i.ToString();
                     }
                     else
                     {
-                        if (i == 1)
-                        {
-                            model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
-                        }
-                        else
-                        {
-                            model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
-                        }
+                        serial = "";
                     }
-                    i = i + 1;
+                    if (a.ac_hd == "TF" || a.ac_hd == "SH" || a.ac_hd == "LICP" || a.ac_hd == "RTB")
+                    {
+                        
+                        model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
+                       
+                    }
+                    else
+                    {
+                       
+                        model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
+                       
+                    }                  
                 }
             }
             else
@@ -544,9 +547,11 @@ namespace Amritnagar.Controllers
         public ActionResult getschedulereportprintfile(SendingScheduleReportViewModel model)
         {
             Recovery_Schedule rs = new Recovery_Schedule();
+            Employer_Branch_Mast ep = new Employer_Branch_Mast();
             List<Recovery_Schedule> rsl = new List<Recovery_Schedule>();
             rsl = rs.getdetails(model.emp_branch, model.book_no, model.sch_dt);
-            int i = 1;
+            string unitname = ep.getunitnamebycode(model.emp_branch);
+            int i = 0;
             decimal TOTTF = 0;
             decimal TOTRTB = 0;
             decimal TOTSFL = 0;
@@ -585,22 +590,35 @@ namespace Amritnagar.Controllers
             string int_amount = "";
             string prin_bal = "";
             string int_rate = "";
+            string YEMP = "";
+            string XEMP = "";
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Schedule_Report.txt")))
             {
                 int Pg = 1;
                 int Ln = 0;
-                string serial = string.Empty;
+                string serial ="";
                 sw.WriteLine(" BOOK - NO = " + model.book_no);
-                sw.WriteLine("Unit : " + model.emp_branch);
+                sw.WriteLine("Unit : " + unitname);
                 sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                 sw.WriteLine("Salary Sending Sheet   " + "  " + model.sch_dt);
                 sw.WriteLine("===========================================================================");
                 sw.WriteLine("Srl |Empl.Id | Member Name        |A/C Head|Prin Amt.|Int.Amt |P/BAL  |Int ");
                 sw.WriteLine("===========================================================================");
+                Ln = 7;
                 string emp = "";
                 foreach (var am in rsl)
                 {
+                    XEMP = am.emp_id;
+                    if (YEMP != XEMP) {
+                        i = i + 1;
+                        YEMP = XEMP;
+                        serial = i.ToString();
+                    }
+                    else
+                    {
+                        serial = "";
+                    }    
                     var a = rsl.First();
                     string XEMPID = a.emp_id;
                     string YEMPID = am.emp_id;
@@ -613,7 +631,8 @@ namespace Amritnagar.Controllers
                         else
                         {
                             xtot = xpamt + XIAMT;
-                            sw.WriteLine("                                           " + "         " + "        Total  " + "  " + xtot.ToString("0.00"));
+                            sw.WriteLine("");
+                            sw.WriteLine("                                           " + "         " + "        Total    =" + xtot.ToString("0.00"));
                             // sw.WriteLine("----------------------------------------------------------------------------");
                             xpamt = xpamt + am.prin_amt;
                             XIAMT = XIAMT + am.int_amt;
@@ -622,34 +641,20 @@ namespace Amritnagar.Controllers
                             XIAMT = 0;
                             emp = am.emp_id;
                             sw.WriteLine("----------------------------------------------------------------------------");
+                            Ln = Ln + 3;
                         }
                     }
                     prin_amount = am.prin_amt.ToString("0.00");
                     int_amount = am.int_amt.ToString("0.00");
                     prin_bal = am.prin_bal.ToString("0.00");
-                    int_rate = am.int_rate.ToString("0.00");
-                    if (Convert.ToString(i).Length == 1)
-                    {
-                        serial = "000" + Convert.ToString(i);
-                    }
-                    else if (Convert.ToString(i).Length == 2)
-                    {
-                        serial = "00" + Convert.ToString(i);
-                    }
-                    else if (Convert.ToString(i).Length == 3)
-                    {
-                        serial = "0" + Convert.ToString(i);
-                    }
-                    else
-                    {
-                        serial = Convert.ToString(i);
-                    }
+                    int_rate = am.int_rate.ToString("0.00");                  
                     if (Ln > Pg * 65)
                     {
                         Pg = Pg + 1;
                         Ln = Ln + 7;
+                        sw.WriteLine(form_feed);
                         sw.WriteLine(" BOOK - NO = " + model.book_no);
-                        sw.WriteLine("Unit : " + model.emp_branch);
+                        sw.WriteLine("Unit : " + unitname);
                         sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                         sw.WriteLine("Salary Sending Sheet   " + "  " + model.sch_dt);
                         sw.WriteLine("===========================================================================");
@@ -678,13 +683,14 @@ namespace Amritnagar.Controllers
                         {
                             int_rate = int_rate.Substring(0, 7);
                         }
-                        sw.WriteLine(serial + "|" + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + am.emp_id + "|"
-                           + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) + am.mem_name + "|"
-                           + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length) + am.ac_hd + "|"
-                            + "".ToString().PadLeft(9 - (prin_amount).ToString().Length) + prin_amount.ToString() + "|"
-                             + "".ToString().PadLeft(8 - (int_amount).ToString().Length) + int_amount.ToString() + "|"
+                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length)+ "|" + am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) +"|"
+                           + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) +  "|"
+                           + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length)  + "|"
+                           + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length)  + "|"
+                            + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length)  + "|"
                               + "".ToString().PadLeft(7 - ("").ToString().Length) + "" + "|"
-                               + "".ToString().PadLeft(7 - (int_rate).ToString().Length) + int_rate.ToString() + "|");
+                                + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length) + "|");
+                        //Ln = Ln + 1;
                     }
                     else
                     {
@@ -708,24 +714,15 @@ namespace Amritnagar.Controllers
                         {
                             int_rate = int_rate.Substring(0, 7);
                         }
-                        sw.WriteLine(serial + "|" + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + am.emp_id + "|"
-                           + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) + am.mem_name + "|"
-                           + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length) + am.ac_hd + "|"
-                            + "".ToString().PadLeft(9 - (prin_amount).ToString().Length) + prin_amount.ToString() + "|"
-                             + "".ToString().PadLeft(8 - (int_amount).ToString().Length) + int_amount.ToString() + "|"
-                              + "".ToString().PadLeft(7 - (prin_bal).ToString().Length) + prin_bal.ToString() + "|"
-                               + "".ToString().PadLeft(7 - (int_rate).ToString().Length) + int_rate.ToString() + "|");
+                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" +am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + "|"
+                          + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length)  + "|"
+                         + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length)  + "|"
+                         + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length)  + "|"
+                           + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length)  + "|"
+                             + prin_bal.ToString() + "".ToString().PadLeft(7 - (prin_bal).ToString().Length)  + "|"
+                              + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length)  + "|");
                     }
-                    Ln = Ln + 1;
-                    i = i + 1;
-                    //if (XEMPID != YEMPID)
-                    //{
-                    //   // sw.WriteLine("----------------------------------------------------------------------------");
-                    //}
-                    //else
-                    //{
-                    //    sw.WriteLine("");
-                    //}
+                    Ln = Ln + 1;                    
                     xpamt = xpamt + am.prin_amt;
                     XIAMT = XIAMT + am.int_amt;
                     TOTTF = am.TOTTF;
@@ -762,7 +759,7 @@ namespace Amritnagar.Controllers
                     xtot = xpamt + XIAMT;
                 }
                 sw.WriteLine("");
-                sw.WriteLine("                                            Total  " + "  " + xtot.ToString("0.00"));
+                sw.WriteLine("                                           " + "         " + "        Total    =" + xtot.ToString("0.00"));
                 sw.WriteLine("");
                 sw.WriteLine("Total - Position");
                 sw.WriteLine(" TF" + "  " + TOTTF.ToString("0.00"));
@@ -783,6 +780,7 @@ namespace Amritnagar.Controllers
                 sw.WriteLine(" SL6" + "  " + TOTSL6.ToString("0.00") + "  Interest " + TOTISL6.ToString("0.00"));
                 sw.WriteLine(" SL7" + "  " + TOTSL7.ToString("0.00") + "  Interest " + TOTISL7.ToString("0.00"));
                 sw.WriteLine(" LICP" + "  " + TOTLICP.ToString("0.00"));
+                sw.WriteLine(form_feed);
             }
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Schedule_Report.txt", Server.MapPath("~/wwwroot\\TextFiles"));
