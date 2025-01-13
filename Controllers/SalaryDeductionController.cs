@@ -690,6 +690,7 @@ namespace Amritnagar.Controllers
                             + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length)  + "|"
                               + "".ToString().PadLeft(7 - ("").ToString().Length) + "" + "|"
                                 + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length) + "|");
+                        sw.WriteLine("");
                         //Ln = Ln + 1;
                     }
                     else
@@ -721,8 +722,9 @@ namespace Amritnagar.Controllers
                            + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length)  + "|"
                              + prin_bal.ToString() + "".ToString().PadLeft(7 - (prin_bal).ToString().Length)  + "|"
                               + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length)  + "|");
+                        sw.WriteLine("");
                     }
-                    Ln = Ln + 1;                    
+                    Ln = Ln + 2;                    
                     xpamt = xpamt + am.prin_amt;
                     XIAMT = XIAMT + am.int_amt;
                     TOTTF = am.TOTTF;
