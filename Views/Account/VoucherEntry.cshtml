@@ -795,33 +795,45 @@
             }
         }
 
-         function SaveVoucher() {
-            $('#loading').show();
-             let ModelObject = { vch_date: $('#datepicker1').val(), txtvch_No: $('#txtvch_No').val(), vch_Type: $('#vch_type').val(), Vch_narr: $('#Vch_narr').val(), branch_id: $('#branch').val()};
+        function SaveVoucher() {
+            if ($('#drcr').val() != null && $('#drcr').val() != "") {
+                alert("You Have An Incomplete Entry.Please Try Again After Complete It");
+            }
+            else if ($('#vch_achd').val() != null && $('#vch_achd').val() != "") {
+                alert("You Have An Incomplete Entry.Please Try Again After Complete It");
+            }
+            else if ($('#amount').val() != null && $('#amount').val() != "") {
+                alert("You Have An Incomplete Entry.Please Try Again After Complete It");
+            }
+            else {
+                    $('#loading').show();
+                    let ModelObject = { vch_date: $('#datepicker1').val(), txtvch_No: $('#txtvch_No').val(), vch_Type: $('#vch_type').val(), Vch_narr: $('#Vch_narr').val(), branch_id: $('#branch').val()};
             //alert(JSON.stringify(ModelObject));
-            $.ajax({
-                type: "POST",
-                     url: '@Url.Action("SaveVoucherData", "Account")',
-                    data: ModelObject,
-                    dataType: "json",
-                success: function (data) {
-                    alert(data);
-                    $('#loading').hide();
-                    ShowTable();
-                    $('#debt_amt').val("0");
-                    $('#crdt_amt').val("0");
-                    $('#net_amt').val("0");
-                    $('#txtvch_No').val("");
-                    //$('#vch_type').val("");
-                    $('#Vch_narr').val("");
-                    document.getElementById("Tempdata").innerHTML = "";
-                },
-                error: function (err) {
-                    alert("Error Occured");
-                    $('#loading').hide();
-                }
-            });
-         }
+                    $.ajax({
+                        type: "POST",
+                             url: '@Url.Action("SaveVoucherData", "Account")',
+                            data: ModelObject,
+                            dataType: "json",
+                        success: function (data) {
+                            alert(data);
+                            $('#loading').hide();
+                            ShowTable();
+                            $('#debt_amt').val("0");
+                            $('#crdt_amt').val("0");
+                            $('#net_amt').val("0");
+                            $('#txtvch_No').val("");
+                            //$('#vch_type').val("");
+                            $('#Vch_narr').val("");
+                            document.getElementById("Tempdata").innerHTML = "";
+                        },
+                        error: function (err) {
+                            alert("Error Occured");
+                            $('#loading').hide();
+                        }
+                    });
+                 }
+
+        }
 
         function DeleteTempVoucher() {
             if ($('#del_vch_no').val() == null || $('#del_vch_no').val() == "") {
@@ -1170,7 +1182,7 @@
                     }
                     else {
                         document.getElementById("Tempdata").innerHTML = data.tableelement;
-                    }                   
+                    }
                 },
                 error: function (err) {
                 alert("Error Occured");
