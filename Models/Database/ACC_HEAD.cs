@@ -251,5 +251,20 @@ namespace Amritnagar.Models.Database
             }
             return ah.ac_desc;
         }
+        public string checkac_hd(string vch_achd)
+        {
+            string msg = "";
+            string sql = "Select * from acc_head where ac_hd ='" + vch_achd + "'";
+            config.singleResult(sql);           
+            if (config.dt.Rows.Count > 0)
+            {
+                msg = "Found";
+            }
+            else
+            {
+                msg = "Invalid Ac/Hd. Please Check Again";
+            }
+            return msg;
+        }
     }
 }

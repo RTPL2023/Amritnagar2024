@@ -11,6 +11,7 @@ namespace Amritnagar.Controllers
 {
     public class AccountController : Controller
     {
+        public char form_feed = Convert.ToChar(12);
         /********************************************Online Cash Recieve Start*******************************************/
         [HttpGet]
         public ActionResult OnLineCashReceive(OnLineCashReceiveViewModel model)
@@ -551,6 +552,12 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
+        public JsonResult checkaccounthead(string vch_achd)
+        {
+            ACC_HEAD achd = new ACC_HEAD();
+            string msg = achd.checkac_hd(vch_achd);
+            return Json(msg);
+        }
 
         /********************************************Vouchar Entry End*******************************************/
         //********************************Cash Account Report Start*********************************************/
@@ -1078,11 +1085,11 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("ACCOUNT PARTICULARS              CASH        TRANSFER         TOTAL |ACCOUNT PARTICULARS            CASH        TRANSFER         TOTAL  ");
                         sw.WriteLine("________________________________________________________________________________________________________________________________________");
                     }
-                    sw.WriteLine("".ToString().PadLeft(25 - (cr_particulars).Length) + cr_particulars
+                    sw.WriteLine(cr_particulars + "".ToString().PadLeft(25 - (cr_particulars).Length) 
                     + "".ToString().PadLeft(14 - (cr_cash).Length) + cr_cash
                     + "".ToString().PadLeft(16 - (cr_transfer).Length) + cr_transfer
                     + "".ToString().PadLeft(13 - (tot_cr).Length) + tot_cr + "|"
-                    + "".ToString().PadLeft(25 - (dr_particulars).Length) + dr_particulars
+                    + dr_particulars + "".ToString().PadLeft(25 - (dr_particulars).Length)
                     + "".ToString().PadLeft(12 - (dr_cash).Length) + dr_cash
                     + "".ToString().PadLeft(14 - (dr_transfer).Length) + dr_transfer
                     + "".ToString().PadLeft(16 - (tot_dr).Length) + tot_dr);
@@ -1158,6 +1165,7 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("________________________________________________________________________________________________________________________________________");
                 sw.WriteLine("");
                 sw.WriteLine("Cash Account Approved On:     Prepared By     Signature Of Accountant     Signature Of E.O./Manager/Secretary     Signature Of Treasurer");
+                sw.WriteLine(form_feed);
             }
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Cash_Account_Details.txt", Server.MapPath("~/wwwroot\\TextFiles"));
@@ -1167,7 +1175,6 @@ namespace Amritnagar.Controllers
             }
             return File(memory.ToArray(), "text/plain", "Cash_Account_Details_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
         }
-
 
         //********************************Cash Account Report End******************************************
 

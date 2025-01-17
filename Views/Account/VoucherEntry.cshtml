@@ -782,8 +782,32 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                $("#vchpacno").focus();
+                CheckAc_Hd();
             }
+        }
+
+        function CheckAc_Hd() {
+            let ModelObject = { vch_achd: $('#vch_achd').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                     url: '@Url.Action("checkaccounthead", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                success: function (data) {
+                    if (data == "Found") {
+                        $("#vchpacno").focus();
+                    }
+                    else {
+                        alert(data);
+                        $("#vch_achd").focus();
+                    }
+                },
+                error: function (err) {
+                    //alert(JSON.stringify(err));
+                    alert("Error Occured");
+                }
+            });
         }
 
         function evt_ref_ac_hd(evt) {
@@ -1041,8 +1065,31 @@
             if ((charCode < 106 || charCode > 95) && (charCode < 58 || charCode > 47) && charCode != 13 && charCode == 191 && charCode == 111 && (charCode < 65 || charCode > 90))
                 return false;
             else if (charCode == 13) {
-                $("#vchpacno1").focus();
+                CheckAc_Hd_For_Insert_Data();
             }
+        }
+
+        function CheckAc_Hd_For_Insert_Data() {
+            let ModelObject = { vch_achd: $('#vch_achd1').val()};
+            //alert(JSON.stringify(ModelObject));
+            $.ajax({
+                type: "POST",
+                     url: '@Url.Action("checkaccounthead", "Account")',
+                    data: ModelObject,
+                    dataType: "json",
+                success: function (data) {
+                    if (data == "Found") {
+                        $("#vchpacno1").focus();
+                    }
+                    else {
+                        alert(data);
+                        $("#vch_achd1").focus();
+                    }
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
         }
 
         function GetParticularPacnoforinsertnewrow() {
