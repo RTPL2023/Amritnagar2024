@@ -564,7 +564,7 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs1 = new Recovery_Schedule();
                     XBOOK_NO = Convert.ToString(dr["book_no"]);
                     xemployee_ID = Convert.ToString(dr["EMPLOYEE_ID"]);
-                    if (xemployee_ID == "122865")
+                    if (xemployee_ID == "103376")
                     {
 
                     }
@@ -574,19 +574,21 @@ namespace Amritnagar.Models.Database
                     string ACHD_QRY = "SELECT * FROM DEDUCT_ACHD_MAST WHERE EMPLOYER_CD='" + emp_name + "' ";
                     ACHD_QRY = ACHD_QRY + "AND EMPLOYER_BRANCH='" + unit + "' ORDER BY AC_HD ";
                     config.singleResult(ACHD_QRY);
-                    if (config.dt.Rows.Count > 0)
+                    DataTable dtab = config.dt;
+                    if (dtab.Rows.Count > 0)
                     {
-                        foreach (DataRow dr1 in config.dt.Rows)
+                        
+                        foreach (DataRow dr1 in dtab.Rows)
                         {
                             Recovery_Schedule rs = new Recovery_Schedule();
                             string Acc_Head = Convert.ToString(dr1["ac_hd"]);
                             sql = "Select * from acc_head where ac_hd='" + Acc_Head + "'";
                             config.singleResult(sql);
-                            if (Acc_Head == "SL6")
+                            if (Acc_Head == "M14")
                             {
 
                             }
-                           
+
                             if (config.dt.Rows.Count > 0)
                             {
                                 DataRow drac = (DataRow)config.dt.Rows[0];
@@ -600,7 +602,7 @@ namespace Amritnagar.Models.Database
                                     config.singleResult(sql);
                                     if (config.dt.Rows.Count > 0)
                                     {
-                                        DataRow drlm = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                                        DataRow drlm = (DataRow)config.dt.Rows[0];
                                         string rSource = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + branch + "' AND ";
                                         rSource = rSource + "AC_HD='" + Acc_Head + "' and  EMPLOYEE_ID='" + xemployee_ID + "' AND convert(date, VCH_DATE, 103) <= convert(date, '" + sch_date + "', 103) ";
                                         rSource = rSource + "ORDER BY BRANCH_ID,AC_HD,employee_ID,VCH_DATE,VCH_NO,VCH_SRL";
@@ -634,10 +636,15 @@ namespace Amritnagar.Models.Database
                                                 var lndate = Convert.ToDateTime(drlm["loan_date"]);
                                                 var scdate = Convert.ToDateTime(sch_date);
                                                 var diffOfDates = scdate - lndate;
-                                                xcal_date = diffOfDates.Days;
+                                                xcal_date = diffOfDates.Days+1;
+                                                string qur = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + branch + "' AND ";
+                                                qur = qur + "AC_HD='" + Acc_Head + "' and  EMPLOYEE_ID='" + xemployee_ID + "' AND convert(date, VCH_DATE, 103) = convert(date, '" + xLoan_Dt + "', 103) ";
+                                                qur = qur + "ORDER BY BRANCH_ID,AC_HD,employee_ID,VCH_DATE,VCH_NO,VCH_SRL";
+                                                config.singleResult(qur);
                                                 XPRIN_BAL = Convert.ToDecimal(drl["prin_bal"]);
                                                 drl = (DataRow)config.dt.Rows[0];
-                                                if (Convert.ToDateTime(drl["VCH_DATE"]) == xLoan_Dt)
+                                                var b = Convert.ToDateTime(drl["VCH_DATE"]);
+                                                if (Convert.ToDateTime(drl["VCH_DATE"]).ToString("dd/MM/yyyy").Replace("-","/") == xLoan_Dt.ToString("dd/MM/yyyy").Replace("-","/") )
                                                 {
                                                     XPRIN_AMT = Convert.ToDecimal(drl["PRIN_AMOUNT"]);
                                                 }
