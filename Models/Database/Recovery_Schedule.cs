@@ -555,7 +555,6 @@ namespace Amritnagar.Models.Database
                 sql = sql + " AND MEMBER_TRANSFERED IS NULL AND IS_DEAD='A' AND MEMBER_CLOSED IS NULL AND BOOK_NO<>'LT' AND BOOK_NO<> 'ST' And Book_no<>'00' And Book_no<>'01'";
                 sql = sql + " ORDER BY EMPLOYER_CD,EMPLOYER_BRANCH,BOOK_NO,EMPLOYEE_ID";
             }
-
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
@@ -564,7 +563,7 @@ namespace Amritnagar.Models.Database
                     Recovery_Schedule rs1 = new Recovery_Schedule();
                     XBOOK_NO = Convert.ToString(dr["book_no"]);
                     xemployee_ID = Convert.ToString(dr["EMPLOYEE_ID"]);
-                    if (xemployee_ID == "103376")
+                    if (xemployee_ID == "190681")
                     {
 
                     }
