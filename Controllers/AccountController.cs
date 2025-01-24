@@ -978,7 +978,11 @@ namespace Amritnagar.Controllers
                     {
                         if (am.ac_desc_cr.Substring(0, 8) == "INTEREST")
                         {
-                            cr_particulars = am.ac_desc_cr.Replace("INTEREST", "INST");
+                            cr_particulars = am.ac_desc_cr.Replace("INTEREST", "INST");                            
+                        }
+                        if (cr_particulars == "INST ON TIME DEPOSIT - BCCB")
+                        {
+                            cr_particulars = "INST ON TIME DEPOSIT-BCCB";
                         }
                     }
                     if (am.ac_desc_dr != null && am.ac_desc_dr != "")
@@ -997,6 +1001,10 @@ namespace Amritnagar.Controllers
                         if (am.ac_desc_dr.Substring(0, 8) == "INTEREST")
                         {
                             dr_particulars = am.ac_desc_dr.Replace("INTEREST", "INST");
+                        }
+                        if(dr_particulars == "INST ON TIME DEPOSIT - BCCB")
+                        {
+                            dr_particulars = "INST ON TIME DEPOSIT-BCCB";
                         }
                     }
                     if (am.cash_cr.ToString().Length > 20)
