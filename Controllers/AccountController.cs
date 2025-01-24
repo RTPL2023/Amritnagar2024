@@ -963,50 +963,62 @@ namespace Amritnagar.Controllers
                 {
                     cr_particulars = "";
                     dr_particulars = "";
-                    if (am.ac_desc_cr != null && am.ac_desc_cr != "")
-                    {
-                        if (am.ac_desc_cr.ToString().Length > 25)
-                        {
-                            cr_particulars = (am.ac_desc_cr).Substring(0, 24);
-                        }
-                        else
-                        {
-                            cr_particulars = am.ac_desc_cr;
-                        }
-                    }
+                    string c_prtclrs = "";
+                    string d_prtclrs = "";
                     if (am.ac_desc_cr != null && am.ac_desc_cr != "")
                     {
                         if (am.ac_desc_cr.Substring(0, 8) == "INTEREST")
                         {
-                            cr_particulars = am.ac_desc_cr.Replace("INTEREST", "INST");                            
-                        }
-                        if (cr_particulars == "INST ON TIME DEPOSIT - BCCB")
-                        {
-                            cr_particulars = "INST ON TIME DEPOSIT-BCCB";
-                        }
-                    }
-                    if (am.ac_desc_dr != null && am.ac_desc_dr != "")
-                    {
-                        if (am.ac_desc_dr.ToString().Length > 25)
-                        {
-                            dr_particulars = (am.ac_desc_dr).Substring(0, 24);
+                            cr_particulars = am.ac_desc_cr.Replace("INTEREST", "INST");
+                            if (cr_particulars.Length > 25)
+                            {
+                                //c_prtclrs = (cr_particulars).Substring(0, 24);
+                                c_prtclrs = cr_particulars.Replace(" - ", "-");
+                            }
+                            else
+                            {
+                                c_prtclrs = cr_particulars;
+                            }
                         }
                         else
                         {
-                            dr_particulars = am.ac_desc_dr;
+                            if (am.ac_desc_cr.Length > 25)
+                            {
+                                c_prtclrs = (am.ac_desc_cr).Substring(0, 24);
+                            }
+                            else
+                            {
+                                c_prtclrs = am.ac_desc_cr;
+                            }
                         }
-                    }
+                    }                    
                     if (am.ac_desc_dr != null && am.ac_desc_dr != "")
                     {
                         if (am.ac_desc_dr.Substring(0, 8) == "INTEREST")
                         {
                             dr_particulars = am.ac_desc_dr.Replace("INTEREST", "INST");
+                            if (dr_particulars.Length > 25)
+                            {
+                                //d_prtclrs = (dr_particulars).Substring(0, 24);
+                                d_prtclrs = dr_particulars.Replace(" - ", "-");
+                            }
+                            else
+                            {
+                                d_prtclrs = dr_particulars;
+                            }
                         }
-                        if(dr_particulars == "INST ON TIME DEPOSIT - BCCB")
+                        else
                         {
-                            dr_particulars = "INST ON TIME DEPOSIT-BCCB";
-                        }
-                    }
+                            if (am.ac_desc_dr.Length > 25)
+                            {
+                                d_prtclrs = (am.ac_desc_dr).Substring(0, 24);
+                            }
+                            else
+                            {
+                                d_prtclrs = am.ac_desc_dr;
+                            }
+                        }                      
+                    }                    
                     if (am.cash_cr.ToString().Length > 20)
                     {
                         cr_cash = Convert.ToString(am.cash_cr).Substring(0, 19);
@@ -1093,11 +1105,11 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("ACCOUNT PARTICULARS              CASH        TRANSFER         TOTAL |ACCOUNT PARTICULARS            CASH        TRANSFER         TOTAL  ");
                         sw.WriteLine("________________________________________________________________________________________________________________________________________");
                     }
-                    sw.WriteLine(cr_particulars + "".ToString().PadLeft(25 - (cr_particulars).Length) 
+                    sw.WriteLine(c_prtclrs + "".ToString().PadLeft(25 - (c_prtclrs).Length) 
                     + "".ToString().PadLeft(14 - (cr_cash).Length) + cr_cash
                     + "".ToString().PadLeft(16 - (cr_transfer).Length) + cr_transfer
                     + "".ToString().PadLeft(13 - (tot_cr).Length) + tot_cr + "|"
-                    + dr_particulars + "".ToString().PadLeft(25 - (dr_particulars).Length)
+                    + d_prtclrs + "".ToString().PadLeft(25 - (d_prtclrs).Length)
                     + "".ToString().PadLeft(12 - (dr_cash).Length) + dr_cash
                     + "".ToString().PadLeft(14 - (dr_transfer).Length) + dr_transfer
                     + "".ToString().PadLeft(16 - (tot_dr).Length) + tot_dr);
