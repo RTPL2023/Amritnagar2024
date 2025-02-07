@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Amritnagar.Models.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,6 +31,7 @@ namespace Amritnagar.Models.ViewModel
         public string prin_amt { get; set; }
         public string int_amt { get; set; }
         public string user_id { get; set; }
+        public List<Recovery_Schedule> rlist = new List<Recovery_Schedule>();
         public string msg { get; set; }
 
 
