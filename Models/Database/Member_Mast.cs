@@ -831,7 +831,7 @@ namespace Amritnagar.Models.Database
         public Member_Mast getmemidbyempid(string emp_id)
         {
             Member_Mast mm = new Member_Mast();
-            string sql = "select * from member_mast where employee_id='" + emp_id + "' order by employee_id";
+            string sql = "select * from member_mast where employee_id='" + emp_id + "' and book_no <> '00' order by employee_id";
             config.singleResult(sql);
             if (config.dt.Rows.Count > 0)
             {
