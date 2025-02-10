@@ -127,10 +127,10 @@ namespace Amritnagar.Controllers
                     //xmdiff = (a.birth_date).Month - Convert.ToDateTime(model.dob).Month;
                     xmdiff = Convert.ToDateTime(model.dob).Subtract(a.birth_date).Days / (365.25 / 12);
                     xmdiff1 = xmdiff / 12;
-                    if(xmdiff1 > 0)
+                    if (xmdiff1 > 0)
                     {
                         xmd = Convert.ToDouble(Convert.ToString(xmdiff1).Substring(0, 2));
-                    }                   
+                    }
                     xmd1 = xmd * 12;
                     xac = xmdiff * xmd1;
                     if (xac > 6)
@@ -169,7 +169,7 @@ namespace Amritnagar.Controllers
             mm.branch_id = "MN";
             model.msg = mm.updatetfbuffer(mm);
             return Json(model.msg);
-        }        
+        }
         public ActionResult getlicprimiumlistprintfile(FreshListViewModel model)
         {
             Loan_Master lm = new Loan_Master();
@@ -501,16 +501,16 @@ namespace Amritnagar.Controllers
                     }
                     if (a.ac_hd == "TF" || a.ac_hd == "SH" || a.ac_hd == "LICP" || a.ac_hd == "RTB")
                     {
-                        
+
                         model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
-                       
+
                     }
                     else
                     {
-                       
+
                         model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.prin_amt.ToString("0.00") + "</td><td>" + a.int_amt.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_rate.ToString("0.00") + "</td></tr>";
-                       
-                    }                  
+
+                    }
                 }
             }
             else
@@ -597,7 +597,7 @@ namespace Amritnagar.Controllers
             {
                 int Pg = 1;
                 int Ln = 0;
-                string serial ="";
+                string serial = "";
                 sw.WriteLine(" BOOK - NO = " + model.book_no);
                 sw.WriteLine("Unit : " + unitname);
                 sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
@@ -610,7 +610,8 @@ namespace Amritnagar.Controllers
                 foreach (var am in rsl)
                 {
                     XEMP = am.emp_id;
-                    if (YEMP != XEMP) {
+                    if (YEMP != XEMP)
+                    {
                         i = i + 1;
                         YEMP = XEMP;
                         serial = i.ToString();
@@ -618,7 +619,7 @@ namespace Amritnagar.Controllers
                     else
                     {
                         serial = "";
-                    }    
+                    }
                     var a = rsl.First();
                     string XEMPID = a.emp_id;
                     string YEMPID = am.emp_id;
@@ -647,7 +648,7 @@ namespace Amritnagar.Controllers
                     prin_amount = am.prin_amt.ToString("0.00");
                     int_amount = am.int_amt.ToString("0.00");
                     prin_bal = am.prin_bal.ToString("0.00");
-                    int_rate = am.int_rate.ToString("0.00");                  
+                    int_rate = am.int_rate.ToString("0.00");
                     if (Ln > Pg * 65)
                     {
                         Pg = Pg + 1;
@@ -683,11 +684,11 @@ namespace Amritnagar.Controllers
                         {
                             int_rate = int_rate.Substring(0, 7);
                         }
-                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length)+ "|" + am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) +"|"
-                           + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) +  "|"
-                           + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length)  + "|"
-                           + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length)  + "|"
-                            + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length)  + "|"
+                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + "|"
+                           + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) + "|"
+                           + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length) + "|"
+                           + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length) + "|"
+                            + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length) + "|"
                               + "".ToString().PadLeft(7 - ("").ToString().Length) + "" + "|"
                                 + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length) + "|");
                         sw.WriteLine("");
@@ -715,16 +716,16 @@ namespace Amritnagar.Controllers
                         {
                             int_rate = int_rate.Substring(0, 7);
                         }
-                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" +am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + "|"
-                          + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length)  + "|"
-                         + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length)  + "|"
-                         + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length)  + "|"
-                           + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length)  + "|"
-                             + prin_bal.ToString() + "".ToString().PadLeft(7 - (prin_bal).ToString().Length)  + "|"
-                              + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length)  + "|");
+                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + "|"
+                          + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) + "|"
+                         + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length) + "|"
+                         + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length) + "|"
+                           + int_amount.ToString() + "".ToString().PadLeft(8 - (int_amount).ToString().Length) + "|"
+                             + prin_bal.ToString() + "".ToString().PadLeft(7 - (prin_bal).ToString().Length) + "|"
+                              + int_rate.ToString() + "".ToString().PadLeft(7 - (int_rate).ToString().Length) + "|");
                         sw.WriteLine("");
                     }
-                    Ln = Ln + 2;                    
+                    Ln = Ln + 2;
                     xpamt = xpamt + am.prin_amt;
                     XIAMT = XIAMT + am.int_amt;
                     TOTTF = am.TOTTF;
@@ -831,7 +832,7 @@ namespace Amritnagar.Controllers
             // if keyString is not found then -1 is returned
             return result;
         }
-        public JsonResult GetListAfterUpdate(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
+        public JsonResult GetListAfterUpdate(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_dt, string branch)
         {
             PrepOfDeductionScheduleViewModel model = new PrepOfDeductionScheduleViewModel();
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
@@ -847,7 +848,7 @@ namespace Amritnagar.Controllers
                 arrachd[i + 3] = "0";
                 i = i + 4;
             }
-            rslst = rs.getdetailsForDeductionScheduleAfterUpdate(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
+            rslst = rs.getdetailsForDeductionScheduleAfterUpdate(emp_name, unit, mem_type, mem_cat, book_no, sch_dt, branch);
             if (rslst.Count > 0)
             {
                 model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
@@ -861,8 +862,8 @@ namespace Amritnagar.Controllers
                     idd = idd + 1;
                     //int[] result = findIndex(arrachd, a.r4);
                     int k = rslst.Where(b => b != null && b.r2 == a.r2).Count();
-                    model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd)+"><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
-                    rs = rs.getPrinBalIntBalFromRecovery(emp_name, unit, mem_type, mem_cat, a.r1, sch_date, branch, a.r2, a.r4);
+                    model.grid1 = model.grid1 + "<tr id=" + Convert.ToString(idd) + "><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
+                    rs = rs.getPrinBalIntBalFromRecovery(emp_name, unit, mem_type, mem_cat, a.r1, sch_dt, branch, a.r2, a.r4);
                     model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
                        "<td>" + a.r5 + "</td><td>" + rs.prin_bal.ToString("0.00") + "</td>" +
                         "<td>" + rs.prin_amt.ToString("0.00") + "</td><td>" + rs.int_amt.ToString("0.00") + "</td></tr>";
@@ -883,12 +884,12 @@ namespace Amritnagar.Controllers
                         if (rs.prin_amt > 0)
                         {
                             arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(rs.prin_amt));
-                         }
-                         if (rs.int_amt > 0)
-                         {
+                        }
+                        if (rs.int_amt > 0)
+                        {
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(rs.int_amt));
-                         }
-                     }                                      
+                        }
+                    }
                 }
             }
             model.grid2 = "";
@@ -908,76 +909,82 @@ namespace Amritnagar.Controllers
         public JsonResult updateBlanceofLoans(PrepOfDeductionScheduleViewModel model)
         {
             Recovery_Schedule rs = new Recovery_Schedule();
-           model.user_id = Convert.ToString(Session["uid"]);
+            model.user_id = Convert.ToString(Session["uid"]);
             string msg = rs.updatloanblances(model);
             return Json(msg);
+        }  
+        public JsonResult deleteEmployeeByidFromRecoveryShedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_dt, string branch, string employee_id)
+        {
+            Recovery_Schedule rs = new Recovery_Schedule();
+          
+            string msg = rs.deleteRecordFromRecovery_ScheduleByemployee_id(emp_name, unit, mem_type, mem_cat, book_no, sch_dt, branch,employee_id);
+            return Json(msg);
         }
-        public JsonResult getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
+        
+        public JsonResult getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_dt, string branch)
         {
             PrepOfDeductionScheduleViewModel model = new PrepOfDeductionScheduleViewModel();
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
             Recovery_Schedule rs = new Recovery_Schedule();
-            model.msg = rs.checkrefreshdata(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch);
-            if(model.msg == null || model.msg == "")
+            model.rlist = rs.checkrefreshdata(emp_name, unit, mem_type, mem_cat, book_no, sch_dt, branch);
+            rslst = rs.getdecachd(emp_name, unit);
+            string[] arrachd = new string[rslst.Count * 4];
+            int i = 0;
+            foreach (var a in rslst)
             {
-                rslst = rs.getdecachd(emp_name, unit);
-                string[] arrachd = new string[rslst.Count * 4];
-                int i = 0;
+                arrachd[i] = a.ac_hd;
+                arrachd[i + 1] = a.ac_desc;
+                arrachd[i + 2] = "0";
+                arrachd[i + 3] = "0";
+                i = i + 4;
+            }
+            string user_id = Convert.ToString(Session["Uid"]);
+            rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_dt, branch, user_id, model);
+            if (rslst.Count > 0)
+            {
+                model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
+                string emp = "";
+                int rowsp = 0;
+
                 foreach (var a in rslst)
                 {
-                    arrachd[i] = a.ac_hd;
-                    arrachd[i + 1] = a.ac_desc;
-                    arrachd[i + 2] = "0";
-                    arrachd[i + 3] = "0";
-                    i = i + 4;
-                }
-                string user_id = Convert.ToString(Session["Uid"]);
-                rslst = rs.getdetailsForDeductionSchedule(emp_name, unit, mem_type, mem_cat, book_no, sch_date, branch, user_id);
-                if (rslst.Count > 0)
-                {
-                    model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
-                    string emp = "";
-                    int rowsp = 0;
-
-                    foreach (var a in rslst)
+                    //int[] result = findIndex(arrachd, a.r4);
+                    //if (book_no != "AL")
+                    //{
+                    if (a.r4 != null)
                     {
-                        //int[] result = findIndex(arrachd, a.r4);
-                        //if (book_no != "AL")
-                        //{
-                        if (a.r4 != null)
+                        var index = Array.FindIndex(arrachd, row => row.Contains(a.r4));
+                        if (a.r8 != null && a.r8 != "")
                         {
-                            var index = Array.FindIndex(arrachd, row => row.Contains(a.r4));
-                            if (a.r8 != null && a.r8 != "")
-                            {
-                                arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(a.r8));
-                            }
-                            if (a.r9 != null && a.r9 != "")
-                            {
-                                arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
-                            }
+                            arrachd[index + 2] = Convert.ToString(Convert.ToDecimal(arrachd[index + 2]) + Convert.ToDecimal(a.r8));
                         }
-                        model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
-                        model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
-                           "<td>" + a.r5 + "</td><td>" + a.r6 + "</td>" +
-                            "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
+                        if (a.r9 != null && a.r9 != "")
+                        {
+                            arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(a.r9));
+                        }
                     }
+                    model.grid1 = model.grid1 + "<tr><td>" + a.r1 + "</td><td>" + a.r2 + "</td><td>" + a.r3 + "</td>";
+                    model.grid1 = model.grid1 + "<td>" + a.r4 + "</td>" +
+                       "<td>" + a.r5 + "</td><td>" + a.r6 + "</td>" +
+                        "<td>" + a.r8 + "</td><td>" + a.r9 + "</td><td>" + a.r10 + "</td></tr>";
                 }
-                model.grid2 = "";
-                model.grid2 = "<tr></th><th>Account Head Particulars</th><th>Principal Amount</th><th>Interest Amount</th><th>Total Amount</th></tr>";
-                int j = 0;
-                for (i = 0; i < (arrachd.Length) / 4; i++)
-                {
-                    decimal totalamt = (Convert.ToDecimal(arrachd[j + 2]) + Convert.ToDecimal(arrachd[j + 3]));
-                    model.grid2 = model.grid2 + "<tr><td>" + arrachd[j + 1] + "</td><td>" + arrachd[j + 2] + "</td><td>" + arrachd[j + 3] + "</td><td>" + totalamt + "</td></tr>";
-                    model.prnt_bal = (Convert.ToDecimal(model.prnt_bal) + Convert.ToDecimal(arrachd[j + 2])).ToString("0.00");
-                    model.int_bal = (Convert.ToDecimal(model.int_bal) + Convert.ToDecimal(arrachd[j + 3])).ToString("0.00");
-                    model.tot_bal = (Convert.ToDecimal(model.tot_bal) + totalamt).ToString("0.00");
-                    j = j + 4;
-                }
-            }            
+            }
+            model.grid2 = "";
+            model.grid2 = "<tr></th><th>Account Head Particulars</th><th>Principal Amount</th><th>Interest Amount</th><th>Total Amount</th></tr>";
+            int j = 0;
+            for (i = 0; i < (arrachd.Length) / 4; i++)
+            {
+                decimal totalamt = (Convert.ToDecimal(arrachd[j + 2]) + Convert.ToDecimal(arrachd[j + 3]));
+                model.grid2 = model.grid2 + "<tr><td>" + arrachd[j + 1] + "</td><td>" + arrachd[j + 2] + "</td><td>" + arrachd[j + 3] + "</td><td>" + totalamt + "</td></tr>";
+                model.prnt_bal = (Convert.ToDecimal(model.prnt_bal) + Convert.ToDecimal(arrachd[j + 2])).ToString("0.00");
+                model.int_bal = (Convert.ToDecimal(model.int_bal) + Convert.ToDecimal(arrachd[j + 3])).ToString("0.00");
+                model.tot_bal = (Convert.ToDecimal(model.tot_bal) + totalamt).ToString("0.00");
+                j = j + 4;
+            }
+
             return Json(model);
         }
-        public JsonResult GetBothcoliarylist(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_date, string branch)
+        public JsonResult GetBothcoliarylist(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_dt, string branch)
         {
             PrepOfDeductionScheduleViewModel model = new PrepOfDeductionScheduleViewModel();
             List<Recovery_Schedule> rslst = new List<Recovery_Schedule>();
@@ -995,7 +1002,7 @@ namespace Amritnagar.Controllers
             }
             if (book_no.ToUpper() == "AL")
             {
-                rslst = rs.getaLLCOLIARYData(emp_name, mem_type, mem_cat, sch_date, branch, book_no, unit);
+                rslst = rs.getaLLCOLIARYData(emp_name, mem_type, mem_cat, sch_dt, branch, book_no, unit);
                 if (rslst.Count > 0)
                 {
                     model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
@@ -1047,7 +1054,7 @@ namespace Amritnagar.Controllers
             }
             else
             {
-                rslst = rs.getaLLCOLIARYData(emp_name, mem_type, mem_cat, sch_date, branch, book_no, unit);
+                rslst = rs.getaLLCOLIARYData(emp_name, mem_type, mem_cat, sch_dt, branch, book_no, unit);
                 if (rslst.Count > 0)
                 {
                     model.grid1 = "<tr id='1'><th>Book No.</th><th>Man Number</th><th>Name Of Member</th><th>A/C Head</th><th>A/C Number</th><th>Principal Bal.</th><th>inst.Amount</th><th>interest Amt.</th><th>Total</th></tr>";
@@ -1184,7 +1191,7 @@ namespace Amritnagar.Controllers
                             arrachd[index + 3] = Convert.ToString(Convert.ToDecimal(arrachd[index + 3]) + Convert.ToDecimal(rg.iNT_aMT));
                         }
                     }
-                    
+
                     model.grid1 = model.grid1 + "<td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.ac_hd + "</td><td>" + a.vch_pacno + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + rg.pRIN_aMT.ToString("0.00") + "</td><td>" + rg.iNT_aMT.ToString("0.00") + "</td></tr>";
                     emp = a.emp_id;
                     xprin = xprin + rg.pRIN_aMT;

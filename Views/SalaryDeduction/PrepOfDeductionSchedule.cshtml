@@ -182,10 +182,14 @@
                         <input id="BtnUpdate" type="button" name="BtnUpdate" Height="40" Width="100" class="btn btn-primary btn-sm" value="Update" onclick="Btnupdateonclick()" />
 
                     </div>
-                    @*<div class="col-lg-2 col-md-1 col-sm-12 col-12 mt-3">
-                        <input id="BtnUpdatefinal" type="button" name="BtnUpdatefinal" Height="40" Width="100" class="btn btn-primary btn-sm" value="Final Update" onclick="afterUpdateList()" />
+                    <div class="col-lg-1 col-md-1 col-sm-12 col-12 mt-3">
+                        <input id="Btndelete" type="button" name="Btndelete" Height="40" Width="100" class="btn btn-primary btn-sm" value="Delete" onclick="Btndeleteonclick()" />
 
-                    </div>*@
+                    </div>
+                    @*<div class="col-lg-2 col-md-1 col-sm-12 col-12 mt-3">
+                            <input id="BtnUpdatefinal" type="button" name="BtnUpdatefinal" Height="40" Width="100" class="btn btn-primary btn-sm" value="Final Update" onclick="afterUpdateList()" />
+
+                        </div>*@
                 </div>
                 <div class="row mt-2">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -264,7 +268,7 @@
                                     </tbody>
                                 </table>
                                 @*<table id="list" class="tab">
-                                </table>*@
+                                    </table>*@
                             </div>
                         </div>
                     </div>
@@ -334,7 +338,7 @@
             $("#loading").hide();
             $("#changesTbox").hide();
             $("#BtnUpdate").hide();
-            //$("#to_dt").hide();
+            $("#Btndelete").hide();
         });
 
         function Btnrefreshonclick() {
@@ -346,7 +350,7 @@
                 mem_type: $('#mem_type').val(),
                 mem_cat: $('#mem_cat').val(),
                 book_no: $('#book_no').val(),
-                sch_date: $('#sch_dt').val(),
+                sch_dt: $('#sch_dt').val(),
                 unit: $('#unit').val(),
             };
             /*alert(JSON.stringify(ModelObject));*/
@@ -363,10 +367,11 @@
                         $('#prnt_bal').val(data.prnt_bal);
                         $('#int_bal').val(data.int_bal);
                         $('#tot_bal').val(data.tot_bal);
+                        Btnupdateonclick();
                     }
                     else {
                         $("#loading").hide();
-                        alert(data.msg);                        
+                        alert(data.msg);
                     }
                 },
                 error: function (err) {
@@ -437,6 +442,8 @@
                     f7.value = cells[7].innerHTML;
                     //f8.value = cells[8].innerHTML;
                     $("#BtnUpdate").show();
+                    $("#Btndelete").show();
+
                 };
             }
         })();
@@ -496,7 +503,7 @@
                 mem_type: $('#mem_type').val(),
                 mem_cat: $('#mem_cat').val(),
                 book_no: $('#book_no').val(),
-                sch_date: $('#sch_dt').val(),
+                sch_dt: $('#sch_dt').val(),
                 unit: $('#unit').val(),
             };
             /*alert(JSON.stringify(ModelObject));*/
@@ -541,7 +548,7 @@
                 mem_type: $('#mem_type').val(),
                 mem_cat: $('#mem_cat').val(),
                 book_no: $('#book_no').val(),
-                sch_date: $('#sch_dt').val(),
+                sch_dt: $('#sch_dt').val(),
                 unit: $('#unit').val(),
             };
             /*alert(JSON.stringify(ModelObject));*/
@@ -562,6 +569,46 @@
                     alert("Unable To Calculate");
                 }
             });
-         };
+        };
+
+        function Btndeleteonclick() {
+            $("#loading").show();
+            /*alert("ok");*/
+            let ModelObject = {
+                emp_name: $('#emp_name').val(),
+                employee_id: $('#employee_id').val(),
+                branch: $('#branch').val(),
+                mem_type: $('#mem_type').val(),
+                mem_cat: $('#mem_cat').val(),
+                book_no: $('#book_no').val(),
+                sch_dt: $('#sch_dt').val(),
+                unit: $('#unit').val(),
+            };
+            /*alert(JSON.stringify(ModelObject));*/
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("deleteEmployeeByidFromRecoveryShedule")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    alert(data);
+                    $('#ac_hd').val("");
+                    $('#vch_pacno').val("");
+                    $('#prin_bal').val("");
+                    $('#over_due').val("");
+                    $('#prin_amt').val("");
+                    $('#int_amt').val("");
+                    //$('#employee_id').val("");
+                    $('#member_name').val("");
+                    $("#changesTbox").hide();
+                    GetAllcoliarylist();
+                    /*  document.body.innerHTML.search($('#employee_id').val());*/
+                },
+                error: function (err) {
+                    alert("Unable To Calculate");
+                }
+            });
+        }
     </script>
 }

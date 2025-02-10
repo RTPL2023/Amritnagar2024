@@ -428,7 +428,7 @@ namespace Amritnagar.Models.Database
                 foreach (DataRow dr in config.dt.Rows)
                 {
                     mm.emp_cd = dr["EMPLOYER_CD"].ToString();
-                    mm.mem_name = dr["member_name"].ToString();
+                    mm.mem_name = dr["member_name"].ToString(); 
                     mm.book_no = dr["book_no"].ToString();
                     mm.emp_branch = dr["EMPLOYER_BRANCH"].ToString();
                     //mm.birth_date = !Convert.IsDBNull(dr["birth_date"]) ? Convert.ToDateTime(dr["birth_date"]) : Convert.ToDateTime("01/01/0001");
