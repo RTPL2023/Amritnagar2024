@@ -69,6 +69,10 @@ namespace Amritnagar.Controllers
                 {
                     string xac = a.mem_id;
                     string xacnm = a.mem_name;
+                    if(a.mem_id == "0003706")
+                    {
+
+                    }
                     SHARE_LEDGER sl = new SHARE_LEDGER();
                     List<SHARE_LEDGER> sllst = new List<SHARE_LEDGER>();
                     sllst = sl.getShareLedherDetail(model.branch, xac);
