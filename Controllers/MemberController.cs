@@ -1494,7 +1494,7 @@ namespace Amritnagar.Controllers
         public JsonResult GetMemberFund(MemberStatusViewModel model)
         {
             //decimal int_payble = 0;
-            FUNDDEP_MAST fdm = new FUNDDEP_MAST();            
+            FUNDDEP_MAST fdm = new FUNDDEP_MAST();
             List<FUNDDEP_MAST> fdml = new List<FUNDDEP_MAST>();
             fdml = fdm.getFundDepositInfo(model.BranchID, model.member_no);
             int i = 1;
@@ -1505,17 +1505,17 @@ namespace Amritnagar.Controllers
             {
                 foreach (var a in fdml)
                 {
-                    if(a.is_deposit != null)
+                    if (a.is_deposit != null)
                     {
                         tot_int = get_fdep_int_payble(a.ac_hd, a.int_rate);
-                    }                   
+                    }
                     if (a.ledger_tab == "DIVIDEND_LEDGER")
                     {
                         dep = a.bal_amount + tot_int;
                         if (i == 1)
                         {
                             model.tableelement = "<tr><th>Account Head</th><th>Principal Bal</th><th>Interest Bal</th><th>Int Payable</th><th>Net Payable</th><th>Account Head</th><th>Table</th></tr>";
-                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";                          
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.bal_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                         }
                         else
                         {
@@ -1528,11 +1528,11 @@ namespace Amritnagar.Controllers
                         if (i == 1)
                         {
                             model.tableelement = "<tr><th>Account Head</th><th>Principal Bal</th><th>Interest Bal</th><th>Int Payable</th><th>Net Payable</th><th>Account Head</th><th>Table</th></tr>";
-                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";                            
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                         }
                         else
                         {
-                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";                            
+                            model.tableelement = model.tableelement + "<tr><td>" + a.fund_desc + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + tot_int.ToString("0.00") + "</td><td>" + dep.ToString("0.00") + "</td><td>" + a.ac_hd + "</td><td>" + a.ledger_tab + "</td></tr>";
                         }
                     }
                     i = i + 1;
@@ -1540,7 +1540,7 @@ namespace Amritnagar.Controllers
                 }
                 string share_cap_tot = model.share_cap_tot;
                 model.tot_fund = fnd_dep.ToString("0.00");
-                model.tot_assets = (Convert.ToDecimal(share_cap_tot) + Convert.ToDecimal(model.tot_fund)).ToString("0.00");                
+                model.tot_assets = (Convert.ToDecimal(share_cap_tot) + Convert.ToDecimal(model.tot_fund)).ToString("0.00");
             }
             else
             {
@@ -1554,11 +1554,11 @@ namespace Amritnagar.Controllers
             Loan_Master lm = new Loan_Master();
             List<Loan_Master> lml = new List<Loan_Master>();
             lml = lm.getmemberloandetails(model.BranchID, model.member_no);
-            int i = 1;            
+            int i = 1;
             if (lml.Count > 0)
             {
                 foreach (var a in lml)
-                {                  
+                {
                     lm = lm.getloanledger(a.ledger_tab, a.ac_hd, a.branch_id, a.emp_id, a.loan_amt, a.inst_no, a.ln_spcl, a.inst_rate, a.loan_dt);
                     //lm = lm.get_loan_current_due(a.ac_hd, a.loan_amt, a.inst_no, a.ln_spcl, a.inst_rate, a.loan_dt, a.branch_id, a.mem_id);
                     if (i == 1)
@@ -1573,7 +1573,7 @@ namespace Amritnagar.Controllers
                     i = i + 1;
                     xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
                 }
-                model.tot_Loan = xtotpayb.ToString("0.00");                             
+                model.tot_Loan = xtotpayb.ToString("0.00");
             }
             else
             {
@@ -1607,7 +1607,7 @@ namespace Amritnagar.Controllers
                     }
                     i = i + 1;
                     xtotpayb = xtotpayb + lm.prin_bal + lm.int_bal + lm.lbal_aint;
-                }               
+                }
                 model.tot_Oth_Loan = xtotpayb.ToString("0.00");
                 model.tot_liabilities = (Convert.ToDecimal(tot_Loan) + Convert.ToDecimal(model.tot_Oth_Loan)).ToString("0.00");
             }
@@ -1617,7 +1617,7 @@ namespace Amritnagar.Controllers
                 model.tot_liabilities = tot_Loan;
             }
             return Json(model);
-        }             
+        }
         public decimal get_fdep_int_payble(string ac_hd, decimal int_rate)
         {
             decimal xtot_int = 0;
@@ -1628,7 +1628,7 @@ namespace Amritnagar.Controllers
             decimal xfmnth = 0;
             MemberStatusViewModel model = new MemberStatusViewModel();
             List<FUNDDEP_MAST> fdml = new List<FUNDDEP_MAST>();
-           
+
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
             int year1 = (DateTime.Now.Year) - 1;
@@ -1642,7 +1642,7 @@ namespace Amritnagar.Controllers
             }
             xintfr = Convert.ToDateTime(XLINTDATE).AddDays(1).ToString();
             xfmnth = Convert.ToDecimal(Convert.ToDateTime(XLINTDATE).Subtract(DateTime.Now).Days / (365.25 / 12));
-            if(xfmnth > 0)
+            if (xfmnth > 0)
             {
                 xfmnth = Convert.ToDecimal(Convert.ToDateTime(xintfr).Subtract(DateTime.Now).Days / (365.25 / 12));
                 xintto = Convert.ToDateTime(xintfr).AddMonths(Convert.ToInt32(xfmnth)).ToString();
@@ -1650,9 +1650,9 @@ namespace Amritnagar.Controllers
                 xintto = Convert.ToDateTime(xintto).AddDays(-1).ToString();
                 xfmnth = Convert.ToDecimal(Convert.ToDateTime(xintfr).Subtract(Convert.ToDateTime(xintto)).Days / (365.25 / 12)) + 1;
                 string[] arrdt = new string[Convert.ToInt32(xfmnth) + 1];
-                if(xfmnth > 0)
+                if (xfmnth > 0)
                 {
-                    for(int i=1; i <=xfmnth; i++)
+                    for (int i = 1; i <= xfmnth; i++)
                     {
 
                     }
@@ -1728,7 +1728,7 @@ namespace Amritnagar.Controllers
                         }
                         xbal = Convert.ToDouble(tf.prin_bal);
                         //String XDRCR = tf.dr_cr;
-                        if(xbal < 0)
+                        if (xbal < 0)
                         {
                             xbal = 0;
                         }
@@ -1768,24 +1768,24 @@ namespace Amritnagar.Controllers
             CAL_GFTF_INT = CAL_GFTF_INT < 1 ? 0 : CAL_GFTF_INT;
             CAL_GFTF_INT = Math.Round(CAL_GFTF_INT, 0);
             return CAL_GFTF_INT;
-        }       
+        }
         public JsonResult getledgerbymemid(string BranchID, string member_no, string table, string emp_id, string ac_hd, string name)
         {
             Ledger ld = new Ledger();
             List<Ledger> ldl = new List<Ledger>();
-            MemberStatusViewModel model = new MemberStatusViewModel();           
+            MemberStatusViewModel model = new MemberStatusViewModel();
             ldl = ld.getledgerdetails(BranchID, member_no, table, emp_id, ac_hd);
             int i = 1;
-            string certificate_date = "";           
+            string certificate_date = "";
             if (ldl.Count > 0)
             {
                 foreach (var a in ldl)
                 {
-                    if(table == "GF_LEDGER" || table == "TF_LEDGER")
-                    {                      
-                        if(a.dr_cr== "C")
+                    if (table == "GF_LEDGER" || table == "TF_LEDGER")
+                    {
+                        if (a.dr_cr == "C")
                         {
-                            if(a.prin_amount != 0)
+                            if (a.prin_amount != 0)
                             {
                                 if (i == 1)
                                 {
@@ -1840,11 +1840,11 @@ namespace Amritnagar.Controllers
                                 }
                                 i = i + 1;
                             }
-                        }                        
-                    } 
-                    else if(table == "DIVIDEND_LEDGER")
+                        }
+                    }
+                    else if (table == "DIVIDEND_LEDGER")
                     {
-                        if(a.dr_cr == "C")
+                        if (a.dr_cr == "C")
                         {
                             if (i == 1)
                             {
@@ -1867,10 +1867,10 @@ namespace Amritnagar.Controllers
                             {
                                 model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy HH:mm:ss").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
                             }
-                        }                       
-                        i = i + 1;                       
+                        }
+                        i = i + 1;
                     }
-                    else if(ac_hd == "SHARE CAPITAL")
+                    else if (ac_hd == "SHARE CAPITAL")
                     {
                         if (Convert.ToDateTime(a.certificate_date).ToString("dd-MM-yyyy HH:mm:ss").Replace("-", "/") == "01/01/0001")
                         {
@@ -1906,16 +1906,16 @@ namespace Amritnagar.Controllers
                         }
                         i = i + 1;
                     }
-                    else if(table == "LOAN_LEDGER")
+                    else if (table == "LOAN_LEDGER")
                     {
-                        string tagColor= "style='color: black;'";
+                        string tagColor = "style='color: black;'";
                         string condition = "";
                         string condition1 = "";
                         condition = a.trns_particular.Substring((a.trns_particular).Length - 10);
                         if (a.trns_particular.Length >= 28)
                         {
                             condition1 = a.trns_particular.Substring(0, 27);
-                        }                        
+                        }
                         if (a.dr_amt > 0)
                         {
                             if (i == 1)
@@ -1932,8 +1932,8 @@ namespace Amritnagar.Controllers
                         {
                             if (condition == "@Principal" && condition1 == "ByTransfer SALARY DEDUCTION")
                             {
-                               tagColor = "style='color: Green;'";
-                            }                    
+                                tagColor = "style='color: Green;'";
+                            }
                             if (i == 1)
                             {
                                 model.tableelement = "<tr><th>Date</th><th>Transaction Particulars</th><th>Cheque No.</th><th>Dr Amount</th><th>Cr Amount</th><th>Prin/Balance</th><th>Int/Balance</th><th>Aint/Bal</th><th>Oth/Chrgs</th></tr>";
@@ -2511,10 +2511,10 @@ namespace Amritnagar.Controllers
             List<Member_Mast> mmlst = new List<Member_Mast>();
             mmlst = mm.GetmemMastForDemandInterestCalculation(model);
             TF_Ledger tf = new TF_Ledger();
-            foreach(var a in mmlst)
+            foreach (var a in mmlst)
             {
                 tf.SaveDebitIntInLedgerForGFTF(a.mem_id, model);
-            }              
+            }
             return Json("Over");
         }
         public double CAL_GFTF_INT(DateTime xfrdt, DateTime XTODT, List<TF_Ledger> tflst, int xformonths, decimal XINT_RATE, decimal XMAX_MINBAL, MemDepositeFundIntPaySchViewModel model)
@@ -2570,12 +2570,12 @@ namespace Amritnagar.Controllers
                     {
                         if (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
                         {
-                            if (tf.vch_date.Month == XMONTH && tf.vch_date.Year == XYEAR)
+                            while (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
                             {
-
-                            }
-                            else
-                            {
+                                if (tf.vch_date.Month == XMONTH && tf.vch_date.Year == XYEAR)
+                                {
+                                    break;
+                                }
                                 xm = xm + 1;
                                 XMONTH = Convert.ToDateTime(model.int_array[1, xm]).Month;  //int.Parse(int_array[1, xm].ToString("MM"));
                                 XYEAR = Convert.ToDateTime(model.int_array[1, xm]).Year; // int.Parse(int_array[1, xm].ToString("yyyy"));
@@ -2761,7 +2761,7 @@ namespace Amritnagar.Controllers
                 }
             }
             XPAIDUPTO = mm.mem_date;
-            XPAIDUPTO = Convert.ToDateTime("01/" + XPAIDUPTO.Month +"/"+ XPAIDUPTO.Year);
+            XPAIDUPTO = Convert.ToDateTime("01/" + XPAIDUPTO.Month + "/" + XPAIDUPTO.Year);
             XPAIDUPTO = XPAIDUPTO.AddDays(-1);
             XFPAIDUPTO = XPAIDUPTO;
             if (mm.mem_closed != null && mm.mem_closed != "")
@@ -2784,7 +2784,7 @@ namespace Amritnagar.Controllers
             }
             TF_Ledger tfl = new TF_Ledger();
             List<TF_Ledger> tfllst = new List<TF_Ledger>();
-            tfllst = tfl.getdataByledgerTab(model.gl_achd,model.branch,model.mem_no);
+            tfllst = tfl.getdataByledgerTab(model.gl_achd, model.branch, model.mem_no);
             int i = 1;
             decimal xtot = 0;
             string XTR_TYPE = "";
@@ -2915,7 +2915,7 @@ namespace Amritnagar.Controllers
             TF_Ledger tl = new TF_Ledger();
             List<TF_Ledger> tflst = new List<TF_Ledger>();
             tflst = tl.getTfRate();
-           
+
             var result = tflst.FindLast(delegate (TF_Ledger sbl)
             {
                 return sbl.eff_date <= XFRDT1;
@@ -2931,13 +2931,13 @@ namespace Amritnagar.Controllers
             }
             if (result == null)
             {
-                
+
             }
             else
             {
                 XRATE = result.tf_rate;
             }
-            
+
             result = tflst.Find(delegate (TF_Ledger sbl)
             {
                 return sbl.eff_date > XFRDT1;
@@ -2998,7 +2998,7 @@ namespace Amritnagar.Controllers
             mml = mm.getdetaillist(model.branch, model.gl_achd, model.on_dt);
             int i = 1;
             decimal prin_bal = 0;
-            decimal int_bal = 0;           
+            decimal int_bal = 0;
             if (mml.Count > 0)
             {
                 foreach (var a in mml)
@@ -3006,7 +3006,7 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Srl</th><th>MemberShip No</th><th>Member Date</th><th>Name</th><th>Principal Balance</th><th>Interest Balance</th><th>Total Balance</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-","/") + "</td><td>" + a.mem_name + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + (a.prin_bal + a.int_bal).ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToInt32(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.mem_name + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td><td>" + (a.prin_bal + a.int_bal).ToString("0.00") + "</td></tr>";
                     }
                     else
                     {
@@ -3043,20 +3043,20 @@ namespace Amritnagar.Controllers
             {
                 int Pg = 1;
                 int Ln = 0;
-                int i = 1;                
+                int i = 1;
                 sw.WriteLine("                       " + lc.lic_name);
                 sw.WriteLine("                               " + lc.lic_add1 + "," + lc.lic_add2 + " PHONE : " + lc.lic_phone);
                 sw.WriteLine("");
-                sw.WriteLine(Branchname +  "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                 Page No # " + Pg);                
-                sw.WriteLine("==================================================================================================");            
+                sw.WriteLine(Branchname + "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                 Page No # " + Pg);
+                sw.WriteLine("==================================================================================================");
                 sw.WriteLine("Srl. |Member No|Member Date|Member Name                     |Prin Balance|Int Balance|Total Amount");
                 sw.WriteLine("==================================================================================================");
                 foreach (var am in mml)
-                {                    
+                {
                     if (Ln > Pg * 65)
                     {
                         Pg = Pg + 1;
-                        Ln = Ln + 7;                       
+                        Ln = Ln + 7;
                         sw.WriteLine("");
                         sw.WriteLine(Branchname + "            " + model.gl_achd + " Detail List as on " + model.on_dt + "                                 Page No # " + Pg);
                         sw.WriteLine("==================================================================================================");
@@ -3157,7 +3157,7 @@ namespace Amritnagar.Controllers
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>srl</th><th>Member_Id</th><th>Name Of The Member</th><th>Share Capital</th><th>Thrift Fund</th><th>Gurantee Fund</th><th>Int.TF</th><th>Int.GF</th><th>Loan(16.5%)</th><th>Int(16.5%)</th><th>Loan(14.5%)</th><th>Int(14.5%)</th><th>Loan(13%)</th><th>Int(13%)</th><th>Loan(10%)</th><th>Int(10%)</th><th>DN Loan</th><th>Int. DLL</th><th>Loan 14</th><th>INT 14</th><th>Loan 12.5</th><th>INT 12.5</th><th>Loan 12.75</th><th>INT 12.75</th><th>Loan 11.5</th><th>INT 11.5</th><th>Loan 9</th><th>INT 9</th><th>SL 4</th><th>ISL 4</th><th>SL 6</th><th>ISL 6</th><th>SL 7</th><th>ISL 7</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name+ "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xint_tf.ToString("0.00") + "</td><td>" + a.Xint_Gf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.XISFL.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XIsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.XISL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.XIPSL.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.XIDLL.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.XIsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.XIM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.XIM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.XISFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td><td>" + a.XIPSL1.ToString("0.00") + "</td><td>" + a.xSL4.ToString("0.00") + "</td><td>" + a.XISL4.ToString("0.00") + "</td><td>" + a.xSL6.ToString("0.00") + "</td><td>" + a.XISL6.ToString("0.00") + "</td><td>" + a.xSL7.ToString("0.00") + "</td><td>" + a.XISL7.ToString("0.00") + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xint_tf.ToString("0.00") + "</td><td>" + a.Xint_Gf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.XISFL.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XIsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.XISL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.XIPSL.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.XIDLL.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.XIsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.XIM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.XIM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.XISFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td><td>" + a.XIPSL1.ToString("0.00") + "</td><td>" + a.xSL4.ToString("0.00") + "</td><td>" + a.XISL4.ToString("0.00") + "</td><td>" + a.xSL6.ToString("0.00") + "</td><td>" + a.XISL6.ToString("0.00") + "</td><td>" + a.xSL7.ToString("0.00") + "</td><td>" + a.XISL7.ToString("0.00") + "</td></tr>";
                         TOT_SHARE = TOT_SHARE + a.XSHARE;
                         tot_tf = tot_tf + a.XTF;
                         XTOT_ITF = XTOT_ITF + a.xint_tf;
@@ -3272,20 +3272,20 @@ namespace Amritnagar.Controllers
             mml = mm.getdetailsbybookno(model.unit, model.book_no, model.on_date);
             int i = 1;
             decimal TOT_SHARE = 0;
-            decimal tot_tf = 0;         
-            decimal tot_gf = 0;        
-            decimal XTOTSFL = 0;          
-            decimal XTOTSJL = 0;          
-            decimal XTOTSL3 = 0;         
-            decimal XTOTPSL = 0;           
-            decimal XTOTDLL = 0;          
-            decimal XTOTsjl1 = 0;           
-            decimal XTOTM14 = 0;           
-            decimal XTOTM12 = 0;            
+            decimal tot_tf = 0;
+            decimal tot_gf = 0;
+            decimal XTOTSFL = 0;
+            decimal XTOTSJL = 0;
+            decimal XTOTSL3 = 0;
+            decimal XTOTPSL = 0;
+            decimal XTOTDLL = 0;
+            decimal XTOTsjl1 = 0;
+            decimal XTOTM14 = 0;
+            decimal XTOTM12 = 0;
             decimal XTOTSFL1 = 0;
             decimal XTOTISFL1 = 0;
             decimal XTOTPSL1 = 0;
-            
+
             if (mml.Count > 0)
             {
                 foreach (var a in mml)
@@ -3295,19 +3295,19 @@ namespace Amritnagar.Controllers
                         model.tableelement = "<tr><th>srl</th><th>Member_Id</th><th>Name Of The Member</th><th>Share Capital</th><th>Thrift Fund</th><th>Gurantee Fund</th><th>Loan(16.5%)</th><th>Loan(14.5%)</th><th>Loan(13%)</th><th>Loan(10%)</th><th>DN Loan</th><th>Loan 14</th><th>Loan 12.5</th><th>Loan 12.75</th><th>Loan 11.5</th><th>Loan 9</th></tr>";
                         model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.mem_name + "</td><td>" + a.XSHARE.ToString("0.00") + "</td><td>" + a.XTF.ToString("0.00") + "</td><td>" + a.xgf.ToString("0.00") + "</td><td>" + a.xsfl.ToString("0.00") + "</td><td>" + a.xsjl.ToString("0.00") + "</td><td>" + a.XSL3.ToString("0.00") + "</td><td>" + a.xpsl.ToString("0.00") + "</td><td>" + a.xdll.ToString("0.00") + "</td><td>" + a.xsjl1.ToString("0.00") + "</td><td>" + a.xM14.ToString("0.00") + "</td><td>" + a.xM12.ToString("0.00") + "</td><td>" + a.xSFL1.ToString("0.00") + "</td><td>" + a.xPSL1.ToString("0.00") + "</td></tr>";
                         TOT_SHARE = TOT_SHARE + a.XSHARE;
-                        tot_tf = tot_tf + a.XTF;                      
-                        tot_gf = tot_gf + a.xgf;                       
-                        XTOTSFL = XTOTSFL + a.xsfl;                      
-                        XTOTSJL = XTOTSJL + a.xsjl;                       
-                        XTOTSL3 = XTOTSL3 + a.XSL3;                       
-                        XTOTPSL = XTOTPSL + a.xpsl;                      
-                        XTOTDLL = XTOTDLL + a.xdll;                       
-                        XTOTsjl1 = XTOTsjl1 + a.xsjl1;                      
-                        XTOTM14 = XTOTM14 + a.xM14;                      
-                        XTOTM12 = XTOTM12 + a.xM12;                    
+                        tot_tf = tot_tf + a.XTF;
+                        tot_gf = tot_gf + a.xgf;
+                        XTOTSFL = XTOTSFL + a.xsfl;
+                        XTOTSJL = XTOTSJL + a.xsjl;
+                        XTOTSL3 = XTOTSL3 + a.XSL3;
+                        XTOTPSL = XTOTPSL + a.xpsl;
+                        XTOTDLL = XTOTDLL + a.xdll;
+                        XTOTsjl1 = XTOTsjl1 + a.xsjl1;
+                        XTOTM14 = XTOTM14 + a.xM14;
+                        XTOTM12 = XTOTM12 + a.xM12;
                         XTOTSFL1 = XTOTSFL1 + a.xSFL1;
                         XTOTISFL1 = XTOTISFL1 + a.XISFL1;
-                        XTOTPSL1 = XTOTPSL1 + a.xPSL1;                                                
+                        XTOTPSL1 = XTOTPSL1 + a.xPSL1;
                     }
                     else
                     {
@@ -3331,16 +3331,16 @@ namespace Amritnagar.Controllers
                 }
                 model.shtot = TOT_SHARE.ToString("0.00");
                 model.to_gf = tot_gf.ToString("0.00");
-                model.tf = tot_tf.ToString("0.00");             
-                model.ln_prncl_16_5 = XTOTSFL.ToString("0.00");                
-                model.ln_prncl_14_5 = XTOTSJL.ToString("0.00");            
-                model.ln_prncl_13 = XTOTSL3.ToString("0.00");              
-                model.ln_prncl_10 = XTOTPSL.ToString("0.00");              
-                model.ln_prncl_dll = XTOTDLL.ToString("0.00");              
-                model.ln_prncl_14 = XTOTsjl1.ToString("0.00");               
-                model.ln_prncl_12_5 = XTOTM14.ToString("0.00");               
-                model.ln_prncl_12_75 = XTOTM12.ToString("0.00");              
-                model.ln_prncl_11_5 = XTOTSFL1.ToString("0.00");               
+                model.tf = tot_tf.ToString("0.00");
+                model.ln_prncl_16_5 = XTOTSFL.ToString("0.00");
+                model.ln_prncl_14_5 = XTOTSJL.ToString("0.00");
+                model.ln_prncl_13 = XTOTSL3.ToString("0.00");
+                model.ln_prncl_10 = XTOTPSL.ToString("0.00");
+                model.ln_prncl_dll = XTOTDLL.ToString("0.00");
+                model.ln_prncl_14 = XTOTsjl1.ToString("0.00");
+                model.ln_prncl_12_5 = XTOTM14.ToString("0.00");
+                model.ln_prncl_12_75 = XTOTM12.ToString("0.00");
+                model.ln_prncl_11_5 = XTOTSFL1.ToString("0.00");
                 model.ln_prncl_9 = XTOTPSL1.ToString("0.00");
                 model.total_mem = Convert.ToString(i - 1);
             }
@@ -3366,12 +3366,12 @@ namespace Amritnagar.Controllers
                 string mem_name = "";
                 sw.WriteLine("BOOK - NO =" + model.book_no);
                 sw.WriteLine("Bansra Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
-                sw.WriteLine("Member Detaillist As On " +"  " + model.on_date);
+                sw.WriteLine("Member Detaillist As On " + "  " + model.on_date);
                 sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");
                 sw.WriteLine("Srl |Member No.| Member Name             |SHARE      |TF         | GF        |INT TF     |INT GF     | Loan Dues | Intt. Dues|Loan14.5   |Int 14.5   |Loan13     |Int13      |Loan10     |Int10      |Dll        |Int Dll    |Loan 14    |Int 14     |Loan 12.5  |Int 12.5   |Loan 12.75 |Int 12.75  |Loan 11.5  |Int 11.5   |Loan 9     |Int 9      |SL4 13.75  |INT SL4    |SL6 13.5   |INT SL6    ");
-                sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");       
+                sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------");
                 foreach (var am in mml)
-                {                   
+                {
                     if (Ln > Pg * 65)
                     {
                         Pg = Pg + 1;
@@ -3398,7 +3398,7 @@ namespace Amritnagar.Controllers
                     else
                     {
                         mem_id = am.mem_id;
-                    }                   
+                    }
                     if (am.mem_name.ToString().Length > 25)
                     {
                         mem_name = (am.mem_name).Substring(0, 24);
@@ -3441,7 +3441,7 @@ namespace Amritnagar.Controllers
                                + "".ToString().PadLeft(15 - (am.XISL6).ToString().Length) + am.XISL6.ToString("0.00") + "|"
                                //+ "".ToString().PadLeft(10 - (am.xSL7).ToString().Length) + am.xSL7.ToString("0.00") + "|"
                                //+ "".ToString().PadLeft(10 - (am.XISL7).ToString().Length) + am.XISL7.ToString("0.00") + "|"
-                               );                    
+                               );
                     Ln = Ln + 1;
                     sw.WriteLine("");
                     sw.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
@@ -3451,14 +3451,14 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("");
                 sw.WriteLine("");
                 sw.WriteLine("Total :--->");
-                sw.WriteLine("Share Capital : " + model.shtot + "  " + "Gurantee Fund:" + model.to_gf + " " + "Thrift Fund :" + model.tf + " " + "Int. Tf : " + model.to_itf +" " + "Int. Gf :" + model.to_igf);
+                sw.WriteLine("Share Capital : " + model.shtot + "  " + "Gurantee Fund:" + model.to_gf + " " + "Thrift Fund :" + model.tf + " " + "Int. Tf : " + model.to_itf + " " + "Int. Gf :" + model.to_igf);
                 sw.WriteLine("Loan 16.5 : " + model.ln_prncl_16_5 + " " + "Int. 16.5 :" + model.ln_int_16_5 + " " + "Loan 14.5 :" + model.ln_prncl_14_5 + " " + "Int. 14.5 :" + model.ln_int_14_5);
                 sw.WriteLine("Loan 13 : " + model.ln_prncl_13 + " " + "Int 13 " + model.ln_int_13);
                 sw.WriteLine("Loan 10 :" + model.ln_prncl_10 + " " + "Int 10 :" + model.ln_int_10);
                 sw.WriteLine("Loan DLL :" + model.ln_prncl_dll + " " + "Int DLL :" + model.ln_int_dll);
                 sw.WriteLine("Loan 14 :" + model.ln_prncl_14 + " " + "Int DLL :" + model.ln_int_14);
                 sw.WriteLine("Loan 12.5 :" + model.ln_prncl_12_5 + " " + "Int 12.5 :" + model.ln_int_12_5);
-                sw.WriteLine("Loan 12.75 :" + model.ln_prncl_12_75 +" "+ "Int 12.75 :" + model.ln_int_12_75);
+                sw.WriteLine("Loan 12.75 :" + model.ln_prncl_12_75 + " " + "Int 12.75 :" + model.ln_int_12_75);
                 sw.WriteLine("Loan 11.5 :" + model.ln_prncl_11_5 + " " + "Int 11.5 :" + model.int_11_5);
                 sw.WriteLine("Loan 9 :" + model.ln_prncl_9 + " " + "Int 9 :" + model.int_9);
                 sw.WriteLine("Loan 13.75 :" + model.ln_prncl_13_75 + " " + "Int 13.75 :" + model.int_13_75);
@@ -3491,7 +3491,7 @@ namespace Amritnagar.Controllers
             if (mml.Count > 0)
             {
                 foreach (var a in mml)
-                {                  
+                {
                     if (i == 1)
                     {
                         model.tableelement = "<tr><th>Srl</th><th>Member Id</th><th>Member Name</th><th>Gurdian Name</th></tr>";
@@ -3542,7 +3542,7 @@ namespace Amritnagar.Controllers
         {
             Member_Mast mm = new Member_Mast();
             List<Member_Mast> mml = new List<Member_Mast>();
-            mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);           
+            mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             string serial = string.Empty;
             string mem_no = "";
@@ -3554,10 +3554,10 @@ namespace Amritnagar.Controllers
                 {
                     int Pg = 1;
                     int Ln = 0;
-                    int i = 1;                  
+                    int i = 1;
                     sw.WriteLine("BOOK - NO =" + model.book_no);
                     sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
-                    sw.WriteLine("Distribution  LIST ");                    
+                    sw.WriteLine("Distribution  LIST ");
                     sw.WriteLine("==========================================================================");
                     sw.WriteLine("Srl |Member No.| Member Name            | LTI/Signature                  |");
                     sw.WriteLine("==========================================================================");
@@ -3597,7 +3597,7 @@ namespace Amritnagar.Controllers
                             sw.WriteLine("==========================================================================");
                             sw.WriteLine("Srl |Member No.| Member Name            | LTI/Signature                  |");
                             sw.WriteLine("==========================================================================");
-                        }                                              
+                        }
                         sw.WriteLine("".ToString().PadLeft(4 - (serial).Length) + serial + "|"
                         + "".ToString().PadLeft(10 - (mem_no).ToString().Length) + mem_no + "|"
                         + "".ToString().PadLeft(24 - (mem_name).ToString().Length) + mem_name + "|");
@@ -3613,7 +3613,7 @@ namespace Amritnagar.Controllers
                 {
                     int Pg = 1;
                     int Ln = 0;
-                    int i = 1;                                    
+                    int i = 1;
                     sw.WriteLine("BOOK - NO =" + model.book_no);
                     sw.WriteLine("Unit :" + model.unit);
                     sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
@@ -3683,14 +3683,14 @@ namespace Amritnagar.Controllers
             {
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Voter_List.txt"));
             }
-            if(model.dist_list == true)
+            if (model.dist_list == true)
             {
                 return File(memory.ToArray(), "text/plain", "Distribution_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
             }
             else
             {
                 return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
-            }          
+            }
         }
 
         /********************************************Votar List End***************************************************/

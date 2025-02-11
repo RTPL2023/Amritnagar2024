@@ -178,17 +178,19 @@ namespace Amritnagar.Controllers
                     {
                         if (sl.vch_date.Month > XMONTH || sl.vch_date.Year > XYEAR)
                         {
-                            if (sl.vch_date.Month == XMONTH && sl.vch_date.Year == XYEAR)
+                            while (sl.vch_date.Month > XMONTH || sl.vch_date.Year > XYEAR)
                             {
-
-                            }
-                            else
-                            {
+                                if (sl.vch_date.Month == XMONTH && sl.vch_date.Year == XYEAR)
+                                {
+                                    break;
+                                }
                                 xm = xm + 1;
                                 XMONTH = Convert.ToDateTime(model.int_array[1, xm]).Month;  //int.Parse(int_array[1, xm].ToString("MM"));
                                 XYEAR = Convert.ToDateTime(model.int_array[1, xm]).Year; // int.Parse(int_array[1, xm].ToString("yyyy"));
                                 model.int_array[2, xm] = Convert.ToInt32(xr_bal);
                             }
+
+
                         }
                         xbal = Convert.ToDouble(sl.bal_amount);
                         // String XDRCR = tf.dr_cr;
@@ -229,9 +231,9 @@ namespace Amritnagar.Controllers
         }
         public JsonResult getDividendLedgerBymember_id(DividendCalcAndPostViewModel model)
         {
-            DIVIDEND_LEDGER dl = new DIVIDEND_LEDGER();          
-            List<DIVIDEND_LEDGER>dllst = new List<DIVIDEND_LEDGER>();
-            dllst = dl.getdetails(model.member_id,model.branch);
+            DIVIDEND_LEDGER dl = new DIVIDEND_LEDGER();
+            List<DIVIDEND_LEDGER> dllst = new List<DIVIDEND_LEDGER>();
+            dllst = dl.getdetails(model.member_id, model.branch);
             int i = 1;
             if (dllst.Count > 0)
             {
@@ -239,9 +241,9 @@ namespace Amritnagar.Controllers
                 {
                     if (i == 1)
                     {
-                        
-                            model.tableelement1 = "<tr><th>Srl</th></th><th>Vch Date</th><th>vchno</th><th>Div YEar</th><th>Tr amt</th><th>Bal amt</th></tr>";
-                            model.tableelement1 = model.tableelement1 + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.VCH_DATE + "</td><td>" + a.VCH_NO + "</td><td>" + a.DIV_POST_YEAR_TO + "</td><td>" + a.TR_AMOUNT + "</td><td>" + a.BAL_AMOUNT + "</td></tr>";                                            
+
+                        model.tableelement1 = "<tr><th>Srl</th></th><th>Vch Date</th><th>vchno</th><th>Div YEar</th><th>Tr amt</th><th>Bal amt</th></tr>";
+                        model.tableelement1 = model.tableelement1 + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.VCH_DATE + "</td><td>" + a.VCH_NO + "</td><td>" + a.DIV_POST_YEAR_TO + "</td><td>" + a.TR_AMOUNT + "</td><td>" + a.BAL_AMOUNT + "</td></tr>";
                     }
                     else
                     {
