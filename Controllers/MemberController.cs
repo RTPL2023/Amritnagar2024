@@ -2525,7 +2525,7 @@ namespace Amritnagar.Controllers
             //int mm = 0;
             int tt = 0;
 
-            for (int K = 1; K <= 12; K++)
+            for (int K = 1; K <= xformonths; K++)
             {
                 model.int_array[2, K] = 0;
             }
