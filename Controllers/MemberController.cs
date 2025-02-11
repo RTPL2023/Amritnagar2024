@@ -2618,7 +2618,7 @@ namespace Amritnagar.Controllers
             CAL_GFTF_INT = Convert.ToDouble(((xtot * Convert.ToDouble(XINT_RATE) / 1200) + 0.00000002));
             //  CAL_GFTF_INT = IIf(CAL_GFTF_INT < 1, 0, CAL_GFTF_INT);
             CAL_GFTF_INT = CAL_GFTF_INT < 1 ? 0 : CAL_GFTF_INT;
-            CAL_GFTF_INT = Math.Round(CAL_GFTF_INT, 0);
+            CAL_GFTF_INT = Math.Truncate(CAL_GFTF_INT);
             return CAL_GFTF_INT;
         }
         /********************************************Member's deposit Fund Interest Payable Schedule End********************/

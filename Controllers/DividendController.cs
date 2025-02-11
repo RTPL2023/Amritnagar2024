@@ -132,7 +132,7 @@ namespace Amritnagar.Controllers
             //int mm = 0;
             int tt = 0;
 
-            for (int K = 1; K <= 12; K++)
+            for (int K = 1; K <= xformonths; K++)
             {
                 model.int_array[2, K] = 0;
             }
@@ -226,7 +226,7 @@ namespace Amritnagar.Controllers
                 }
             }
             CAL_DIVIDEND = Convert.ToDouble(((xtot * Convert.ToDouble(XINT_RATE) / 1200) + 0.00000002));
-            CAL_DIVIDEND = Math.Round(CAL_DIVIDEND, 0);
+            CAL_DIVIDEND = Math.Truncate(CAL_DIVIDEND);
             return CAL_DIVIDEND;
         }
         public JsonResult getDividendLedgerBymember_id(DividendCalcAndPostViewModel model)
