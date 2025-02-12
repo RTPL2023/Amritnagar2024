@@ -904,7 +904,6 @@
         }
 
         function GetParticularPacno() {
-
             if ($('#vchpacno').val() != null && $('#vchpacno').val() != "") {
                 let ModelObject = {
                     vch_achd: $('#vch_achd').val(),
@@ -917,17 +916,17 @@
                     data: ModelObject,
                     dataType: "json",
                     success: function (data) {
-                        if (data.clos_flag == "C") {
-                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
-                                $('#particular').val(data.particular);
-                            }
-                            else
-                                $('#particular').val("");
-                        }
-                        else {
+                        //if (data.clos_flag == "C") {
+                        //    if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
+                        //        $('#particular').val(data.particular);
+                        //    }
+                        //    else
+                        //        $('#particular').val("");
+                        //}
+                       
                             //alert(data.particulars);
                             $('#particular').val(data.particular);
-                        }
+                       
                         $("#particular").focus();
                     },
                     error: function (err) {
@@ -963,20 +962,10 @@
                     url: '@Url.Action("GetParticularsForvchEntry", "Account")',
                     data: ModelObject,
                     dataType: "json",
-                    success: function (data) {
-                        if (data.clos_flag == "C") {
-                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
-                                $('#refParticular').val(data.particular);
-                            }
-                            else
-                                $('#refParticular').val("");
-                        }
-                        else {
+                    success: function (data) {                       
                             //alert(data.particulars);
-                            $('#refParticular').val(data.particular);
-                        }
+                        $('#refParticular').val(data.particular);                      
                         $("#refParticular").focus();
-
                     },
                     error: function (err) {
                         //alert(err);
@@ -1104,18 +1093,9 @@
                     url: '@Url.Action("GetParticularsForvchEntry", "Account")',
                     data: ModelObject,
                     dataType: "json",
-                    success: function (data) {
-                        if (data.clos_flag == "C") {
-                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
-                                $('#particular1').val(data.particular);
-                            }
-                            else
-                                $('#particular1').val("");
-                        }
-                        else {
+                    success: function (data) {                       
                             //alert(data.particulars);
-                            $('#particular1').val(data.particular);
-                        }
+                        $('#particular1').val(data.particular);                      
                         $("#particular1").focus();
                     },
                     error: function (err) {
@@ -1170,18 +1150,9 @@
                     url: '@Url.Action("GetParticularsForvchEntry", "Account")',
                     data: ModelObject,
                     dataType: "json",
-                    success: function (data) {
-                        if (data.clos_flag == "C") {
-                            if (confirm("Specified Account No.is Closed. Do you want to continue?")) {
-                                $('#refParticular1').val(data.particular);
-                            }
-                            else
-                                $('#refParticular1').val("");
-                        }
-                        else {
-                            //alert(data.particulars);
-                            $('#refParticular1').val(data.particular);
-                        }
+                    success: function (data) {                      
+                        //alert(data.particulars);
+                        $('#refParticular1').val(data.particular);                      
                         $("#refParticular1").focus();
                     },
                     error: function (err) {
