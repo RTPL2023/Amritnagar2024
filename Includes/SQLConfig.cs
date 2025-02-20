@@ -16,10 +16,10 @@ namespace Amritnagar.Includes
         //public SqlConnection con = new SqlConnection("server=115.187.62.28;database=AmritnagarFinal;UID=sa;password=Rishi@2022");
         //public SqlConnection con = new SqlConnection("server=115.187.62.28;database=Amritnagar;UID=sa;password=Rishi@2022");
           //rishi
-        public SqlConnection con = new SqlConnection("server=192.168.137.1;database=Amritnagar;UID=sa;password=Rishi@2022");
+        //public SqlConnection con = new SqlConnection("server=192.168.137.1;database=Amritnagar;UID=sa;password=Rishi@2022");
         //public SqlConnection con = new SqlConnection("server=192.168.0.106;database=AmritnagarFinal;UID=sa;password=Rishi@2022");
         //Amritnagar
-        //public SqlConnection con = new SqlConnection("server=192.168.0.106;database=Amritnagar;UID=sa;password=Rishi@2022");
+        public SqlConnection con = new SqlConnection("server=192.168.0.106;database=Amritnagar;UID=sa;password=Rishi@2022");
 
 
 

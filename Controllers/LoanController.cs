@@ -137,8 +137,9 @@ namespace Amritnagar.Controllers
                 model.inst_rate = lm.inst_rate.ToString("0.00");
                 model.ln_purpose = lm.ln_purpose;
                 model.lic_premium = lm.lic_premium;
-                //model.vch_no = lm.vch_no;
-                //model.vch_date = lm.vch_dt.ToString("dd-MM-yyyy").Replace("-", "/");
+                model.vch_no = lm.vch_no;
+                model.vch_date = lm.vch_dt.ToString("dd-MM-yyyy").Replace("-", "/");
+                model.prin_amt = lm.prin_amt.ToString("0.00");
                 model.msg = lm.msg;
             }
             else

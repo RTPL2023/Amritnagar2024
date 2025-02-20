@@ -654,16 +654,32 @@
                     data: ModelObject,
                     dataType: "json",
                     success: function (data) {
+                        if (data.msg == "Details Found") {
+                            $('#loan_amt').val(data.loan_amt);
+                            $('#inst_amt').val(data.inst_amt);
+                            $('#inst_no').val(data.inst_no);
+                            $('#inst_rate').val(data.inst_rate);
+                            $('#ln_purpose').val(data.ln_purpose);
+                            $('#lic_premium').val(data.lic_premium);
+                            $('#status_cd').val(data.status_cd);
+                            $('#vch_date').val(data.vch_date);
+                            $('#vch_no').val(data.vch_no);
+                            $('#prin_amt').val(data.prin_amt);
+                        }
+                        else {
+                            $('#loan_amt').val("");
+                            $('#inst_amt').val("");
+                            $('#inst_no').val("");
+                            $('#inst_rate').val("");
+                            $('#ln_purpose').val("");
+                            $('#lic_premium').val("");
+                            $('#status_cd').val("");
+                            $('#vch_date').val("");
+                            $('#vch_no').val("");
+                            $('#prin_amt').val("");
+                        }
                         //alert(JSON.stringify(ModelObject));
-                        $('#loan_amt').val(data.loan_amt);
-                        $('#inst_amt').val(data.inst_amt);
-                        $('#inst_no').val(data.inst_no);
-                        $('#inst_rate').val(data.inst_rate);
-                        $('#ln_purpose').val(data.ln_purpose);
-                        $('#lic_premium').val(data.lic_premium);
-                        $('#status_cd').val(data.status_cd);
-                        //$('#vch_date').val(data.vch_date);
-                        //$('#vch_no').val(data.vch_no);
+                        
                         //$('#vch_no').focus();                        
                     },
                     error: function (err) {

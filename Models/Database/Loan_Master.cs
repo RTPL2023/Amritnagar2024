@@ -266,16 +266,18 @@ namespace Amritnagar.Models.Database
                     lm.inst_rate = Convert.ToDecimal(dr["INT_RATE"]);
                     lm.ln_purpose = Convert.ToString(dr["LN_PURPOSE"]);
                     lm.lic_premium = !Convert.IsDBNull(dr["LIC_PREMIUM"]) ? Convert.ToString(dr["LIC_PREMIUM"]) : Convert.ToString("");
+                    sql = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + branch_id + "' AND AC_HD='" + ac_hd + "' AND EMPLOYEE_ID='" + emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL,EMPLOYEE_ID";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr1 = (DataRow)config.dt.Rows[0];
+                        lm.vch_dt = Convert.ToDateTime(dr1["VCH_DATE"]);
+                        lm.vch_no = Convert.ToString(dr1["VCH_NO"]);
+                        lm.prin_amt = Convert.ToDecimal(dr1["PRIN_AMOUNT"]);
+                    }
                     lm.msg = "Details Found";
                 }
-                //    sql = "SELECT * FROM LOAN_LEDGER WHERE BRANCH_ID='" + branch_id + "' AND AC_HD='" + ac_hd + "' AND EMPLOYEE_ID='" + emp_id + "' ORDER BY VCH_DATE,VCH_NO,VCH_SRL,EMPLOYEE_ID";
-                //    config.singleResult(sql);
-                //    if (config.dt.Rows.Count > 0)
-                //    {
-                //        DataRow dr1 = (DataRow)config.dt.Rows[0];
-                //        lm.vch_dt = Convert.ToDateTime(dr1["VCH_DATE"]);
-                //        lm.vch_no = Convert.ToString(dr1["VCH_NO"]);
-                //    }
+                
             }
             else
             {
