@@ -818,7 +818,7 @@ namespace Amritnagar.Models.Database
             acstr = "B.AC_HD IN (" + xacstr + ")";
             sql = "SELECT A.BRANCH_ID,A.VCH_DATE,B.AC_HD,B.VCH_NO,A.VCH_TYPE,B.VCH_SRL,B.VCH_DRCR,C.AC_MAJGR,C.AC_SUBGR,C.AC_DESC,C.IS_CONTRA,";
             sql = sql + " B.VCH_PACNO,B.VCH_ACNAME,B.VCH_AMT FROM VCH_HEADER A,VCH_DETAIL B,ACC_HEAD C";
-            sql = sql + " WHERE (A.BRANCH_ID=B.BRANCH_ID AND convert(datetime, A.VCH_DATE, 103)=convert(datetime, B.VCH_DATE,103) AND";
+            sql = sql + " WHERE (A.BRANCH_ID=B.BRANCH_ID AND convert(varchar, A.VCH_DATE, 103)=convert(varchar, B.VCH_DATE,103) AND";
             sql = sql + " A.VCH_NO=B.VCH_NO) AND B.AC_HD=C.AC_HD AND (";
             sql = sql + acstr + ") ";
             sql = sql + "AND convert(varchar, A.VCH_DATE, 103) = convert(varchar, '" + model.fr_dt + "', 103) AND";
