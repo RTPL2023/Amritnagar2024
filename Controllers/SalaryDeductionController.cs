@@ -1243,7 +1243,7 @@ namespace Amritnagar.Controllers
         public ActionResult SaveInledger(RecoveryFrmSalaryDeductionViewModel model)
         {
             Recovery_Get rg = new Recovery_Get();
-            rg.SaveInLedger(model);
+            rg.SaveInLedger(model ,Convert.ToString(Session["Uid"]));
             return Json("Updated");
         }
         /********************************************Recovery From Salary Deduction End*******************************************/

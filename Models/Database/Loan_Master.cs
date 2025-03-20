@@ -530,6 +530,10 @@ namespace Amritnagar.Models.Database
                 {
                     Loan_Master lm = new Loan_Master();
                     xacno = Convert.ToString(dr["EMPLOYEE_ID"]);
+                    if (xacno== "134190")
+                    {
+
+                    }
                     sql = "";
                     sql = "select * from loan_ledger where branch_id='" + model.branch_id + "' and ";
                     sql = sql + "ac_hd='" + model.ln_achd + "' and employee_id='" + xacno + "' and convert(datetime, vch_date, 103) <= convert(datetime, '" + model.sch_date + "', 103)  order by vch_date,vch_no,vch_srl";
@@ -622,7 +626,7 @@ namespace Amritnagar.Models.Database
             }
             return lml;
         }
-        public string PostMonthlyIntrest(MonthlyInterestScheduleForLoanViewModel model)
+        public string PostMonthlyIntrest(MonthlyInterestScheduleForLoanViewModel model,string created_by)
         {
             string vch_achd = "";
             Loan_Master lm = new Loan_Master();
@@ -664,6 +668,8 @@ namespace Amritnagar.Models.Database
                         { "prin_bal",    a.prin_amt },
                         { "INT_DUE",     lm.intdbt+a.intdue },
                         { "INSERT_MODE", "SI"},
+                        { "Created_By", created_by},
+                        { "Created_On", DateTime.Now},
                         });
                     }
                     catch (Exception ex)

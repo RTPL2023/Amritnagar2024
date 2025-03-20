@@ -458,7 +458,7 @@ namespace Amritnagar.Models.Database
             }
             return rg;
         }
-        public string SaveInLedger(RecoveryFrmSalaryDeductionViewModel model)
+        public string SaveInLedger(RecoveryFrmSalaryDeductionViewModel model, string created_by)
         {
             string sql = "";
             string msg = "";
@@ -489,11 +489,11 @@ namespace Amritnagar.Models.Database
                     rg.iNT_aMT = !Convert.IsDBNull(dr["INT_AMT"]) ? Convert.ToDecimal(dr["INT_AMT"]) : Convert.ToDecimal("00");
                     if (rg.iNT_aMT > 0)
                     {
-                        ADD_LEDGER("I" +rg.aC_hD, rg.vCH_pACNO, vch_no, 1, "C", rg.iNT_aMT, "SD", rg.branch_id, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
+                        ADD_LEDGER("I" +rg.aC_hD, rg.vCH_pACNO, vch_no, 1, "C", rg.iNT_aMT, "SD", rg.branch_id, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO, created_by);
                     }
                     if (rg.pRIN_aMT > 0)
                     {
-                        ADD_LEDGER(rg.aC_hD, rg.vCH_pACNO, vch_no, 2, "C", rg.pRIN_aMT, "SD", model.branch, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO);
+                        ADD_LEDGER(rg.aC_hD, rg.vCH_pACNO, vch_no, 2, "C", rg.pRIN_aMT, "SD", model.branch, rg.sCH_dATE, rg.rECOVERY_dATE, rg.vCH_pACNO, created_by);
                     }
                     i++;
                 }
@@ -556,7 +556,7 @@ namespace Amritnagar.Models.Database
         //    }
         //    return msg;
         //}
-        public void ADD_LEDGER(string XACHD, string xacno, string xvch_no, int XVCH_SRL, string VCH_DRCR, decimal XVCH_AMT, string XINSERT_MODE, string branch, DateTime sch_dt, DateTime rec_dt, string member_id)
+        public void ADD_LEDGER(string XACHD, string xacno, string xvch_no, int XVCH_SRL, string VCH_DRCR, decimal XVCH_AMT, string XINSERT_MODE, string branch, DateTime sch_dt, DateTime rec_dt, string member_id,string created_by)
         {
             string XLEDGER_TAB, XMAST_FLAG, xvchno;
             decimal LBAL_PRIN = 0;
@@ -989,6 +989,8 @@ namespace Amritnagar.Models.Database
                             { "INT_DUE",  LBAL_INT },
                             { "AINT_DUE",  LBAL_AINT },
                             { "ichrg_due",  LBAL_CH },
+                            { "Created_By", created_by},
+                            { "Created_On", DateTime.Now},
                             });
                         }
                         if (XLEDGER_COL == "I")
@@ -1014,6 +1016,8 @@ namespace Amritnagar.Models.Database
                                 { "INT_DUE", Convert.ToDecimal(LBAL_INT  + (VCH_DRCR=="D"?TR_AMT:-TR_AMT)) },
                                 { "AINT_DUE",Convert.ToDecimal(LBAL_AINT) },
                                 { "ichrg_due",Convert.ToDecimal(LBAL_CH )},
+                                { "Created_By", created_by},
+                                { "Created_On", DateTime.Now},
                                 });
                             }
 
@@ -1043,6 +1047,8 @@ namespace Amritnagar.Models.Database
                             //{ "AINT_DUE",  LBAL_AINT + (dr_cr=="D"?TR_AMT: -TR_AMT)},
                             { "AINT_DUE",  LBAL_AINT + (VCH_DRCR=="D"?TR_AMT: -TR_AMT)},
                             { "ichrg_due",  LBAL_CH },
+                            { "Created_By", created_by},
+                            { "Created_On", DateTime.Now},
                             });
                         }
                         if (XLEDGER_COL == "C")
@@ -1066,6 +1072,8 @@ namespace Amritnagar.Models.Database
                             { "AINT_DUE",  LBAL_AINT },
                             //{ "ichrg_due",  LBAL_CH + (dr_cr=="D"?TR_AMT: -TR_AMT)},
                             { "ichrg_due",  LBAL_CH + (VCH_DRCR=="D"?TR_AMT: -TR_AMT)},
+                            { "Created_By", created_by},
+                            { "Created_On", DateTime.Now},
                             });
                         }
 

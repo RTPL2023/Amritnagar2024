@@ -1196,7 +1196,7 @@ namespace Amritnagar.Controllers
         public JsonResult postMonthlyIntrest(MonthlyInterestScheduleForLoanViewModel model)
         {
             Loan_Master lm = new Loan_Master();
-            string MSG = lm.PostMonthlyIntrest(model);
+            string MSG = lm.PostMonthlyIntrest(model,Convert.ToString( Session["Uid"]));
             return Json(MSG);
         }
 
