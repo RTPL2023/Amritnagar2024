@@ -53,6 +53,7 @@ namespace Amritnagar.Models.Database
         public decimal TOTISL7 { get; set; }
         public decimal TOTSJL1 { get; set; }
         public decimal TOTISJL1 { get; set; }
+        public decimal TOT_Deductable_Amount { get; set; }
         public string mEMBER_iD { get; set; }
         public string mem_name { get; set; }
         public DateTime sCH_dATE { get; set; }
@@ -383,6 +384,7 @@ namespace Amritnagar.Models.Database
                     rg.TOTISL7 = TOTISL7;
                     rg.TOTSJL1 = TOTSJL1;
                     rg.TOTISJL1 = TOTISJL1;
+                    rg.TOT_Deductable_Amount = rg.TOTTF + rg.TOTRTB + rg.TOTSFL + rg.TOTISFL + rg.TOTSJL + rg.TOTISJL + rg.TOTPSL + rg.TOTIPSL + rg.TOTDLL + rg.TOTIDLL + rg.TOTSL3 + rg.TOTSL3I + rg.TOTM12 + rg.TOTIM12 + rg.TOTM14 + rg.TOTIM14 + rg.TOTPSL1 + rg.TOTIPSL1 + rg.TOTSFL1 + rg.TOTISFL1 + rg.TOTSL4 + rg.TOTISL4 + rg.TOTSH + rg.TOTSJL1 + rg.TOTISJL1 + rg.TOTSL6 + rg.TOTISL6 + rg.TOTSL7 + rg.TOTISL7 + rg.TOTLICP;                    
                     rgl.Add(rg);
                 }
             }

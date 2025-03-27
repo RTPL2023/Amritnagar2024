@@ -34,21 +34,27 @@ namespace Amritnagar.Controllers
             Recovery_Get rg = new Recovery_Get();
             List<Recovery_Get> rgl = new List<Recovery_Get>();
             rgl = rg.getdetails(model.emp_branch, model.book_no, model.rec_dt);
-            int i = 1;
+            int i = 0;
+            string XEMP = "";
+            string YEMP = "";
+            string serial = "";
             if (rgl.Count > 0)
             {
+                model.tableelement = "<tr><th>SR No</th><th>Member Id</th><th>Employee Id</th><th>Name Of Member</th><th>A/c Hd</th><th>Prin Amount</th><th>Int Amount</th><th>Prin Bal</th></tr>";
                 foreach (var a in rgl)
                 {
-                    if (i == 1)
+                    XEMP = a.eMPLOYEE_iD;
+                    if (YEMP != XEMP)
                     {
-                        model.tableelement = "<tr><th>SR No</th><th>Member Id</th><th>Employee Id</th><th>Name Of Member</th><th>A/c Hd</th><th>Prin Amount</th><th>Int Amount</th><th>Prin Bal</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mEMBER_iD + "</td><td>" + a.eMPLOYEE_iD + "</td><td>" + a.mem_name + "</td><td>" + a.aC_hD + "</td><td>" + a.pRIN_aMT.ToString("0.00") + "</td><td>" + a.iNT_aMT.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
+                        i = i + 1;
+                        YEMP = XEMP;
+                        serial = i.ToString();
                     }
                     else
                     {
-                        model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mEMBER_iD + "</td><td>" + a.eMPLOYEE_iD + "</td><td>" + a.mem_name + "</td><td>" + a.aC_hD + "</td><td>" + a.pRIN_aMT.ToString("0.00") + "</td><td>" + a.iNT_aMT.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";
-                    }
-                    i = i + 1;
+                        serial = "";
+                    }                    
+                    model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.mEMBER_iD + "</td><td>" + a.eMPLOYEE_iD + "</td><td>" + a.mem_name + "</td><td>" + a.aC_hD + "</td><td>" + a.pRIN_aMT.ToString("0.00") + "</td><td>" + a.iNT_aMT.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";                   
                 }
             }
             else
@@ -313,9 +319,11 @@ namespace Amritnagar.Controllers
         public ActionResult getfreshlistprintfile(FreshListViewModel model)
         {
             Recovery_Get rg = new Recovery_Get();
+            Employer_Branch_Mast ebm = new Employer_Branch_Mast();
             List<Recovery_Get> rgl = new List<Recovery_Get>();
-            rgl = rg.getdetails(model.emp_branch, model.book_no, model.rec_dt);
-            int i = 1;
+            string coll_name = ebm.getunitnamebycode(model.emp_branch);
+            rgl = rg.getdetails(model.emp_branch, model.book_no, model.rec_dt);           
+            int i = 0;
             decimal TOTTF = 0;
             decimal TOTRTB = 0;
             decimal TOTSFL = 0;
@@ -323,6 +331,31 @@ namespace Amritnagar.Controllers
             decimal TOTPSL = 0;
             decimal TOTDLL = 0;
             decimal TOTSL3 = 0;
+
+            decimal TOTISJL = 0;
+            decimal TOTIPSL = 0;
+            decimal TOTIDLL = 0;
+            decimal TOTSL3I = 0;
+            decimal TOTM12 = 0;
+            decimal TOTIM12 = 0;
+            decimal TOTM14 = 0;
+            decimal TOTIM14 = 0;
+            decimal TOTPSL1 = 0;
+            decimal TOTIPSL1 = 0;
+            decimal TOTSFL1 = 0;
+            decimal TOTISFL1 = 0;
+            decimal TOTSL4 = 0;
+            decimal TOTISL4 = 0;
+            decimal TOTSL6 = 0;
+            decimal TOTISL6 = 0;
+            decimal TOTSL7 = 0;
+            decimal TOTISL7 = 0;
+            decimal TOTSJL1 = 0;
+            decimal TOTISJL1 = 0;
+            decimal TOTSH = 0;
+            decimal TOTLICP = 0;
+            decimal TOTISFL = 0;
+            decimal TOT_Deductable_Amount = 0;
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Fresh_List.txt")))
             {
@@ -335,16 +368,58 @@ namespace Amritnagar.Controllers
                 decimal pRIN_aMT = 0;
                 decimal iNT_aMT = 0;
                 decimal prin_bal = 0;
-                string serial = string.Empty;
+                decimal xpamt = 0;
+                decimal XIAMT = 0;
+                decimal xtot = 0;
+                string YEMP = "";
+                string XEMP = "";
+                string serial = "";
                 sw.WriteLine(" BOOK - NO =" + model.book_no);
-                sw.WriteLine("Unit :" + model.emp_branch);
+                sw.WriteLine("Unit :" + coll_name);
                 sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                 sw.WriteLine("Freshlist   " + "  " + model.rec_dt);
                 sw.WriteLine("==============================================================================================");
                 sw.WriteLine("Srl |Member No.|Employee Id | Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|");
                 sw.WriteLine("==============================================================================================");
+                string emp = "";
                 foreach (var am in rgl)
                 {
+                    XEMP = am.eMPLOYEE_iD;
+                    if (YEMP != XEMP)
+                    {
+                        i = i + 1;
+                        YEMP = XEMP;
+                        serial = i.ToString();
+                    }
+                    else
+                    {
+                        serial = "";
+                    }
+                    var a = rgl.First();
+                    string XEMPID = a.eMPLOYEE_iD;
+                    string YEMPID = am.eMPLOYEE_iD;
+                    if (emp != am.eMPLOYEE_iD)
+                    {
+                        if (emp == "")
+                        {
+                            emp = am.eMPLOYEE_iD;
+                        }
+                        else
+                        {                            
+                            xtot = xpamt + XIAMT;
+                            sw.WriteLine("");
+                            sw.WriteLine("                                           " + "         " + "                          Total    =" + xtot.ToString("0.00"));
+                            // sw.WriteLine("----------------------------------------------------------------------------");
+                            xpamt = xpamt + pRIN_aMT;
+                            XIAMT = XIAMT + iNT_aMT;
+                            xtot = 0;
+                            xpamt = 0;
+                            XIAMT = 0;
+                            emp = am.eMPLOYEE_iD;
+                            sw.WriteLine("----------------------------------------------------------------------------------------------");               
+                            Ln = Ln + 3;
+                        }
+                    }
                     if (Ln > Pg * 65)
                     {
                         Pg = Pg + 1;
@@ -356,15 +431,7 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("==============================================================================================");
                         sw.WriteLine("Srl |Member No.|Employee Id | Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|");
                         sw.WriteLine("==============================================================================================");
-                    }
-                    if (Convert.ToString(i).Length > 4)
-                    {
-                        serial = Convert.ToString(i).Substring(0, 3);
-                    }
-                    else
-                    {
-                        serial = Convert.ToString(i);
-                    }
+                    }                    
                     if (am.mEMBER_iD == null)
                     {
                         mem_id = "";
@@ -438,7 +505,10 @@ namespace Amritnagar.Controllers
                               + "".ToString().PadLeft(8 - (iNT_aMT).ToString("0.00").Length) + iNT_aMT.ToString("0.00") + "|"
                                + "".ToString().PadLeft(10 - (prin_bal).ToString("0.00").Length) + prin_bal.ToString("0.00") + "|");
                     Ln = Ln + 1;
-                    i = i + 1;
+                    //i = i + 1;
+                    xpamt = xpamt + am.pRIN_aMT;
+                    XIAMT = XIAMT + am.iNT_aMT;
+                    xtot = xpamt + XIAMT;
                     TOTTF = am.TOTTF;
                     TOTRTB = am.TOTRTB;
                     TOTSFL = am.TOTSFL;
@@ -446,16 +516,62 @@ namespace Amritnagar.Controllers
                     TOTPSL = am.TOTPSL;
                     TOTDLL = am.TOTDLL;
                     TOTSL3 = am.TOTSL3;
+
+
+                    TOTISFL = am.TOTISFL;
+                    TOTIPSL = am.TOTIPSL;
+                    //TOTSL3 = am.TOTSL3;
+                    TOTSL3I = am.TOTSL3I;
+                    TOTM12 = am.TOTM12;
+                    TOTIM12 = am.TOTIM12;
+                    TOTM14 = am.TOTM14;
+                    TOTIM14 = am.TOTIM14;
+                    TOTIPSL1 = am.TOTIPSL1;
+                    TOTPSL1 = am.TOTPSL1;
+                    TOTSFL1 = am.TOTSFL1;
+                    TOTISFL1 = am.TOTISFL1;
+                    TOTSL4 = am.TOTSL4;
+                    TOTISL4 = am.TOTISL4;
+                    TOTSL6 = am.TOTSL6;
+                    TOTISL6 = am.TOTISL6;
+                    TOTSL7 = am.TOTSL7;
+                    TOTISL7 = am.TOTISL7;
+                    TOTSJL1 = am.TOTSJL1;
+                    TOTISJL1 = am.TOTISJL1;
+                    TOTSH = am.TOTSH;
+                    TOTLICP = am.TOTLICP;
+                    TOT_Deductable_Amount = am.TOT_Deductable_Amount;
                 }
+                //sw.WriteLine("");
+                //sw.WriteLine("Total - Position");
+                //sw.WriteLine(" TF" + "  " + TOTTF.ToString("0.00"));
+                //sw.WriteLine(" RTB" + "  " + TOTRTB.ToString("0.00"));
+                //sw.WriteLine(" SFL" + "  " + TOTSFL.ToString("0.00"));
+                //sw.WriteLine(" SJL" + "  " + TOTSJL.ToString("0.00"));
+                //sw.WriteLine(" PSL" + "  " + TOTPSL.ToString("0.00"));
+                //sw.WriteLine(" DLL" + "  " + TOTDLL.ToString("0.00"));
+                //sw.WriteLine("SL3 " + "  " + TOTSL3.ToString("0.00"));
                 sw.WriteLine("");
                 sw.WriteLine("Total - Position");
                 sw.WriteLine(" TF" + "  " + TOTTF.ToString("0.00"));
                 sw.WriteLine(" RTB" + "  " + TOTRTB.ToString("0.00"));
-                sw.WriteLine(" SFL" + "  " + TOTSFL.ToString("0.00"));
-                sw.WriteLine(" SJL" + "  " + TOTSJL.ToString("0.00"));
-                sw.WriteLine(" PSL" + "  " + TOTPSL.ToString("0.00"));
-                sw.WriteLine(" DLL" + "  " + TOTDLL.ToString("0.00"));
-                sw.WriteLine("SL3 " + "  " + TOTSL3.ToString("0.00"));
+                sw.WriteLine(" SFL" + "  " + TOTSFL.ToString("0.00") + "  Interest " + TOTISFL.ToString("0.00"));
+                sw.WriteLine(" SJL" + "  " + TOTSJL.ToString("0.00") + "  Interest " + TOTISJL.ToString("0.00"));
+                sw.WriteLine(" PSL" + "  " + TOTPSL.ToString("0.00") + "  Interest " + TOTIPSL.ToString("0.00"));
+                sw.WriteLine(" DLL" + "  " + TOTDLL.ToString("0.00") + "  Interest " + TOTIDLL.ToString("0.00"));
+                sw.WriteLine(" SL3" + "  " + TOTSL3.ToString("0.00") + "  Interest " + TOTSL3I.ToString("0.00"));
+                sw.WriteLine(" M12" + "  " + TOTM12.ToString("0.00") + "  Interest " + TOTIM12.ToString("0.00"));               
+                sw.WriteLine(" M14" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTIM14.ToString("0.00"));
+                sw.WriteLine(" PSL1" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTIPSL1.ToString("0.00"));
+                sw.WriteLine(" SFL1" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTISFL1.ToString("0.00"));
+                sw.WriteLine(" SL4" + "  " + TOTSL4.ToString("0.00") + "  Interest " + TOTISL4.ToString("0.00"));
+                sw.WriteLine(" SHARE" + "  " + TOTSH.ToString("0.00"));
+                sw.WriteLine(" SJL1" + "  " + TOTSJL1.ToString("0.00") + "  Interest " + TOTISJL1.ToString("0.00"));
+                sw.WriteLine(" SL6" + "  " + TOTSL6.ToString("0.00") + "  Interest " + TOTISL6.ToString("0.00"));
+                sw.WriteLine(" SL7" + "  " + TOTSL7.ToString("0.00") + "  Interest " + TOTISL7.ToString("0.00"));
+                sw.WriteLine(" LICP" + "  " + TOTLICP.ToString("0.00"));
+                sw.WriteLine("TOTAL AMOUNT" + "  " + TOT_Deductable_Amount.ToString("0.00"));
+                sw.WriteLine(form_feed);
             }
             UtilityController u = new UtilityController();
             var memory = u.DownloadTextFiles("Fresh_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
@@ -463,7 +579,7 @@ namespace Amritnagar.Controllers
             {
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Fresh_List.txt"));
             }
-            return File(memory.ToArray(), "text/plain", "Fresh_List_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
+            return File(memory.ToArray(), "text/plain", "Book_No_" + model.book_no + "_" + coll_name + "_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
         }
         /********************************************Fresh List End*******************************************/
 
