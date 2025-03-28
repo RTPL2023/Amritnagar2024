@@ -110,7 +110,7 @@ namespace Amritnagar.Models.Database
                             rg.mEMBER_iD = Convert.ToString(dr1["MEMBER_ID"]);
                             try
                             {
-                                config.Update("member_mast", new Dictionary<String, object>()
+                                config.Update("recovery_get", new Dictionary<String, object>()
                                 {
                                 { "MEMBER_ID",        rg.mEMBER_iD},
                                 }, new Dictionary<string, object>()

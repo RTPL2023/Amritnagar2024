@@ -331,7 +331,6 @@ namespace Amritnagar.Controllers
             decimal TOTPSL = 0;
             decimal TOTDLL = 0;
             decimal TOTSL3 = 0;
-
             decimal TOTISJL = 0;
             decimal TOTIPSL = 0;
             decimal TOTIDLL = 0;
@@ -379,7 +378,7 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                 sw.WriteLine("Freshlist   " + "  " + model.rec_dt);
                 sw.WriteLine("==============================================================================================");
-                sw.WriteLine("Srl |Member No.|Employee Id | Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|");
+                sw.WriteLine("Srl |Member No. | Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|Int ");
                 sw.WriteLine("==============================================================================================");
                 string emp = "";
                 foreach (var am in rgl)
@@ -408,7 +407,7 @@ namespace Amritnagar.Controllers
                         {                            
                             xtot = xpamt + XIAMT;
                             sw.WriteLine("");
-                            sw.WriteLine("                                           " + "         " + "                          Total    =" + xtot.ToString("0.00"));
+                            sw.WriteLine("                                           " + "         " + "                 Total    =" + xtot.ToString("0.00"));
                             // sw.WriteLine("----------------------------------------------------------------------------");
                             xpamt = xpamt + pRIN_aMT;
                             XIAMT = XIAMT + iNT_aMT;
@@ -429,16 +428,16 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                         sw.WriteLine("Freshlist   " + "  " + model.rec_dt);
                         sw.WriteLine("==============================================================================================");
-                        sw.WriteLine("Srl |Member No.|Employee Id | Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|");
+                        sw.WriteLine("Srl |Member No.| Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|Int ");
                         sw.WriteLine("==============================================================================================");
                     }                    
                     if (am.mEMBER_iD == null)
                     {
                         mem_id = "";
                     }
-                    else if (am.mEMBER_iD.ToString().Length > 10)
+                    else if (am.mEMBER_iD.ToString().Length > 11)
                     {
-                        mem_id = (am.mEMBER_iD).Substring(0, 9);
+                        mem_id = (am.mEMBER_iD).Substring(0, 10);
                     }
                     else
                     {
@@ -497,14 +496,16 @@ namespace Amritnagar.Controllers
                         prin_bal = Convert.ToDecimal(am.prin_bal);
                     }
                     sw.WriteLine("".ToString().PadLeft(4 - (serial).ToString().Length) + serial + "|"
-                         + "".ToString().PadLeft(10 - (mem_id).ToString().Length) + mem_id + "|"
-                           + "".ToString().PadLeft(12 - (emp_id).ToString().Length) + emp_id + "|"
+                         + "".ToString().PadLeft(11 - (mem_id).ToString().Length) + mem_id + "|"
+                           //+ "".ToString().PadLeft(12 - (emp_id).ToString().Length) + emp_id + "|"
                            + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + mem_name + "|"
                             + "".ToString().PadLeft(8 - (aC_hD).ToString().Length) + aC_hD.ToString() + "|"
                              + "".ToString().PadLeft(9 - (pRIN_aMT).ToString("0.00").Length) + pRIN_aMT.ToString("0.00") + "|"
                               + "".ToString().PadLeft(8 - (iNT_aMT).ToString("0.00").Length) + iNT_aMT.ToString("0.00") + "|"
                                + "".ToString().PadLeft(10 - (prin_bal).ToString("0.00").Length) + prin_bal.ToString("0.00") + "|");
-                    Ln = Ln + 1;
+                    sw.WriteLine("");
+                    //Ln = Ln + 1;
+                    Ln = Ln + 2;
                     //i = i + 1;
                     xpamt = xpamt + am.pRIN_aMT;
                     XIAMT = XIAMT + am.iNT_aMT;
@@ -516,8 +517,6 @@ namespace Amritnagar.Controllers
                     TOTPSL = am.TOTPSL;
                     TOTDLL = am.TOTDLL;
                     TOTSL3 = am.TOTSL3;
-
-
                     TOTISFL = am.TOTISFL;
                     TOTIPSL = am.TOTIPSL;
                     //TOTSL3 = am.TOTSL3;
@@ -541,17 +540,9 @@ namespace Amritnagar.Controllers
                     TOTSH = am.TOTSH;
                     TOTLICP = am.TOTLICP;
                     TOT_Deductable_Amount = am.TOT_Deductable_Amount;
-                }
-                //sw.WriteLine("");
-                //sw.WriteLine("Total - Position");
-                //sw.WriteLine(" TF" + "  " + TOTTF.ToString("0.00"));
-                //sw.WriteLine(" RTB" + "  " + TOTRTB.ToString("0.00"));
-                //sw.WriteLine(" SFL" + "  " + TOTSFL.ToString("0.00"));
-                //sw.WriteLine(" SJL" + "  " + TOTSJL.ToString("0.00"));
-                //sw.WriteLine(" PSL" + "  " + TOTPSL.ToString("0.00"));
-                //sw.WriteLine(" DLL" + "  " + TOTDLL.ToString("0.00"));
-                //sw.WriteLine("SL3 " + "  " + TOTSL3.ToString("0.00"));
+                }              
                 sw.WriteLine("");
+                sw.WriteLine("                                           " + "         " + "                 Total    =" + xtot.ToString("0.00"));
                 sw.WriteLine("Total - Position");
                 sw.WriteLine(" TF" + "  " + TOTTF.ToString("0.00"));
                 sw.WriteLine(" RTB" + "  " + TOTRTB.ToString("0.00"));
@@ -562,8 +553,8 @@ namespace Amritnagar.Controllers
                 sw.WriteLine(" SL3" + "  " + TOTSL3.ToString("0.00") + "  Interest " + TOTSL3I.ToString("0.00"));
                 sw.WriteLine(" M12" + "  " + TOTM12.ToString("0.00") + "  Interest " + TOTIM12.ToString("0.00"));               
                 sw.WriteLine(" M14" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTIM14.ToString("0.00"));
-                sw.WriteLine(" PSL1" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTIPSL1.ToString("0.00"));
-                sw.WriteLine(" SFL1" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTISFL1.ToString("0.00"));
+                sw.WriteLine(" PSL1" + "  " + TOTPSL1.ToString("0.00") + "  Interest " + TOTIPSL1.ToString("0.00"));
+                sw.WriteLine(" SFL1" + "  " + TOTSFL1.ToString("0.00") + "  Interest " + TOTISFL1.ToString("0.00"));
                 sw.WriteLine(" SL4" + "  " + TOTSL4.ToString("0.00") + "  Interest " + TOTISL4.ToString("0.00"));
                 sw.WriteLine(" SHARE" + "  " + TOTSH.ToString("0.00"));
                 sw.WriteLine(" SJL1" + "  " + TOTSJL1.ToString("0.00") + "  Interest " + TOTISJL1.ToString("0.00"));
@@ -578,8 +569,8 @@ namespace Amritnagar.Controllers
             if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Fresh_List.txt")))
             {
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Fresh_List.txt"));
-            }
-            return File(memory.ToArray(), "text/plain", "Book_No_" + model.book_no + "_" + coll_name + "_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
+            }            
+            return File(memory.ToArray(), "text/plain", "Book_No_" + model.book_no + "_" + coll_name.Replace(" ","") + "_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
         }
         /********************************************Fresh List End*******************************************/
 
@@ -891,8 +882,8 @@ namespace Amritnagar.Controllers
                 sw.WriteLine(" M12" + "  " + TOTM12.ToString("0.00") + "  Interest " + TOTIM12.ToString("0.00"));
                 sw.WriteLine("TOTAL AMOUNT" + "  " + TOT_Deductable_Amount.ToString("0.00"));
                 sw.WriteLine(" M14" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTIM14.ToString("0.00"));
-                sw.WriteLine(" PSL1" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTIPSL1.ToString("0.00"));
-                sw.WriteLine(" SFL1" + "  " + TOTM14.ToString("0.00") + "  Interest " + TOTISFL1.ToString("0.00"));
+                sw.WriteLine(" PSL1" + "  " + TOTPSL1.ToString("0.00") + "  Interest " + TOTIPSL1.ToString("0.00"));
+                sw.WriteLine(" SFL1" + "  " + TOTSFL1.ToString("0.00") + "  Interest " + TOTISFL1.ToString("0.00"));
                 sw.WriteLine(" SL4" + "  " + TOTSL4.ToString("0.00") + "  Interest " + TOTISL4.ToString("0.00"));
                 sw.WriteLine(" SHARE" + "  " + TOTSH.ToString("0.00"));
                 sw.WriteLine(" SJL1" + "  " + TOTSJL1.ToString("0.00") + "  Interest " + TOTISJL1.ToString("0.00"));
