@@ -35,6 +35,7 @@ namespace Amritnagar.Controllers
             List<Recovery_Get> rgl = new List<Recovery_Get>();
             rgl = rg.getdetails(model.emp_branch, model.book_no, model.rec_dt);
             int i = 0;
+            int j = 1;
             string XEMP = "";
             string YEMP = "";
             string serial = "";
@@ -54,35 +55,12 @@ namespace Amritnagar.Controllers
                     {
                         serial = "";
                     }                    
-                    model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.mEMBER_iD + "</td><td>" + a.eMPLOYEE_iD + "</td><td>" + a.mem_name + "</td><td>" + a.aC_hD + "</td><td>" + a.pRIN_aMT.ToString("0.00") + "</td><td>" + a.iNT_aMT.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";                   
-                }
-            }
-            else
-            {
-                model.tableelement = null;
-            }
-            return Json(model);
-        }
-        public JsonResult gettotalpositionlist(FreshListViewModel model)
-        {
-            Recovery_Get rg = new Recovery_Get();
-            List<Recovery_Get> rgl = new List<Recovery_Get>();
-            rgl = rg.getdetails(model.emp_branch, model.book_no, model.rec_dt);
-            int j = 1;
-            int i = rgl.Count;
-            if (rgl.Count > 0)
-            {
-                foreach (var a in rgl)
-                {
-                    if (j == i)
+                    model.tableelement = model.tableelement + "<tr><td>" + serial + "</td><td>" + a.mEMBER_iD + "</td><td>" + a.eMPLOYEE_iD + "</td><td>" + a.mem_name + "</td><td>" + a.aC_hD + "</td><td>" + a.pRIN_aMT.ToString("0.00") + "</td><td>" + a.iNT_aMT.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td></tr>";                    
+                    if (j == rgl.Count)
                     {
-                        model.tableelement = "<tr><th>Thrift Fund</th><th>RTB</th><th>SFL</th><th>INT SFL</th><th>SJL</th><th>INT SJL</th><th>PSL</th><th>INT PSL</th><th>DLL</th><th>INT DLL</th><th>SL3</th><th>ISL3</th><th>M12</th><th>MI12</th><th>M14</th><th>MI14</th><th>PSL1</th><th>IPSL1</th><th>SFL1</th><th>ISFL1</th><th>SL4</th><th>ISL4</th><th>SHARE</th><th>SJL1</th><th>ISJL1</th><th>SL6</th><th>ISL6</th><th>SL7</th><th>ISL7</th><th>LICP PREM</th></tr>";
-                        model.tableelement = model.tableelement + "<tr><td>" + a.TOTTF.ToString("0.00") + "</td><td>" + a.TOTRTB.ToString("0.00") + "</td><td>" + a.TOTSFL + "</td><td>" + a.TOTISFL.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL.ToString("0.00") + "</td><td>" + a.TOTPSL.ToString("0.00") + "</td><td>" + a.TOTIPSL.ToString("0.00") + "</td><td>" + a.TOTDLL.ToString("0.00") + "</td><td>" + a.TOTIDLL.ToString("0.00") + "</td><td>" + a.TOTSL3.ToString("0.00") + "</td><td>" + a.TOTSL3I.ToString("0.00") + "</td><td>" + a.TOTM12.ToString("0.00") + "</td><td>" + a.TOTIM12.ToString("0.00") + "</td><td>" + a.TOTM14.ToString("0.00") + "</td><td>" + a.TOTIM14.ToString("0.00") + "</td><td>" + a.TOTPSL1.ToString("0.00") + "</td><td>" + a.TOTIPSL1.ToString("0.00") + "</td><td>" + a.TOTSFL1.ToString("0.00") + "</td><td>" + a.TOTISFL1.ToString("0.00") + "</td><td>" + a.TOTSL4.ToString("0.00") + "</td><td>" + a.TOTISL4.ToString("0.00") + "</td><td>" + a.TOTSH.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL1.ToString("0.00") + "</td><td>" + a.TOTSL6.ToString("0.00") + "</td><td>" + a.TOTISL6.ToString("0.00") + "</td><td>" + a.TOTSL7.ToString("0.00") + "</td><td>" + a.TOTISL7.ToString("0.00") + "</td><td>" + a.TOTLICP.ToString("0.00") + "</td></tr>";
+                        model.tableelement2 = "<tr><th>Thrift Fund</th><th>RTB</th><th>SFL</th><th>INT SFL</th><th>SJL</th><th>INT SJL</th><th>PSL</th><th>INT PSL</th><th>DLL</th><th>INT DLL</th><th>SL3</th><th>ISL3</th><th>M12</th><th>MI12</th><th>M14</th><th>MI14</th><th>PSL1</th><th>IPSL1</th><th>SFL1</th><th>ISFL1</th><th>SL4</th><th>ISL4</th><th>SHARE</th><th>SJL1</th><th>ISJL1</th><th>SL6</th><th>ISL6</th><th>SL7</th><th>ISL7</th><th>LICP PREM</th></tr>";
+                        model.tableelement2 = model.tableelement2 + "<tr><td>" + a.TOTTF.ToString("0.00") + "</td><td>" + a.TOTRTB.ToString("0.00") + "</td><td>" + a.TOTSFL + "</td><td>" + a.TOTISFL.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL.ToString("0.00") + "</td><td>" + a.TOTPSL.ToString("0.00") + "</td><td>" + a.TOTIPSL.ToString("0.00") + "</td><td>" + a.TOTDLL.ToString("0.00") + "</td><td>" + a.TOTIDLL.ToString("0.00") + "</td><td>" + a.TOTSL3.ToString("0.00") + "</td><td>" + a.TOTSL3I.ToString("0.00") + "</td><td>" + a.TOTM12.ToString("0.00") + "</td><td>" + a.TOTIM12.ToString("0.00") + "</td><td>" + a.TOTM14.ToString("0.00") + "</td><td>" + a.TOTIM14.ToString("0.00") + "</td><td>" + a.TOTPSL1.ToString("0.00") + "</td><td>" + a.TOTIPSL1.ToString("0.00") + "</td><td>" + a.TOTSFL1.ToString("0.00") + "</td><td>" + a.TOTISFL1.ToString("0.00") + "</td><td>" + a.TOTSL4.ToString("0.00") + "</td><td>" + a.TOTISL4.ToString("0.00") + "</td><td>" + a.TOTSH.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL1.ToString("0.00") + "</td><td>" + a.TOTSL6.ToString("0.00") + "</td><td>" + a.TOTISL6.ToString("0.00") + "</td><td>" + a.TOTSL7.ToString("0.00") + "</td><td>" + a.TOTISL7.ToString("0.00") + "</td><td>" + a.TOTLICP.ToString("0.00") + "</td></tr>";
                     }
-                    //else
-                    //{
-                    //    model.tableelement = model.tableelement + "<tr><td>" + a.TOTTF.ToString("0.00") + "</td><td>" + a.TOTRTB.ToString("0.00") + "</td><td>" + a.TOTSFL + "</td><td>" + a.TOTISFL.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL.ToString("0.00") + "</td><td>" + a.TOTPSL.ToString("0.00") + "</td><td>" + a.TOTIPSL.ToString("0.00") + "</td><td>" + a.TOTDLL.ToString("0.00") + "</td><td>" + a.TOTIDLL.ToString("0.00") + "</td><td>" + a.TOTSL3.ToString("0.00") + "</td><td>" + a.TOTSL3I.ToString("0.00") + "</td><td>" + a.TOTM12.ToString("0.00") + "</td><td>" + a.TOTIM12.ToString("0.00") + "</td><td>" + a.TOTM14.ToString("0.00") + "</td><td>" + a.TOTIM14.ToString("0.00") + "</td><td>" + a.TOTPSL1.ToString("0.00") + "</td><td>" + a.TOTIPSL1.ToString("0.00") + "</td><td>" + a.TOTSFL1.ToString("0.00") + "</td><td>" + a.TOTISFL1.ToString("0.00") + "</td><td>" + a.TOTSL4.ToString("0.00") + "</td><td>" + a.TOTISL4.ToString("0.00") + "</td><td>" + a.TOTSH.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL1.ToString("0.00") + "</td><td>" + a.TOTSL6.ToString("0.00") + "</td><td>" + a.TOTISL6.ToString("0.00") + "</td><td>" + a.TOTSL7.ToString("0.00") + "</td><td>" + a.TOTISL7.ToString("0.00") + "</td><td>" + a.TOTLICP.ToString("0.00") + "</td></tr>";
-                    //}
                     j = j + 1;
                 }
             }
@@ -92,6 +70,36 @@ namespace Amritnagar.Controllers
             }
             return Json(model);
         }
+
+        //public JsonResult gettotalpositionlist(FreshListViewModel model)
+        //{
+        //    Recovery_Get rg = new Recovery_Get();
+        //    List<Recovery_Get> rgl = new List<Recovery_Get>();
+        //    rgl = rg.getdetails(model.emp_branch, model.book_no, model.rec_dt);
+        //    int j = 1;
+        //    int i = rgl.Count;
+        //    if (rgl.Count > 0)
+        //    {
+        //        foreach (var a in rgl)
+        //        {
+        //            if (j == i)
+        //            {
+        //                model.tableelement = "<tr><th>Thrift Fund</th><th>RTB</th><th>SFL</th><th>INT SFL</th><th>SJL</th><th>INT SJL</th><th>PSL</th><th>INT PSL</th><th>DLL</th><th>INT DLL</th><th>SL3</th><th>ISL3</th><th>M12</th><th>MI12</th><th>M14</th><th>MI14</th><th>PSL1</th><th>IPSL1</th><th>SFL1</th><th>ISFL1</th><th>SL4</th><th>ISL4</th><th>SHARE</th><th>SJL1</th><th>ISJL1</th><th>SL6</th><th>ISL6</th><th>SL7</th><th>ISL7</th><th>LICP PREM</th></tr>";
+        //                model.tableelement = model.tableelement + "<tr><td>" + a.TOTTF.ToString("0.00") + "</td><td>" + a.TOTRTB.ToString("0.00") + "</td><td>" + a.TOTSFL + "</td><td>" + a.TOTISFL.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL.ToString("0.00") + "</td><td>" + a.TOTPSL.ToString("0.00") + "</td><td>" + a.TOTIPSL.ToString("0.00") + "</td><td>" + a.TOTDLL.ToString("0.00") + "</td><td>" + a.TOTIDLL.ToString("0.00") + "</td><td>" + a.TOTSL3.ToString("0.00") + "</td><td>" + a.TOTSL3I.ToString("0.00") + "</td><td>" + a.TOTM12.ToString("0.00") + "</td><td>" + a.TOTIM12.ToString("0.00") + "</td><td>" + a.TOTM14.ToString("0.00") + "</td><td>" + a.TOTIM14.ToString("0.00") + "</td><td>" + a.TOTPSL1.ToString("0.00") + "</td><td>" + a.TOTIPSL1.ToString("0.00") + "</td><td>" + a.TOTSFL1.ToString("0.00") + "</td><td>" + a.TOTISFL1.ToString("0.00") + "</td><td>" + a.TOTSL4.ToString("0.00") + "</td><td>" + a.TOTISL4.ToString("0.00") + "</td><td>" + a.TOTSH.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL1.ToString("0.00") + "</td><td>" + a.TOTSL6.ToString("0.00") + "</td><td>" + a.TOTISL6.ToString("0.00") + "</td><td>" + a.TOTSL7.ToString("0.00") + "</td><td>" + a.TOTISL7.ToString("0.00") + "</td><td>" + a.TOTLICP.ToString("0.00") + "</td></tr>";
+        //            }
+        //            //else
+        //            //{
+        //            //    model.tableelement = model.tableelement + "<tr><td>" + a.TOTTF.ToString("0.00") + "</td><td>" + a.TOTRTB.ToString("0.00") + "</td><td>" + a.TOTSFL + "</td><td>" + a.TOTISFL.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL.ToString("0.00") + "</td><td>" + a.TOTPSL.ToString("0.00") + "</td><td>" + a.TOTIPSL.ToString("0.00") + "</td><td>" + a.TOTDLL.ToString("0.00") + "</td><td>" + a.TOTIDLL.ToString("0.00") + "</td><td>" + a.TOTSL3.ToString("0.00") + "</td><td>" + a.TOTSL3I.ToString("0.00") + "</td><td>" + a.TOTM12.ToString("0.00") + "</td><td>" + a.TOTIM12.ToString("0.00") + "</td><td>" + a.TOTM14.ToString("0.00") + "</td><td>" + a.TOTIM14.ToString("0.00") + "</td><td>" + a.TOTPSL1.ToString("0.00") + "</td><td>" + a.TOTIPSL1.ToString("0.00") + "</td><td>" + a.TOTSFL1.ToString("0.00") + "</td><td>" + a.TOTISFL1.ToString("0.00") + "</td><td>" + a.TOTSL4.ToString("0.00") + "</td><td>" + a.TOTISL4.ToString("0.00") + "</td><td>" + a.TOTSH.ToString("0.00") + "</td><td>" + a.TOTSJL.ToString("0.00") + "</td><td>" + a.TOTISJL1.ToString("0.00") + "</td><td>" + a.TOTSL6.ToString("0.00") + "</td><td>" + a.TOTISL6.ToString("0.00") + "</td><td>" + a.TOTSL7.ToString("0.00") + "</td><td>" + a.TOTISL7.ToString("0.00") + "</td><td>" + a.TOTLICP.ToString("0.00") + "</td></tr>";
+        //            //}
+        //            j = j + 1;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        model.tableelement = null;
+        //    }
+        //    return Json(model);
+        //}
         public JsonResult getloandetailsbydaterange(FreshListViewModel model)
         {
             Loan_Master lm = new Loan_Master();
@@ -380,6 +388,7 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("==============================================================================================");
                 sw.WriteLine("Srl |Member No. | Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|Int ");
                 sw.WriteLine("==============================================================================================");
+                Ln = 7;
                 string emp = "";
                 foreach (var am in rgl)
                 {
@@ -406,7 +415,7 @@ namespace Amritnagar.Controllers
                         else
                         {                            
                             xtot = xpamt + XIAMT;
-                            sw.WriteLine("");
+                            
                             sw.WriteLine("                                           " + "         " + "                 Total    =" + xtot.ToString("0.00"));
                             // sw.WriteLine("----------------------------------------------------------------------------");
                             xpamt = xpamt + pRIN_aMT;
@@ -416,13 +425,13 @@ namespace Amritnagar.Controllers
                             XIAMT = 0;
                             emp = am.eMPLOYEE_iD;
                             sw.WriteLine("----------------------------------------------------------------------------------------------");               
-                            Ln = Ln + 3;
+                            Ln = Ln + 2;
                         }
                     }
                     if (Ln > Pg * 65)
                     {
-                        Pg = Pg + 1;
-                        Ln = Ln + 7;
+                        Pg = Pg + 1;                       
+                        sw.WriteLine(form_feed);
                         sw.WriteLine(" BOOK - NO =" + model.book_no);
                         sw.WriteLine("Unit :" + model.emp_branch);
                         sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
@@ -430,6 +439,7 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("==============================================================================================");
                         sw.WriteLine("Srl |Member No.| Member Name             |A/C Head|Prin Amt.|Int.Amt |Prin Balan|Int ");
                         sw.WriteLine("==============================================================================================");
+                        Ln = Ln + 7;
                     }                    
                     if (am.mEMBER_iD == null)
                     {
@@ -495,18 +505,27 @@ namespace Amritnagar.Controllers
                     {
                         prin_bal = Convert.ToDecimal(am.prin_bal);
                     }
-                    sw.WriteLine("".ToString().PadLeft(4 - (serial).ToString().Length) + serial + "|"
-                         + "".ToString().PadLeft(11 - (mem_id).ToString().Length) + mem_id + "|"
-                           //+ "".ToString().PadLeft(12 - (emp_id).ToString().Length) + emp_id + "|"
-                           + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + mem_name + "|"
-                            + "".ToString().PadLeft(8 - (aC_hD).ToString().Length) + aC_hD.ToString() + "|"
-                             + "".ToString().PadLeft(9 - (pRIN_aMT).ToString("0.00").Length) + pRIN_aMT.ToString("0.00") + "|"
-                              + "".ToString().PadLeft(8 - (iNT_aMT).ToString("0.00").Length) + iNT_aMT.ToString("0.00") + "|"
-                               + "".ToString().PadLeft(10 - (prin_bal).ToString("0.00").Length) + prin_bal.ToString("0.00") + "|");
+                    //sw.WriteLine("".ToString().PadLeft(4 - (serial).ToString().Length) + serial + "|"
+                    //     + "".ToString().PadLeft(11 - (mem_id).ToString().Length) + mem_id + "|"
+                    //       //+ "".ToString().PadLeft(12 - (emp_id).ToString().Length) + emp_id + "|"
+                    //       + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + mem_name + "|"
+                    //        + "".ToString().PadLeft(8 - (aC_hD).ToString().Length) + aC_hD.ToString() + "|"
+                    //         + "".ToString().PadLeft(9 - (pRIN_aMT).ToString("0.00").Length) + pRIN_aMT.ToString("0.00") + "|"
+                    //          + "".ToString().PadLeft(8 - (iNT_aMT).ToString("0.00").Length) + iNT_aMT.ToString("0.00") + "|"
+                    //           + "".ToString().PadLeft(10 - (prin_bal).ToString("0.00").Length) + prin_bal.ToString("0.00") + "|");
+                    //sw.WriteLine("");
+                    sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + mem_id + "".ToString().PadLeft(11 - (mem_id).ToString().Length) + "|"
+                           + mem_name + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + "|"
+                           + aC_hD + "".ToString().PadLeft(8 - (aC_hD).ToString().Length) + "|"
+                           + pRIN_aMT.ToString() + "".ToString().PadLeft(9 - (pRIN_aMT).ToString().Length) + "|"
+                            + iNT_aMT.ToString() + "".ToString().PadLeft(8 - (iNT_aMT).ToString().Length) + "|"
+                              + "".ToString().PadLeft(7 - ("").ToString().Length) + "" + "|"
+                                + prin_bal.ToString() + "".ToString().PadLeft(10 - (prin_bal).ToString().Length) + "|");
                     sw.WriteLine("");
                     //Ln = Ln + 1;
                     Ln = Ln + 2;
                     //i = i + 1;
+                   
                     xpamt = xpamt + am.pRIN_aMT;
                     XIAMT = XIAMT + am.iNT_aMT;
                     xtot = xpamt + XIAMT;
@@ -897,8 +916,8 @@ namespace Amritnagar.Controllers
             if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Schedule_Report.txt")))
             {
                 System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Schedule_Report.txt"));
-            }
-            return File(memory.ToArray(), "text/plain", "Schedule_Report_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
+            }            
+            return File(memory.ToArray(), "text/plain", "Schedule_Report_"+ "Book_No_"+ model.book_no + "_"+ unitname.Replace(" ", "") +"_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
         }
 
         /********************************************Sending Schedule Report End*******************************************/
@@ -1026,8 +1045,7 @@ namespace Amritnagar.Controllers
           
             string msg = rs.deleteRecordFromRecovery_ScheduleByemployee_id(emp_name, unit, mem_type, mem_cat, book_no, sch_dt, branch,employee_id);
             return Json(msg);
-        }
-        
+        }        
         public JsonResult getdetailsForDeductionSchedule(string emp_name, string unit, string mem_type, string mem_cat, string book_no, string sch_dt, string branch)
         {
             PrepOfDeductionScheduleViewModel model = new PrepOfDeductionScheduleViewModel();

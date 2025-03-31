@@ -110,13 +110,15 @@ namespace Amritnagar.Models.Database
                             rg.mEMBER_iD = Convert.ToString(dr1["MEMBER_ID"]);
                             try
                             {
-                                config.Update("recovery_get", new Dictionary<String, object>()
-                                {
-                                { "MEMBER_ID",        rg.mEMBER_iD},
-                                }, new Dictionary<string, object>()
-                                {
-                                { "EMPLOYEE_ID",     rg.eMPLOYEE_iD },
-                                });
+                                string qry = "Update recovery_get set MEMBER_ID = '" + rg.mEMBER_iD + "' where EMPLOYEE_ID = '" + rg.eMPLOYEE_iD + "'";
+                                config.Execute_Query(qry);
+                                //config.Update("recovery_get", new Dictionary<String, object>()
+                                //{
+                                //{ "MEMBER_ID",        rg.mEMBER_iD},
+                                //}, new Dictionary<string, object>()
+                                //{
+                                //{ "EMPLOYEE_ID",     rg.eMPLOYEE_iD },
+                                //});
                             }
                             catch (Exception ex)
                             {
@@ -154,10 +156,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr4 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr4["PRIN_BAL"]) ? Convert.ToDecimal(dr4["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr4 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr4["PRIN_BAL"]) ? Convert.ToDecimal(dr4["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr4 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr4["PRIN_BAL"]) ? Convert.ToDecimal(dr4["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SH")
@@ -180,10 +184,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr5 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr5["PRIN_BAL"]) ? Convert.ToDecimal(dr5["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr5 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr5["PRIN_BAL"]) ? Convert.ToDecimal(dr5["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr5 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr5["PRIN_BAL"]) ? Convert.ToDecimal(dr5["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SJL")
@@ -194,10 +200,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr6 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr6["PRIN_BAL"]) ? Convert.ToDecimal(dr6["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr6 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr6["PRIN_BAL"]) ? Convert.ToDecimal(dr6["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr6 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr6["PRIN_BAL"]) ? Convert.ToDecimal(dr6["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "PSL")
@@ -208,10 +216,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr7 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr7["PRIN_BAL"]) ? Convert.ToDecimal(dr7["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr7 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr7["PRIN_BAL"]) ? Convert.ToDecimal(dr7["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr7 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr7["PRIN_BAL"]) ? Convert.ToDecimal(dr7["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "DLL")
@@ -222,10 +232,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr8 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr8["PRIN_BAL"]) ? Convert.ToDecimal(dr8["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr8 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr8["PRIN_BAL"]) ? Convert.ToDecimal(dr8["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr8 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr8["PRIN_BAL"]) ? Convert.ToDecimal(dr8["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SL3")
@@ -236,10 +248,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr9 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr9["PRIN_BAL"]) ? Convert.ToDecimal(dr9["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr9 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr9["PRIN_BAL"]) ? Convert.ToDecimal(dr9["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr9 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr9["PRIN_BAL"]) ? Convert.ToDecimal(dr9["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "M12")
@@ -250,10 +264,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr10 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr10["PRIN_BAL"]) ? Convert.ToDecimal(dr10["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr10 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr10["PRIN_BAL"]) ? Convert.ToDecimal(dr10["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr10 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr10["PRIN_BAL"]) ? Convert.ToDecimal(dr10["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "M14")
@@ -264,10 +280,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr11 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr11["PRIN_BAL"]) ? Convert.ToDecimal(dr11["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr11 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr11["PRIN_BAL"]) ? Convert.ToDecimal(dr11["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr11 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr11["PRIN_BAL"]) ? Convert.ToDecimal(dr11["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "PSL1")
@@ -278,10 +296,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr12 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr12["PRIN_BAL"]) ? Convert.ToDecimal(dr12["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr12 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr12["PRIN_BAL"]) ? Convert.ToDecimal(dr12["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr12 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr12["PRIN_BAL"]) ? Convert.ToDecimal(dr12["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SFL1")
@@ -292,10 +312,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr13 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr13["PRIN_BAL"]) ? Convert.ToDecimal(dr13["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr13 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr13["PRIN_BAL"]) ? Convert.ToDecimal(dr13["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr13 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr13["PRIN_BAL"]) ? Convert.ToDecimal(dr13["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SL4")
@@ -306,10 +328,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr14 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr14["PRIN_BAL"]) ? Convert.ToDecimal(dr14["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr14 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr14["PRIN_BAL"]) ? Convert.ToDecimal(dr14["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr14 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr14["PRIN_BAL"]) ? Convert.ToDecimal(dr14["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SL6")
@@ -320,10 +344,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr15 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr15["PRIN_BAL"]) ? Convert.ToDecimal(dr15["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr15 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr15["PRIN_BAL"]) ? Convert.ToDecimal(dr15["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr15 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr15["PRIN_BAL"]) ? Convert.ToDecimal(dr15["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SL7")
@@ -334,10 +360,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr16 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr16["PRIN_BAL"]) ? Convert.ToDecimal(dr16["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr16 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr16["PRIN_BAL"]) ? Convert.ToDecimal(dr16["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr16 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr16["PRIN_BAL"]) ? Convert.ToDecimal(dr16["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     if (rg.aC_hD == "SJL1")
@@ -348,10 +376,12 @@ namespace Amritnagar.Models.Database
                         config.singleResult(sql);
                         if (config.dt.Rows.Count > 0)
                         {
-                            foreach (DataRow dr17 in config.dt.Rows)
-                            {
-                                rg.prin_bal = !Convert.IsDBNull(dr17["PRIN_BAL"]) ? Convert.ToDecimal(dr17["PRIN_BAL"]) : Convert.ToDecimal(00);
-                            }
+                            DataRow dr17 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                            rg.prin_bal = !Convert.IsDBNull(dr17["PRIN_BAL"]) ? Convert.ToDecimal(dr17["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //foreach (DataRow dr17 in config.dt.Rows)
+                            //{
+                            //    rg.prin_bal = !Convert.IsDBNull(dr17["PRIN_BAL"]) ? Convert.ToDecimal(dr17["PRIN_BAL"]) : Convert.ToDecimal(00);
+                            //}
                         }
                     }
                     rg.TOTDLL = TOTDLL;

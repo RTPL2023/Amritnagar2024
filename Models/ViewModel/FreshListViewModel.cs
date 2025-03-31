@@ -22,6 +22,7 @@ namespace Amritnagar.Models.ViewModel
         public string contc_no { get; set; }
         public string email { get; set; }
         public string tableelement { get; set; }
+        public string tableelement2 { get; set; }
         public string percnt { get; set; }
         public IEnumerable<SelectListItem> EmpBranchDesc { get; set; }
     }

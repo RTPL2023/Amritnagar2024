@@ -408,24 +408,25 @@
 
         function ShowTable() {
             $("#loading").show();
-           let ModelObject = { emp_branch: $('#emp_branch').val(), book_no: $('#book_no').val(), rec_dt: $('#rec_dt').val()};
-                    $.ajax({
-                    type: "POST",
-                         url: '@Url.Action("getfreshlistbyempbranchbooknoanddate", "SalaryDeduction")',
-                        data: ModelObject,
-                        dataType: "json",
-                        success: function (data) {
-                        $("#loading").hide();
-                        document.getElementById("DetailList").innerHTML = data.tableelement;
-                        ShowTableForTotalPosition();
-                    },
-                     error: function (err) {
+            let ModelObject = { emp_branch: $('#emp_branch').val(), book_no: $('#book_no').val(), rec_dt: $('#rec_dt').val() };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getfreshlistbyempbranchbooknoanddate", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading").hide();
+                    document.getElementById("DetailList").innerHTML = data.tableelement;
+                    document.getElementById("TotalPositionList").innerHTML = data.tableelement2;
+                    //ShowTableForTotalPosition();
+                },
+                error: function (err) {
                     //alert("Error Occured");
-                     }
-                    });
+                }
+            });
         }
 
-       function ShowTableForTotalPosition() {
+       @*function ShowTableForTotalPosition() {
            let ModelObject = { emp_branch: $('#emp_branch').val(), book_no: $('#book_no').val(), rec_dt: $('#rec_dt').val()};
                     $.ajax({
                     type: "POST",
@@ -439,24 +440,24 @@
                     //alert("Error Occured");
                      }
                     });
-        }
+        }*@
 
         function ShowTableForLicPrimium() {
             $("#loading1").show();
-            let ModelObject = { fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val(), dob: $('#dob').val()};
-                    $.ajax({
-                    type: "POST",
-                         url: '@Url.Action("getloandetailsbydaterange", "SalaryDeduction")',
-                        data: ModelObject,
-                        dataType: "json",
-                        success: function (data) {
-                            $("#loading1").hide();
-                        document.getElementById("LicPrimiumList").innerHTML = data.tableelement;
-                    },
-                     error: function (err) {
+            let ModelObject = { fr_dt: $('#fr_dt').val(), to_dt: $('#to_dt').val(), dob: $('#dob').val() };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getloandetailsbydaterange", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    $("#loading1").hide();
+                    document.getElementById("LicPrimiumList").innerHTML = data.tableelement;
+                },
+                error: function (err) {
                     //alert("Error Occured");
-                     }
-                    });
+                }
+            });
         }
 
        (function () {
@@ -488,26 +489,26 @@
                     f2.value = cells[3].innerHTML;
                 };
             }
-        })();
+       })();
 
-       function UpdateAge() {
-                let ModelObject = {
-                    edit_age: $('#edit_age').val(),
-                    mem_no: $('#mem_no').val(),
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("Update", "SalaryDeduction")',
-                        data: ModelObject,
-                        dataType: "json",
-                        success: function (data) {
-                            alert(data);                            
-                        },
-                        error: function (err) {
-                            alert("Error Occured");
-                        }
-                    });
-       }
+        function UpdateAge() {
+            let ModelObject = {
+                edit_age: $('#edit_age').val(),
+                mem_no: $('#mem_no').val(),
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Update", "SalaryDeduction")',
+                data: ModelObject,
+                dataType: "json",
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (err) {
+                    alert("Error Occured");
+                }
+            });
+        }
 
         function DownloadTextFilesForLicPrimium() {
             window.location.href = "@Url.Action("getlicprimiumlistprintfile", "SalaryDeduction")" + "?fr_dt=" + $('#fr_dt').val() + "&to_dt=" + $('#to_dt').val() + "&premium_yr=" + $('#premium_yr').val() + "&contc_no=" + $('#contc_no').val() + "&email=" + $('#email').val() + "&pan_no=" + $('#pan_no').val();
