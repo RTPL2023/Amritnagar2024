@@ -728,9 +728,9 @@ namespace Amritnagar.Controllers
                 sw.WriteLine("Unit : " + unitname);
                 sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                 sw.WriteLine("Salary Sending Sheet   " + "  " + model.sch_dt);
-                sw.WriteLine("===========================================================================");
-                sw.WriteLine("Srl |Empl.Id | Member Name        |A/C Head|Prin Amt.|Int.Amt |P/BAL  |Int ");
-                sw.WriteLine("===========================================================================");
+                sw.WriteLine("=============================================================================");
+                sw.WriteLine("Srl |Empl.Id    | Member Name        |A/C Head|Prin Amt.|Int.Amt |P/BAL  |Int");
+                sw.WriteLine("=============================================================================");
                 Ln = 7;
                 string emp = "";
                 foreach (var am in rsl)
@@ -767,7 +767,7 @@ namespace Amritnagar.Controllers
                             xpamt = 0;
                             XIAMT = 0;
                             emp = am.emp_id;
-                            sw.WriteLine("----------------------------------------------------------------------------");
+                            sw.WriteLine("------------------------------------------------------------------------------");
                             Ln = Ln + 3;
                         }
                     }
@@ -784,9 +784,9 @@ namespace Amritnagar.Controllers
                         sw.WriteLine("Unit : " + unitname);
                         sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
                         sw.WriteLine("Salary Sending Sheet   " + "  " + model.sch_dt);
-                        sw.WriteLine("===========================================================================");
-                        sw.WriteLine("Srl |Empl.Id | Member Name        |A/C Head|Prin Amt.|Int.Amt |P/BAL  |Int ");
-                        sw.WriteLine("===========================================================================");
+                        sw.WriteLine("=============================================================================");
+                        sw.WriteLine("Srl |Empl.Id    | Member Name        |A/C Head|Prin Amt.|Int.Amt |P/BAL  |Int");
+                        sw.WriteLine("=============================================================================");
                     }
                     if (am.ac_hd == "TF" || am.ac_hd == "SH" || am.ac_hd == "LICP" || am.ac_hd == "RTB")
                     {
@@ -810,7 +810,7 @@ namespace Amritnagar.Controllers
                         {
                             int_rate = int_rate.Substring(0, 7);
                         }
-                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + "|"
+                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + am.emp_id + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + "|"
                            + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) + "|"
                            + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length) + "|"
                            + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length) + "|"
@@ -842,7 +842,7 @@ namespace Amritnagar.Controllers
                         {
                             int_rate = int_rate.Substring(0, 7);
                         }
-                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + am.emp_id + "".ToString().PadLeft(8 - (am.emp_id).ToString().Length) + "|"
+                        sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + am.emp_id + "".ToString().PadLeft(11 - (am.emp_id).ToString().Length) + "|"
                           + am.mem_name + "".ToString().PadLeft(20 - (am.mem_name).ToString().Length) + "|"
                          + am.ac_hd + "".ToString().PadLeft(8 - (am.ac_hd).ToString().Length) + "|"
                          + prin_amount.ToString() + "".ToString().PadLeft(9 - (prin_amount).ToString().Length) + "|"
