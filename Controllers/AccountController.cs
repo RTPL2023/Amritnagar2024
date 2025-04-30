@@ -635,7 +635,7 @@ namespace Amritnagar.Controllers
                     }
                     if (a.trans_dr == 0)
                     {
-                        transcr = "";
+                        transdr = "";
                     }
                     else
                     {
@@ -1167,21 +1167,21 @@ namespace Amritnagar.Controllers
                 }
                 cl_bal = gl_bal + ((cr_cash_tot + cr_transfer_tot) - (tot_cash_dr + tot_transfer_dr));
                 sw.WriteLine("________________________________________________________________________________________________________________________________________");
-                sw.WriteLine("TOTAL RECIEPTS              " + "".ToString().PadLeft(13 - (cr_cash_tot).ToString().Length) + cr_cash_tot.ToString("0.00")
-                    + "".ToString().PadLeft(17 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
-                    + "".ToString().PadLeft(16 - (cr_cash_tot + cr_transfer_tot).ToString().Length) + (cr_cash_tot + cr_transfer_tot).ToString("0.00")
-                    + "|" + "TOTAL PAYMENTS            " + "".ToString().PadLeft(13 - (dr_cash_tot).ToString().Length) + dr_cash_tot.ToString("0.00")
-                    + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
-                    + "".ToString().PadLeft(17 - (tot_cash_dr + tot_transfer_dr).ToString().Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));
-                sw.WriteLine("CASH OPENING BALAN" + opdtstr + "".ToString().PadLeft(8 - (gl_bal).ToString().Length) + gl_bal.ToString("0.00")
-                    + "".ToString().PadLeft(13 - ("").ToString().Length) + "" + "|CASH CLOSING BALANCE" + "".ToString().PadLeft(19 - (cl_bal).ToString().Length) + cl_bal.ToString("0.00"));
+                sw.WriteLine("TOTAL RECIEPTS              " + "".ToString().PadLeft(11 - (cr_cash_tot).ToString("0.00").Length) + cr_cash_tot.ToString("0.00")
+                    + "".ToString().PadLeft(16 - (cr_transfer_tot).ToString("0.00").Length) + cr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(13 - (cr_cash_tot + cr_transfer_tot).ToString("0.00").Length) + (cr_cash_tot + cr_transfer_tot).ToString("0.00")
+                    + "|" + "TOTAL PAYMENTS            " + "".ToString().PadLeft(11 - (dr_cash_tot).ToString("0.00").Length) + dr_cash_tot.ToString("0.00")
+                    + "".ToString().PadLeft(14 - (dr_transfer_tot).ToString("0.00").Length) + dr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(16 - (tot_cash_dr + tot_transfer_dr).ToString("0.00").Length) + (dr_cash_tot + dr_transfer_tot).ToString("0.00"));
+                sw.WriteLine("CASH OPENING BALAN" + opdtstr + "".ToString().PadLeft(11 - (gl_bal).ToString("0.00").Length) + gl_bal.ToString("0.00")
+                    + "".ToString().PadLeft(13 - ("").ToString().Length) + "" + "|CASH CLOSING BALANCE" + "".ToString().PadLeft(17 - (cl_bal).ToString("0.00").Length) + cl_bal.ToString("0.00"));
                 sw.WriteLine("________________________________________________________________________________________________________________________________________");
-                sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(12 - (cr_cash_tot + gl_bal).ToString().Length) + (cr_cash_tot + gl_bal).ToString("0.00")
-                    + "".ToString().PadLeft(18 - (cr_transfer_tot).ToString().Length) + cr_transfer_tot.ToString("0.00")
-                    + "".ToString().PadLeft(16 - (cr_cash_tot + gl_bal + cr_transfer_tot).ToString().Length) + (cr_cash_tot + gl_bal + cr_transfer_tot).ToString("0.00")
-                    + "|" + "<< G R A N D  T O T A L >>" + "".ToString().PadLeft(14 - (dr_cash_tot + cl_bal).ToString().Length) + (dr_cash_tot + cl_bal).ToString("0.00")
-                    + "".ToString().PadLeft(17 - (dr_transfer_tot).ToString().Length) + dr_transfer_tot.ToString("0.00")
-                    + "".ToString().PadLeft(16 - (dr_cash_tot + cl_bal + dr_transfer_tot).ToString().Length) + (dr_cash_tot + cl_bal + dr_transfer_tot).ToString("0.00"));
+                sw.WriteLine("<< G R A N D  T O T A L >>  " + "".ToString().PadLeft(11 - (cr_cash_tot + gl_bal).ToString("0.00").Length) + (cr_cash_tot + gl_bal).ToString("0.00")
+                    + "".ToString().PadLeft(16 - (cr_transfer_tot).ToString("0.00").Length) + cr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(13 - (cr_cash_tot + gl_bal + cr_transfer_tot).ToString("0.00").Length) + (cr_cash_tot + gl_bal + cr_transfer_tot).ToString("0.00")
+                    + "|" + "<< G R A N D  T O T A L >>" + "".ToString().PadLeft(11 - (dr_cash_tot + cl_bal).ToString("0.00").Length) + (dr_cash_tot + cl_bal).ToString("0.00")
+                    + "".ToString().PadLeft(14 - (dr_transfer_tot).ToString("0.00").Length) + dr_transfer_tot.ToString("0.00")
+                    + "".ToString().PadLeft(16 - (dr_cash_tot + cl_bal + dr_transfer_tot).ToString("0.00").Length) + (dr_cash_tot + cl_bal + dr_transfer_tot).ToString("0.00"));
                 sw.WriteLine("________________________________________________________________________________________________________________________________________");
                 sw.WriteLine("");
                 sw.WriteLine("Cash Account Approved On:     Prepared By     Signature Of Accountant     Signature Of E.O./Manager/Secretary     Signature Of Treasurer");
