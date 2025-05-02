@@ -2430,10 +2430,10 @@ namespace Amritnagar.Controllers
                     //        open_prin = Convert.ToDecimal(tflst.LastOrDefault().prin_bal);
                     //    }
                     //}
-                    if (xac == "0002753")
-                    {
+                    //if (xac == "0002753")
+                    //{
 
-                    }
+                    //}
                     var result = tflst.FindLast(delegate (TF_Ledger sbl)
                     {
                         return sbl.vch_date < Convert.ToDateTime(model.fr_dt);
