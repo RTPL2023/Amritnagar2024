@@ -1807,7 +1807,7 @@ namespace Amritnagar.Controllers
                                 }
                                 else
                                 {
-                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy HH:mm:ss").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + "" + "</td><td>" + a.int_amount.ToString("0.00") + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
                                 }
                                 i = i + 1;
                             }
@@ -1819,7 +1819,7 @@ namespace Amritnagar.Controllers
                                 if (i == 1)
                                 {
                                     model.tableelement = "<tr><th>Date</th><th>Particulars</th><th>Debit Amount</th><th>Credit Amount</th><th>Principal Balance</th><th>Interest Balance</th></tr>";
-                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
+                                    model.tableelement = model.tableelement + "<tr><td>" + a.vch_date.ToString("dd-MM-yyyy HH:mm:ss").Replace("-", "/") + "</td><td>" + a.trns_particular + "</td><td>" + a.prin_amount.ToString("0.00") + "</td><td>" + "" + "</td><td>" + a.prin_bal.ToString("0.00") + "</td><td>" + a.int_bal.ToString("0.00") + "</td></tr>";
                                 }
                                 else
                                 {
@@ -2430,6 +2430,10 @@ namespace Amritnagar.Controllers
                     //        open_prin = Convert.ToDecimal(tflst.LastOrDefault().prin_bal);
                     //    }
                     //}
+                    if (xac == "0002753")
+                    {
+
+                    }
                     var result = tflst.FindLast(delegate (TF_Ledger sbl)
                     {
                         return sbl.vch_date < Convert.ToDateTime(model.fr_dt);
@@ -2440,7 +2444,6 @@ namespace Amritnagar.Controllers
                     }
                     else
                     {
-
                         open_prin = Convert.ToDecimal(result.prin_bal);
                     }
                     xtot_opn_prin = xtot_opn_prin + open_prin;
@@ -2481,7 +2484,13 @@ namespace Amritnagar.Controllers
                 }
                 xtot_int = CAL_GFTF_INT(Convert.ToDateTime(model.fr_dt), Convert.ToDateTime(model.to_dt), tflst, model.xmonths, Convert.ToDecimal(model.int_rate), Convert.ToDecimal(0), model);
                 xtot_int = Math.Truncate(xtot_int);
+                //xtot_int = Math.Round(xtot_int);
+                //if (xac == "0002753")
+                //{
+
+                //}
                 model.te = model.te + "<tr><td>" + i + "</td><td>" + xac + "</td><td>" + mm.mem_date + "</td><td>" + xacnm + "</td><td>" + open_prin + "</td><td>" + open_int + "</td>";
+                
                 for (int c = 1; c <= model.xmonths; c++)
                 {
                     model.te = model.te + "<td>" + model.int_array[2, c] + "</td>";
@@ -2494,10 +2503,9 @@ namespace Amritnagar.Controllers
                 model.close_prn_bal = xtot_cls_prin.ToString("0.00");
                 model.close_int_pay = xtot_cls_int.ToString("0.00");
                 model.close_tot_bal = (xtot_cls_prin + xtot_cls_int).ToString("0.00");
-                model.add_int_pay = xtot_int_amt.ToString("0.00");
+                model.add_int_pay = (xtot_int_amt).ToString("0.00");
                 model.net_int_pay = (xtot_cls_int + xtot_int_amt).ToString("0.00");
                 model.net_tot_bal = (xtot_cls_prin + xtot_cls_int + xtot_int_amt).ToString("0.00");
-
                 if (model.forsave == "Savedata")
                 {
                     tf.SaveInLedger(mm, model, clos_prin, xtot_int);
@@ -2568,9 +2576,23 @@ namespace Amritnagar.Controllers
                     }
                     else
                     {
+                        //if (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
+                        //{
+                        //    while (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
+                        //    {
+                        //        if (tf.vch_date.Month == XMONTH && tf.vch_date.Year == XYEAR)
+                        //        {
+                        //            break;
+                        //        }
+                        //        xm = xm + 1;
+                        //        XMONTH = Convert.ToDateTime(model.int_array[1, xm]).Month;  //int.Parse(int_array[1, xm].ToString("MM"));
+                        //        XYEAR = Convert.ToDateTime(model.int_array[1, xm]).Year; // int.Parse(int_array[1, xm].ToString("yyyy"));
+                        //        model.int_array[2, xm] = Convert.ToInt32(xr_bal);
+                        //    }
+                        //}
                         if (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
                         {
-                            while (tf.vch_date.Month > XMONTH || tf.vch_date.Year > XYEAR)
+                            while (true)
                             {
                                 if (tf.vch_date.Month == XMONTH && tf.vch_date.Year == XYEAR)
                                 {
@@ -2583,6 +2605,11 @@ namespace Amritnagar.Controllers
                             }
                         }
                         xbal = Convert.ToDouble(tf.prin_bal);
+                        if(xbal < 0)
+                        {
+                            xbal = 0;
+                        }
+                        
                         String XDRCR = tf.dr_cr;
                         if (tf.vch_date.Day <= 10)
                             model.int_array[2, xm] = Convert.ToInt32(xbal);
@@ -2615,10 +2642,12 @@ namespace Amritnagar.Controllers
                     xtot = xtot + model.int_array[2, PP];
                 }
             }
+            CAL_GFTF_INT = 0;
             CAL_GFTF_INT = Convert.ToDouble(((xtot * Convert.ToDouble(XINT_RATE) / 1200) + 0.00000002));
             //  CAL_GFTF_INT = IIf(CAL_GFTF_INT < 1, 0, CAL_GFTF_INT);
             CAL_GFTF_INT = CAL_GFTF_INT < 1 ? 0 : CAL_GFTF_INT;
-            CAL_GFTF_INT = Math.Truncate(CAL_GFTF_INT);
+            //CAL_GFTF_INT = Math.Truncate(CAL_GFTF_INT);
+            CAL_GFTF_INT = Math.Round(CAL_GFTF_INT);
             return CAL_GFTF_INT;
         }
         /********************************************Member's deposit Fund Interest Payable Schedule End********************/
