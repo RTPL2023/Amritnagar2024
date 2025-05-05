@@ -308,19 +308,11 @@ namespace Amritnagar.Models.Database
                 {
                     SHARE_LEDGER sl = new SHARE_LEDGER();
                     sl.bal_amount = !Convert.IsDBNull(dr["bal_amount"]) ? Convert.ToDecimal(dr["bal_amount"]) : Convert.ToDecimal("00");
-                    sl.vch_date = Convert.ToDateTime(dr["vch_date"]);
-                  
-
+                    sl.vch_date = Convert.ToDateTime(dr["vch_date"]);                  
                     sllst.Add(sl);
                 }
-
             }
-
             return sllst;
-
-
-
-
         }
     }
 }

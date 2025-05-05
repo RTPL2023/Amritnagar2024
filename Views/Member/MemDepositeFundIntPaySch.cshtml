@@ -403,8 +403,10 @@
                 success: function (data) {
                     //alert(data);
                     $("#loading").hide();
+                    alert("Saved Successfully");
                 },
                 error: function (err) {
+                    $("#loading").hide();
                     alert("Unable To Calculate");
                 }
             });

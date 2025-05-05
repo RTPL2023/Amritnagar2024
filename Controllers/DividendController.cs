@@ -69,7 +69,10 @@ namespace Amritnagar.Controllers
                 {
                     string xac = a.mem_id;
                     string xacnm = a.mem_name;
-                    if(a.mem_id == "0003706")
+                     open_bal = 0;
+
+                    cls_bal = 0;
+                    if (a.mem_id == "0003620")
                     {
 
                     }
@@ -108,13 +111,13 @@ namespace Amritnagar.Controllers
                             cls_bal = Convert.ToDecimal(result2.bal_amount);
                         }
                         xtot_cls_bal = xtot_cls_bal + cls_bal; //'--Total Closing Share Capital
-                    }
-                    model.tableelement = model.tableelement + "<tr><td>" + i + "</td><td>" + xac + "</td><td>" + a.mem_date + "</td><td>" + xacnm + "</td><td>" + open_bal + "</td>";
-                    for (int c = 1; c <= model.xmonths; c++)
-                    {
-                        model.tableelement = model.tableelement + "<td>" + model.int_array[2, c] + "</td>";
-                    }
-                    model.tableelement = model.tableelement + "<td>" + cls_bal + "</td><td>" + xtot_dividend + "</td></tr>";
+                        model.tableelement = model.tableelement + "<tr><td>" + i + "</td><td>" + xac + "</td><td>" + a.mem_date + "</td><td>" + xacnm + "</td><td>" + open_bal + "</td>";
+                        for (int c = 1; c <= model.xmonths; c++)
+                        {
+                            model.tableelement = model.tableelement + "<td>" + model.int_array[2, c] + "</td>";
+                        }
+                        model.tableelement = model.tableelement + "<td>" + cls_bal + "</td><td>" + xtot_dividend + "</td></tr>";
+                    }                   
                     xtot_dividend_pay = xtot_dividend_pay + xtot_dividend; //'--Total Dividend Payable
                     model.opsh_cap = xtot_opn_bal.ToString("0.00");
                     model.clsh_cap = xtot_cls_bal.ToString("0.00");
