@@ -247,7 +247,7 @@
             //$("#to_dt").hide();
         });
 
-  function Btnrefreshonclick() {
+        function Btnrefreshonclick() {
             $("#loading").show();
                 /*alert("ok");*/
             let ModelObject = {
@@ -272,15 +272,13 @@
                         $('#opsh_cap').val(data.opsh_cap);
                         $('#clsh_cap').val(data.clsh_cap);
                         $('#div_pay').val(data.div_pay);
-
-
                     },
                     error: function (err) {
                         alert("Unable To Calculate");
                     }
                 });
-
         };
+
         function btnsaveonclick() {
             $("#loading").show();
             $('#forsave').val("Savedata");
@@ -306,14 +304,13 @@
                 success: function (data) {
                     //alert(data);
                     $("#loading").hide();
+                    alert("Save Successfully");
                 },
                 error: function (err) {
                     alert("Unable To Calculate");
                     $("#loading").hide();
-
                 }
             });
-
         };
 
         (function () {
@@ -344,6 +341,7 @@
                 };
             }
         })();
+
         function getdividentledger() {
            
                 /*alert("ok");*/
