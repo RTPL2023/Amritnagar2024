@@ -129,6 +129,12 @@ namespace Amritnagar.Models.Database
         public decimal XISL7 { get; set; }
         public decimal prin_bal { get; set; }
         public decimal int_bal { get; set; }
+        public decimal gf_int_amt { get; set; }
+        public decimal gf_prin_bal { get; set; }
+        public decimal tf_prin_bal { get; set; }
+        public decimal tf_int_amt { get; set; }
+        public decimal div_tr_amt { get; set; }
+        public decimal sh_bal { get; set; }
         public DateTime vch_date { get; set; }
 
 
@@ -1403,6 +1409,55 @@ namespace Amritnagar.Models.Database
                             mml.Add(mm);
                         }                        
                     }
+                }
+            }
+            return mml;
+        }
+        public List<Member_Mast> getdetailsfordividend(string book_no, string unit, string recovery_date)
+        {
+            string sql = string.Empty;
+            sql = "select * from member_mast where employer_branch='" + unit + "' and  book_no='" + book_no + "' and convert(date, MEMBER_DATE,103)< convert(date, '"+ Convert.ToDateTime(recovery_date).AddMonths(-1).ToString("dd-MM-yyyy") + "',103) and member_closed is null order by member_id";
+            config.singleResult(sql);
+            List<Member_Mast> mml = new List<Member_Mast>();
+            if (config.dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in config.dt.Rows)
+                {
+                    Member_Mast mm = new Member_Mast();
+                    mm.mem_id = dr["MEMBER_ID"].ToString();
+                    mm.emp_id = dr["EMPLOYEE_ID"].ToString();
+                    mm.mem_name = dr["MEMBER_NAME"].ToString();
+                    sql = "Select * from GF_LEDGER where convert(date, VCH_DATE, 103) <= convert(date,'" + recovery_date + "',103) and MEMBER_ID = '" + mm.mem_id + "' order by VCH_DATE, VCH_NO, VCH_SRL";
+                    config.singleResult(sql);
+                    if(config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr1 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.gf_int_amt = !Convert.IsDBNull(dr1["INT_AMOUNT"]) ? Convert.ToDecimal(dr1["INT_AMOUNT"]) : 00;
+                        mm.gf_prin_bal = !Convert.IsDBNull(dr1["PRIN_BAL"]) ? Convert.ToDecimal(dr1["PRIN_BAL"]) : 00;
+                    }
+                    sql = "Select * from TF_LEDGER where convert(date, VCH_DATE, 103) <= convert(date,'" + recovery_date + "',103) and MEMBER_ID = '" + mm.mem_id + "' order by VCH_DATE, VCH_NO, VCH_SRL";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr2 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.tf_int_amt = !Convert.IsDBNull(dr2["INT_AMOUNT"]) ? Convert.ToDecimal(dr2["INT_AMOUNT"]) : 00;
+                        mm.tf_prin_bal = !Convert.IsDBNull(dr2["PRIN_BAL"]) ? Convert.ToDecimal(dr2["PRIN_BAL"]) : 00;
+                    }
+                    sql = "Select * from DIVIDEND_LEDGER where convert(date, VCH_DATE, 103) <= convert(date,'" + recovery_date + "',103) and MEMBER_ID = '" + mm.mem_id + "' order by VCH_DATE, VCH_NO, VCH_SRL";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr3 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.div_tr_amt = !Convert.IsDBNull(dr3["TR_AMOUNT"]) ? Convert.ToDecimal(dr3["TR_AMOUNT"]) : 00;                        
+                    }
+                    sql = "Select * from SHARE_LEDGER where convert(date, VCH_DATE, 103) <= convert(date,'" + recovery_date + "',103) and MEMBER_ID = '" + mm.mem_id + "' order by VCH_DATE, VCH_NO, VCH_SRL";
+                    config.singleResult(sql);
+                    if (config.dt.Rows.Count > 0)
+                    {
+                        DataRow dr4 = (DataRow)config.dt.Rows[config.dt.Rows.Count - 1];
+                        mm.sh_bal = !Convert.IsDBNull(dr4["BAL_AMOUNT"]) ? Convert.ToDecimal(dr4["BAL_AMOUNT"]) : 00;
+                    }
+                    mml.Add(mm);
                 }
             }
             return mml;

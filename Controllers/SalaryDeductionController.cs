@@ -591,6 +591,24 @@ namespace Amritnagar.Controllers
             }            
             return File(memory.ToArray(), "text/plain", "Book_No_" + model.book_no + "_" + coll_name.Replace(" ","") + "_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
         }
+        public JsonResult getdividendlist(FreshListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetailsfordividend(model.book_no, model.emp_branch, model.rec_dt);
+            int i = 1;
+            if(mml.Count > 0)
+            {
+                model.tableelement = "<tr><th>Srl</th><th>Member Id</th><th>Employee Id</th><th>Name Of Member</th><th>Int GF</th><th>GF Bal</th><th>Int TF</th><th>TF Bal</th><th>Dividend</th><th>SH Bal</th><th>Total Int</th></tr>";
+                foreach (var a in mml)
+                {
+                    model.tableelement = model.tableelement + "<tr><td>" + Convert.ToString(i) + "</td><td>" + a.mem_id + "</td><td>" + a.emp_id + "</td><td>" + a.mem_name + "</td><td>" + a.gf_int_amt.ToString("0.00") + "</td><td>" + a.gf_prin_bal.ToString("0.00") + "</td><td>" + a.tf_int_amt.ToString("0.00") + "</td><td>" + a.tf_prin_bal.ToString("0.00") + "</td><td>" + a.div_tr_amt.ToString("0.00") + "</td><td>" + a.sh_bal.ToString("0.00") + "</td><td>" + (a.gf_int_amt + a.tf_int_amt + a.div_tr_amt).ToString("0.00") + "</td></tr>";
+                    i = i + 1;
+                }
+            }
+            return Json(model.tableelement);
+        }
+
         /********************************************Fresh List End*******************************************/
 
         /********************************************Sending Schedule Report Start*******************************************/
