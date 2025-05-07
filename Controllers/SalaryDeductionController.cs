@@ -609,6 +609,290 @@ namespace Amritnagar.Controllers
             return Json(model.tableelement);
         }
 
+        //public ActionResult getdividendlistprintfile([FromBody] PrintFreshListViewModel obj)
+        //{          
+        //    //string msg = "";
+        //    //int i = 0;
+        //    //DCM_CARD dcm = new DCM_CARD();
+        //    foreach (var row in obj.Row)
+        //    {
+        //        Employer_Branch_Mast ebm = new Employer_Branch_Mast();
+        //        string coll_name = ebm.getunitnamebycode(row.emp_branch);
+        //        using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Member_Combine_List.txt")))
+        //        {
+        //            int Pg = 1;
+        //            int Ln = 0;
+        //            int i = 1;
+        //            decimal totamt = 0;
+        //            decimal tramt = 0;
+        //            decimal shbal = 0;
+        //            decimal gfamt = 0;
+        //            decimal gfbal = 0;
+        //            decimal tfamt = 0;
+        //            decimal tfbal = 0;
+        //            string mem_name = "";
+        //            string mem_id = "";
+        //            sw.WriteLine(" BOOK - NO =" + row.book_no);
+        //            sw.WriteLine("Unit :" + coll_name);
+        //            sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
+        //            sw.WriteLine("Combine List   " + "  " + row.rec_dt);
+        //            sw.WriteLine("==============================================================================================");
+        //            sw.WriteLine("Srl |Member Id. | Member Name             |Int GF|Int TF|Div Amt |Total|");
+        //            sw.WriteLine("==============================================================================================");
+        //            if (Ln > Pg * 65)
+        //            {
+        //                Pg = Pg + 1;
+        //                Ln = Ln + 7;
+        //                sw.WriteLine(" BOOK - NO =" + row.book_no);
+        //                sw.WriteLine("Unit :" + coll_name);
+        //                sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
+        //                sw.WriteLine("Combine List   " + "  " + row.rec_dt);
+        //                sw.WriteLine("==============================================================================================");
+        //                sw.WriteLine("Srl |Member Id. | Member Name             |Int GF|Int TF|Div Amt |Total|");
+        //                sw.WriteLine("==============================================================================================");
+        //            }
+        //            if (row.mem_no == null)
+        //            {
+        //                mem_id = "";
+        //            }
+        //            else if (row.mem_no.ToString().Length > 11)
+        //            {
+        //                mem_id = (row.mem_no).Substring(0, 10);
+        //            }
+        //            else
+        //            {
+        //                mem_id = row.mem_no;
+        //            }
+        //            if (row.mem_name == null)
+        //            {
+        //                mem_name = "";
+        //            }
+        //            else if (row.mem_name.ToString().Length > 25)
+        //            {
+        //                mem_name = (row.mem_name).Substring(0, 24);
+        //            }
+        //            else
+        //            {
+        //                mem_name = row.mem_name;
+        //            }
+        //            if (row.gf_int_amt.ToString().Length > 9)
+        //            {
+        //                gfamt = Convert.ToDecimal(row.gf_int_amt.ToString().Substring(0, 8));
+        //            }
+        //            else
+        //            {
+        //                gfamt = Convert.ToDecimal(row.gf_int_amt);
+        //            }
+        //            if (row.tf_int_amt.ToString().Length > 8)
+        //            {
+        //                tfamt = Convert.ToDecimal(row.tf_int_amt.ToString().Substring(0, 7));
+        //            }
+        //            else
+        //            {
+        //                tfamt = Convert.ToDecimal(row.tf_int_amt);
+        //            }
+        //            if (row.div_tr_amt.ToString().Length > 10)
+        //            {
+        //                tramt = Convert.ToDecimal(row.div_tr_amt.ToString().Substring(0, 9));
+        //            }
+        //            else
+        //            {
+        //                tramt = Convert.ToDecimal(row.div_tr_amt);
+        //            }
+        //            if (row.tot_int_amt.ToString().Length > 10)
+        //            {
+        //                totamt = Convert.ToDecimal(row.tot_int_amt.ToString().Substring(0, 9));
+        //            }
+        //            else
+        //            {
+        //                totamt = Convert.ToDecimal(row.tot_int_amt);
+        //            }
+        //            sw.WriteLine(row.srl + "".ToString().PadLeft(4 - (row.srl).ToString().Length) + "|" + mem_id + "".ToString().PadLeft(11 - (mem_id).ToString().Length) + "|"
+        //                    + mem_name + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + "|"
+        //                    + gfamt + "".ToString().PadLeft(8 - (gfamt).ToString().Length) + "|"
+        //                    + tfamt.ToString() + "".ToString().PadLeft(9 - (tfamt).ToString().Length) + "|"
+        //                     + tramt.ToString() + "".ToString().PadLeft(8 - (tramt).ToString().Length) + "|"
+        //                       + "".ToString().PadLeft(7 - ("").ToString().Length) + "" + "|"
+        //                         + totamt.ToString() + "".ToString().PadLeft(10 - (totamt).ToString().Length) + "|");
+        //            sw.WriteLine("");
+        //            Ln = Ln + 1;
+        //            i = i + 1;                   
+        //        }
+        //    }
+        //    UtilityController u = new UtilityController();
+        //    var memory = u.DownloadTextFiles("Fresh_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+        //    if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Member_Combine_List.txt")))
+        //    {
+        //        System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Combine_List.txt"));
+        //    }
+        //    //return File(memory.ToArray(), "text/plain", "Book_No_" + row.book_no + "_" + coll_name.Replace(" ", "") + "_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
+        //    return File(memory.ToArray(), "text/plain", "Member_Combine_List_"  + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
+        //}
+        public ActionResult getdividendlistprintfile(FreshListViewModel model)
+        {
+            Member_Mast mm = new Member_Mast();
+            Employer_Branch_Mast ebm = new Employer_Branch_Mast();
+            List<Member_Mast> mml = new List<Member_Mast>();
+            mml = mm.getdetailsfordividend(model.book_no, model.emp_branch, model.rec_dt);
+            string coll_name = ebm.getunitnamebycode(model.emp_branch);
+            Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
+            using (StreamWriter sw = new StreamWriter(Server.MapPath("~/wwwroot\\TextFiles\\Member_Combine_List.txt")))
+            {
+                int Pg = 1;
+                int Ln = 0;
+                int i = 1;
+                int y = 1;
+                string serial = string.Empty;
+                decimal totamt = 0;
+                decimal tramt = 0;
+                decimal shbal = 0;
+                decimal gfamt = 0;
+                decimal gfbal = 0;
+                decimal tfamt = 0;
+                decimal tfbal = 0;
+                string mem_name = "";
+                string mem_id = "";                
+                foreach (var am in mml)
+                {
+                    if (y != 1)
+                    {
+                        sw.WriteLine("");
+                    }
+                    sw.WriteLine(" BOOK - NO =" + model.book_no);
+                    sw.WriteLine("Unit :" + coll_name);
+                    sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
+                    sw.WriteLine("Combine List   " + "  " + model.rec_dt);
+                    sw.WriteLine("==============================================================================================");
+                    sw.WriteLine("Srl |Member Id. | Member Name             |Int GF  |Int TF  |Div Amt |Total     |");
+                    sw.WriteLine("==============================================================================================");
+                    Ln = 7;
+                    if (Ln > Pg * 65)
+                    {
+                        y = 1;
+                        Pg = Pg + 1;
+                        sw.WriteLine(form_feed);                       
+                        sw.WriteLine(" BOOK - NO =" + model.book_no);
+                        sw.WriteLine("Unit :" + coll_name);
+                        sw.WriteLine("Amritnagar Colliery  Employees' Co-op. Credit Society Ltd  Pg No : " + Pg);
+                        sw.WriteLine("Combine List   " + "  " + model.rec_dt);
+                        sw.WriteLine("==============================================================================================");
+                        sw.WriteLine("Srl |Member Id. | Member Name             |Int GF  |Int TF   |Div Amt |Total     |");
+                        sw.WriteLine("==============================================================================================");
+                        Ln = Ln + 7;
+                    }                        
+                    if (Convert.ToString(i).Length > 5)
+                    {
+                        serial = Convert.ToString(i).Substring(0, 4);
+                    }
+                    else
+                    {
+                        serial = Convert.ToString(i);
+                    }
+                    if (am.mem_id == null)
+                    {
+                        mem_id = "";
+                    }
+                    else if (am.mem_id.ToString().Length > 11)
+                    {
+                        mem_id = am.mem_id.Substring(0, 10);
+                    }
+                    else
+                    {
+                        mem_id = am.mem_id;
+                    }
+                    if (am.mem_name == null)
+                    {
+                        mem_name = "";
+                    }
+                    else if (am.mem_name.ToString().Length > 25)
+                    {
+                        mem_name = am.mem_name.Substring(0, 24);
+                    }
+                    else
+                    {
+                        mem_name = am.mem_name;
+                    }
+                    if (am.gf_int_amt.ToString().Length > 9)
+                    {
+                        gfamt = Convert.ToDecimal(am.gf_int_amt.ToString().Substring(0, 8));
+                    }
+                    else
+                    {
+                        gfamt = am.gf_int_amt;
+                    }
+                    if (am.tf_int_amt.ToString().Length > 8)
+                    {
+                        tfamt = Convert.ToDecimal(am.tf_int_amt.ToString().Substring(0, 7));
+                    }
+                    else
+                    {
+                        tfamt = am.tf_int_amt;
+                    }
+                    if (am.div_tr_amt.ToString().Length > 8)
+                    {
+                        tramt = Convert.ToDecimal(am.div_tr_amt.ToString().Substring(0, 7));
+                    }
+                    else
+                    {
+                        tramt = am.div_tr_amt;
+                    }
+                    if ((gfamt + tfamt + tramt).ToString().Length > 10)
+                    {
+                        totamt = Convert.ToDecimal((gfamt + tfamt + tramt).ToString().Substring(0, 9));
+                    }
+                    else
+                    {
+                        totamt = gfamt + tfamt + tramt;
+                    }
+                    if (am.gf_prin_bal.ToString().Length > 9)
+                    {
+                        gfbal = Convert.ToDecimal(am.gf_prin_bal.ToString().Substring(0, 8));
+                    }
+                    else
+                    {
+                        gfbal = am.gf_prin_bal;
+                    }
+                    if (am.tf_prin_bal.ToString().Length > 9)
+                    {
+                        tfbal = Convert.ToDecimal(am.tf_prin_bal.ToString().Substring(0, 8));
+                    }
+                    else
+                    {
+                        tfbal = am.tf_prin_bal;
+                    }
+                    if (am.sh_bal.ToString().Length > 9)
+                    {
+                        shbal = Convert.ToDecimal(am.sh_bal.ToString().Substring(0, 8));
+                    }
+                    else
+                    {
+                        shbal = am.sh_bal;
+                    }                   
+                    sw.WriteLine(serial + "".ToString().PadLeft(4 - (serial).ToString().Length) + "|" + mem_id + "".ToString().PadLeft(11 - (mem_id).ToString().Length) + "|"
+                            + mem_name + "".ToString().PadLeft(25 - (mem_name).ToString().Length) + "|"
+                            + gfamt + "".ToString().PadLeft(8 - (gfamt).ToString().Length) + "|"
+                            + tfamt.ToString() + "".ToString().PadLeft(8 - (tfamt).ToString().Length) + "|"
+                             + tramt.ToString() + "".ToString().PadLeft(8 - (tramt).ToString().Length) + "|"                              
+                                 + totamt.ToString() + "".ToString().PadLeft(10 - (totamt).ToString().Length) + "|");
+                    sw.WriteLine("                        Balance-->         " + gfbal + "".ToString().PadLeft(9 - (gfbal.ToString().Length))
+                    + tfbal + "".ToString().PadLeft(9 - (tfbal).ToString().Length)
+                    + shbal + "".ToString().PadLeft(9 - (shbal).ToString().Length));                   
+                    //sw.WriteLine("                        Balance-->         " + am.gf_prin_bal + "    " + am.tf_prin_bal + "    " + am.sh_bal);
+                    Ln = Ln + 2;
+                    i = i + 1;
+                    y = y + 1;
+                }
+                sw.WriteLine(form_feed);
+            }
+            UtilityController u = new UtilityController();
+            var memory = u.DownloadTextFiles("Member_Combine_List.txt", Server.MapPath("~/wwwroot\\TextFiles"));
+            if (System.IO.File.Exists(Server.MapPath("~/wwwroot\\TextFiles\\Member_Combine_List.txt")))
+            {
+                System.IO.File.Delete(Server.MapPath("~/wwwroot\\TextFiles\\Member_Combine_List.txt"));
+            }
+            return File(memory.ToArray(), "text/plain", "Member_Combine_List_of_Book_No_" + model.book_no + "_" + coll_name.Replace(" ", "") + "_" + DateTime.Now.ToShortDateString().Replace(" / ", "_") + ".txt");
+        }
+
         /********************************************Fresh List End*******************************************/
 
         /********************************************Sending Schedule Report Start*******************************************/

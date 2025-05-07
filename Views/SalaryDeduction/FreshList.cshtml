@@ -250,7 +250,7 @@
                                 <input id="BtnRefreshFordevidend" type="button" name="BtnRefreshFordevidend" Height="40" Width="100" class="btn btn-primary btn-sm" value="Refresh Devidend" onclick="ShowTableForDividend()" />
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-12 mt-3">
-                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print Dividend" />
+                                <input id="BtnPrint" type="button" name="BtnPrint" Height="40" Width="100" class="btn btn-primary btn-sm" value="Print Dividend" onclick="DownloadTextFilesForDividend()"/>
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -439,7 +439,7 @@
                     //alert("Error Occured");
                      }
                     });
-        }*@
+       }*@
 
         function ShowTableForLicPrimium() {
             $("#loading1").show();
@@ -451,7 +451,7 @@
                 dataType: "json",
                 success: function (data) {
                     $("#loading1").hide();
-                    document.getElementById("LicPrimiumList").innerHTML = data.tableelement;
+                    document.getElementById("LicPrimiumList").innerHTML = data.tableelement;                    
                 },
                 error: function (err) {
                     //alert("Error Occured");
@@ -528,12 +528,63 @@
                 success: function (data) {
                     $("#loading").hide();
                     document.getElementById("DetailList").innerHTML = data;
+                    document.getElementById("TotalPositionList").innerHTML = "";
                 },
                 error: function (err) {
                     //alert("Error Occured");
                 }
             });
+        }
+
+         function DownloadTextFilesForDividend() {
+            window.location.href = "@Url.Action("getdividendlistprintfile", "SalaryDeduction")" + "?rec_dt=" + $('#rec_dt').val() + "&book_no=" + $('#book_no').val() + "&emp_branch=" + $('#emp_branch').val();
          }
+
+        //function DownloadDividendTextFiles() {
+        //    if ($('#book_no').val() == null || $('#book_no').val() == "") {
+        //        alert("Book No Cannot Be Blank");
+        //    }
+        //    else {
+        //        var jsarray = [];
+        //        const tabledata = {};
+        //        var i = 0;
+        //        $("#DetailList tr").each(function () {
+        //            var row = $(this);
+        //            var jsarr = {};
+        //            if (i > 0) {
+        //                jsarr["srl"] = row.find("td").eq(0).text();
+        //                jsarr["mem_no"] = row.find("td").eq(1).text();
+        //                jsarr["mem_name"] = row.find("td").eq(3).text();
+        //                jsarr["gf_int_amt"] = row.find("td").eq(4).text();
+        //                jsarr["gf_prin_bal"] = row.find("td").eq(5).text();
+        //                jsarr["tf_int_amt"] = row.find("td").eq(6).text();
+        //                jsarr["tf_prin_bal"] = row.find("td").eq(7).text();
+        //                jsarr["div_tr_amt"] = row.find("td").eq(8).text();
+        //                jsarr["sh_bal"] = row.find("td").eq(9).text();
+        //                jsarr["tot_int_amt"] = row.find("td").eq(10).text();
+        //                jsarr["book_no"] = $('#book_no').val();
+        //                jsarr["rec_dt"] = $('#rec_dt').val();
+        //                jsarr["emp_branch"] = $('#emp_branch').val();
+        //                jsarray.push(jsarr);
+        //            }
+        //            i = i + 1;
+        //        });
+        //        $.ajax({
+        //            contentType: "application/json; charset=UTF-8",
+        //            dataType: "json",
+        //            type: "POST",
+        //            url: '/SalaryDeduction/getdividendlistprintfile',
+        //            data: JSON.stringify({ Row: jsarray }),
+        //            success: function (data) {
+        //                alert(data);
+        //                /*GetDetailsForTicketWidthdrawal();*/
+        //            },
+        //            error: function (err) {
+        //                alert(JSON.stringify(err));
+        //            }
+        //        });
+        //    }
+        //}
 
     </script>
 }
