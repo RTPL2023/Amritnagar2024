@@ -16,6 +16,7 @@ namespace Amritnagar.Controllers
 {
     public class MemberController : Controller
     {
+        public char form_feed = Convert.ToChar(12);
         /********************************************Member Master Start*******************************************/
         [HttpGet]
         public ActionResult MemberMaster(MemberMasterViewModel model)
@@ -3571,7 +3572,9 @@ namespace Amritnagar.Controllers
         {
             Member_Mast mm = new Member_Mast();
             List<Member_Mast> mml = new List<Member_Mast>();
-            if(model.book_no != null && model.book_no != "")
+            Employer_Branch_Mast ep = new Employer_Branch_Mast();
+            string unitname = ep.getunitnamebycode(model.unit);
+            if (model.book_no != null && model.book_no != "")
             {
                 mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);
             }
@@ -3597,6 +3600,7 @@ namespace Amritnagar.Controllers
                     sw.WriteLine("==========================================================================");
                     sw.WriteLine("Srl |Member No.| Member Name            | LTI/Signature                  |");
                     sw.WriteLine("==========================================================================");
+                    Ln = 8;
                     foreach (var am in mml)
                     {
                         if (Convert.ToString(i).Length > 4)
@@ -3627,6 +3631,7 @@ namespace Amritnagar.Controllers
                         {
                             Pg = Pg + 1;
                             Ln = Ln + 7;
+                            sw.WriteLine(form_feed);
                             sw.WriteLine("BOOK - NO =" + model.book_no);
                             sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
                             sw.WriteLine("Distribution  LIST ");
@@ -3638,9 +3643,10 @@ namespace Amritnagar.Controllers
                         + "".ToString().PadLeft(10 - (mem_no).ToString().Length) + mem_no + "|"
                         + "".ToString().PadLeft(24 - (mem_name).ToString().Length) + mem_name + "|");
                         sw.WriteLine("--------------------------------------------------------------------------");
-                        Ln = Ln + 1;
+                        Ln = Ln + 2;
                         i = i + 1;
                     }
+                    sw.WriteLine(form_feed);
                 }
             }
             else
@@ -3651,12 +3657,13 @@ namespace Amritnagar.Controllers
                     int Ln = 0;
                     int i = 1;
                     sw.WriteLine("BOOK - NO =" + model.book_no);
-                    sw.WriteLine("Unit :" + model.unit);
+                    sw.WriteLine("Unit :" + unitname);
                     sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
                     sw.WriteLine("Member LIST ");
                     sw.WriteLine("=====================================================================");
                     sw.WriteLine("Srl |Member No.| Member Name                | Gurdian NAME          |");
                     sw.WriteLine("=====================================================================");
+                    Ln = 8;
                     foreach (var am in mml)
                     {
                         if (Convert.ToString(i).Length > 4)
@@ -3695,8 +3702,9 @@ namespace Amritnagar.Controllers
                         {
                             Pg = Pg + 1;
                             Ln = Ln + 7;
+                            sw.WriteLine(form_feed);
                             sw.WriteLine("BOOK - NO =" + model.book_no);
-                            sw.WriteLine("Unit :" + model.unit);
+                            sw.WriteLine("Unit :" + unitname);
                             sw.WriteLine("Amrit nagar Colliery  Employees' Co-operative Credit Society Ltd.  Pg No :" + Pg);
                             sw.WriteLine("Member LIST ");
                             sw.WriteLine("=====================================================================");
@@ -3708,9 +3716,10 @@ namespace Amritnagar.Controllers
                         + "".ToString().PadLeft(28 - (mem_name).ToString().Length) + mem_name + "|"
                         + "".ToString().PadLeft(23 - (guardain_name).ToString().Length) + guardain_name + "|");
                         sw.WriteLine("---------------------------------------------------------------------");
-                        Ln = Ln + 1;
+                        Ln = Ln + 2;
                         i = i + 1;
                     }
+                    sw.WriteLine(form_feed);
                 }
             }
             UtilityController u = new UtilityController();
@@ -3723,20 +3732,20 @@ namespace Amritnagar.Controllers
             {
                 if(model.book_no == null || model.book_no == "")
                 {
-                    return File(memory.ToArray(), "text/plain", "Distribution_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                    return File(memory.ToArray(), "text/plain", unitname.Replace(" ", "_") + "_" +"Distribution_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
                 }
                 else
                 {
-                    return File(memory.ToArray(), "text/plain", "Distribution_List_Book_No_" + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                    return File(memory.ToArray(), "text/plain", unitname.Replace(" ", "_") + "_" + "Distribution_List_Book_No_" + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
                 }                
             }
             else if (model.book_no == null || model.book_no == "")
             {
-                return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                return File(memory.ToArray(), "text/plain", unitname.Replace(" ", "_") + "_" + "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
             }
             else
             {
-                return File(memory.ToArray(), "text/plain", "Member_Voter_List_Book_No_" + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                return File(memory.ToArray(), "text/plain", unitname.Replace(" ", "_") + "_" + "Member_Voter_List_Book_No_" + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
             }
         }
 
