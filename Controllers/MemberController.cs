@@ -3727,7 +3727,7 @@ namespace Amritnagar.Controllers
                 }
                 else
                 {
-                    return File(memory.ToArray(), "text/plain", "Distribution_List_Book_No: " + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                    return File(memory.ToArray(), "text/plain", "Distribution_List_Book_No_" + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
                 }                
             }
             else if (model.book_no == null || model.book_no == "")
@@ -3736,7 +3736,7 @@ namespace Amritnagar.Controllers
             }
             else
             {
-                return File(memory.ToArray(), "text/plain", "Member_Voter_List_Book_No: " + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                return File(memory.ToArray(), "text/plain", "Member_Voter_List_Book_No_" + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
             }
         }
 
