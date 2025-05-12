@@ -3571,7 +3571,14 @@ namespace Amritnagar.Controllers
         {
             Member_Mast mm = new Member_Mast();
             List<Member_Mast> mml = new List<Member_Mast>();
-            mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);
+            if(model.book_no != null && model.book_no != "")
+            {
+                mml = mm.getvoterlistbybooknoandemployerbranch(model.book_no, model.unit);
+            }
+            else
+            {
+                mml = mm.getvoterlistbyemployerbranch(model.unit);
+            }
             Directory.CreateDirectory(Server.MapPath("~/wwwroot\\TextFiles"));
             string serial = string.Empty;
             string mem_no = "";
@@ -3714,11 +3721,22 @@ namespace Amritnagar.Controllers
             }
             if (model.dist_list == true)
             {
-                return File(memory.ToArray(), "text/plain", "Distribution_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                if(model.book_no == null || model.book_no == "")
+                {
+                    return File(memory.ToArray(), "text/plain", "Distribution_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                }
+                else
+                {
+                    return File(memory.ToArray(), "text/plain", "Distribution_List_Book_No: " + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                }                
+            }
+            else if (model.book_no == null || model.book_no == "")
+            {
+                return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
             }
             else
             {
-                return File(memory.ToArray(), "text/plain", "Member_Voter_List_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
+                return File(memory.ToArray(), "text/plain", "Member_Voter_List_Book_No: " + model.book_no + "_" + DateTime.Now.ToShortDateString().Replace("/", "_") + ".txt");
             }
         }
 
